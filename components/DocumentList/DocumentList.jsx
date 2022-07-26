@@ -57,6 +57,7 @@ const DocumentList = () => {
 		<div className="flex flex-col w-full py-2 px-6 gap-2 bg-white border rounded-md">
 			{/* Top */}
 			<div className="flex justify-between">
+				
 				{/* Top Left */}
 				<div className="flex gap-4 items-center">
 					<div className="flex font-semibold">
@@ -73,6 +74,7 @@ const DocumentList = () => {
 						Completed
 					</div>
 				</div>
+
 				{/* Top Right */}
 				<div className="flex gap-2">
 					<div className="py-1 px-2 text-xs rounded bg-sky-200 text-blue-900">
