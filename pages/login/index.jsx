@@ -62,7 +62,7 @@ export default function Login() {
 						</Link>
 
 						<p>
-							Don't have an account?{" "}
+							Don&apos;t have an account?{" "}
 							<a href="#" className="text-[#0070ba]">
 								Sign Up
 							</a>
