@@ -73,7 +73,7 @@ export default function Dashboard() {
 				{/* Left */}
 				<div className="flex flex-[1.5] flex-col gap-2">
 					<div className="flex items-center justify-between">
-						<div className="text-xl font-semibold">What's New</div>
+						<div className="text-xl font-semibold">What&apos;s New</div>
 						<a
 							href="./"
 							className="viewAll flex items-center justify-center text-[#2F80ED]"
