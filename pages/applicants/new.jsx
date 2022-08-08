@@ -1,6 +1,50 @@
 import { DocumentReview } from "../../components/DocumentReview";
 
 export default function ApplicantsNew() {
+
+	const handleSubmit = async (event) => {
+		event.preventDefault()
+		const data = {
+			firstName: event.target.firstName.value,
+			lastName: event.target.lastName.value,
+			email: event.target.email.value,
+			dateOfBirth: event.target.dateOfBirth.value,
+			sex: event.target.sex.value,
+			phoneNumber: event.target.phoneNumber.value,
+			university: event.target.university.value,
+			nationality: event.target.nationality.value,
+			departingCountry: event.target.departingCountry.value,
+			applicant: {
+				applicationDate: event.target.applicationDate.value,
+				arrivalDate: event.target.arrivalDate.value,
+				departureDate: event.target.departureDate.value,
+				progress: event.target.progress.value,
+				department: event.target.department.value,
+				position: event.target.position.value,
+				hrInterviewDate: event.target.hrInterviewDate.value,
+				interviewNotes: event.target.interviewNotes.value,
+				rejectionReasons: event.target.rejectionReasons.value,
+			}
+		}
+		console.log(data)
+		const JSONdata = JSON.stringify(data)
+		console.log(JSONdata)
+		const endpoint = '/api/student'
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSONdata,
+		}
+
+		const response = await fetch(endpoint, options)
+
+		const result = await response.json()
+		console.log(result)
+		alert(`New student with name: - ${data.firstName} - created`)
+	}
+
 	return (
 		<section className="relative w-full">
 			<div className="w-full">
@@ -16,7 +60,7 @@ export default function ApplicantsNew() {
 
 					{/* Forms Container */}
 					<div>
-						<form className="flex flex-col gap-4" action="#" method="POST">
+						<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
 							{/* Top  */}
 							<div className="flex gap-6">
 								{/* Section */}
@@ -54,7 +98,8 @@ export default function ApplicantsNew() {
 											<input
 												type="text"
 												name="first-name"
-												id="first-name"
+												id="firstName"
+												required
 												autoComplete="given-name"
 												className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 											/>
@@ -67,7 +112,8 @@ export default function ApplicantsNew() {
 											<input
 												type="text"
 												name="last-name"
-												id="last-name"
+												id="lastName"
+												required
 												autoComplete="family-name"
 												className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 											/>
@@ -80,9 +126,11 @@ export default function ApplicantsNew() {
 										<div className="flex mt-1 gap-4">
 											<div className="flex items-center">
 												<input
-													id="push-everything"
-													name="push-notifications"
+													id="sex"
+													name="gender"
 													type="radio"
+													value="Male"
+													defaultChecked
 													className="focus:ring-blue-500 text-blue-600 border-gray-300"
 												/>
 												<label
@@ -94,9 +142,10 @@ export default function ApplicantsNew() {
 											</div>
 											<div className="flex items-center">
 												<input
-													id="push-email"
-													name="push-notifications"
+													id="sex"
+													name="gender"
 													type="radio"
+													value="Female"
 													className="focus:ring-blue-500 text-blue-600 border-gray-300"
 												/>
 												<label
@@ -116,9 +165,9 @@ export default function ApplicantsNew() {
 										</label>
 										<input
 											type="date"
-											name="email-address"
-											id="email-address"
-											autoComplete="email"
+											name="date-of-birth"
+											required
+											id="dateOfBirth"
 											className="focus:ring-blue-500 focus:border-blue-500 block w-2/3 shadow-sm sm:text-sm border-gray-300 rounded-md"
 										/>
 									</div>
@@ -129,8 +178,8 @@ export default function ApplicantsNew() {
 											Nationality
 										</label>
 										<select
-											id="country"
-											name="country"
+											id="nationality"
+											name="nationality"
 											autoComplete="country-name"
 											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
 										>
@@ -155,6 +204,7 @@ export default function ApplicantsNew() {
 											name="email"
 											id="email"
 											autoComplete="email"
+											required
 											className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 										/>
 									</div>
@@ -167,8 +217,9 @@ export default function ApplicantsNew() {
 										<input
 											type="text"
 											name="phone"
-											id="phone"
+											id="phoneNumber"
 											autoComplete="phone"
+											required
 											className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 										/>
 									</div>
@@ -183,6 +234,7 @@ export default function ApplicantsNew() {
 											name="university"
 											id="university"
 											autoComplete="university"
+											required
 											className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 										/>
 									</div>
@@ -193,7 +245,7 @@ export default function ApplicantsNew() {
 											Departing Country
 										</label>
 										<select
-											id="departing-country"
+											id="departingCountry"
 											name="departing-country"
 											autoComplete="departing-country"
 											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -208,7 +260,7 @@ export default function ApplicantsNew() {
 								{/* Section */}
 								{/* Internship Details */}
 								<div className="flex flex-[1] flex-col gap-4 px-4 py-5">
-									<div className="mb-2 font-semibold">Internship Details</div>
+									<div className="mb-2 font-semibold">Application Details</div>
 
 									<div className="flex gap-4">
 										{/* Applied on */}
@@ -219,7 +271,8 @@ export default function ApplicantsNew() {
 											<input
 												type="date"
 												name="applied-on"
-												id="applied-on"
+												id="applicationDate"
+												required
 												className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 											/>
 										</div>
@@ -232,12 +285,13 @@ export default function ApplicantsNew() {
 											<input
 												type="date"
 												name="interview-date"
-												id="interview-date"
+												id="hrInterviewDate"
+												required
 												className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 											/>
 										</div>
 									</div>
-
+									
 									{/* Department */}
 									<div className="flex flex-col gap-2">
 										<label htmlFor="department" className="block text-sm">
@@ -255,6 +309,23 @@ export default function ApplicantsNew() {
 										</select>
 									</div>
 
+									{/* Position */}
+									<div className="flex flex-col gap-2">
+										<label htmlFor="department" className="block text-sm">
+											Position
+										</label>
+										<select
+											id="position"
+											name="position"
+											autoComplete="Position"
+											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+										>
+											<option>Backend Developer</option>
+											<option>DevOps</option>
+											<option>data Analyst</option>
+										</select>
+									</div>
+
 									<div className="flex gap-4">
 										{/* Arrival Date */}
 										<div className="flex flex-[1] flex-col gap-2">
@@ -264,7 +335,8 @@ export default function ApplicantsNew() {
 											<input
 												type="date"
 												name="arrival-date"
-												id="arrival-date"
+												id="arrivalDate"
+												required
 												className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 											/>
 										</div>
@@ -277,7 +349,8 @@ export default function ApplicantsNew() {
 											<input
 												type="date"
 												name="departure-date"
-												id="departure-date"
+												id="departureDate"
+												required
 												className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 											/>
 										</div>
@@ -289,7 +362,7 @@ export default function ApplicantsNew() {
 											Progress
 										</label>
 										<select
-											id="Progress"
+											id="progress"
 											name="Progress"
 											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
 										>
@@ -301,7 +374,7 @@ export default function ApplicantsNew() {
 										</select>
 									</div>
 
-									{/* Application Status */}
+									{/* Application Status 
 									<div className="flex flex-col gap-2">
 										<label htmlFor="status" className="block text-sm">
 											Status
@@ -317,7 +390,7 @@ export default function ApplicantsNew() {
 											<option>No Answer</option>
 											<option>Intership Finished</option>
 										</select>
-									</div>
+									</div>*/}
 								</div>
 							</div>
 
@@ -332,8 +405,8 @@ export default function ApplicantsNew() {
 									</label>
 									<div className="mt-1">
 										<textarea
-											id="about"
-											name="about"
+											id="interviewNotes"
+											name="interview-notes"
 											rows={7}
 											className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
 											defaultValue={""}
@@ -348,12 +421,12 @@ export default function ApplicantsNew() {
 										htmlFor="about"
 										className="block text-sm font-medium text-gray-700"
 									>
-										Rejected Reason
+										Rejection Reasons
 									</label>
 									<div className="mt-1">
 										<textarea
-											id="about"
-											name="about"
+											id="rejectionReasons"
+											name="rejectio-reasons"
 											rows={7}
 											className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
 											defaultValue={""}
