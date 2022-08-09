@@ -1940,7 +1940,7 @@
   optionalDependencies:
     "saslprep" "^1.0.3"
 
-"mongoose@^6.5.1":
+"mongoose@^6.5.0":
   "integrity" "sha512-8C0213y279nrSp6Au+WB+l/VczcotMU65jalTJJxU6KYf/Kd8gNW9+B3giWNJOVd8VvKvUQG0suWv/Vngp/83A=="
   "resolved" "https://registry.npmjs.org/mongoose/-/mongoose-6.5.1.tgz"
   "version" "6.5.1"
@@ -1995,7 +1995,7 @@
   "resolved" "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   "version" "1.4.0"
 
-"next@^12.2.1":
+"next@12.2.1":
   "integrity" "sha512-090KB5CZRlLG/GWxb8tA1ZFwqL8OfpUtH4mXA7POuisa6NL5ihiAZhfk5nRBdPHvkXuSt0n7zQaVym6SrT3Wiw=="
   "resolved" "https://registry.npmjs.org/next/-/next-12.2.1.tgz"
   "version" "12.2.1"

@@ -1,9 +1,8 @@
-
 import Student from "../../../models/student";
 import dbConnect from "../../../util/mongodb";
 
-export default async (req, res) => {
-    
+export default async function handler (req, res) {
+
     await dbConnect();
 
     const {

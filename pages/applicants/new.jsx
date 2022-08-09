@@ -34,6 +34,7 @@ export default function ApplicantsNew() {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				"Access-Control-Allow-Origin": "*",
 			},
 			body: JSONdata,
 		}
