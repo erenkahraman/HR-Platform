@@ -9,4 +9,11 @@ module.exports = {
 	images: {
 		domains: ["demos.creative-tim.com"],
 	},
+	webpack: (
+		config,
+		{ buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
+	  ) => {
+		// Important: return the modified config
+		return config
+	  },
 };

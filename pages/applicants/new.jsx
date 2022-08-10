@@ -1,6 +1,20 @@
 import { DocumentReview } from "../../components/DocumentReview";
+import countryList from "react-select-country-list";
+import { useState , useMemo  } from "react";
+import Select  from "react-select";
 
 export default function ApplicantsNew() {
+
+	const [nationalityValue, setNationality] = useState('')
+	const [departingCountryValue, setDepartingCountry] = useState('')
+	const options = useMemo(() => countryList().getData(), [])
+	const updateNationality = nationality => {
+		setNationality(nationality)
+	  }
+	const updateDepartingCountry = departingCountry => {
+		setDepartingCountry(departingCountry)
+	}
+	  
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
@@ -12,8 +26,8 @@ export default function ApplicantsNew() {
 			sex: event.target.sex.value,
 			phoneNumber: event.target.phoneNumber.value,
 			university: event.target.university.value,
-			nationality: event.target.nationality.value,
-			departingCountry: event.target.departingCountry.value,
+			nationality: nationalityValue.label,
+			departingCountry: departingCountryValue.label,
 			applicant: {
 				applicationDate: event.target.applicationDate.value,
 				arrivalDate: event.target.arrivalDate.value,
@@ -26,9 +40,7 @@ export default function ApplicantsNew() {
 				rejectionReasons: event.target.rejectionReasons.value,
 			}
 		}
-		console.log(data)
 		const JSONdata = JSON.stringify(data)
-		console.log(JSONdata)
 		const endpoint = '/api/student'
 		const options = {
 			method: 'POST',
@@ -38,11 +50,10 @@ export default function ApplicantsNew() {
 			},
 			body: JSONdata,
 		}
-
+		console.log(JSONdata)
 		const response = await fetch(endpoint, options)
 
 		const result = await response.json()
-		console.log(result)
 		alert(`New student with name: - ${data.firstName} - created`)
 	}
 
@@ -175,19 +186,12 @@ export default function ApplicantsNew() {
 
 									{/* Nationality */}
 									<div className="flex flex-col gap-2">
-										<label htmlFor="country" className="block text-sm">
+										<label htmlFor="Nationality" className="block text-sm">
 											Nationality
 										</label>
-										<select
-											id="nationality"
-											name="nationality"
-											autoComplete="country-name"
-											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-										>
-											<option>United States</option>
-											<option>Canada</option>
-											<option>Mexico</option>
-										</select>
+										<Select
+										instanceId='Nationality'
+										options={options} value={nationalityValue} onChange={updateNationality} />
 									</div>
 								</div>
 								{/* Section */}
@@ -242,19 +246,12 @@ export default function ApplicantsNew() {
 
 									{/* Departing Country */}
 									<div className="flex flex-col gap-2">
-										<label htmlFor="country" className="block text-sm">
+										<label htmlFor="departingCountry" className="block text-sm">
 											Departing Country
 										</label>
-										<select
-											id="departingCountry"
-											name="departing-country"
-											autoComplete="departing-country"
-											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-										>
-											<option>United States</option>
-											<option>Canada</option>
-											<option>Mexico</option>
-										</select>
+										<Select
+										instanceId="departingCountry"
+										options={options} value={departingCountryValue} onChange={updateDepartingCountry} />
 									</div>
 								</div>
 
@@ -292,7 +289,7 @@ export default function ApplicantsNew() {
 											/>
 										</div>
 									</div>
-									
+
 									{/* Department */}
 									<div className="flex flex-col gap-2">
 										<label htmlFor="department" className="block text-sm">
@@ -408,7 +405,8 @@ export default function ApplicantsNew() {
 										<textarea
 											id="interviewNotes"
 											name="interview-notes"
-											rows={7}
+											rows={2}
+											required
 											className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
 											defaultValue={""}
 										/>
@@ -428,13 +426,14 @@ export default function ApplicantsNew() {
 										<textarea
 											id="rejectionReasons"
 											name="rejectio-reasons"
-											rows={7}
+											rows={2}
+											required
 											className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
 											defaultValue={""}
 										/>
 									</div>
 									<p className="mt-2 text-sm text-gray-500">
-										Brief description why candidate is rejected.
+										Brief description of why the candidate is rejected.
 									</p>
 								</div>
 							</div>
