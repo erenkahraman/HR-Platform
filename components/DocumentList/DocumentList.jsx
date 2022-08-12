@@ -6,6 +6,7 @@ import {
 	WorkOutline,
 } from "@mui/icons-material";
 
+
 const DocumentListContent = ({ title, pos, status }) => {
 	const Border = () => {
 		let isRounded;
