@@ -8,7 +8,7 @@ export default function ApplicantsList() {
 			<div className="w-full mb-12">
 				<div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
 					{/* Title Container */}
-					<div className="flex justify-between rounded-t mb-0 px-4 py-3 border-0 bg-white">
+					<div className="flex justify-between rounded-t mb-0 px-4 pt-3 border-0 bg-white">
 						<div className="flex flex-wrap items-center">
 							<div className="relative w-full px-3 max-w-full flex-grow flex-1 ">
 								<h3 className="font-semibold text-2xl">Applicant Arrival</h3>
@@ -31,40 +31,40 @@ export default function ApplicantsList() {
 					</div>
 					<div className="border-0 bg-white ">
 						<div >
-							<div className="flex flex-row justify-between font-semibold pl-4 pt-5 pb-6" >
+							<div className="flex flex-row justify-between font-semibold pl-4 pt-5 pb-10" >
 								{/* <h3 className="font-semibold text-2xl">Applicant Arrival</h3> */}
 
 								{/* Radio check */}
-								<div className="pr-3 pl-1.5">
+								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none bg-[#50d71e] read-only:bg-gray-100 p-2" />
-									<label className="text-sm pl-1">Rome Fumicino</label>
+									<label className="text-sm pl-1 ">Rome Fumicino</label>
 								</div>
-								<div className="pr-3 pl-1.5">
+								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none read-only:bg-gray-100 p-2" />
-									<label className="text-sm pl-1">Rome Ciampino</label>
+									<label className="text-sm pl-1 ">Rome Ciampino</label>
 								</div>
-								<div className="pr-3 pl-1.5">
+								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none read-only:bg-gray-100 p-2 " />
-									<label className="text-sm pl-1">Naples</label>
+									<label className="text-sm pl-1 ">Naples</label>
 								</div>
-								<div className="pr-3 pl-1.5">
+								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none read-only:bg-gray-100 p-2" />
 									<label className="text-sm pl-1">Bari</label>
 								</div>
-								{/* Search box */}
-								<form class="flex items-center">
-									<label for="simple-search" class="sr-only">Search</label>
+								{/* search */}
+								<form class="flex items-center ">
 									<div class="relative w-full">
 										<div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-											<svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+											<svg aria-hidden="true" class="w-5 h-5 text-white-500 dark:text-white-400" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
 										</div>
-										<input type="text" id="simple-search" class="bg-blue-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
+										<input type="text" id="simple-search" class="rounded border-none bg-[#0B3768]/75 px-10 text-white h-8 placeholder:italic placeholder:text-white/30 placeholder:text-sm" placeholder="Search..." required />
 									</div>
-									<button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-										<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+									<button type="submit" class="w-10 px-2 rounded border-none bg-blue-100 h-8 ml-1 mr-2 hover:bg-[#0B3768]/75 ">
+										<svg class="w-5 h-5" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
 										<span class="sr-only">Search</span>
 									</button>
 								</form>
+			
 							</div>
 						</div>
 					</div>
