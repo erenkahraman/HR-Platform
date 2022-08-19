@@ -50,7 +50,6 @@ export default function ApplicantsNew() {
 			},
 			body: JSONdata,
 		}
-		console.log(JSONdata)
 		const response = await fetch(endpoint, options)
 
 		const result = await response.json()
