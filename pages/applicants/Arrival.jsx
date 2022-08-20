@@ -1,6 +1,8 @@
 import { Add, Circle, MoreHoriz, SystemUpdateAlt, EditOutlined, DeleteOutlineOutlined } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
+import {MdDeleteOutline} from "react-icons/md" 
+import {AiOutlineEdit} from "react-icons/ai"
 
 export default function ApplicantsList() {
 	return (
@@ -135,44 +137,11 @@ export default function ApplicantsList() {
 										</div>
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left">
-										<a
-											href="#pablo"
-											className="text-blueGray-500 block py-1 px-3"
-										 // onclick="openDropdown(event,'table-dark-1-dropdown')"
-										>
-
-											<MoreHoriz />
-										</a>
-										<div
-											className="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-										//  id="table-dark-1-dropdown"
-										>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Another action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Something else here
-											</a>
-											<div className="h-0 my-2 border border-solid border-blueGray-100"></div>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Seprated link
-											</a>
+									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
+										{/* ICONS */}
+										<div className="flex flex-row ml-2">
+											<MdDeleteOutline />
+											<AiOutlineEdit />
 										</div>
 									</td>
 								</tr>
@@ -213,44 +182,11 @@ export default function ApplicantsList() {
 										</div>
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left">
-										<a
-											href="#pablo"
-											className="text-blueGray-500 block py-1 px-3"
-										// onclick="openDropdown(event,'table-dark-1-dropdown')"
-										>
-
-											<MoreHoriz />
-										</a>
-										<div
-											className="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-										// id="table-dark-1-dropdown"
-										>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Another action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Something else here
-											</a>
-											<div className="h-0 my-2 border border-solid border-blueGray-100"></div>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Seprated link
-											</a>
+									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
+										{/* ICONS */}
+										<div className="flex flex-row ml-2">
+											<MdDeleteOutline />
+											<AiOutlineEdit />
 										</div>
 									</td>
 								</tr>
@@ -291,44 +227,11 @@ export default function ApplicantsList() {
 										</div>
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left">
-										<a
-											href="#pablo"
-											className="text-blueGray-500 block py-1 px-3"
-										// onclick="openDropdown(event,'table-dark-1-dropdown')"
-										>
-
-											<MoreHoriz />
-										</a>
-										<div
-											className="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-										// id="table-dark-1-dropdown"
-										>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Another action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Something else here
-											</a>
-											<div className="h-0 my-2 border border-solid border-blueGray-100"></div>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Seprated link
-											</a>
+									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
+										{/* ICONS */}
+										<div className="flex flex-row ml-2">
+											<MdDeleteOutline />
+											<AiOutlineEdit />
 										</div>
 									</td>
 								</tr>
@@ -369,44 +272,11 @@ export default function ApplicantsList() {
 										</div>
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left">
-										<a
-											href="#pablo"
-											className="text-blueGray-500 block py-1 px-3"
-										// onclick="openDropdown(event,'table-dark-1-dropdown')"
-										>
-
-											<MoreHoriz />
-										</a>
-										<div
-											className="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-										// id="table-dark-1-dropdown"
-										>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Another action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Something else here
-											</a>
-											<div className="h-0 my-2 border border-solid border-blueGray-100"></div>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Seprated link
-											</a>
+									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
+										{/* ICONS */}
+										<div className="flex flex-row ml-2">
+											<MdDeleteOutline />
+											<AiOutlineEdit />
 										</div>
 									</td>
 								</tr>
@@ -454,44 +324,11 @@ export default function ApplicantsList() {
 										</div>
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left">
-										<a
-											href="#pablo"
-											className="text-blueGray-500 block py-1 px-3"
-										// onclick="openDropdown(event,'table-dark-1-dropdown')"
-										>
-
-											<MoreHoriz />
-										</a>
-										<div
-											className="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-										// id="table-dark-1-dropdown"
-										>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Another action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Something else here
-											</a>
-											<div className="h-0 my-2 border border-solid border-blueGray-100"></div>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Seprated link
-											</a>
+									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
+										{/* ICONS */}
+										<div className="flex flex-row ml-2">
+											<MdDeleteOutline />
+											<AiOutlineEdit />
 										</div>
 									</td>
 								</tr>
@@ -539,44 +376,11 @@ export default function ApplicantsList() {
 										</div>
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left">
-										<a
-											href="#pablo"
-											className="text-blueGray-500 block py-1 px-3"
-										// onclick="openDropdown(event,'table-dark-1-dropdown')"
-										>
-
-											<MoreHoriz />
-										</a>
-										<div
-											className="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-										// id="table-dark-1-dropdown"
-										>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Another action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Something else here
-											</a>
-											<div className="h-0 my-2 border border-solid border-blueGray-100"></div>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Seprated link
-											</a>
+									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
+									{/* ICONS */}
+									<div className="flex flex-row ml-2">
+											<MdDeleteOutline />
+											<AiOutlineEdit />
 										</div>
 									</td>
 								</tr>
