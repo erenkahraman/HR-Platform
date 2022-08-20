@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {MdDeleteOutline} from "react-icons/md" 
 import {AiOutlineEdit} from "react-icons/ai"
+import {RiAccountCircleLine} from "react-icons/ri"
 
 export default function ApplicantsList() {
 	return (
@@ -142,6 +143,7 @@ export default function ApplicantsList() {
 										<div className="flex flex-row ml-2">
 											<MdDeleteOutline />
 											<AiOutlineEdit />
+											<RiAccountCircleLine />
 										</div>
 									</td>
 								</tr>
@@ -187,6 +189,7 @@ export default function ApplicantsList() {
 										<div className="flex flex-row ml-2">
 											<MdDeleteOutline />
 											<AiOutlineEdit />
+											<RiAccountCircleLine />
 										</div>
 									</td>
 								</tr>
@@ -232,6 +235,7 @@ export default function ApplicantsList() {
 										<div className="flex flex-row ml-2">
 											<MdDeleteOutline />
 											<AiOutlineEdit />
+											<RiAccountCircleLine />
 										</div>
 									</td>
 								</tr>
@@ -277,6 +281,7 @@ export default function ApplicantsList() {
 										<div className="flex flex-row ml-2">
 											<MdDeleteOutline />
 											<AiOutlineEdit />
+											<RiAccountCircleLine />
 										</div>
 									</td>
 								</tr>
@@ -329,6 +334,7 @@ export default function ApplicantsList() {
 										<div className="flex flex-row ml-2">
 											<MdDeleteOutline />
 											<AiOutlineEdit />
+											<RiAccountCircleLine />
 										</div>
 									</td>
 								</tr>
@@ -381,6 +387,7 @@ export default function ApplicantsList() {
 									<div className="flex flex-row ml-2">
 											<MdDeleteOutline />
 											<AiOutlineEdit />
+											<RiAccountCircleLine />
 										</div>
 									</td>
 								</tr>
