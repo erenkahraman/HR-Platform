@@ -18,7 +18,7 @@ export default function ApplicantsList() {
 					<div className="flex justify-between rounded-t mb-0 px-4 pt-3 border-0 bg-white">
 						<div className="flex flex-wrap items-center">
 							<div className="relative w-full px-3 max-w-full flex-grow flex-1 ">
-								<h3 className="font-semibold text-2xl">Applicant Arrival</h3>
+								<h3 className="font-semibold text-2xl">Applicant Deprture</h3>
 							</div>
 						</div>
 						{/* <div className="flex gap-2">
@@ -105,7 +105,7 @@ export default function ApplicantsList() {
 							</thead>
 
 							{/* Table Body */}
-							<tbody className="divide-y">
+							<tbody  className="divide-y">
 								<tr>
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
 										{/* <Image

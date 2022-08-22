@@ -104,7 +104,7 @@ export default function ApplicantsList() {
 							<tbody className="divide-y">
 								<tr>
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
-										<span className=" font-bold"> Alessio Rocco </span>
+										<div className="font-bold"> Alessio Rocco </div>
 									</td>
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
