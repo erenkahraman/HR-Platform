@@ -87,13 +87,13 @@ export default function ApplicantsList() {
 										APPLICANT
 									</th>
 									<th className="px-6 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-										ARRIVAL DATE
+										DEPARTURE DATE
 									</th>
 									<th className="px-6 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-										ARRIVAL TIME
+										DEPARTURE TIME
 									</th>
 									<th className="px-6 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-										ARRIVAL CITY
+										DEPARTURE CITY
 									</th>
 									<th className="px-6 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
 										PICK UP BY
@@ -143,7 +143,7 @@ export default function ApplicantsList() {
 										</div>
 									</td>
 
-									<td contentEditable='true' className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex items-center gap-2">
 											{/* <Circle className="h-3 w-3 text-gray-400" /> */}
 											Francesco Di Marco
@@ -156,27 +156,27 @@ export default function ApplicantsList() {
 											<button className="px-0.75">
 												<MdDeleteOutline />
 											</button>
-											<Popup trigger={<button><AiOutlineEdit /></button>} position="left center">
+											<Popup  contentStyle={{background:"#0B3768", borderRadius:"0.25rem"}} trigger={<button><AiOutlineEdit /></button>}  position="left center">
 												<div className="flex flex-row">
 													<div >
-														<input  className="rounded border-none bg-[#0B3768]/75 text-white w-full" type="text" name="applicant" placeholder="Applicant name..." required />
+														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-6 text-sm p-4 mx-7" type="text" name="applicant" placeholder="Applicant name..." required />
 													</div>
 													<div>
-														<input  className="rounded border-none bg-[#0B3768] text-white w-full" type="date" name="arrivalDate" placeholder="Arrival Date..." required />
+														<input  className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7 " type="date" name="arrivalDate" placeholder="Arrival Date..." required />
 													</div>
 													<div>
-														<input  className="rounded border-none bg-[#0B3768] text-white w-full" type="time" name="arrivalTime" placeholder="Arrival Time..." required />
+														<input className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7" type="time" name="arrivalTime" placeholder="Arrival Time..." required />
 													</div>
 													<div>
-														<input  className="rounded border-none bg-[#0B3768] text-white w-full" type="text" name="arrivalCity" placeholder="Arrival City..." required />
+														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-5 text-sm p-4 mx-7" type="text" name="arrivalCity" placeholder="Arrival City..." required />
 													</div>
 													<div>
-														<input className="rounded border-none bg-[#0B3768] text-white w-full" type="text" name="pickUpBy" placeholder="Pick Up By..." required />
+														<input className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-5 text-sm p-4 mx-7" type="text" name="pickUpBy" placeholder="Pick Up By..." required />
 													</div>
 													<div>
-														<div className=" flex flex-row rounded border-none bg-[#0B3768] text-white w-full h-full">
-														<MdOutlineCancel />
-														<MdDone />
+														<div className="flex flex-row rounded border-none bg-[#0B3768] h-full text-white align-middle px-4 text-sm p-4 mx-4 ">
+														<MdOutlineCancel className=""/>
+														<MdDone  />
 														</div>
 													</div>
 												</div>
