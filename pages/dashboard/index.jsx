@@ -2,12 +2,14 @@ import {
 	ArrowForward,
 	NotificationAddOutlined,
 	UploadFileOutlined,
+	AnnouncementOutlined
 } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
 import dashboardImage from "../../public/dashboardImage.png";
 import { Reminder } from "../../components/Reminder";
 import Feed from "../../components/Feed/Feed";
+import FeedSchedule from "../../components/Feed/FeedSchedule"
 import Upcoming from "../../components/Upcoming/Upcoming";
 
 //*Comment
@@ -32,10 +34,12 @@ export default function Dashboard() {
 								notifications.
 							</a>
 						</p>
+						
 					</div>
-
-					{/* Button Container*/}
-					<div className="flex gap-3">
+				</div>
+			</div>
+			{/* Button Container*/}
+			<div className="flex gap-3">
 						{/* Add Post Button */}
 						<a
 							href="./"
@@ -66,16 +70,31 @@ export default function Dashboard() {
 								</p>
 							</div>
 						</a>
+						{/* Add Notification Button */}
+						<a
+							href="./"
+							className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3"
+						>
+							<div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
+								<AnnouncementOutlined />
+							</div>
+							<div className="buttonText mb-1">
+								Send a notification
+								<p className="text-xs">
+									Send important messages to colleagues
+								</p>
+							</div>
+						</a>
+
 					</div>
-				</div>
-			</div>
 
 			{/* Bottom */}
 			<div className="flex flex-[3] p-3 gap-3">
 				{/* Left */}
+			<div className="left-container flex flex-[1.5] flex-col gap-2">
 				<div className="flex flex-[1.5] flex-col gap-2">
 					<div className="flex items-center justify-between">
-						<div className="text-xl font-semibold">What&apos;s New</div>
+						<div className="text-xl font-semibold">What's New</div>
 						<a
 							href="./"
 							className="viewAll flex items-center justify-center text-[#2F80ED]"
@@ -88,12 +107,31 @@ export default function Dashboard() {
 						</a>
 					</div>
 					{/* What's New Content */}
-					<div className="flex flex-col gap-2 divide-y bg-white h-full rounded-md border-2">
-						<Feed />
+					<div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
 						<Feed />
 						<Feed />
 						<Feed />
 					</div>
+				{/* Weekly Schedule */}
+				</div>
+				<div className="flex flex-[1.5] flex-col gap-2">
+					<div className="flex items-center justify-between">
+						<div className="text-xl font-semibold">Weekly Schedule</div>
+						<a
+							href="./"
+							className="viewAll flex items-center justify-center text-[#2F80ED]"
+						>
+							<div>
+								{" "}
+							</div>
+						</a>
+					</div>
+					{/* Weekly Schedule Content */}
+					<div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+						<FeedSchedule />
+					</div>
+					
+			</div>
 				</div>
 
 				{/* Right */}
@@ -200,6 +238,52 @@ export default function Dashboard() {
 								department="ICT"
 								status="Arriving"
 								time="10 September 2022"
+							/>
+						</div>
+					</div>
+
+					{/* Birthday */}
+					<div className="flex flex-col gap-2">
+						{/* Daily Reminder Title*/}
+						<div className="flex items-center justify-between">
+							<div className="text-xl font-semibold">Upcoming Birthdays 🥳🍰🎉</div>
+							<a
+								href="./"
+								className="flex items-center justify-center text-[#2F80ED]"
+							>
+								<div>View All (6)</div>
+								<div>
+									{" "}
+									<ArrowForward className="text-md" />
+								</div>
+							</a>
+						</div>
+
+						{/* Birthday Content */}
+						<div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
+							<Reminder
+								color="text-purple-500"
+								title="Lia Ciobanu"
+								category="ICT"
+								time="21 august 2022"
+							/>
+							<Reminder
+								color="text-purple-500"
+								title="Rimma Cechir"
+								category="ICT"
+								time="25 august 2022"
+							/>
+							<Reminder
+								color="text-purple-500"
+								title="Person"
+								category="Business Analyst"
+								time="1 september 2022"
+							/>
+							<Reminder
+								color="text-purple-500"
+								title="Person"
+								category="Human Resurces"
+								time="25 september 2022"
 							/>
 						</div>
 					</div>
