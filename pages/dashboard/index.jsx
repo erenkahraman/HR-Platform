@@ -46,7 +46,7 @@ export default function Dashboard() {
 			{/* Button Container*/}
 			<div className="flex gap-3">
 				{/* Add Post Button */}
-				<Popup contentStyle={{background:"#0B3768", borderRadius:"0.25rem"}} trigger={<button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
+				<Popup contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }} trigger={<button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
 					<div className="buttonImage text-[#2F80ED] bg-sky-100 flex items-center justify-center h-12 w-12 rounded-full">
 						<UploadFileOutlined />
 					</div>
@@ -70,10 +70,10 @@ export default function Dashboard() {
 						{/* INFORMATION BOX */}
 						<div className="flex flex-col">
 							<div className="pb-2 pt-6">
-							<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the subject..." required />
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the subject..." required />
 							</div>
 							<div>
-							<textarea class="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the information..." required />
+								<textarea class="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the information..." required />
 							</div>
 						</div>
 
@@ -82,19 +82,15 @@ export default function Dashboard() {
 							<input type='date' class="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 " />
 							<div className="pl-20">
 								<button className="pr-2 "> <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" /> </button>
-							<button> <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]"/> </button>
+								<button> <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" /> </button>
 							</div>
 						</div>
 					</div>
 
 				</Popup>
 
-
 				{/* Add Reminder Button */}
-				<a
-					href="./"
-					className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3"
-				>
+				<Popup contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }} trigger={<button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
 					<div className="buttonImage text-[#2f7e1b] bg-green-100 flex items-center justify-center h-12 w-12 rounded-full">
 						<NotificationAddOutlined />
 					</div>
@@ -104,12 +100,40 @@ export default function Dashboard() {
 							Start adding your reminder for daily reminder
 						</p>
 					</div>
-				</a>
+				</button>} position="bottom" >
+					{/* NEW POST */}
+					<div className="m-2 p-4">
+						<div>
+							<h6 className="font-semibold text-xl text-white pt-2 pb-4">New Remainder</h6>
+							<div className="flex flex-row mx-2 mt-2 mb-4">
+								<h2 className="font-semibold text-l text-white ">By: </h2>
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Type your name..." required />
+							</div>
+						</div>
+
+						{/* INFORMATION BOX */}
+						<div className="flex flex-col">
+							<div className="pb-2 pt-6">
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the subject..." required />
+							</div>
+							<div>
+								<textarea class="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the information..." required />
+							</div>
+						</div>
+
+						{/* BUTTOM PART */}
+						<div className="flex flex-row pt-20">
+							<input type='date' class="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 " />
+							<div className="pl-20">
+								<button className="pr-2 "> <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" /> </button>
+								<button> <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" /> </button>
+							</div>
+						</div>
+					</div>
+				</Popup>
+
 				{/* Add Notification Button */}
-				<a
-					href="./"
-					className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3"
-				>
+				<Popup contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }} trigger={<button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
 					<div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
 						<AnnouncementOutlined />
 					</div>
@@ -119,7 +143,37 @@ export default function Dashboard() {
 							Send important messages to colleagues
 						</p>
 					</div>
-				</a>
+				</button>} position="bottom" >
+					{/* NEW POST */}
+					<div className="m-2 p-4">
+						<div>
+							<h6 className="font-semibold text-xl text-white pt-2 pb-4">Send a notifcation</h6>
+							<div className="flex flex-row mx-2 mt-2 mb-4">
+								<h2 className="font-semibold text-l text-white ">By: </h2>
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Type your name..." required />
+							</div>
+						</div>
+
+						{/* INFORMATION BOX */}
+						<div className="flex flex-col">
+							<div className="pb-2 pt-6">
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the subject..." required />
+							</div>
+							<div>
+								<textarea class="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the information..." required />
+							</div>
+						</div>
+
+						{/* BUTTOM PART */}
+						<div className="flex flex-row pt-20">
+							<input type='date' class="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 " />
+							<div className="pl-20">
+								<button className="pr-2 "> <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" /> </button>
+								<button> <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" /> </button>
+							</div>
+						</div>
+					</div>
+				</Popup>
 
 			</div>
 
