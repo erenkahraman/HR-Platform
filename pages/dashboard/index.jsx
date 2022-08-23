@@ -15,7 +15,7 @@ import FeedSchedule from "../../components/Feed/FeedSchedule"
 import Upcoming from "../../components/Upcoming/Upcoming";
 import Popup from "reactjs-popup"
 
-// git 
+
 export default function Dashboard() {
 
 
