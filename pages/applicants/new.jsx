@@ -504,3 +504,4 @@ export default function ApplicantsNew() {
 		</section>
 	);
 }
+

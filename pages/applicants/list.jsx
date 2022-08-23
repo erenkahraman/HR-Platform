@@ -2,24 +2,9 @@ import { Add, Circle, MoreHoriz, SystemUpdateAlt, HowToReg} from "@mui/icons-mat
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { server } from "../../next.config";
 
-export default function ApplicantsList() {
-
-    const [data, setData] = useState([])
-    const [isloading, setLoading] = useState(true)
-
-    useEffect(() => {
-        setLoading(true)
-        fetch('/api/applicant')
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data)
-                setLoading(false)
-            })
-    }, [])
-    if (isloading) return <p>Loading...</p>
-    if (!data) return <p>No profile data</p>
-
+export default function ApplicantsList({students}) {
     // set progress bar
     let setProgressBar = progress =>{
         switch(progress){
@@ -101,8 +86,8 @@ export default function ApplicantsList() {
 
                             {/* Table Body */}
                             <tbody className="divide-y">
-                                {data.map(student =>
-                                    <tr key={student.id}>
+                                {students.map(student =>
+                                    <tr key={student._id}>
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                                             <span className="ml-3 font-bold"> {student.firstName} {student.lastName} </span>
                                         </td>
@@ -143,7 +128,7 @@ export default function ApplicantsList() {
                                             <a
                                                 href="#pablo"
                                                 className="text-blueGray-500 block py-1 px-3"
-                                                onClick={addToInterns(student)}
+                                               // onClick={addToInterns(student)}
                                             >
                                             <HowToReg />
                                             </a>
@@ -158,4 +143,17 @@ export default function ApplicantsList() {
             </div>
         </section>
     );
+}
+
+
+
+export async function getStaticProps(){
+
+    const res = await fetch(`${server}/api/applicant`);
+    const students = await res.json();
+    return {
+        props: {
+            students
+        }
+    }
 }
