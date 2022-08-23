@@ -54,6 +54,7 @@ export default function ApplicantsNew() {
 		const response = await fetch(endpoint, options)
 
 		const result = await response.json()
+		console.log(result)
 		alert(`New student with name: - ${data.firstName} - created`)
 	}
 
