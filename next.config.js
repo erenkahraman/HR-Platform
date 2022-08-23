@@ -4,6 +4,9 @@ const nextConfig = {
 	swcMinify: true,
 };
 
+const dev = process.env.NODE_ENV !== 'production';
+const server = dev ? 'http://localhost:3000' : 'https://hr-platform-extramus.vercel.app';
+
 module.exports = {
 	nextConfig,
 	images: {
@@ -16,4 +19,5 @@ module.exports = {
 		// Important: return the modified config
 		return config
 	  },
+	server,
 };
