@@ -185,7 +185,7 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">What's New</div>
 							<a
-								href="./"
+								href="./news"
 								className="viewAll flex items-center justify-center text-[#2F80ED]"
 							>
 								<div>View All (18)</div>
