@@ -2,7 +2,9 @@ import {
 	ArrowForward,
 	NotificationAddOutlined,
 	UploadFileOutlined,
-	AnnouncementOutlined
+	AnnouncementOutlined,
+	Cancel,
+	Verified
 } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
@@ -11,10 +13,13 @@ import { Reminder } from "../../components/Reminder";
 import Feed from "../../components/Feed/Feed";
 import FeedSchedule from "../../components/Feed/FeedSchedule"
 import Upcoming from "../../components/Upcoming/Upcoming";
+import Popup from "reactjs-popup"
 
-//*Comment
-//!Comment2
+//fsdfa
+
 export default function Dashboard() {
+
+
 	return (
 		<div className="flex flex-col w-full">
 			{/* Top */}
@@ -34,104 +39,188 @@ export default function Dashboard() {
 								notifications.
 							</a>
 						</p>
-						
+
 					</div>
-				</div>
+				</div>git
 			</div>
 			{/* Button Container*/}
 			<div className="flex gap-3">
-						{/* Add Post Button */}
-						<a
-							href="./"
-							className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3"
-						>
-							<div className="buttonImage text-[#2F80ED] bg-sky-100 flex items-center justify-center h-12 w-12 rounded-full">
-								<UploadFileOutlined />
-							</div>
-							<div className="buttonText mb-1">
-								Add New Post
-								<p className="text-xs">
-									Start adding your post to inform another employee
-								</p>
-							</div>
-						</a>
-						{/* Add Reminder Button */}
-						<a
-							href="./"
-							className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3"
-						>
-							<div className="buttonImage text-[#2f7e1b] bg-green-100 flex items-center justify-center h-12 w-12 rounded-full">
-								<NotificationAddOutlined />
-							</div>
-							<div className="buttonText mb-1">
-								Add New Reminder
-								<p className="text-xs">
-									Start adding your reminder for daily reminder
-								</p>
-							</div>
-						</a>
-						{/* Add Notification Button */}
-						<a
-							href="./"
-							className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3"
-						>
-							<div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
-								<AnnouncementOutlined />
-							</div>
-							<div className="buttonText mb-1">
-								Send a notification
-								<p className="text-xs">
-									Send important messages to colleagues
-								</p>
-							</div>
-						</a>
-
+				{/* Add Post Button */}
+				<Popup contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }} trigger={<button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
+					<div className="buttonImage text-[#2F80ED] bg-sky-100 flex items-center justify-center h-12 w-12 rounded-full">
+						<UploadFileOutlined />
 					</div>
+					<div className="buttonText mb-1">
+						Add New Post
+						<p className="text-xs">
+							Start adding your post to inform another employee
+						</p>
+					</div>
+				</button>} position="bottom" >
+					{/* NEW POST */}
+					<div className="m-2 p-4">
+						<div>
+							<h6 className="font-semibold text-xl text-white pt-2 pb-4">New Post</h6>
+							<div className="flex flex-row mx-2 mt-2 mb-4">
+								<h2 className="font-semibold text-l text-white ">By: </h2>
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Type your name..." required />
+							</div>
+						</div>
+
+						{/* INFORMATION BOX */}
+						<div className="flex flex-col">
+							<div className="pb-2 pt-6">
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the subject..." required />
+							</div>
+							<div>
+								<textarea class="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the information..." required />
+							</div>
+						</div>
+
+						{/* BUTTOM PART */}
+						<div className="flex flex-row pt-20">
+							<input type='date' class="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 " />
+							<div className="pl-20">
+								<button className="pr-2 "> <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" /> </button>
+								<button> <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" /> </button>
+							</div>
+						</div>
+					</div>
+
+				</Popup>
+
+				{/* Add Reminder Button */}
+				<Popup contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }} trigger={<button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
+					<div className="buttonImage text-[#2f7e1b] bg-green-100 flex items-center justify-center h-12 w-12 rounded-full">
+						<NotificationAddOutlined />
+					</div>
+					<div className="buttonText mb-1">
+						Add New Reminder
+						<p className="text-xs">
+							Start adding your reminder for daily reminder
+						</p>
+					</div>
+				</button>} position="bottom" >
+					{/* NEW POST */}
+					<div className="m-2 p-4">
+						<div>
+							<h6 className="font-semibold text-xl text-white pt-2 pb-4">New Remainder</h6>
+							<div className="flex flex-row mx-2 mt-2 mb-4">
+								<h2 className="font-semibold text-l text-white ">By: </h2>
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Type your name..." required />
+							</div>
+						</div>
+
+						{/* INFORMATION BOX */}
+						<div className="flex flex-col">
+							<div className="pb-2 pt-6">
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the subject..." required />
+							</div>
+							<div>
+								<textarea class="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the information..." required />
+							</div>
+						</div>
+
+						{/* BUTTOM PART */}
+						<div className="flex flex-row pt-20">
+							<input type='date' class="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 " />
+							<div className="pl-20">
+								<button className="pr-2 "> <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" /> </button>
+								<button> <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" /> </button>
+							</div>
+						</div>
+					</div>
+				</Popup>
+
+				{/* Add Notification Button */}
+				<Popup contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }} trigger={<button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
+					<div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
+						<AnnouncementOutlined />
+					</div>
+					<div className="buttonText mb-1">
+						Send a notification
+						<p className="text-xs">
+							Send important messages to colleagues
+						</p>
+					</div>
+				</button>} position="bottom" >
+					{/* NEW POST */}
+					<div className="m-2 p-4">
+						<div>
+							<h6 className="font-semibold text-xl text-white pt-2 pb-4">Send a notifcation</h6>
+							<div className="flex flex-row mx-2 mt-2 mb-4">
+								<h2 className="font-semibold text-l text-white ">By: </h2>
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Type your name..." required />
+							</div>
+						</div>
+
+						{/* INFORMATION BOX */}
+						<div className="flex flex-col">
+							<div className="pb-2 pt-6">
+								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the subject..." required />
+							</div>
+							<div>
+								<textarea class="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm" placeholder="Type the information..." required />
+							</div>
+						</div>
+
+						{/* BUTTOM PART */}
+						<div className="flex flex-row pt-20">
+							<input type='date' class="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 " />
+							<div className="pl-20">
+								<button className="pr-2 "> <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" /> </button>
+								<button> <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" /> </button>
+							</div>
+						</div>
+					</div>
+				</Popup>
+
+			</div>
 
 			{/* Bottom */}
 			<div className="flex flex-[3] p-3 gap-3">
 				{/* Left */}
-			<div className="left-container flex flex-[1.5] flex-col gap-2">
-				<div className="flex flex-[1.5] flex-col gap-2">
-					<div className="flex items-center justify-between">
-						<div className="text-xl font-semibold">What's New</div>
-						<a
-							href="./"
-							className="viewAll flex items-center justify-center text-[#2F80ED]"
-						>
-							<div>View All (18)</div>
-							<div>
-								{" "}
-								<ArrowForward className="text-md" />
-							</div>
-						</a>
+				<div className="left-container flex flex-[1.5] flex-col gap-2">
+					<div className="flex flex-[1.5] flex-col gap-2">
+						<div className="flex items-center justify-between">
+							<div className="text-xl font-semibold">What's New</div>
+							<a
+								href="./news"
+								className="viewAll flex items-center justify-center text-[#2F80ED]"
+							>
+								<div>View All (18)</div>
+								<div>
+									{" "}
+									<ArrowForward className="text-md" />
+								</div>
+							</a>
+						</div>
+						{/* What's New Content */}
+						<div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+							<Feed />
+							<Feed />
+							<Feed />
+						</div>
+						{/* Weekly Schedule */}
 					</div>
-					{/* What's New Content */}
-					<div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-						<Feed />
-						<Feed />
-						<Feed />
+					<div className="flex flex-[1.5] flex-col gap-2">
+						<div className="flex items-center justify-between">
+							<div className="text-xl font-semibold">Weekly Schedule</div>
+							<a
+								href="./"
+								className="viewAll flex items-center justify-center text-[#2F80ED]"
+							>
+								<div>
+									{" "}
+								</div>
+							</a>
+						</div>
+						{/* Weekly Schedule Content */}
+						<div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+							<FeedSchedule />
+						</div>
+
 					</div>
-				{/* Weekly Schedule */}
-				</div>
-				<div className="flex flex-[1.5] flex-col gap-2">
-					<div className="flex items-center justify-between">
-						<div className="text-xl font-semibold">Weekly Schedule</div>
-						<a
-							href="./"
-							className="viewAll flex items-center justify-center text-[#2F80ED]"
-						>
-							<div>
-								{" "}
-							</div>
-						</a>
-					</div>
-					{/* Weekly Schedule Content */}
-					<div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-						<FeedSchedule />
-					</div>
-					
-			</div>
 				</div>
 
 				{/* Right */}
@@ -290,5 +379,6 @@ export default function Dashboard() {
 				</div>
 			</div>
 		</div>
+
 	);
 }
