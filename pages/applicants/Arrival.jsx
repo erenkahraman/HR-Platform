@@ -40,19 +40,19 @@ export default function ApplicantsList() {
 								{/* Radio check */}
 								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none bg-[#50d71e] read-only:bg-gray-100 p-2" />
-									<label className="text-sm pl-1 ">Rome Fumicino</label>
+									<label className="text-sm pl-1 ">Terranova da Sibari</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none read-only:bg-gray-100 p-2" />
-									<label className="text-sm pl-1 ">Rome Ciampino</label>
+									<label className="text-sm pl-1 ">Bivo Cantinella</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none read-only:bg-gray-100 p-2 " />
-									<label className="text-sm pl-1 ">Naples</label>
+									<label className="text-sm pl-1 ">Sibari</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none read-only:bg-gray-100 p-2" />
-									<label className="text-sm pl-1">Bari</label>
+									<label className="text-sm pl-1">Spezzano Albanese Terme</label>
 								</div>
 								{/* search */}
 								<form className="flex items-center ">
@@ -117,7 +117,7 @@ export default function ApplicantsList() {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Rome Ciampino</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">60%</span>
 												<div className="relative w-full">
@@ -162,7 +162,7 @@ export default function ApplicantsList() {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Naples</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">20%</span>
 												<div className="relative w-full">
@@ -208,7 +208,7 @@ export default function ApplicantsList() {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Bari</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">20%</span>
 												<div className="relative w-full">
@@ -254,7 +254,7 @@ export default function ApplicantsList() {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Rome Fumicino</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">40%</span>
 												<div className="relative w-full">
@@ -307,7 +307,7 @@ export default function ApplicantsList() {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Rome Ciampino</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">100%</span>
 												<div className="relative w-full">
@@ -360,7 +360,7 @@ export default function ApplicantsList() {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Naples</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">80%</span>
 												<div className="relative w-full">

@@ -13,6 +13,8 @@ import {
 	List,
 } from "@mui/icons-material";
 
+import CoPresentIcon from '@mui/icons-material/CoPresent';
+
 export default function Sidebar() {
 	const router = useRouter();
 
@@ -52,9 +54,9 @@ export default function Sidebar() {
 			isOn: false,
 		},
 		{
-			title: "Profile",
-			href: "/interns/InternsProfile",
-			icon: <GroupOutlined />,
+			title: "Attendance",
+			href: "/interns/attendance",
+			icon: <CoPresentIcon />,
 			isOn: false,
 		},
 		{ title: "END INTERNSHIP", isSeperator: true },
@@ -69,6 +71,12 @@ export default function Sidebar() {
 			title: "Departure",
 			href: "/EndInternship/EndDeparture",
 			icon: <FlightTakeoffOutlined />,
+			isOn: false,
+		},
+		{
+			title: "Profile",
+			href: "/interns/InternsProfile",
+			icon: <GroupOutlined />,
 			isOn: false,
 		},
 	];
