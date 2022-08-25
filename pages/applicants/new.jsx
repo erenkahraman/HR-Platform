@@ -2,6 +2,8 @@ import { DocumentReview } from "../../components/DocumentReview";
 import countryList from "react-select-country-list";
 import { useState , useMemo  } from "react";
 import Select  from "react-select";
+import Popup from "reactjs-popup";
+import {Cancel, Verified } from "@mui/icons-material"
 
 export default function ApplicantsNew() {
 
@@ -38,6 +40,8 @@ export default function ApplicantsNew() {
 				hrInterviewDate: event.target.hrInterviewDate.value,
 				interviewNotes: event.target.interviewNotes.value,
 				rejectionReasons: event.target.rejectionReasons.value,
+				ceoInterview:event.target.ceoInterview.value,
+				status:event.target.status.value,
 			}
 		}
 		const JSONdata = JSON.stringify(data)
@@ -102,8 +106,7 @@ export default function ApplicantsNew() {
 									</div>
 
 									{/* First Name and Last Name */}
-									<div className="flex gap-4">
-										<div className="flex flex-col gap-2">
+									<div className="flex flex-col gap-2">
 											<label htmlFor="first-name" className="block text-sm">
 												First name
 											</label>
@@ -115,9 +118,8 @@ export default function ApplicantsNew() {
 												autoComplete="given-name"
 												className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 											/>
-										</div>
-
-										<div className="flex flex-col gap-2">
+									</div>
+									<div className="flex flex-col gap-2">
 											<label htmlFor="last-name" className="block text-sm">
 												Last name
 											</label>
@@ -129,7 +131,6 @@ export default function ApplicantsNew() {
 												autoComplete="family-name"
 												className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 											/>
-										</div>
 									</div>
 
 									{/* Sex */}
@@ -180,7 +181,7 @@ export default function ApplicantsNew() {
 											name="date-of-birth"
 											required
 											id="dateOfBirth"
-											className="focus:ring-blue-500 focus:border-blue-500 block w-2/3 shadow-sm sm:text-sm border-gray-300 rounded-md"
+											className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 										/>
 									</div>
 
@@ -289,8 +290,25 @@ export default function ApplicantsNew() {
 											/>
 										</div>
 									</div>
+									<div className="flex gap-4">
+										{/* CEO Interview Date */}
+										<div className="flex flex-[1] flex-col gap-2">
+											<label htmlFor="ceo-interview" className="block text-sm">
+												CEO Interview Date
+											</label>
+											<input
+												type="date"
+												name="ceo-interview"
+												id="ceoInterview"
+												required
+												className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+											/>
+										</div>
+									</div>
+									
 
 									{/* Department */}
+									<div className="flex gap-4">
 									<div className="flex flex-col gap-2">
 										<label htmlFor="department" className="block text-sm">
 											Department
@@ -299,12 +317,54 @@ export default function ApplicantsNew() {
 											id="department"
 											name="department"
 											autoComplete="department"
-											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+											className="block w-48 py-2 px-8 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
 										>
 											<option>Human Resources</option>
 											<option>ICT</option>
 											<option>Business Analyst</option>
 										</select>
+									</div>
+									{/* Button new department */}
+									
+									<Popup contentStyle={{background:"#0B3768", borderRadius:"1rem"}}
+									trigger={<div className="flex flex-col gap-2">
+									<button
+									type="submit"
+									className="w-48 mt-7 inline-flex justify-center py-2 px-1 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+								>
+								     Add New Department
+								</button>
+									</div>} position="bottom">
+									<div className="m-2 p-4">
+	<div>
+		<h6 className="font-semibold text-xl text-white pt-2 pb-4 pl-3">Add New Department</h6>
+		<div className="flex flex-row mx-2 mt-2 mb-4">
+			<input type="text" class="rounded border-none bg-[#fafbfc] text-black h-10 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new department" required />
+		</div>
+	</div>
+	
+
+	{/* BUTTOM PART */}
+	<div className="flex p-4 gap-4">
+								<button
+									type="submit"
+									className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+								>
+									Cancel
+								</button>
+								<button
+									type="submit"
+									className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+								>
+									Save
+								</button>
+							</div>
+	</div>
+
+	
+
+	
+									</Popup>
 									</div>
 
 									{/* Position */}
@@ -316,7 +376,7 @@ export default function ApplicantsNew() {
 											id="position"
 											name="position"
 											autoComplete="Position"
-											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+											className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
 										>
 											<option>Backend Developer</option>
 											<option>DevOps</option>
@@ -355,14 +415,15 @@ export default function ApplicantsNew() {
 									</div>
 
 									{/* Application Progress */}
-									<div className="flex flex-col gap-2">
+									<div className="flex gap-4">
+										<div className="flex flex-[1] flex-col gap-2">
 										<label htmlFor="Progress" className="block text-sm">
 											Progress
 										</label>
 										<select
 											id="progress"
 											name="Progress"
-											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+											className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
 										>
 											<option>New Candidate</option>
 											<option>HR Interview</option>
@@ -370,25 +431,29 @@ export default function ApplicantsNew() {
 											<option>Completing Documents</option>
 											<option>Completed</option>
 										</select>
+										</div>
+									{/* Application Status */}
+										<div className="flex flex-[1] flex-col gap-2">
+											<label htmlFor="status" className="block text-sm">
+												Status
+											</label>
+											<select
+												name="status"
+												id="status"
+												className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+										    >
+												<option>Accepted</option>
+											    <option>On Progress</option>
+											    <option>No Answer</option>
+											    <option>On Board</option>
+											    <option>Rejected</option>
+
+											</select>
+										</div>
+
 									</div>
 
-									{/* Application Status 
-									<div className="flex flex-col gap-2">
-										<label htmlFor="status" className="block text-sm">
-											Status
-										</label>
-										<select
-											id="status"
-											name="status"
-											className="block w-2/3 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-										>
-											<option>On Process</option>
-											<option>Accepted</option>
-											<option>Rejected</option>
-											<option>No Answer</option>
-											<option>Intership Finished</option>
-										</select>
-									</div>*/}
+									
 								</div>
 							</div>
 
@@ -409,7 +474,9 @@ export default function ApplicantsNew() {
 											required
 											className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
 											defaultValue={""}
+											
 										/>
+										
 									</div>
 									<p className="mt-2 text-sm text-gray-500">
 										Notes for or during the interview.
@@ -467,10 +534,35 @@ export default function ApplicantsNew() {
 										Application Documents
 									</div>
 									<div className="flex gap-6 justify-start">
-										<DocumentReview title="Curiculum Vitae" />
+										<div className="flex w-48 flex-col gap-2"> 
+											<label htmlFor="cv" className="block text-sm">
+												Curriculum Vitae
+											</label>
+											<select
+												name="cv"
+												id="cv"
+												className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+										    >
+												<option>Have</option>
+											    <option>Don't have</option>
+											</select>
+										 </div> 
+
 										<DocumentReview title="Learning Agreement" />
-										<DocumentReview title="Invitation Letter" />
-										<DocumentReview title="Accommodation Letter" />
+										<DocumentReview title="Acceptance Letter" />
+										<div className="flex w-48 flex-col gap-2"> 
+											<label htmlFor="cv" className="block text-sm">
+												Accommodation Letter
+											</label>
+											<select
+												name="cv"
+												id="cv"
+												className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+										    >
+												<option>Send</option>
+											    <option>Don't send</option>
+											</select>
+										 </div> 
 									</div>
 									<div className="flex gap-6 justify-start">
 										<DocumentReview title="Arrival Tickets" />
@@ -479,7 +571,33 @@ export default function ApplicantsNew() {
 										<DocumentReview title="Identification" />
 									</div>
 									<div className="flex gap-6 justify-start">
-										<DocumentReview title="PCR Result" />
+										<DocumentReview title="Grant" />
+										<div className="flex w-48 flex-col gap-2"> 
+											<label htmlFor="cv" className="block text-sm">
+												Extramus email
+											</label>
+											<select
+												name="cv"
+												id="cv"
+												className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+										    >
+												<option>Do it</option>
+											    <option>It's done </option>
+											</select>
+										 </div> 
+										<div className="flex w-48 flex-col gap-2"> 
+											<label htmlFor="cv" className="block text-sm">
+												Extramus Folder
+											</label>
+											<select
+												name="cv"
+												id="cv"
+												className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+										    >
+												<option>Do it</option>
+											    <option>It's done</option>
+											</select>
+										 </div> 
 									</div>
 								</div>
 							</div>
