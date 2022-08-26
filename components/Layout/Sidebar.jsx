@@ -55,7 +55,7 @@ export default function Sidebar() {
 		},
 		{
 			title: "Attendance",
-			href: "/interns/attendance",
+			href: "/interns/attendence",
 			icon: <CoPresentIcon />,
 			isOn: false,
 		},
@@ -75,7 +75,7 @@ export default function Sidebar() {
 		},
 		{
 			title: "Profile",
-			href: "/interns/InternsProfile",
+			href: "/EndInternship/InternsProfile",
 			icon: <GroupOutlined />,
 			isOn: false,
 		},
