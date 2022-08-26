@@ -335,11 +335,11 @@ export default function ApplicantsNew() {
 								     Add New Department
 								</button>
 									</div>} position="bottom">
-									<div className="m-2 p-4">
+									<div className="m-1 p-2 w-64 px-0">
 	<div>
 		<h6 className="font-semibold text-xl text-white pt-2 pb-4 pl-3">Add New Department</h6>
 		<div className="flex flex-row mx-2 mt-2 mb-4">
-			<input type="text" class="rounded border-none bg-[#fafbfc] text-black h-10 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new department" required />
+			<input type="text" class="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new department" required />
 		</div>
 	</div>
 	
