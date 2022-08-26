@@ -11,6 +11,7 @@ const attendence = () => {
             <div className="flex flex-wrap items-center">
               <div className="relative w-full px-3 max-w-full flex-grow flex-1 ">
                 <h3 className="font-semibold text-2xl">Interns Attendence</h3>
+                <button>Month attendance</button>
               </div>
             </div>
           </div>
