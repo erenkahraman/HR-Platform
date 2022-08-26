@@ -50,10 +50,10 @@ export default function ApplicantsNew() {
 			},
 			body: JSONdata,
 		}
-		console.log(JSONdata)
 		const response = await fetch(endpoint, options)
 
 		const result = await response.json()
+		console.log(result)
 		alert(`New student with name: - ${data.firstName} - created`)
 	}
 
@@ -505,3 +505,4 @@ export default function ApplicantsNew() {
 		</section>
 	);
 }
+
