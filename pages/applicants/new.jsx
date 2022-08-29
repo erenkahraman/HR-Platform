@@ -1,24 +1,28 @@
 import { DocumentReview } from "../../components/DocumentReview";
 import countryList from "react-select-country-list";
-import { useState , useMemo  } from "react";
-import Select  from "react-select";
+import { useState, useMemo } from "react";
+import { useRouter} from 'next/router';
+import Select from "react-select";
+import mongoose from "mongoose";
 
 export default function ApplicantsNew() {
 
-	const [nationalityValue, setNationality] = useState('')
-	const [departingCountryValue, setDepartingCountry] = useState('')
-	const options = useMemo(() => countryList().getData(), [])
+	const router = useRouter();
+	const [nationalityValue, setNationality] = useState('');
+	const [departingCountryValue, setDepartingCountry] = useState('');
+	const options = useMemo(() => countryList().getData(), []);
 	const updateNationality = nationality => {
-		setNationality(nationality)
-	  }
-	const updateDepartingCountry = departingCountry => {
-		setDepartingCountry(departingCountry)
+		setNationality(nationality);
 	}
-	  
+	const updateDepartingCountry = departingCountry => {
+		setDepartingCountry(departingCountry);
+	}
+
 
 	const handleSubmit = async (event) => {
-		event.preventDefault()
-		const data = {
+		event.preventDefault();
+		const id = new mongoose.Types.ObjectId()
+		const student = {
 			firstName: event.target.firstName.value,
 			lastName: event.target.lastName.value,
 			email: event.target.email.value,
@@ -28,33 +32,43 @@ export default function ApplicantsNew() {
 			university: event.target.university.value,
 			nationality: nationalityValue.label,
 			departingCountry: departingCountryValue.label,
-			applicant: {
-				applicationDate: event.target.applicationDate.value,
-				arrivalDate: event.target.arrivalDate.value,
-				departureDate: event.target.departureDate.value,
-				progress: event.target.progress.value,
-				department: event.target.department.value,
-				position: event.target.position.value,
-				hrInterviewDate: event.target.hrInterviewDate.value,
-				interviewNotes: event.target.interviewNotes.value,
-				rejectionReasons: event.target.rejectionReasons.value,
-			}
-		}
-		const JSONdata = JSON.stringify(data)
-		const endpoint = '/api/student'
-		const options = {
+			applicant: id,
+		};
+		const applicant = {
+			_id : id,
+			applicationDate: event.target.applicationDate.value,
+			arrivalDate: event.target.arrivalDate.value,
+			departureDate: event.target.departureDate.value,
+			progress: event.target.progress.value,
+			department: event.target.department.value,
+			position: event.target.position.value,
+			hrInterviewDate: event.target.hrInterviewDate.value,
+			interviewNotes: event.target.interviewNotes.value,
+			rejectionReasons: event.target.rejectionReasons.value,
+		};
+		const JSONdstudent = JSON.stringify(student);
+		const JSONapplicant = JSON.stringify(applicant);
+		const endpointstudent = '/api/student';
+		const endpointapplicant = '/api/applicant';
+		const optionsStudent = {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				"Access-Control-Allow-Origin": "*",
 			},
-			body: JSONdata,
-		}
-		console.log(JSONdata)
-		const response = await fetch(endpoint, options)
-
-		const result = await response.json()
-		alert(`New student with name: - ${data.firstName} - created`)
+			body: JSONdstudent,
+		};
+		const optionApplicant = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				"Access-Control-Allow-Origin": "*",
+			},
+			body: JSONapplicant,
+		};
+		await fetch(endpointstudent, optionsStudent);
+		await fetch(endpointapplicant, optionApplicant);
+		router.push('/applicants/list')
 	}
 
 	return (
@@ -190,8 +204,8 @@ export default function ApplicantsNew() {
 											Nationality
 										</label>
 										<Select
-										instanceId='Nationality'
-										options={options} value={nationalityValue} onChange={updateNationality} />
+											instanceId='Nationality'
+											options={options} value={nationalityValue} onChange={updateNationality} />
 									</div>
 								</div>
 								{/* Section */}
@@ -250,8 +264,8 @@ export default function ApplicantsNew() {
 											Departing Country
 										</label>
 										<Select
-										instanceId="departingCountry"
-										options={options} value={departingCountryValue} onChange={updateDepartingCountry} />
+											instanceId="departingCountry"
+											options={options} value={departingCountryValue} onChange={updateDepartingCountry} />
 									</div>
 								</div>
 
@@ -505,3 +519,4 @@ export default function ApplicantsNew() {
 		</section>
 	);
 }
+

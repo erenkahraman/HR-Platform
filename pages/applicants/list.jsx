@@ -1,23 +1,48 @@
-import { Add, Circle, MoreHoriz, SystemUpdateAlt } from "@mui/icons-material";
+import {
+  Add,
+  Circle,
+  MoreHoriz,
+  SystemUpdateAlt,
+  HowToReg,
+} from "@mui/icons-material";
 import { CircularProgress } from "@mui/material";
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ApplicantsList() {
+  // set progress bar
+  let setProgressBar = (progress) => {
+    switch (progress) {
+      case "New Candidate":
+        return "20%";
+      case "HR Interview":
+        return "40%";
+      case "CEO Interview":
+        return "60%";
+      case "Completing Documents":
+        return "80%";
+      case "Completed":
+        return "100%";
+      default:
+        return "0%";
+    }
+  };
+  //const students = JSON.parse(res)
+  //add student to interns
+  let addToInterns = (student) => {};
+
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
-    fetch("/api/student")
+    fetch("/api/applicant")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
         setLoading(false);
       });
   }, []);
-  console.log(data);
   if (isloading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
 
@@ -78,7 +103,7 @@ export default function ApplicantsList() {
               {/* Table Body */}
               <tbody className="divide-y">
                 {data.map((student) => (
-                  <tr key={student.id}>
+                  <tr key={student._id}>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                       <span className="ml-3 font-bold">
                         {" "}
@@ -96,13 +121,19 @@ export default function ApplicantsList() {
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <div className="flex flex-col gap-1">
-                        <div>CEO Interview</div>
+                        <div>{student.applicant.progress}</div>
                         <div className="flex items-center">
-                          <span className="mr-2">60%</span>
+                          <span className="mr-2">
+                            {setProgressBar(student.applicant.progress)}
+                          </span>
                           <div className="relative w-full">
                             <div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
                               <div
-                                style={{ width: "60%" }}
+                                style={{
+                                  width: setProgressBar(
+                                    student.applicant.progress
+                                  ),
+                                }}
                                 className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
                               ></div>
                             </div>
@@ -122,40 +153,10 @@ export default function ApplicantsList() {
                       <a
                         href="#pablo"
                         className="text-blueGray-500 block py-1 px-3"
-                        // onclick="openDropdown(event,'table-dark-1-dropdown')"
+                        // onClick={addToInterns(student)}
                       >
-                        <MoreHoriz />
+                        <HowToReg />
                       </a>
-                      <div
-                        className="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-                        // id="table-dark-1-dropdown"
-                      >
-                        <a
-                          href="#pablo"
-                          className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                        >
-                          Action
-                        </a>
-                        <a
-                          href="#pablo"
-                          className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                        >
-                          Another action
-                        </a>
-                        <a
-                          href="#pablo"
-                          className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                        >
-                          Something else here
-                        </a>
-                        <div className="h-0 my-2 border border-solid border-blueGray-100"></div>
-                        <a
-                          href="#pablo"
-                          className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                        >
-                          Seprated link
-                        </a>
-                      </div>
                     </td>
                   </tr>
                 ))}
@@ -167,3 +168,10 @@ export default function ApplicantsList() {
     </section>
   );
 }
+
+/*export async function getStaticProps() {
+    const applicants = await getAllApplicants();
+    const res = await JSON.stringify(applicants)
+    return { props: { res } }
+
+}*/

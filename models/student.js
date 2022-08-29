@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const StudentSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -51,26 +50,9 @@ const StudentSchema = new mongoose.Schema({
         default: 'On Process',
         required: true
     },
-    applicant: {
-        applicationDate: { type: String, required: true },
-        arrivalDate: { type: String, required: true },
-        departureDate: { type: String, required: true },
-        progress: { type: String, required: true, maxlength: 30 },
-        department: { type: String, required: true, maxlength: 30 },
-        position: { type: String, required: true, maxlength: 30 },
-        hrInterviewDate: { type: String, required: true, maxlength: 30 },
-        //ceoInterviewDate: { type: String, required: true, maxlength: 30 },
-        interviewNotes : { type: String, required: true },
-        rejectionReasons: { type: String, required: true }
-    },
-    intern: {
-        startDate: { type: String },
-        endDate: { type: String },
-        durationInWeeks: { type: Number },
-        departement: { type: String, maxlength: 30 },
-        position: { type: String, maxlength: 30 }
-    }
-
+    applicant : {type: mongoose.Schema.Types.ObjectId, ref: 'Applicant'},
+    intern : {type: mongoose.Schema.Types.ObjectId, ref: 'Intern'}
 })
+
 
 export default mongoose.models.Student || mongoose.model("Student", StudentSchema);
