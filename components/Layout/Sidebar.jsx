@@ -15,6 +15,8 @@ import {
 	List,
 } from "@mui/icons-material";
 
+import CoPresentIcon from '@mui/icons-material/CoPresent';
+
 export default function Sidebar() {
 	const router = useRouter();
 
@@ -55,8 +57,8 @@ export default function Sidebar() {
 		},
 		{
 			title: "Attendance",
-			href: "/interns/InternsAttendance",
-			icon: <CoPresentIcon/>,
+			href: "/interns/attendence",
+			icon: <CoPresentIcon />,
 			isOn: false,
 		},
 
@@ -76,7 +78,7 @@ export default function Sidebar() {
 		},
 		{
 			title: "Profile",
-			href: "/EndInternship/EndProfile",
+			href: "/EndInternship/InternsProfile",
 			icon: <GroupOutlined />,
 			isOn: false,
 		},
