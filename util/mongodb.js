@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { MongoClient } from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI
 
@@ -35,6 +36,21 @@ async function dbConnect() {
   }
   cached.conn = await cached.promise
   return cached.conn
+}
+
+export async function getMongoClient() {
+  if (!global.mongoClientPromise) {
+    const client = new MongoClient(process.env.MONGODB_URI);
+    // client.connect() returns an instance of MongoClient when resolved
+    global.mongoClientPromise = client
+      .connect();
+  }
+  return global.mongoClientPromise;
+}
+
+export async function getMongoDb() {
+  const mongoClient = await getMongoClient();
+  return mongoClient.db();
 }
 
 export default dbConnect

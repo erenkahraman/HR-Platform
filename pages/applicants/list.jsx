@@ -1,13 +1,12 @@
-import { Add, Circle, MoreHoriz, SystemUpdateAlt, HowToReg} from "@mui/icons-material";
+import { Add, Circle, MoreHoriz, SystemUpdateAlt, HowToReg } from "@mui/icons-material";
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { server } from "../../next.config";
+import { getAllApplicants } from "../../api-lib/applicant";
 
-export default function ApplicantsList({students}) {
+export default function ApplicantsList({ res }) {
     // set progress bar
-    let setProgressBar = progress =>{
-        switch(progress){
+    let setProgressBar = progress => {
+        switch (progress) {
             case 'New Candidate':
                 return '20%';
             case 'HR Interview':
@@ -23,12 +22,11 @@ export default function ApplicantsList({students}) {
         }
 
     }
-
+    const students = JSON.parse(res)
     //add student to interns
     let addToInterns = student => {
-        
+
     }
-    
 
     return (
         <section className="relative w-full">
@@ -128,9 +126,9 @@ export default function ApplicantsList({students}) {
                                             <a
                                                 href="#pablo"
                                                 className="text-blueGray-500 block py-1 px-3"
-                                               // onClick={addToInterns(student)}
+                                            // onClick={addToInterns(student)}
                                             >
-                                            <HowToReg />
+                                                <HowToReg />
                                             </a>
                                         </td>
                                     </tr>
@@ -146,14 +144,9 @@ export default function ApplicantsList({students}) {
 }
 
 
+export async function getStaticProps() {
+    const applicants = await getAllApplicants();
+    const res = await JSON.stringify(applicants)
+    return { props: { res } }
 
-export async function getStaticProps(){
-
-    const res = await fetch(`${server}/api/applicant`);
-    const students = await res.json();
-    return {
-        props: {
-            students
-        }
-    }
 }

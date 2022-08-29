@@ -4,8 +4,9 @@ import Link from "next/link";
 import {MdDeleteOutline} from "react-icons/md" 
 import {AiOutlineEdit} from "react-icons/ai"
 import {RiAccountCircleLine} from "react-icons/ri"
+import { server } from "../../next.config";
 
-export default function ApplicantsList() {
+export default function ApplicantsArrival({students}) {
 	return (
 		<section className="relative w-full">
 			<div className="w-full mb-12">
@@ -398,4 +399,13 @@ export default function ApplicantsList() {
 			</div>
 		</section>
 	);
+}
+
+
+export async function getStaticProps(){
+
+	const res = await fetch(`${server}/api/applicant`)
+	const students = await res.json()
+
+	return {props : students}
 }

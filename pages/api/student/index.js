@@ -1,9 +1,9 @@
-import dbConnect  from "../../../util/mongodb";
+import dbConnect from "../../../util/mongodb";
 import Student from "../../../models/student";
 
 export default async function handler(req, res){
     const { method } = req;
-    const db = await dbConnect();
+    await dbConnect();
 
     if(method === 'GET'){
         try {
