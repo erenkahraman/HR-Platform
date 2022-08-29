@@ -69,7 +69,6 @@ export default function ApplicantsNew() {
 		await fetch(endpointstudent, optionsStudent);
 		await fetch(endpointapplicant, optionApplicant);
 		router.push('/applicants/list')
-		router.reload('/applicants/list')
 	}
 
 	return (

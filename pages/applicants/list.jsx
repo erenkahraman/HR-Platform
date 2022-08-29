@@ -1,9 +1,9 @@
 import { Add, Circle, MoreHoriz, SystemUpdateAlt, HowToReg } from "@mui/icons-material";
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
-import { getAllApplicants } from "../../api-lib/applicant";
+import { useState, useEffect } from "react";
 
-export default function ApplicantsList({ res }) {
+export default function ApplicantsList() {
     // set progress bar
     let setProgressBar = progress => {
         switch (progress) {
@@ -22,11 +22,27 @@ export default function ApplicantsList({ res }) {
         }
 
     }
-    const students = JSON.parse(res)
+    //const students = JSON.parse(res)
     //add student to interns
     let addToInterns = student => {
 
     }
+
+    const [data, setData] = useState([])
+    const [isloading, setLoading] = useState(true)
+
+    useEffect(() => {
+        setLoading(true)
+        fetch('/api/applicant')
+            .then((res) => res.json())
+            .then((data) => {
+                setData(data)
+                setLoading(false)
+            })
+    }, [])
+    if (isloading) return <p>Loading...</p>
+    if (!data) return <p>No profile data</p>
+
 
     return (
         <section className="relative w-full">
@@ -84,7 +100,7 @@ export default function ApplicantsList({ res }) {
 
                             {/* Table Body */}
                             <tbody className="divide-y">
-                                {students.map(student =>
+                                {data.map(student =>
                                     <tr key={student._id}>
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                                             <span className="ml-3 font-bold"> {student.firstName} {student.lastName} </span>
@@ -144,9 +160,9 @@ export default function ApplicantsList({ res }) {
 }
 
 
-export async function getStaticProps() {
+/*export async function getStaticProps() {
     const applicants = await getAllApplicants();
     const res = await JSON.stringify(applicants)
     return { props: { res } }
 
-}
+}*/
