@@ -1,5 +1,8 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import Link from "next/link";
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+
 
 const attendence = () => {
 	return (
@@ -8,18 +11,20 @@ const attendence = () => {
 				<div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
 					{/* Title Container */}
 					<div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white">
-						<div className="flex flex-wrap items-center">
-							<div className="relative w-full px-3 max-w-full flex-grow flex-1 ">
-								<h3 className="font-semibold text-2xl">Interns Attendence</h3>
-								<Link href="/interns/month/anttendance">
-									<span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-										<Add className="text-sm" />
-										Month Attendance
-									</span>
-								</Link>
-							</div>
-						</div>
-					</div>
+                        <div className="flex flex-wrap items-center">
+                            <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
+                                <h3 className="font-semibold text-2xl">Applicant Attendance</h3>
+                            </div>
+                        </div>
+                        <div className="flex gap-2">
+                            <Link href="/interns/monthAttendance">
+                                <span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
+                                    <EventAvailableIcon className="text-m py-1" />
+                                    Month Attendance
+                                </span>
+                            </Link>
+                        </div>
+                    </div>
 
 					{/* Table */}
 					<div className="block w-full overflow-x-auto ">
