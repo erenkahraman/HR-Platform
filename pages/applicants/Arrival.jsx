@@ -41,19 +41,19 @@ export default function ApplicantsArrival({students}) {
 								{/* Radio check */}
 								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none bg-[#50d71e] read-only:bg-gray-100 p-2" />
-									<label className="text-sm pl-1 ">Rome Fumicino</label>
+									<label className="text-sm pl-1 ">Terranova da Sibari</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none read-only:bg-gray-100 p-2" />
-									<label className="text-sm pl-1 ">Rome Ciampino</label>
+									<label className="text-sm pl-1 ">Bivo Cantinella</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none read-only:bg-gray-100 p-2 " />
-									<label className="text-sm pl-1 ">Naples</label>
+									<label className="text-sm pl-1 ">Sibari</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none read-only:bg-gray-100 p-2" />
-									<label className="text-sm pl-1">Bari</label>
+									<label className="text-sm pl-1">Spezzano Albanese Terme</label>
 								</div>
 								{/* search */}
 								<form className="flex items-center ">
@@ -61,7 +61,7 @@ export default function ApplicantsArrival({students}) {
 										<div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
 											<svg aria-hidden="true" className="w-5 h-5 text-white-500 dark:text-white-400" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path strokeWidth="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
 										</div>
-										<input type="text" id="simple-search" className="rounded border-none bg-[#0B3768]/75 px-10 text-white h-8 placeholder:italic placeholder:text-white/30 placeholder:text-sm" placeholder="Search..." required />
+										<input type="text" id="simple-search" classNameName="rounded border-none bg-[#0B3768]/75 px-10 text-white h-8 placeholder:italic placeholder:text-white/30 placeholder:text-sm" placeholder="Search..." required />
 									</div>
 									<button type="submit" className="w-10 px-2 rounded border-none bg-blue-100 h-8 ml-1 mr-2 hover:bg-[#0B3768]/75 ">
 										<svg className="w-5 h-5" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -118,7 +118,7 @@ export default function ApplicantsArrival({students}) {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Rome Ciampino</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">60%</span>
 												<div className="relative w-full">
@@ -163,7 +163,7 @@ export default function ApplicantsArrival({students}) {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Naples</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">20%</span>
 												<div className="relative w-full">
@@ -209,7 +209,7 @@ export default function ApplicantsArrival({students}) {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Bari</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">20%</span>
 												<div className="relative w-full">
@@ -255,7 +255,7 @@ export default function ApplicantsArrival({students}) {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Rome Fumicino</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">40%</span>
 												<div className="relative w-full">
@@ -308,7 +308,7 @@ export default function ApplicantsArrival({students}) {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Rome Ciampino</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">100%</span>
 												<div className="relative w-full">
@@ -361,7 +361,7 @@ export default function ApplicantsArrival({students}) {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>Naples</div>
+											<div>Sibari</div>
 											{/* <div className="flex items-center">
 												<span className="mr-2">80%</span>
 												<div className="relative w-full">

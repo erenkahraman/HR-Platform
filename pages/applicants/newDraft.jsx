@@ -61,7 +61,7 @@ export default function ApplicantsNew() {
 												name="last-name"
 												id="last-name"
 												autoComplete="family-name"
-												className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+												className="mt-1  focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 											/>
 										</div>
 

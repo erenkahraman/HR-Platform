@@ -27,9 +27,6 @@ export default function ApplicantsList() {
         return "0%";
     }
   };
-  //const students = JSON.parse(res)
-  //add student to interns
-  let addToInterns = (student) => {};
 
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
@@ -168,10 +165,3 @@ export default function ApplicantsList() {
     </section>
   );
 }
-
-/*export async function getStaticProps() {
-    const applicants = await getAllApplicants();
-    const res = await JSON.stringify(applicants)
-    return { props: { res } }
-
-}*/

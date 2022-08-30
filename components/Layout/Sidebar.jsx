@@ -2,9 +2,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { useState } from "react";
+import CoPresentIcon from "@mui/icons-material/CoPresent";
 
 import {
 	CalendarMonthOutlined,
+	CoPresent,
 	DashboardOutlined,
 	FlightLandOutlined,
 	FlightTakeoffOutlined,
@@ -52,11 +54,12 @@ export default function Sidebar() {
 			isOn: false,
 		},
 		{
-			title: "Profile",
-			href: "/interns/InternsProfile",
-			icon: <GroupOutlined />,
+			title: "Attendance",
+			href: "/interns/attendence",
+			icon: <CoPresentIcon />,
 			isOn: false,
 		},
+
 		{ title: "END INTERNSHIP", isSeperator: true },
 		{ title: "List", href: "/EndInternship/EndList", icon: <List />, isOn: false },
 		{
@@ -69,6 +72,12 @@ export default function Sidebar() {
 			title: "Departure",
 			href: "/EndInternship/EndDeparture",
 			icon: <FlightTakeoffOutlined />,
+			isOn: false,
+		},
+		{
+			title: "Profile",
+			href: "/EndInternship/InternsProfile",
+			icon: <GroupOutlined />,
 			isOn: false,
 		},
 	];
