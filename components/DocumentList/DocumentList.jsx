@@ -8,7 +8,6 @@ import {
 import { Circle } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
-
 const DocumentListContent = ({ title, pos, status }) => {
   const Border = () => {
     let isRounded;
@@ -60,7 +59,7 @@ const DocumentList = () => {
   const [isloading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
-    fetch("/api/student")
+    fetch("/api/applicant")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
