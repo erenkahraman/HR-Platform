@@ -7,9 +7,22 @@ import {
 } from "@mui/icons-material";
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { server } from "../../next.config";
+import Popup from "reactjs-popup";
 
-export default function ApplicantsList() {
+import * as React from "react";
+import Modal from "../../components/Modal/Modal.jsx";
+import { useState } from "react";
+
+export default function ApplicantsList({ students }) {
+  const [modalOn, setModalOn] = useState(false);
+  const [choice, setChoice] = useState(false);
+
+  const clicked = () => {
+    setModalOn(true);
+  };
+
   // set progress bar
   let setProgressBar = (progress) => {
     switch (progress) {
@@ -27,10 +40,28 @@ export default function ApplicantsList() {
         return "0%";
     }
   };
-
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
 
+  //add student to interns
+  let addToInterns = (student) => {};
+
+  /*const submit = () => {
+        confirmAlert({
+          title: 'Confirm to submit',
+          message: 'Are you sure to do this.',
+          buttons: [
+            {
+              label: 'Yes',
+              onClick: () => alert('Click Yes')
+            },
+            {
+              label: 'No',
+              onClick: () => alert('Click No')
+            }
+          ]
+        });
+      };*/
   useEffect(() => {
     setLoading(true);
     fetch("/api/applicant")
@@ -42,7 +73,6 @@ export default function ApplicantsList() {
   }, []);
   if (isloading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
-
   return (
     <section className="relative w-full">
       <div className="w-full mb-12">
@@ -146,15 +176,72 @@ export default function ApplicantsList() {
                       </div>
                     </td>
 
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                      <a
-                        href="#pablo"
-                        className="text-blueGray-500 block py-1 px-3"
-                        // onClick={addToInterns(student)}
-                      >
-                        <HowToReg />
-                      </a>
-                    </td>
+                    <Popup
+                      contentStyle={{
+                        background: "transparent",
+                        borderRadius: "1rem",
+                      }}
+                      trigger={
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                          <button type="submit">
+                            <HowToReg />
+                          </button>
+                        </td>
+                      }
+                      position="bottom"
+                    >
+                      {/* class="h-48 w-52 ..." */}
+                      <div className="h-48 w-52">
+                        <div className="flex flex-col ml-8 ">
+                          <div>
+                            <button
+                              type="submit"
+                              className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
+                            >
+                              Edit
+                            </button>
+                          </div>
+
+                          <div className="felx cursor-pointer">
+                            <button
+                              className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                              type="submit"
+                              onClick={clicked}
+                            >
+                              Accepted
+                            </button>
+                            {choice}
+
+                            {modalOn && (
+                              <Modal
+                                setModalOn={setModalOn}
+                                setChoice={setChoice}
+                              />
+                            )}
+                          </div>
+
+                          <div>
+                            <button
+                              type="submit"
+                              className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                            >
+                              No Answer
+                            </button>
+                          </div>
+
+                          <div>
+                            <button
+                              type="submit"
+                              className="w-28 inline-flex rounded-b-lg justify-center py-2 px-4  shadow-sm text-sm font-medium boeder-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                            >
+                              Rejected
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* </div> */}
+                    </Popup>
                   </tr>
                 ))}
               </tbody>
