@@ -15,8 +15,6 @@ import {
 	List,
 } from "@mui/icons-material";
 
-import CoPresentIcon from '@mui/icons-material/CoPresent';
-
 export default function Sidebar() {
 	const router = useRouter();
 
