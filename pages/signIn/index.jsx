@@ -28,10 +28,8 @@ export default function Login() {
             </div>
             {/* Title and Sub Title */}
             <div className="w-full flex flex-col items-center gap-1 mb-2">
-              <p className="text-4xl">HR Platform Log In</p>
-              <p>
-                Log in with the data that you entered during your registration
-              </p>
+              <p className="text-4xl">HR Platform Register</p>
+              <p></p>
             </div>
           </div>
 
@@ -47,26 +45,16 @@ export default function Login() {
                 className="p-3 border-[1px] bg-[#E4EBF7] rounded-md w-80"
                 placeholder="Password"
               />
-              <a href="#" className="text-[#0070ba]">
-                Forgot password?
-              </a>
             </div>
           </div>
 
           {/* Submit Button */}
           <div className="w-full flex flex-col items-center gap-1">
-            <Link href="/dashboard">
+            <Link href="/login">
               <button className=" w-60 bg-[#597EF7] rounded-xl p-3 text-white transition duration-200 hover:bg-[#003087]">
-                Log In
+                Sign Up
               </button>
             </Link>
-
-            <p>
-              Don&apos;t have an account?{" "}
-              <a href="/signIn" className="text-[#0070ba]">
-                Sign Up
-              </a>
-            </p>
           </div>
         </div>
       </div>
