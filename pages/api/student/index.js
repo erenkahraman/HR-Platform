@@ -1,13 +1,37 @@
-import dbConnect from "../../../util/mongodb";
+import { getMongoDb } from "../../../util/mongodb";
 import Student from "../../../models/student";
+import Applicant from "../../../models/applicant";
 
 export default async function handler(req, res){
     const { method } = req;
-    await dbConnect();
+    const db = await getMongoDb();
 
     if(method === 'GET'){
         try {
-            const students = await Student.find({})
+            const students = await db
+            .collection('students')
+            .aggregate([
+                {
+                    $lookup: {
+                        from: Applicant.collection.name,
+                        localField: 'applicant',
+                        foreignField: '_id',
+                        as: 'applicant'
+                    }
+                },
+                /*{
+                    ** intern lookup to be added later
+                    $lookup: {
+                        from: Applicant.collection.name,
+                        localField: 'applicant',
+                        foreignField: '_id',
+                        as: 'applicant'
+                    }
+                },*/
+                {
+                    $unwind: '$applicant',
+                },
+            ]).toArray()
             res.status(200).json(students);
         } catch (error) {
             res.status(500).json(error)
