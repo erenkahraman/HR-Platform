@@ -1,32 +1,140 @@
-const Feed = () => {
-  return (
-    <div className="flex m-2 py-4">
-      <div className="flex flex-[1] flex-col gap-2 p-2">
-        <div className="text-sm font-semibold">20 August 2021</div>
-        <div className="text-xs font-light">
-          <div>posted by</div>
-          <div>Antonio Gallo</div>
-        </div>
-      </div>
-      <div className="flex flex-[3] flex-col gap-2 p-2">
-        <div className="text-sm font-semibold">
-          Project Management Presentation
-        </div>
-        <div className="text-xs font-light">
-          In monday 23 august there Will he a presentation from project
-          management regardina the theater platform. Please prepare the
-          necessary documents. In monday 23 august there Will he a presentation
-          from project management regardina the theater platform. Please prepare
-          the necessary documents.
-        </div>
-      </div>
-      <div className="flex flex-[1] p-2">
-        <div className="flex h-fit text-sm font-semibold underline cursor-pointer">
-          Read More
-        </div>
-      </div>
-    </div>
-  );
-};
+import {
+  Add,
+  Circle,
+  MoreHoriz,
+  SystemUpdateAlt,
+  HowToReg,
+} from "@mui/icons-material";
+import { CircularProgress } from "@mui/material";
+import Link from "next/link";
+import { useState, useEffect } from "react";
 
-export default Feed;
+export default function ApplicantsList() {
+  // set progress bar
+  let setProgressBar = (progress) => {
+    switch (progress) {
+      case "New Candidate":
+        return "20%";
+      case "HR Interview":
+        return "40%";
+      case "CEO Interview":
+        return "60%";
+      case "Completing Documents":
+        return "80%";
+      case "Completed":
+        return "100%";
+      default:
+        return "0%";
+    }
+  };
+
+  const [data, setData] = useState([]);
+  const [isloading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch("/api/student")
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, []);
+  if (isloading) return <p>Loading...</p>;
+  if (!data) return <p>No profile data</p>;
+
+  return (
+    <section className="relative w-full">
+      <div className="w-full mb-12">
+        <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+          {/* Title Container */}
+          <div className="flex justify-between rounded-t mb-0 px-4 py-3 border-0 bg-white">
+            <div className="flex flex-wrap items-center">
+              <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
+                <h3 className="font-semibold text-2xl">Profile</h3>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Link href="/import-list">
+                <span className="gap-1 hover:bg-gray-200 group flex items-center rounded-md bg-gray-300 text-gray-500 text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
+                  <SystemUpdateAlt className="text-sm" />
+                  CSV Import
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Table */}
+          <div className="block w-full overflow-x-auto ">
+            <table className="items-center w-full border-collapse bg-white">
+              {/* Table Head */}
+              <thead>
+                <tr>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Full Name
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Department / Position
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Arrival Date
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Departure Date
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Email
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+
+              {/* Table Body */}
+              <tbody className="divide-y">
+                {data.map((student) => (
+                  <tr key={student._id}>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                      <span className="ml-3 font-bold">
+                        {" "}
+                        {student.firstName} {student.lastName}{" "}
+                      </span>
+                    </td>
+
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {student.applicant.department}
+                      {" / "}
+                      {student.applicant.position}
+                    </td>
+
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {student.applicant.arrivalDate}
+                    </td>
+
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {student.applicant.departureDate}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {student.email}
+                    </td>
+
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                      <a
+                        href="#pablo"
+                        className="text-blueGray-500 block py-1 px-3"
+                        // onClick={addToInterns(student)}
+                      >
+                        <HowToReg />
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
