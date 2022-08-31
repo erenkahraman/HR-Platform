@@ -14,9 +14,7 @@ import Feed from "../../components/Feed/Feed";
 import FeedSchedule from "../../components/Feed/FeedSchedule"
 import Upcoming from "../../components/Upcoming/Upcoming";
 import Popup from "reactjs-popup"
-import news from "./news"
 
-//fsdfa
 
 export default function Dashboard() {
 
@@ -186,7 +184,7 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">What's New</div>
 							<a
-								href="/."
+								href="/dashboard/news"
 								className="viewAll flex items-center justify-center text-[#2F80ED]"
 							>
 								<div>View All (18)</div>
@@ -208,7 +206,7 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">Weekly Schedule</div>
 							<a
-								href="./news"
+								href="./"
 								className="viewAll flex items-center justify-center text-[#2F80ED]"
 							>
 								<div>View All</div>

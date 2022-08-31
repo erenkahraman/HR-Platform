@@ -2,9 +2,50 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Link from "next/link";
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import {confirmAlert} from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
 
 
-const attendence = () => {
+function attendence () {
+	//  const notify =() => toast ("Please check if everything before saving!");
+
+	const save = () => {
+		confirmAlert({
+			title: 'Confirm to submit',
+			message: 'Are you sure you want to save ?',
+			buttons: [
+			  {
+				label: 'Yes',
+				onClick: () => alert('Click Yes')
+			  },
+			  {
+				label: 'No',
+				onClick: () => alert('Click No')
+			  }
+			]
+			
+		  });
+	}
+
+	const cancel = () => {
+		confirmAlert({
+			title: 'Confirm to submit',
+			message: 'Are you sure you want to delete ?',
+			buttons: [
+			  {
+				label: 'Yes',
+				onClick: () => alert('Click Yes')
+			  },
+			  {
+				label: 'No',
+				onClick: () => alert('Click No')
+			  }
+			]
+		  });
+	}
+
 	return (
 		<section className="relative w-full">
 			<div className="w-full mb-12">
@@ -140,181 +181,22 @@ const attendence = () => {
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
-											<div>
+											<div className='flex flex-r'>
 												{/* ICONS */}
-												<CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
-												<CancelIcon className="h-6 fill-[#0b3768] hover:fill-[#991b1b]" />
+
+												{/* <button onClick={notify}><CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" /></button>
+												<ToastContainer /> */}
+
+												<button onClick={save} ><CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" /></button>
+												
+												<button onClick={cancel}><CancelIcon className="h-6 fill-[#0b3768] hover:fill-[#991b1b]" /></button>
 											</div>
 										</div>
 									</td>
 
 								</tr>
 
-								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
-										<div className="font-bold"> Alessio Rocco </div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<input type="date" className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ></input>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<select
-											id="country"
-											className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-										>
-											<option>Present</option>
-											<option>Late</option>
-											<option>Day off</option>
-											<option>Excused leave</option>
-											<option>Sick</option>
-											<option>Unexecused leave</option>
-										</select>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												0
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												1
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												2
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												1
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												0
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												0
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												{/* ICONS */}
-												<CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
-												<CancelIcon className="h-6 fill-[#0b3768] hover:fill-[#991b1b]" />
-											</div>
-										</div>
-									</td>
-
-								</tr>
-
-								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
-										<div className="font-bold"> Alessio Rocco </div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<input type="date" className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" ></input>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<select
-											id="country"
-											className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-										>
-											<option>Present</option>
-											<option>Late</option>
-											<option>Day off</option>
-											<option>Excused leave</option>
-											<option>Sick</option>
-											<option>Unexecused leave</option>
-										</select>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												0
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												1
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												2
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												1
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												0
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												0
-											</div>
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>
-												{/* ICONS */}
-												<CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
-												<CancelIcon className="h-6 fill-[#0b3768] hover:fill-[#991b1b]" />
-											</div>
-										</div>
-									</td>
-
-								</tr>
+								
 							</tbody>
 						</table>
 					</div>

@@ -1,21 +1,35 @@
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import UndoIcon from '@mui/icons-material/Undo';
+import { Link } from 'react-bootstrap-icons';
 
 const attendence = () => {
 	return (
-		<section className="relative w-full">
-			<div className="w-full mb-12">
-				<div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+		<section className="w-full">
+			<div className=" mb-12">
+				<div className="flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
 					{/* Title Container */}
 					<div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white">
-                        <div className="flex flex-wrap items-center">
-                            <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-                                <h3 className="font-semibold text-2xl">Month Attendance</h3>
-                            </div>
-                        </div>
-                    </div>
+						<div className="flex flex-wrap items-center">
+							<div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
+								<h3 className="font-semibold text-2xl">Month Attendance</h3>
+							</div>
+						</div>
+						<form className="flex flex-r justify-between">
+							<div className="relative w-full">
+								<div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+									<svg aria-hidden="true" className="w-5 h-5 text-white-500 dark:text-white-400" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path strokeWidth="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
+								</div>
+								<input type="text" id="simple-search" className="rounded border-none bg-[#0B3768]/75 px-10 text-white h-8 placeholder:italic placeholder:text-white/30 placeholder:text-sm" placeholder="Search by name.." required />
+							</div>
+							<button type="submit" className="w-10 px-2 rounded border-none bg-blue-100 h-8 ml-1 mr-2 hover:bg-[#0B3768]/75 ">
+								<svg className="w-5 h-5" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+								<span className="sr-only">Search</span>
+							</button>
+						</form>
+					</div>
+
+
 
 					{/* Table */}
 					<div className="block w-full overflow-x-auto ">
