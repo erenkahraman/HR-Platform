@@ -66,32 +66,32 @@ export default function ApplicantsList() {
                         </div>
                     </div>
 
-                    {/* Table */}
-                    <div className="block w-full overflow-x-auto ">
-                        <table className="items-center w-full border-collapse bg-white">
-                            {/* Table Head */}
-                            <thead>
-                                <tr>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Full Name
-                                    </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Applied On
-                                    </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Department
-                                    </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Completion{" "}
-                                    </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Status
-                                    </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
+          {/* Table */}
+          <div className="block w-full overflow-x-auto ">
+            <table className="items-center w-full border-collapse bg-white">
+              {/* Table Head */}
+              <thead>
+                <tr>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Full Name
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Applied On
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Department
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Completion{" "}
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Status
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Action
+                  </th>
+                </tr>
+              </thead>
 
                             {/* Table Body */}
                             <tbody className="divide-y">
@@ -101,13 +101,13 @@ export default function ApplicantsList() {
                                             <span className="ml-3 font-bold"> {student.firstName} {student.lastName} </span>
                                         </td>
 
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {student.applicant.applicationDate}
-                                        </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {student.applicant.applicationDate}
+                    </td>
 
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {student.applicant.department}
-                                        </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {student.applicant.department}
+                    </td>
 
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div className="flex flex-col gap-1">
@@ -126,12 +126,12 @@ export default function ApplicantsList() {
                                             </div>
                                         </td>
 
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            <div className="flex items-center gap-2">
-                                                <Circle className="h-3 w-3 text-yellow-500" />
-                                                On Progress
-                                            </div>
-                                        </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      <div className="flex items-center gap-2">
+                        <Circle className="h-3 w-3 text-yellow-500" />
+                        On Progress
+                      </div>
+                    </td>
 
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             <a
