@@ -18,14 +18,14 @@ const ApplicantSchema =  new mongoose.Schema({
     interviewNotes: { type: String, required: true },
     rejectionReasons: { type: String, required: true },
     documents : {
-        curiculumVitae : { type: String, enum: statusEnum, default: 'Not Submitted'},
-        learningAgreement : { type: String, enum: statusEnum, default: 'Not Submitted'},
-        acceptanceLetter : { type: String, enum: statusEnum, default: 'Not Submitted'},
-        accommodationLetter : { type: String, enum: statusEnum, default: 'Not Submitted'},
-        arrivalTickets : { type: String, enum: statusEnum, default: 'Not Submitted'},
-        internDevelopmentPlan : { type: String, enum: statusEnum, default: 'Not Submitted'},
-        confidentialityLetter : { type: String, enum: statusEnum, default: 'Not Submitted'},
-        identification : { type: String, enum: statusEnum, default: 'Not Submitted'},
+        curiculumVitae : { type: String, enum: ['Not Submitted', 'Need Review', 'Incorrect', 'Correct'], default: 'Not Submitted'},
+        learningAgreement : { type: String, enum: ['Not Submitted', 'Need Review', 'Incorrect', 'Correct'], default: 'Not Submitted'},
+        acceptanceLetter : { type: String, enum: ['Not Submitted', 'Need Review', 'Incorrect', 'Correct'], default: 'Not Submitted'},
+        accommodationLetter : { type: String, enum: ['Not Submitted', 'Need Review', 'Incorrect', 'Correct'], default: 'Not Submitted'},
+        arrivalTickets : { type: String, enum: ['Not Submitted', 'Need Review', 'Incorrect', 'Correct'], default: 'Not Submitted'},
+        internDevelopmentPlan : { type: String, enum: ['Not Submitted', 'Need Review', 'Incorrect', 'Correct'], default: 'Not Submitted'},
+        confidentialityLetter : { type: String, enum: ['Not Submitted', 'Need Review', 'Incorrect', 'Correct'], default: 'Not Submitted'},
+        identification : { type: String, enum: ['Not Submitted', 'Need Review', 'Incorrect', 'Correct'], default: 'Not Submitted'},
     }
 })
 
