@@ -18,6 +18,8 @@ function news() {
           <div className="block w-full overflow-x-auto">
             <div className="items-center w-full border-collapse bg-white">
               <Feed />
+            </div>
+            <div className="items-center w-full border-collapse bg-white">
               <Feed />
             </div>
           </div>

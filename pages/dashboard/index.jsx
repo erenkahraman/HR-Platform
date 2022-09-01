@@ -206,7 +206,7 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">Weekly Schedule</div>
 							<a
-								href="/dashboard/weeklySchedule"
+								href="\dashboard\weeklySchedule"
 								className="viewAll flex items-center justify-center text-[#2F80ED]"
 							>
 								<div>View All</div>
@@ -232,7 +232,7 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">Daily Reminder</div>
 							<a
-								href="./"
+								href="/dashboard/dailyRemainder"
 								className="flex items-center justify-center text-[#2F80ED]"
 							>
 								<div>View All (12)</div>
@@ -286,7 +286,7 @@ export default function Dashboard() {
 								Upcoming Arrival and Departure
 							</div>
 							<a
-								href="./"
+								href="/dashboard/upcoming"
 								className="flex items-center justify-center text-[#2F80ED]"
 							>
 								<div>View All (8)</div>
@@ -338,7 +338,7 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">Upcoming Birthdays 🥳🍰🎉</div>
 							<a
-								href="./"
+								href="/dashboard/birthday"
 								className="flex items-center justify-center text-[#2F80ED]"
 							>
 								<div>View All (6)</div>

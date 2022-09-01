@@ -13,7 +13,7 @@ const FeedSchedule = () => {
 					Shedule for this week
 				</div>
 				<div className="text-xs font-light h-48">
-					<p className="h-48" style={{overflow: "hidden"}}>
+					<p className="h-48" style={{overflow:"hidden"}}>
 						<br />Morning shift from 8:00 to 13:00: (23)
 						<br />
 						<br />Human Resources: 4
