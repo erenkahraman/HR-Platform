@@ -1,9 +1,28 @@
 import { Add, Circle, MoreHoriz, SystemUpdateAlt, HowToReg } from "@mui/icons-material";
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { server } from "../../next.config";
+import Popup from "reactjs-popup";
 
-export default function ApplicantsList() {
+import * as React from 'react';
+import Modal from "../../components/Modal/Modal.jsx";
+import { useState } from "react";
+
+
+
+
+
+
+
+export default function ApplicantsList({ students }) {
+    const [modalOn, setModalOn] = useState(false);
+    const [choice, setChoice] = useState(false)
+
+    const clicked = () => {
+        setModalOn(true)
+    }
+
     // set progress bar
     let setProgressBar = progress => {
         switch (progress) {
@@ -66,58 +85,58 @@ export default function ApplicantsList() {
                         </div>
                     </div>
 
-          {/* Table */}
-          <div className="block w-full overflow-x-auto ">
-            <table className="items-center w-full border-collapse bg-white">
-              {/* Table Head */}
-              <thead>
-                <tr>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Full Name
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Applied On
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Department
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Completion{" "}
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Status
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Action
-                  </th>
-                </tr>
-              </thead>
+                    {/* Table */}
+                    <div className="block w-full overflow-x-auto ">
+                        <table className="items-center w-full border-collapse bg-white">
+                            {/* Table Head */}
+                            <thead>
+                                <tr>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Full Name
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Applied On
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Department
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Completion{" "}
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Status
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
 
                             {/* Table Body */}
                             <tbody className="divide-y">
-                                {data.map(student =>
-                                    <tr key={student._id}>
+                                {data.map(applicant =>
+                                    <tr key={applicant._id}>
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                                            <span className="ml-3 font-bold"> {student.firstName} {student.lastName} </span>
+                                            <span className="ml-3 font-bold"> {applicant.student.firstName} {applicant.student.lastName} </span>
                                         </td>
 
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {student.applicant.applicationDate}
-                    </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            {applicant.applicationDate}
+                                        </td>
 
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {student.applicant.department}
-                    </td>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            {applicant.department}
+                                        </td>
 
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div className="flex flex-col gap-1">
-                                                <div>{student.applicant.progress}</div>
+                                                <div>{applicant.progress}</div>
                                                 <div className="flex items-center">
-                                                    <span className="mr-2">{setProgressBar(student.applicant.progress)}</span>
+                                                    <span className="mr-2">{setProgressBar(applicant.progress)}</span>
                                                     <div className="relative w-full">
                                                         <div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
                                                             <div
-                                                                style={{ width: setProgressBar(student.applicant.progress) }}
+                                                                style={{ width: setProgressBar(applicant.progress) }}
                                                                 className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
                                                             ></div>
                                                         </div>
@@ -126,22 +145,78 @@ export default function ApplicantsList() {
                                             </div>
                                         </td>
 
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      <div className="flex items-center gap-2">
-                        <Circle className="h-3 w-3 text-yellow-500" />
-                        On Progress
-                      </div>
-                    </td>
-
-                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            <a
-                                                href="#pablo"
-                                                className="text-blueGray-500 block py-1 px-3"
-                                            // onClick={addToInterns(student)}
-                                            >
-                                                <HowToReg />
-                                            </a>
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            <div className="flex items-center gap-2">
+                                                <Circle className="h-3 w-3 text-yellow-500" />
+                                                On Progress
+                                            </div>
                                         </td>
+
+
+                                        <Popup contentStyle={{ background: "transparent", borderRadius: "1rem" }}
+                                            trigger={<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                                                <button
+                                                    type="submit"
+
+                                                >
+                                                    <HowToReg />
+                                                </button>
+                                            </td>} position="bottom">
+                                            <div className="h-48 w-52 ...">
+                                                <div className="flex flex-col ml-8 ">
+
+                                                    <div>
+                                                        <button
+                                                            type="submit"
+                                                            className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="felx cursor-pointer">
+                                                        <button className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                                                            type="submit"
+                                                            onClick={clicked}
+
+                                                        >
+                                                            Accept
+                                                        </button>
+                                                        {choice}
+
+                                                        {modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} stdId={applicant.student._id} />}
+                                                    </div>
+
+                                                    <div>
+                                                        <button
+                                                            type="submit"
+                                                            className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                                                        >
+                                                            No Answer
+                                                        </button>
+                                                    </div>
+
+                                                    <div>
+                                                        <button
+                                                            type="submit"
+                                                            className="w-28 inline-flex rounded-b-lg justify-center py-2 px-4  shadow-sm text-sm font-medium boeder-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                                                        >
+                                                            Reject
+                                                        </button>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+
+
+                                            {/* </div> */}
+
+
+
+                                        </Popup>
+
                                     </tr>
                                 )}
 

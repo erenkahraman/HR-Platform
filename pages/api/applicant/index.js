@@ -1,27 +1,29 @@
 import { getMongoDb } from "../../../util/mongodb";
 import Applicant from "../../../models/applicant";
 import Student from "../../../models/student";
+import dbConnect from "../../../util/mongodb";
 
 
 export default async function handler(req, res) {
     const { method } = req;
     const db = await getMongoDb();
+    await dbConnect();
 
     if (method === 'GET') {
         try {
             const applicant = await db
-                .collection('students')
+                .collection('applicants')
                 .aggregate([
                     {
                         $lookup: {
-                            from: Applicant.collection.name,
-                            localField: 'applicant',
+                            from: Student.collection.name,
+                            localField: 'student',
                             foreignField: '_id',
-                            as: 'applicant'
+                            as: 'student'
                         }
                     },
                     {
-                        $unwind: '$applicant',
+                        $unwind: '$student',
                     },
                 ]).toArray()
             res.status(200).json(applicant);

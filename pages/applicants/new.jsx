@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import { useRouter } from 'next/router';
 import Select from "react-select";
 import Popup from "reactjs-popup";
-import { Cancel, Verified } from "@mui/icons-material"
 import mongoose from "mongoose";
 
 export default function ApplicantsNew() {
@@ -23,8 +22,10 @@ export default function ApplicantsNew() {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const id = new mongoose.Types.ObjectId()
+		const applicantId = new mongoose.Types.ObjectId();
+		const studentId = new mongoose.Types.ObjectId();
 		const student = {
+			_id: studentId,
 			firstName: event.target.firstName.value,
 			lastName: event.target.lastName.value,
 			email: event.target.email.value,
@@ -34,10 +35,10 @@ export default function ApplicantsNew() {
 			university: event.target.university.value,
 			nationality: nationalityValue.label,
 			departingCountry: departingCountryValue.label,
-			applicant: id,
+			applicant: applicantId,
 		};
 		const applicant = {
-			_id: id,
+			_id: applicantId,
 			applicationDate: event.target.applicationDate.value,
 			arrivalDate: event.target.arrivalDate.value,
 			departureDate: event.target.departureDate.value,
@@ -47,6 +48,7 @@ export default function ApplicantsNew() {
 			hrInterviewDate: event.target.hrInterviewDate.value,
 			interviewNotes: event.target.interviewNotes.value,
 			rejectionReasons: event.target.rejectionReasons.value,
+			student: studentId,
 			documents: {
 				curiculumVitae: event.target.resume.value,
 				learningAgreement: event.target.lrnargmt.value,
@@ -60,6 +62,7 @@ export default function ApplicantsNew() {
 		};
 		const JSONdstudent = JSON.stringify(student);
 		const JSONapplicant = JSON.stringify(applicant);
+		console.log(JSONdstudent)
 		console.log(JSONapplicant)
 		const endpointstudent = '/api/student';
 		const endpointapplicant = '/api/applicant';
