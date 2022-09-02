@@ -15,10 +15,36 @@ import FeedSchedule from "../../components/Feed/FeedSchedule";
 import Upcoming from "../../components/Upcoming/Upcoming";
 import Popup from "reactjs-popup";
 import news from "./news";
-
-//fsdfa
+import { useRouter } from "next/router";
 
 export default function Dashboard() {
+  const router = useRouter();
+
+  //For Whats's New to add post
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const whatsNew = {
+      title: event.target.title.value,
+      postedBy: event.target.postedBy.value,
+      date: event.target.date.value,
+      paragraph: event.target.paragraph.value,
+    };
+    const JSONnew = JSON.stringify(whatsNew);
+    console.log(JSONnew);
+    const endpointNew = "/api/whatsNew";
+    const New = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSONnew,
+    };
+    await fetch(endpointNew, New);
+    router.reload();
+  };
+
   return (
     <div className="flex flex-col w-full">
       {/* Top */}
@@ -40,7 +66,6 @@ export default function Dashboard() {
             </p>
           </div>
         </div>
-        git
       </div>
       {/* Button Container*/}
       <div className="flex gap-3">
@@ -64,57 +89,64 @@ export default function Dashboard() {
         >
           {/* NEW POST */}
           <div className="m-2 p-4">
-            <div>
-              <h6 className="font-semibold text-xl text-white pt-2 pb-4">
-                New Post
-              </h6>
-              <div className="flex flex-row mx-2 mt-2 mb-4">
-                <h2 className="font-semibold text-l text-white ">By: </h2>
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                  placeholder="Type your name..."
-                  required
-                />
-              </div>
-            </div>
-
-            {/* INFORMATION BOX */}
-            <div className="flex flex-col">
-              <div className="pb-2 pt-6">
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the subject..."
-                  required
-                />
-              </div>
+            <form onSubmit={handleSubmit}>
               <div>
-                <textarea
-                  className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the information..."
-                  required
-                />
+                <h6 className="font-semibold text-xl text-white pt-2 pb-4">
+                  New Post
+                </h6>
+                <div className="flex flex-row mx-2 mt-2 mb-4">
+                  <h2 className="font-semibold text-l text-white ">By: </h2>
+                  <input
+                    id="postedBy"
+                    type="text"
+                    className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+                    placeholder="Type your name..."
+                    required
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* BUTTOM PART */}
-            <div className="flex flex-row pt-20">
-              <input
-                type="date"
-                className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 "
-              />
-              <div className="pl-20">
-                <button className="pr-2 ">
-                  {" "}
-                  <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />{" "}
-                </button>
-                <button>
-                  {" "}
-                  <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
-                </button>
+              {/* INFORMATION BOX */}
+
+              <div className="flex flex-col">
+                <div className="pb-2 pt-6">
+                  <input
+                    id="title"
+                    type="text"
+                    className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+                    placeholder="Type the subject..."
+                    required
+                  />
+                </div>
+                <div>
+                  <textarea
+                    id="paragraph"
+                    className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+                    placeholder="Type the information..."
+                    required
+                  />
+                </div>
               </div>
-            </div>
+
+              {/* BUTTOM PART */}
+              <div className="flex flex-row pt-20">
+                <input
+                  id="date"
+                  type="date"
+                  className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 "
+                />
+                <div className="pl-20">
+                  <button className="pr-2 ">
+                    {" "}
+                    <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />{" "}
+                  </button>
+                  <button type="submit">
+                    {" "}
+                    <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </Popup>
 
@@ -271,7 +303,7 @@ export default function Dashboard() {
         <div className="left-container flex flex-[1.5] flex-col gap-2">
           <div className="flex flex-[1.5] flex-col gap-2">
             <div className="flex items-center justify-between">
-              <div className="text-xl font-semibold">What's New</div>
+              <div className="text-xl font-semibold">What&apos;s New</div>
               <a
                 href="/."
                 className="viewAll flex items-center justify-center text-[#2F80ED]"
