@@ -1,6 +1,4 @@
-import { Add, Circle, MoreHoriz, SystemUpdateAlt, EditOutlined, DeleteOutlineOutlined } from "@mui/icons-material";
-import Image from "next/image";
-import Link from "next/link";
+import {useState} from 'react';
 import { MdDeleteOutline } from "react-icons/md"
 import { AiOutlineEdit } from "react-icons/ai"
 import { RiAccountCircleLine } from "react-icons/ri"
@@ -9,6 +7,7 @@ import {MdOutlineCancel} from "react-icons/md"
 import Popup from "reactjs-popup"
 
 export default function ApplicantsList() {
+
 
 	return (
 		<section className="relative w-full">
@@ -21,26 +20,11 @@ export default function ApplicantsList() {
 								<h3 className="font-semibold text-2xl">Applicant Deprture</h3>
 							</div>
 						</div>
-						{/* <div className="flex gap-2">
-							<Link href="/import-list">
-								<span className="gap-1 hover:bg-gray-200 group flex items-center rounded-md bg-gray-300 text-gray-500 text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-									<SystemUpdateAlt className="text-sm" />
-									CSV Import
-								</span>
-							</Link>
-							<Link href="/applicants/new">
-								<span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-									<Add className="text-sm" />
-									Add Candidate
-								</span>
-							</Link>
-						</div> */}
 					</div>
 					<div className="border-0 bg-white ">
 						<div >
 							<div className="flex flex-row justify-between font-semibold pl-4 pt-5 pb-10" >
-								{/* <h3 className="font-semibold text-2xl">Applicant Arrival</h3> */}
-
+	
 								{/* Radio check */}
 								<div className="pr-3 pl-1.5 pt-3">
 									<input type="radio" className="border-none bg-[#50d71e] read-only:bg-gray-100 p-2" />
@@ -108,13 +92,6 @@ export default function ApplicantsList() {
 							<tbody  className="divide-y">
 								<tr>
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
-										{/* <Image
-											src="https://demos.creative-tim.com/notus-js/assets/img/team-2-800x800.jpg"
-											className="bg-white rounded-full border"
-											height="48"
-											width="48"
-											alt="..."
-										/> */}
 										<span className="font-bold"> Alena Mango </span>
 									</td>
 
@@ -129,23 +106,11 @@ export default function ApplicantsList() {
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
 											<div>Sibari</div>
-											{/* <div className="flex items-center">
-												<span className="mr-2">80%</span>
-												<div className="relative w-full">
-													<div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
-														<div
-															style={{ width: "80%" }}
-															className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
-														></div>
-													</div>
-												</div>
-											</div> */}
 										</div>
 									</td>
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex items-center gap-2">
-											{/* <Circle className="h-3 w-3 text-gray-400" /> */}
 											Francesco Di Marco
 										</div>
 									</td>
@@ -159,19 +124,19 @@ export default function ApplicantsList() {
 											<Popup  contentStyle={{background:"#0B3768", borderRadius:"0.25rem"}} trigger={<button><AiOutlineEdit /></button>}  position="left center">
 												<div className="flex flex-row">
 													<div >
-														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-6 text-sm p-4 mx-7" type="text" name="applicant" placeholder="Applicant name..." required />
+														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-6 text-sm p-4 mx-7" type="text" name="applicant" value="Alena Mango" required />
 													</div>
 													<div>
-														<input  className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7 " type="date" name="arrivalDate" placeholder="Arrival Date..." required />
+														<input  className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7 " type="text" name="arrivalDate" value="09/02/2022" required />
 													</div>
 													<div>
-														<input className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7" type="time" name="arrivalTime" placeholder="Arrival Time..." required />
+														<input className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7" type="time" name="arrivalTime" value="12:00" required />
 													</div>
 													<div>
-														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-5 text-sm p-4 mx-7" type="text" name="arrivalCity" placeholder="Arrival City..." required />
+														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-5 text-sm p-4 mx-7" type="text" name="arrivalCity" value="Sibari" required />
 													</div>
 													<div>
-														<input className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-5 text-sm p-4 mx-7" type="text" name="pickUpBy" placeholder="Pick Up By..." required />
+														<input className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-5 text-sm p-4 mx-7" type="text" name="pickUpBy" value="Francesco Di Marco" required />
 													</div>
 													<div>
 														<div className="flex flex-row rounded border-none bg-[#0B3768] h-full text-white align-middle px-4 text-sm p-4 mx-4 ">

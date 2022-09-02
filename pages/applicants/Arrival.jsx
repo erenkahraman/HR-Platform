@@ -1,11 +1,49 @@
 import { Add, Circle, MoreHoriz, SystemUpdateAlt, EditOutlined, DeleteOutlineOutlined } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
-import {MdDeleteOutline} from "react-icons/md" 
-import {AiOutlineEdit} from "react-icons/ai"
-import {RiAccountCircleLine} from "react-icons/ri"
+import { MdDeleteOutline } from "react-icons/md"
+import { AiOutlineEdit } from "react-icons/ai"
+import { RiAccountCircleLine } from "react-icons/ri"
+import { CheckCircleIcon, CancelIcon } from "@mui/icons-material"
 
 export default function ApplicantsList() {
+
+
+	const save = () => {
+		confirmAlert({
+			title: 'Confirm to submit',
+			message: 'Are you sure you want to save ?',
+			buttons: [
+			  {
+				label: 'Yes',
+				onClick: () => alert('Click Yes')
+			  },
+			  {
+				label: 'No',
+				onClick: () => alert('Click No')
+			  }
+			]
+			
+		  });
+	}
+
+	const cancel = () => {
+		confirmAlert({
+			title: 'Confirm to submit',
+			message: 'Are you sure you want to delete ?',
+			buttons: [
+			  {
+				label: 'Yes',
+				onClick: () => alert('Click Yes')
+			  },
+			  {
+				label: 'No',
+				onClick: () => alert('Click No')
+			  }
+			]
+		  });
+	}
+
 	return (
 		<section className="relative w-full">
 			<div className="w-full mb-12">
@@ -67,7 +105,7 @@ export default function ApplicantsList() {
 										<span className="sr-only">Search</span>
 									</button>
 								</form>
-			
+
 							</div>
 						</div>
 					</div>
@@ -103,36 +141,25 @@ export default function ApplicantsList() {
 							{/* Table Body */}
 							<tbody className="divide-y">
 								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
+									<td /*contentEditable="true"*/ className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
 										<div className="font-bold"> Alessio Rocco </div>
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+									<td /*contentEditable="true"*/ className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										25/08/2022
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+									<td /*contentEditable="true"*/ className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										12:00
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+									<td /*contentEditable="true"*/ className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex flex-col gap-1">
 											<div>Sibari</div>
-											{/* <div className="flex items-center">
-												<span className="mr-2">60%</span>
-												<div className="relative w-full">
-													<div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
-														<div
-															style={{ width: "60%" }}
-															className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
-														></div>
-													</div>
-												</div>
-											</div> */}
 										</div>
 									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+									<td /*contentEditable="true"*/ className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
 										<div className="flex items-center gap-2">
 											Francessco Di Marco
 										</div>
@@ -142,255 +169,12 @@ export default function ApplicantsList() {
 										{/* ICONS */}
 										<div className="flex flex-row ml-2">
 											<MdDeleteOutline />
-											<AiOutlineEdit />
+											<button ><AiOutlineEdit /></button>
 											<RiAccountCircleLine />
 										</div>
 									</td>
 								</tr>
-								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
-										<span className="font-bold"> Fabrizio David </span>
-									</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										26/08/2022
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										14:00
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>Sibari</div>
-											{/* <div className="flex items-center">
-												<span className="mr-2">20%</span>
-												<div className="relative w-full">
-													<div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
-														<div
-															style={{ width: "20%" }}
-															className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
-														></div>
-													</div>
-												</div>
-											</div> */}
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex items-center gap-2">
-											{/* <Circle className="h-3 w-3 text-yellow-500" /> */}
-											Francesco Di Marco
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
-										{/* ICONS */}
-										<div className="flex flex-row ml-2">
-											<MdDeleteOutline />
-											<AiOutlineEdit />
-											<RiAccountCircleLine />
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
-										<span className="font-bold"> Samara Sydney </span>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										28/08/2022
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										15:00
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>Sibari</div>
-											{/* <div className="flex items-center">
-												<span className="mr-2">20%</span>
-												<div className="relative w-full">
-													<div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
-														<div
-															style={{ width: "20%" }}
-															className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
-														></div>
-													</div>
-												</div>
-											</div> */}
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex items-center gap-2">
-											{/* <Circle className="h-3 w-3 text-yellow-500" /> */}
-											Francesco Di Marco
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
-										{/* ICONS */}
-										<div className="flex flex-row ml-2">
-											<MdDeleteOutline />
-											<AiOutlineEdit />
-											<RiAccountCircleLine />
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
-										<span className="font-bold"> Wilson bator </span>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										29/08/2022
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										11:00
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>Sibari</div>
-											{/* <div className="flex items-center">
-												<span className="mr-2">40%</span>
-												<div className="relative w-full">
-													<div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
-														<div
-															style={{ width: "40%" }}
-															className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
-														></div>
-													</div>
-												</div>
-											</div> */}
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex items-center gap-2">
-											{/* <Circle className="h-3 w-3 text-red-500" /> */}
-											Francesco Di Marco
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
-										{/* ICONS */}
-										<div className="flex flex-row ml-2">
-											<MdDeleteOutline />
-											<AiOutlineEdit />
-											<RiAccountCircleLine />
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
-										{/* <Image
-											src="https://demos.creative-tim.com/notus-js/assets/img/team-1-800x800.jpg"
-											className="bg-white rounded-full border"
-											height="48"
-											width="48"
-											alt="..."
-										/> */}
-										<span className="font-bold"> Jaxson Schleifer </span>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										30/08/2022
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										08:00
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>Sibari</div>
-											{/* <div className="flex items-center">
-												<span className="mr-2">100%</span>
-												<div className="relative w-full">
-													<div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
-														<div
-															style={{ width: "100%" }}
-															className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
-														></div>
-													</div>
-												</div>
-											</div> */}
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex items-center gap-2">
-											{/* <Circle className="h-3 w-3 text-green-500" /> */}
-											Francesco Di Marco
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
-										{/* ICONS */}
-										<div className="flex flex-row ml-2">
-											<MdDeleteOutline />
-											<AiOutlineEdit />
-											<RiAccountCircleLine />
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
-										{/* <Image
-											src="https://demos.creative-tim.com/notus-js/assets/img/team-2-800x800.jpg"
-											className="bg-white rounded-full border"
-											height="48"
-											width="48"
-											alt="..."
-										/> */}
-										<span className="font-bold"> Alena Mango </span>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										02/09/2022
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										12:00
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>Sibari</div>
-											{/* <div className="flex items-center">
-												<span className="mr-2">80%</span>
-												<div className="relative w-full">
-													<div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
-														<div
-															style={{ width: "80%" }}
-															className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
-														></div>
-													</div>
-												</div>
-											</div> */}
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex items-center gap-2">
-											{/* <Circle className="h-3 w-3 text-gray-400" /> */}
-											Francesco Di Marco
-										</div>
-									</td>
-
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
-									{/* ICONS */}
-									<div className="flex flex-row ml-2">
-											<MdDeleteOutline />
-											<AiOutlineEdit />
-											<RiAccountCircleLine />
-										</div>
-									</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
