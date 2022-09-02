@@ -5,9 +5,64 @@ import { RiAccountCircleLine } from "react-icons/ri"
 import {MdDone} from "react-icons/md"
 import {MdOutlineCancel} from "react-icons/md"
 import Popup from "reactjs-popup"
+import {confirmAlert} from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function ApplicantsList() {
 
+
+	const save = () => {
+		confirmAlert({
+			title: 'Confirm to submit',
+			message: 'Are you sure you want to save ?',
+			buttons: [
+			  {
+				label: 'Yes',
+				onClick: () => alert('Click Yes')
+			  },
+			  {
+				label: 'No',
+				onClick: () => alert('Click No')
+			  }
+			]
+			
+		  });
+	}
+
+	const cancel = () => {
+		confirmAlert({
+			title: 'Confirm to submit',
+			message: 'Are you sure you want to delete ?',
+			buttons: [
+			  {
+				label: 'Yes',
+				onClick: () => alert('Click Yes')
+			  },
+			  {
+				label: 'No',
+				onClick: () => alert('Click No')
+			  }
+			]
+		  });
+	}
+
+	const profile = () => {
+		confirmAlert({
+			title: 'Confirm to submit',
+			message: 'Are you sure you want to go to the profile ?',
+			buttons: [
+			  {
+				label: 'Yes',
+				onClick: () => alert('Click Yes')
+			  },
+			  {
+				label: 'No',
+				onClick: () => alert('Click No')
+			  }
+			]
+			
+		  });
+	}
 
 	return (
 		<section className="relative w-full">
@@ -119,7 +174,7 @@ export default function ApplicantsList() {
 										{/* ICONS */}
 										<div className="flex flex-row">
 											<button className="px-0.75">
-												<MdDeleteOutline />
+												<MdDeleteOutline onClick={cancel} />
 											</button>
 											<Popup  contentStyle={{background:"#0B3768", borderRadius:"0.25rem"}} trigger={<button><AiOutlineEdit /></button>}  position="left center">
 												<div className="flex flex-row">
@@ -140,14 +195,14 @@ export default function ApplicantsList() {
 													</div>
 													<div>
 														<div className="flex flex-row rounded border-none bg-[#0B3768] h-full text-white align-middle px-4 text-sm p-4 mx-4 ">
-														<MdOutlineCancel className=""/>
-														<MdDone  />
+														<button onClick={save}><MdDone className="hover:fill-[#15803d] mr-1 h-6 w-4"/></button>
+														<button onClick={cancel}>< MdOutlineCancel className='hover:fill-[#991b1b]  h-6 w-4' /></button>
 														</div>
 													</div>
 												</div>
 											</Popup>
 											<button className="px-0.75">
-												<RiAccountCircleLine />
+												<RiAccountCircleLine onClick={profile}/>
 											</button>
 											
 										</div>
