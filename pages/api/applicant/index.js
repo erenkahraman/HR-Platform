@@ -17,6 +17,9 @@ export default async function handler(req, res) {
                     {
                         $lookup: {
                             from: Student.collection.name,
+                            pipeline: [
+                                { $match: { applicationStatus: "On Process" } }
+                            ],
                             localField: 'student',
                             foreignField: '_id',
                             as: 'student'

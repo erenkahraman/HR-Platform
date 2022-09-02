@@ -1,8 +1,24 @@
-import { Add, Circle, MoreHoriz, SystemUpdateAlt } from "@mui/icons-material";
-import Image from "next/image";
+import { MoreHoriz, SystemUpdateAlt } from "@mui/icons-material";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function ApplicantsList() {
+
+	const [data, setData] = useState([])
+	const [isloading, setLoading] = useState(true)
+
+	useEffect(() => {
+		setLoading(true)
+		fetch('/api/intern')
+			.then((res) => res.json())
+			.then((data) => {
+				setData(data)
+				setLoading(false)
+			})
+	}, [])
+	if (isloading) return <p>Loading...</p>
+	if (!data) return <p>No profile data</p>
+
 	return (
 		<section className="relative w-full">
 			<div className="w-full mb-12">
@@ -56,71 +72,76 @@ export default function ApplicantsList() {
 
 							{/* Table Body */}
 							<tbody className="divide-y">
-								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-										<span className="ml-3 font-bold"> Alessio Rocco </span>
-									</td>
+								{data.map(intern =>
+									<tr key={intern._id}>
+										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+											<span className="ml-3 font-bold"> {intern.student.firstName} {intern.student.lastName} </span>
+										</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-										25/08/2021
-									</td>
+										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+											{intern.startDate}
+										</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-										Human Resources
-									</td>
+										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+										{intern.endDate}
+										</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-										Human
-									</td>
+										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+										{intern.durationInWeeks}
+										</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-										HI
-									</td>
+										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+										{intern.departement}
+										</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-										Ho
-									</td>
+										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+										{intern.position}
+										</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-										<a
-											href="#pablo"
-											className="text-blueGray-500 block py-1 px-3"
+										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+											<a
+												href="#pablo"
+												className="text-blueGray-500 block py-1 px-3"
 											// onclick="openDropdown(event,'table-dark-1-dropdown')"
-										>
-											<MoreHoriz />
-										</a>
-										<div
-											className="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
+											>
+												<MoreHoriz />
+											</a>
+											<div
+												className="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
 											// id="table-dark-1-dropdown"
-										>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
 											>
-												Action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Another action
-											</a>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Something else here
-											</a>
-											<div className="h-0 my-2 border border-solid border-blueGray-100"></div>
-											<a
-												href="#pablo"
-												className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-											>
-												Seprated link
-											</a>
-										</div>
-									</td>
-								</tr>
+												<a
+													href="#pablo"
+													className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+												>
+													Action
+												</a>
+												<a
+													href="#pablo"
+													className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+												>
+													Another action
+												</a>
+												<a
+													href="#pablo"
+													className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+												>
+													Something else here
+												</a>
+												<div className="h-0 my-2 border border-solid border-blueGray-100"></div>
+												<a
+													href="#pablo"
+													className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+												>
+													Seprated link
+												</a>
+											</div>
+										</td>
+									</tr>
+									)
+
+								}
+
 							</tbody>
 						</table>
 					</div>

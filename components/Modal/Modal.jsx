@@ -1,8 +1,10 @@
 import React from 'react'
 import mongoose from 'mongoose'
+import { useRouter } from 'next/router';
 
 const Modal = ({ setModalOn, setChoice, stdId }) => {
 
+	const router = useRouter();
 	const handleCancelClick = () => {
 		setChoice(false)
 		setModalOn(false)
@@ -20,11 +22,11 @@ const Modal = ({ setModalOn, setChoice, stdId }) => {
 			_id: id,
 			startDate: event.target.startDate.value,
 			endDate: event.target.endDate.value,
-			durationInWeeks: calculateWeeks(startDate,endDate),
 			departement: event.target.department.value,
 			position: event.target.position.value,
 			student: stdId
 		};
+		intern.durationInWeeks = await calculateWeeks(intern.startDate, intern.endDate);
 		const JSONintern = JSON.stringify(intern);
 		const endpointIntern = '/api/intern';
 		const endpointstudent = `/api/student/${stdId}`;
@@ -43,13 +45,15 @@ const Modal = ({ setModalOn, setChoice, stdId }) => {
 				"Access-Control-Allow-Origin": "*",
 			},
 			body: JSON.stringify({
-				intern : id
+				intern : id,
+				applicationStatus: "Accepted"
 			}),
 		};
 		await fetch(endpointstudent, optionsStudent);
 		await fetch(endpointIntern, optionsIntern);
 		setChoice(true)
-		setModalOn(false)
+		//router.push('/interns/InternsList')
+		//setModalOn(false)
 	}
 
 	return (
