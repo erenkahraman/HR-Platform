@@ -286,8 +286,6 @@ export default function Dashboard() {
             {/* What's New Content */}
             <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
               <Feed />
-              <Feed />
-              <Feed />
             </div>
             {/* Weekly Schedule */}
           </div>
