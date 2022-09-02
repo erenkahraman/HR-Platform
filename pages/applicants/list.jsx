@@ -1,4 +1,5 @@
-import { Add, Circle, MoreHoriz, SystemUpdateAlt, HowToReg } from "@mui/icons-material";
+import { Add, Circle, MoreHoriz, SystemUpdateAlt, HowToReg} from "@mui/icons-material";
+import EditIcon from '@mui/icons-material/Edit';
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -7,12 +8,9 @@ import Popup from "reactjs-popup";
 
 import * as React from 'react';
 import Modal from "../../components/Modal/Modal.jsx";
-import { useState } from "react";
-
-
-
-
-
+import {useState} from "react";
+import Modal1 from "../../components/Modal/Modal1.jsx";
+import Modal2 from "../../components/Modal/Modal2.jsx";
 
 
 export default function ApplicantsList({ students }) {
@@ -23,6 +21,25 @@ export default function ApplicantsList({ students }) {
         setModalOn(true)
     }
 
+    const [modalOn1, setModalOn1] = useState(false);
+    const [choice1, setChoice1] = useState(false);
+  
+    const clicked1 = () => {
+      setModalOn1(true)
+    }
+    
+    const [modalOn2, setModalOn2] = useState(false);
+    const [choice2, setChoice2] = useState(false);
+  
+    const clicked2 = () => {
+      setModalOn2(true)
+    }
+
+   
+
+
+    
+        
     // set progress bar
     let setProgressBar = progress => {
         switch (progress) {
@@ -91,22 +108,25 @@ export default function ApplicantsList({ students }) {
                             {/* Table Head */}
                             <thead>
                                 <tr>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                                         Full Name
                                     </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                                         Applied On
                                     </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                                         Department
                                     </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                                        Position
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                                         Completion{" "}
                                     </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                                         Status
                                     </th>
-                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                                         Action
                                     </th>
                                 </tr>
@@ -126,6 +146,10 @@ export default function ApplicantsList({ students }) {
 
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             {applicant.department}
+                                        </td>
+
+                                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            {student.applicant.position}
                                         </td>
 
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -159,7 +183,7 @@ export default function ApplicantsList({ students }) {
                                                     type="submit"
 
                                                 >
-                                                    <HowToReg />
+                                                    <EditIcon />
                                                 </button>
                                             </td>} position="bottom">
                                             <div className="h-48 w-52 ...">
@@ -187,29 +211,37 @@ export default function ApplicantsList({ students }) {
                                                         {modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} stdId={applicant.student._id} />}
                                                     </div>
 
-                                                    <div>
-                                                        <button
-                                                            type="submit"
-                                                            className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
-                                                        >
-                                                            No Answer
-                                                        </button>
-                                                    </div>
+                                 <div>
+                                <button onClick={clicked1}
+									type="submit"
+									className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+								>
+									No Answer
+								</button>
+                                {choice1 }
 
-                                                    <div>
-                                                        <button
-                                                            type="submit"
-                                                            className="w-28 inline-flex rounded-b-lg justify-center py-2 px-4  shadow-sm text-sm font-medium boeder-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
-                                                        >
-                                                            Reject
-                                                        </button>
-                                                    </div>
+                                {modalOn1 && < Modal1 setModalOn1={setModalOn1} setChoice1={setChoice1} />}
+                                </div>
+
+                                <div>
+                                <button onClick={clicked2}
+									type="submit"
+									className="w-28 inline-flex rounded-b-lg justify-center py-2 px-4  shadow-sm text-sm font-medium boeder-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+								>
+									Rejected
+								</button>
+                                {choice2 }
+
+                                {modalOn2 && < Modal2 setModalOn2={setModalOn2} setChoice2={setChoice2} />}
+                                </div>
 
 
-                                                </div>
-                                            </div>
 
-
+                                    
+                                    </div>
+                                    </div> 
+	
+	
 
                                             {/* </div> */}
 
