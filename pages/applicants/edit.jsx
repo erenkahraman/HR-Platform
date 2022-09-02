@@ -1,3 +1,4 @@
+import React from 'react'
 import { DocumentReview } from "../../components/DocumentReview";
 import countryList from "react-select-country-list";
 import { useState , useMemo  } from "react";
@@ -5,9 +6,8 @@ import Select  from "react-select";
 import Popup from "reactjs-popup";
 import {Cancel, Verified } from "@mui/icons-material"
 
-export default function ApplicantsNew() {
-
-	const [nationalityValue, setNationality] = useState('')
+const edit = () => {
+    const [nationalityValue, setNationality] = useState('')
 	const [departingCountryValue, setDepartingCountry] = useState('')
 	const options = useMemo(() => countryList().getData(), [])
 	const updateNationality = nationality => {
@@ -69,7 +69,7 @@ export default function ApplicantsNew() {
 					<div className="flex justify-between rounded-t px-4 py-3 border-b-2 border-gray-300">
 						<div className="flex flex-wrap items-center">
 							<div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-								<h3 className="font-semibold text-2xl">Create Applicant</h3>
+								<h3 className="font-semibold text-2xl">Edit Applicant</h3>
 							</div>
 						</div>
 					</div>
@@ -679,5 +679,7 @@ export default function ApplicantsNew() {
 			</div>
 		</section>
 	);
-}
+    }
+  
 
+export default edit

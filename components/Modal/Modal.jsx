@@ -78,8 +78,8 @@ const Modal = ({ setModalOn, setChoice }) => {
 			</div>
             
             <div className="flex  flex-row ml-6">
-                <button onClick={handleOKClick} className=" rounded px-4 py-2 text-white  bg-blue-400 ">Cancel</button>
-                <button onClick={handleCancelClick} className="rounded px-4 py-2 ml-4 text-white bg-green-400 ">Save and Move to Interns</button>
+                <button onClick={handleCancelClick} className=" rounded px-4 py-2 text-white  bg-blue-400 ">Cancel</button>
+                <button onClick={handleOKClick} className="rounded px-4 py-2 ml-4 text-white bg-green-400 ">Save and Move to Interns</button>
                 
             </div>
 
