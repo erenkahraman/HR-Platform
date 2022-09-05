@@ -16,6 +16,7 @@ import Upcoming from "../../components/Upcoming/Upcoming";
 import Popup from "reactjs-popup";
 import news from "./news";
 import { useRouter } from "next/router";
+import { Link } from "@mui/material";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -336,10 +337,10 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <div className="text-xl font-semibold">What&apos;s New</div>
               <a
-                href="/."
-                className="viewAll flex items-center justify-center text-[#2F80ED]"
+                href="../WhatsNewViewAll"
+                className="flex items-center justify-center text-[#2F80ED]"
               >
-                <div>View All (18)</div>
+                <div>View All </div>
                 <div>
                   {" "}
                   <ArrowForward className="text-md" />
@@ -381,10 +382,10 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <div className="text-xl font-semibold">Daily Reminder</div>
               <a
-                href="./"
+                href="../reminderViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
-                <div>View All (12)</div>
+                <div>View All</div>
                 <div>
                   {" "}
                   <ArrowForward className="text-md" />

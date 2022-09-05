@@ -1,25 +1,18 @@
-import React from 'react'
+import React from "react";
 import Feed from "../../components/Feed/Feed";
-
 
 function news() {
   return (
     <div>
-
-    <div>
+      <div>
         <p>What is new</p>
-    </div>
+      </div>
 
-    <div>
+      <div>
         <Feed />
-        <Feed />
-        <Feed />
-        <Feed />
-        <Feed />
+      </div>
     </div>
-
-    </div>
-  )
+  );
 }
 
-export default news
+export default news;

@@ -1,15 +1,12 @@
-import { Circle } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-const Reminder = ({ color }) => {
-  const circleColor = () => {
-    let result = "text-sm " + color;
-    return result;
-  };
+import { Circle } from "@mui/icons-material";
+
+const ReminderViewAll = () => {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
-    fetch("/api/reminder")
+    fetch("/api/reminderViewAll")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -17,11 +14,8 @@ const Reminder = ({ color }) => {
   }, []);
   return (
     <div>
-      {data.slice(data.length - 3).map((reminder) => (
+      {data.map((reminder) => (
         <div key={reminder.id} className="flex w-full">
-          <div className="flex-[1] flex items-center justify-center">
-            <Circle className={circleColor()} />
-          </div>
           <div className="flex-[5] flex flex-col">
             <div className="text-sm font-semibold">{reminder.title}</div>
             <div className="text-xs font-light ">{reminder.category}</div>
@@ -34,5 +28,4 @@ const Reminder = ({ color }) => {
     </div>
   );
 };
-
-export default Reminder;
+export default ReminderViewAll;

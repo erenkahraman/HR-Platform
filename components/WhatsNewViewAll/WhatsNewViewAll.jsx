@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const Feed = () => {
+const WhatsNewViewAll = () => {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   useEffect(() => {
@@ -13,7 +13,7 @@ const Feed = () => {
   }, []);
   return (
     <div>
-      {data.slice(data.length - 3).map((whatsNew) => (
+      {data.map((whatsNew) => (
         <div key={whatsNew.id}>
           <div className="flex m-2 py-4">
             <div className="flex flex-[1] flex-col gap-2 p-2">
@@ -38,5 +38,4 @@ const Feed = () => {
     </div>
   );
 };
-
-export default Feed;
+export default WhatsNewViewAll;
