@@ -5,4 +5,4 @@ const DepartmentSchema = new mongoose.Schema({
     positions : [String]
 });
 
-export default mongoose.models.DepartmentSchema || mongoose.model('Department', DepartmentSchema);
+export default mongoose.models.Department || mongoose.model('Department', DepartmentSchema);

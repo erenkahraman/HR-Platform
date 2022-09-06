@@ -65,7 +65,7 @@ export default function ApplicantsList({ students }) {
     useEffect(() => {
         setLoading(true)
         fetch('/api/applicant')
-            .then((res) => res.json())
+            .then(( res) => res.json())
             .then((data) => {
                 setData(data)
                 setLoading(false)
@@ -149,7 +149,7 @@ export default function ApplicantsList({ students }) {
                                         </td>
 
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            {student.applicant.position}
+                                            {applicant.position}
                                         </td>
 
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
