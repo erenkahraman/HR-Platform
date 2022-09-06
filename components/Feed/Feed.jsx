@@ -21,9 +21,9 @@ const Feed = () => {
 				</div>
 			</div>
 			<div className="flex flex-[1] p-2">
-				<div className="flex h-fit text-sm font-semibold underline cursor-pointer">
+				<button className="flex h-fit text-sm font-semibold underline cursor-pointer">
 					Read More
-				</div>
+				</button>
 			</div>
 		</div>
 	);
