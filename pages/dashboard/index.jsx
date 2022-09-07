@@ -163,7 +163,7 @@ export default function Dashboard() {
 							</div>
 						</div>
 
-						{/* BUTTOM PART */}
+						{/* BOTTOM PART */}
 						<div className="flex flex-row pt-20">
 							<input type='date' class="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 " />
 							<div className="pl-20">

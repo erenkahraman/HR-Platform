@@ -1,7 +1,7 @@
 import FeedSchedule from "../../components/Feed/FeedSchedule"
 import AddIcon from '@mui/icons-material/Add';
 
-function news() {
+function weeklySchedule() {
   return (
     <section className="relative w-full">
       <div className="w-full mb-12">
@@ -15,7 +15,7 @@ function news() {
               </div>
             </div>
             <div className="flex gap-2">
-              <button href="/interns/monthAttendance">
+              <button>
                 <span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
                   <AddIcon />
                   <p className="text-m">Add Schedule</p>
@@ -39,4 +39,4 @@ function news() {
   );
 };
 
-export default news;
+export default weeklySchedule;
