@@ -5,15 +5,18 @@ import {
   SystemUpdateAlt,
   HowToReg,
 } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
 import { useEffect } from "react";
 import { server } from "../../next.config";
 import Popup from "reactjs-popup";
-
 import * as React from "react";
 import Modal from "../../components/Modal/Modal.jsx";
 import { useState } from "react";
+import Modal1 from "../../components/Modal/Modal1.jsx";
+import Modal2 from "../../components/Modal/Modal2.jsx";
+import { CSVLink, CSVDownload } from "react-csv";
 
 export default function ApplicantsList({ students }) {
   const [modalOn, setModalOn] = useState(false);
@@ -21,6 +24,20 @@ export default function ApplicantsList({ students }) {
 
   const clicked = () => {
     setModalOn(true);
+  };
+
+  const [modalOn1, setModalOn1] = useState(false);
+  const [choice1, setChoice1] = useState(false);
+
+  const clicked1 = () => {
+    setModalOn1(true);
+  };
+
+  const [modalOn2, setModalOn2] = useState(false);
+  const [choice2, setChoice2] = useState(false);
+
+  const clicked2 = () => {
+    setModalOn2(true);
   };
 
   // set progress bar
@@ -40,28 +57,10 @@ export default function ApplicantsList({ students }) {
         return "0%";
     }
   };
+
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
 
-  //add student to interns
-  let addToInterns = (student) => {};
-
-  /*const submit = () => {
-        confirmAlert({
-          title: 'Confirm to submit',
-          message: 'Are you sure to do this.',
-          buttons: [
-            {
-              label: 'Yes',
-              onClick: () => alert('Click Yes')
-            },
-            {
-              label: 'No',
-              onClick: () => alert('Click No')
-            }
-          ]
-        });
-      };*/
   useEffect(() => {
     setLoading(true);
     fetch("/api/applicant")
@@ -71,8 +70,49 @@ export default function ApplicantsList({ students }) {
         setLoading(false);
       });
   }, []);
+  console.log(data);
   if (isloading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
+
+  const headers = [
+    { label: "First name", key: "student.firstName" },
+    { label: "Last name", key: "student.lastName" },
+    { label: "Nationality", key: "student.nationality" },
+    { label: "Departing Country", key: "student.departingCountry" },
+    { label: "Date of birth", key: "student.dateOfBirth" },
+    { label: "Email", key: "student.email" },
+    { label: "Department", key: "department" },
+    { label: "Phone Number", key: "student.phoneNumber" },
+    { label: "Sex", key: "student.sex" },
+    { label: "University", key: "student.university" },
+    { label: "Application Date", key: "applicationDate" },
+    { label: "Arrival Date", key: "arrivalDate" },
+    { label: "Departure Date", key: "departureDate" },
+    { label: "Hr Interview Date", key: "hrInterviewDate" },
+    { label: "Interview Notes", key: "interviewNotes" },
+    { label: "Position", key: "position" },
+    { label: "Progress", key: "progress" },
+    { label: "Rejection Reasons", key: "rejectionReasons" },
+    { label: "Acceptance Letter", key: "documents.acceptanceLetter" },
+    { label: "Accommodation Letter", key: "documents.accommodationLetter" },
+    { label: "Arrival Tickets", key: "documents.arrivalTickets" },
+    { label: "Confidentiality Letter", key: "documents.confidentialityLetter" },
+    { label: "Curiculum Vitae", key: "documents.curiculumVitae" },
+    { label: "Identification", key: "documents.identification" },
+    {
+      label: "Intern Development Plan",
+      key: "documents.internDevelopmentPlan",
+    },
+    { label: "Learning Agreement", key: "documents.learningAgreement" },
+  ];
+
+  const csvReport = {
+    separator: "  ",
+    data: data,
+    headers: headers,
+    filename: "Extramus Applicant List",
+  };
+
   return (
     <section className="relative w-full">
       <div className="w-full mb-12">
@@ -85,12 +125,12 @@ export default function ApplicantsList({ students }) {
               </div>
             </div>
             <div className="flex gap-2">
-              <Link href="/import-list">
-                <span className="gap-1 hover:bg-gray-200 group flex items-center rounded-md bg-gray-300 text-gray-500 text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-                  <SystemUpdateAlt className="text-sm" />
-                  CSV Import
-                </span>
-              </Link>
+              <span className="gap-1 hover:bg-gray-200 group flex items-center rounded-md bg-gray-300 text-gray-500 text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
+                <SystemUpdateAlt className="text-sm" />
+
+                <CSVLink {...csvReport}>Export to CSV</CSVLink>
+              </span>
+
               <Link href="/applicants/new">
                 <span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
                   <Add className="text-sm" />
@@ -106,22 +146,25 @@ export default function ApplicantsList({ students }) {
               {/* Table Head */}
               <thead>
                 <tr>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                     Full Name
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                     Applied On
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                     Department
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                    Position
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                     Completion{" "}
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                     Status
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                     Action
                   </th>
                 </tr>
@@ -129,37 +172,40 @@ export default function ApplicantsList({ students }) {
 
               {/* Table Body */}
               <tbody className="divide-y">
-                {data.map((student) => (
-                  <tr key={student._id}>
+                {data.map((applicant) => (
+                  <tr key={applicant._id}>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                       <span className="ml-3 font-bold">
                         {" "}
-                        {student.firstName} {student.lastName}{" "}
+                        {applicant.student.firstName}{" "}
+                        {applicant.student.lastName}{" "}
                       </span>
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {student.applicant.applicationDate}
+                      {applicant.applicationDate}
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {student.applicant.department}
+                      {applicant.department}
+                    </td>
+
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {applicant.position}
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                       <div className="flex flex-col gap-1">
-                        <div>{student.applicant.progress}</div>
+                        <div>{applicant.progress}</div>
                         <div className="flex items-center">
                           <span className="mr-2">
-                            {setProgressBar(student.applicant.progress)}
+                            {setProgressBar(applicant.progress)}
                           </span>
                           <div className="relative w-full">
                             <div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
                               <div
                                 style={{
-                                  width: setProgressBar(
-                                    student.applicant.progress
-                                  ),
+                                  width: setProgressBar(applicant.progress),
                                 }}
                                 className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
                               ></div>
@@ -184,14 +230,13 @@ export default function ApplicantsList({ students }) {
                       trigger={
                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                           <button type="submit">
-                            <HowToReg />
+                            <EditIcon />
                           </button>
                         </td>
                       }
                       position="bottom"
                     >
-                      {/* class="h-48 w-52 ..." */}
-                      <div className="h-48 w-52">
+                      <div className="h-48 w-52 ...">
                         <div className="flex flex-col ml-8 ">
                           <div>
                             <button
@@ -208,7 +253,7 @@ export default function ApplicantsList({ students }) {
                               type="submit"
                               onClick={clicked}
                             >
-                              Accepted
+                              Accept
                             </button>
                             {choice}
 
@@ -216,26 +261,45 @@ export default function ApplicantsList({ students }) {
                               <Modal
                                 setModalOn={setModalOn}
                                 setChoice={setChoice}
+                                stdId={applicant.student._id}
                               />
                             )}
                           </div>
 
                           <div>
                             <button
+                              onClick={clicked1}
                               type="submit"
                               className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
                             >
                               No Answer
                             </button>
+                            {choice1}
+
+                            {modalOn1 && (
+                              <Modal1
+                                setModalOn1={setModalOn1}
+                                setChoice1={setChoice1}
+                              />
+                            )}
                           </div>
 
                           <div>
                             <button
+                              onClick={clicked2}
                               type="submit"
                               className="w-28 inline-flex rounded-b-lg justify-center py-2 px-4  shadow-sm text-sm font-medium boeder-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
                             >
                               Rejected
                             </button>
+                            {choice2}
+
+                            {modalOn2 && (
+                              <Modal2
+                                setModalOn2={setModalOn2}
+                                setChoice2={setChoice2}
+                              />
+                            )}
                           </div>
                         </div>
                       </div>

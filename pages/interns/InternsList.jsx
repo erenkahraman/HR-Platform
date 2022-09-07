@@ -1,13 +1,15 @@
-import { Add, Circle, MoreHoriz, SystemUpdateAlt } from "@mui/icons-material";
-import Image from "next/image";
+import { MoreHoriz, SystemUpdateAlt } from "@mui/icons-material";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-export default function InternsList() {
+import { useState, useEffect } from "react";
+import { CSVLink, CSVDownload } from "react-csv";
+
+export default function ApplicantsList() {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+
   useEffect(() => {
     setLoading(true);
-    fetch("/api/student")
+    fetch("/api/intern")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -16,6 +18,44 @@ export default function InternsList() {
   }, []);
   if (isloading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
+  const headers = [
+    { label: "First name", key: "firstName" },
+    { label: "Last name", key: "lastName" },
+    { label: "Nationality", key: "nationality" },
+    { label: "Departing Country", key: "departingCountry" },
+    { label: "Date of birth", key: "dateOfBirth" },
+    { label: "Email", key: "email" },
+    { label: "Department", key: "applicant.department" },
+    { label: "Phone Number", key: "phoneNumber" },
+    { label: "Sex", key: "sex" },
+    { label: "University", key: "university" },
+    { label: "Application Date", key: "applicant.applicationDate" },
+    { label: "Arrival Date", key: "applicant.arrivalDate" },
+    { label: "Departure Date", key: "applicant.departureDate" },
+    { label: "Hr Interview Date", key: "applicant.hrInterviewDate" },
+    { label: "Interview Notes", key: "applicant.interviewNotes" },
+    { label: "Position", key: "applicant.position" },
+    { label: "Progress", key: "applicant.progress" },
+    { label: "Rejection Reasons", key: "applicant.rejectionReasons" },
+    { label: "Acceptance Letter", key: "documents.acceptanceLetter" },
+    { label: "Accommodation Letter", key: "documents.accommodationLetter" },
+    { label: "Arrival Tickets", key: "documents.arrivalTickets" },
+    { label: "Confidentiality Letter", key: "documents.confidentialityLetter" },
+    { label: "Curiculum Vitae", key: "documents.curiculumVitae" },
+    { label: "Identification", key: "documents.identification" },
+    {
+      label: "Intern Development Plan",
+      key: "documents.internDevelopmentPlan",
+    },
+    { label: "Learning Agreement", key: "documents.learningAgreement" },
+  ];
+
+  const csvReport = {
+    separator: "  ",
+    data: data,
+    headers: headers,
+    filename: "Extramus Applicant List",
+  };
   return (
     <section className="relative w-full">
       <div className="w-full mb-12">
@@ -28,12 +68,10 @@ export default function InternsList() {
               </div>
             </div>
             <div className="flex gap-2">
-              <Link href="/import-list">
-                <span className="gap-1 hover:bg-gray-200 group flex items-center rounded-md bg-gray-300 text-gray-500 text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-                  <SystemUpdateAlt className="text-sm" />
-                  CSV Import
-                </span>
-              </Link>
+              <span className="gap-1 hover:bg-gray-200 group flex items-center rounded-md bg-gray-300 text-gray-500 text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
+                <SystemUpdateAlt className="text-sm" />
+                <CSVLink {...csvReport}>Export to CSV</CSVLink>
+              </span>
             </div>
           </div>
 
@@ -69,33 +107,33 @@ export default function InternsList() {
 
               {/* Table Body */}
               <tbody className="divide-y">
-                {data.map((student) => (
-                  <tr key={student.id}>
+                {data.map((intern) => (
+                  <tr key={intern._id}>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                       <span className="ml-3 font-bold">
                         {" "}
-                        {student.firstName} {student.lastName}{" "}
+                        {intern.student.firstName} {intern.student.lastName}{" "}
                       </span>
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      25/08/2021
+                      {intern.startDate}
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      Human Resources
+                      {intern.endDate}
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      Human
+                      {intern.durationInWeeks}
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      HI
+                      {intern.departement}
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      Ho
+                      {intern.position}
                     </td>
 
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">

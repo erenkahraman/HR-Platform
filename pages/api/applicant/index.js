@@ -7,21 +7,23 @@ export default async function handler(req, res) {
   const { method } = req;
   const db = await getMongoDb();
   await dbConnect();
+
   if (method === "GET") {
     try {
       const applicant = await db
-        .collection("students")
+        .collection("applicants")
         .aggregate([
           {
             $lookup: {
-              from: Applicant.collection.name,
-              localField: "applicant",
+              from: Student.collection.name,
+              pipeline: [{ $match: { applicationStatus: "On Process" } }],
+              localField: "student",
               foreignField: "_id",
-              as: "applicant",
+              as: "student",
             },
           },
           {
-            $unwind: "$applicant",
+            $unwind: "$student",
           },
         ])
         .toArray();
