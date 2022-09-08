@@ -178,7 +178,7 @@ const FeedSchedule = () => {
 				</div>
 			</div>
 			<button onClick={read} className="flex flex-[1] p-2">
-				<div className="flex h-fit text-sm font-semibold underline cursor-pointer">
+				<div className="flex h-fit text-sm font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 					Read More
 				</div>
 			</button>

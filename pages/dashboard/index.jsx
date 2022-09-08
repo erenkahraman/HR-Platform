@@ -187,8 +187,8 @@ export default function Dashboard() {
 								href="/dashboard/news"
 								className="viewAll flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All (18)</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All (18)</div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
 								</div>
@@ -209,11 +209,11 @@ export default function Dashboard() {
 								href="\dashboard\weeklySchedule"
 								className="viewAll flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All</div>
+								<button class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
-								</div>
+								</button>
 							</a>
 						</div>
 						{/* Weekly Schedule Content */}
@@ -235,8 +235,8 @@ export default function Dashboard() {
 								href="/dashboard/dailyRemainder"
 								className="flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All (12)</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All (12)</div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
 								</div>
@@ -289,8 +289,8 @@ export default function Dashboard() {
 								href="/dashboard/upcoming"
 								className="flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All (8)</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All (8)</div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
 								</div>
@@ -341,8 +341,8 @@ export default function Dashboard() {
 								href="/dashboard/birthday"
 								className="flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All (6)</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All (6)</div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
 								</div>

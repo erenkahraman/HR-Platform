@@ -69,19 +69,19 @@ export default function ApplicantsList() {
 
 								{/* Radio check */}
 								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-200 p-2" />
+									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
 									<label className="text-sm pl-1 ">Terranova da Sibari</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-200 p-2" />
+									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
 									<label className="text-sm pl-1 ">Bivo Cantinella</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-200 p-2" />
+									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
 									<label className="text-sm pl-1 ">Sibari</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-200 p-2" />
+									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
 									<label className="text-sm pl-1">Spezzano Albanese Terme</label>
 								</div>
 								{/* search */}
