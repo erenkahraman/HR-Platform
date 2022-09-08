@@ -1,13 +1,22 @@
-import React from 'react'
 import { DocumentReview } from "../../components/DocumentReview";
 import countryList from "react-select-country-list";
 import { useState , useMemo  } from "react";
 import Select  from "react-select";
 import Popup from "reactjs-popup";
 import {Cancel, Verified } from "@mui/icons-material"
+import {AutoFixHigh} from '@mui/icons-material';
+import { Tooltip, Button } from "@material-tailwind/react";
+import {
+	Tabs,
+	TabsHeader,
+	TabsBody,
+	Tab,
+	TabPanel,
+  } from "@material-tailwind/react";
 
-const edit = () => {
-    const [nationalityValue, setNationality] = useState('')
+export default function ApplicantsNew() {
+
+	const [nationalityValue, setNationality] = useState('')
 	const [departingCountryValue, setDepartingCountry] = useState('')
 	const options = useMemo(() => countryList().getData(), [])
 	const updateNationality = nationality => {
@@ -16,6 +25,172 @@ const edit = () => {
 	const updateDepartingCountry = departingCountry => {
 		setDepartingCountry(departingCountry)
 	}
+	const [activeTabIndex, setActiveTabIndex] = useState(0);
+	const tabsData = [
+		{
+		  label: <div className=" text-green-500 ml-0 rounded-full py-3 ">Add Department</div>,
+		  content: <div className=" p-0 rounded-xl ">
+		  <div className="flex flex-col gap-2">
+		<label htmlFor="newD" className="block text-sm text-black mt-2">
+			Introduce New Department
+		</label>
+		<input
+			type="text"
+			name="newD"
+			id="newD"
+			required
+			autoComplete="given-name"
+			className="focus:ring-gray-400 focus:border-black block w-full shadow-sm sm:text-sm border-gray-300 rounded-md mt-2"
+		/>
+	   </div>
+	   <div className="flex p-4 gap-4 mt-4">
+	   <button
+		   type="submit"
+		   className="w-24 mr-4 inline-flex justify-center py-2 px-4 border-2 border-gray-500 scale-100 shadow-sm text-sm font-medium rounded-md bg-gray-500 text-white hover:scale-110"
+	   >
+		   Cancel
+	   </button>
+	   <button
+		   type="submit"
+		   className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md  bg-green-500 text-white hover:scale-110"
+	   >
+		   Add
+	   </button>
+	   </div>
+	   </div>
+		
+		 ,
+		},
+		{
+		  label: <div className="py-3 text-red-500 ml-0 rounded-full ">Delete Department</div>,
+		  content: <div className=" p-0 rounded-xl ">
+		  <div className="flex flex-col gap-2">
+										<label htmlFor="delD" className="block text-sm mt-2">
+											Select Department
+										</label>
+										<select
+											id="delD"
+											name="delD"
+											className="focus:ring-gray-400 focus:border-black block w-full shadow-sm sm:text-sm border-gray-300 rounded-md mt-2"
+										>
+											<option>Backend Developer</option>
+											<option>DevOps</option>
+											<option>data Analyst</option>
+										</select>
+									</div>
+	   <div className="flex p-4 gap-4 mt-4">
+	   <button
+		   type="submit"
+		   className="w-24 mr-4 inline-flex justify-center py-2 px-4 border-2 border-gray-500 scale-100 shadow-sm text-sm font-medium rounded-md bg-gray-500 text-white hover:scale-110"
+	   >
+		   Cancel
+	   </button>
+	   <button
+		   type="submit"
+		   className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md  bg-red-500 text-white hover:scale-110"
+	   >
+		   Delete
+	   </button>
+	   </div>
+	   </div>,
+		},
+	  ];
+	  const tabsData2 = [
+		{
+		  label: <div className=" text-green-500 ml-0 rounded-full py-3 ">Add Position</div>,
+		  content: <div className=" p-0 rounded-xl ">
+			<div className="flex flex-col gap-2">
+										<label htmlFor="delD" className="block text-sm mt-2">
+											Select Department
+										</label>
+										<select
+											id="delD"
+											name="delD"
+											className="focus:ring-gray-400 focus:border-black block w-full shadow-sm sm:text-sm border-gray-300 rounded-md mt-2"
+										>
+											<option>Backend Developer</option>
+											<option>DevOps</option>
+											<option>data Analyst</option>
+										</select>
+									</div>
+		  <div className="flex flex-col gap-2">
+		<label htmlFor="newD" className="block text-sm text-black mt-4">
+			Introduce New Position
+		</label>
+		<input
+			type="text"
+			name="newD"
+			id="newD"
+			required
+			autoComplete="given-name"
+			className="focus:ring-gray-400 focus:border-black block w-full shadow-sm text-xs border-gray-300 rounded-md mt-2"
+		/>
+	   </div>
+	   <div className="flex p-4 gap-4 mt-4">
+	   <button
+		   type="submit"
+		   className="w-24 mr-4 inline-flex justify-center py-2 px-4 border-2 border-gray-500 scale-100 shadow-sm text-sm font-medium rounded-md bg-gray-500 text-white hover:scale-110"
+	   >
+		   Cancel
+	   </button>
+	   <button
+		   type="submit"
+		   className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md  bg-green-500 text-white hover:scale-110"
+	   >
+		   Add
+	   </button>
+	   </div>
+	   </div>
+		
+		 ,
+		},
+		{
+		  label: <div className="py-3 text-red-500 ml-0 rounded-full ">Delete Position</div>,
+		  content: <div className=" p-0 rounded-xl ">
+		  <div className="flex flex-col gap-2">
+										<label htmlFor="delD" className="block text-sm mt-2">
+											Select Department
+										</label>
+										<select
+											id="delD"
+											name="delD"
+											className="focus:ring-gray-400 focus:border-black block w-full shadow-sm sm:text-sm border-gray-300 rounded-md mt-2"
+										>
+											<option>Backend Developer</option>
+											<option>DevOps</option>
+											<option>data Analyst</option>
+										</select>
+									</div>
+									<div className="flex flex-col gap-2">
+		<label htmlFor="newD" className="block text-sm text-black mt-4">
+			Introduce Position
+		</label>
+		<input
+			type="text"
+			name="newD"
+			id="newD"
+			required
+			autoComplete="given-name"
+			className="focus:ring-gray-400 focus:border-black block w-full shadow-sm sm:text-sm border-gray-300 rounded-md mt-2"
+		/>
+	   </div>
+	   <div className="flex p-4 gap-4 mt-4">
+	   <button
+		   type="submit"
+		   className="w-24 mr-4 inline-flex justify-center py-2 px-4 border-2 border-gray-500 scale-100 shadow-sm text-sm font-medium rounded-md bg-gray-500 text-white hover:scale-110"
+	   >
+		   Cancel
+	   </button>
+	   <button
+		   type="submit"
+		   className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md  bg-red-500 text-white hover:scale-110"
+	   >
+		   Delete
+	   </button>
+	   </div>
+	   </div>,
+		},
+	  ];
 	  
 
 	const handleSubmit = async (event) => {
@@ -69,7 +244,7 @@ const edit = () => {
 					<div className="flex justify-between rounded-t px-4 py-3 border-b-2 border-gray-300">
 						<div className="flex flex-wrap items-center">
 							<div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-								<h3 className="font-semibold text-2xl">Edit Applicant</h3>
+								<h3 className="font-semibold text-2xl">Edit Person </h3>
 							</div>
 						</div>
 					</div>
@@ -317,7 +492,7 @@ const edit = () => {
 											id="department"
 											name="department"
 											autoComplete="department"
-											className="block w-48 py-2 px-8 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+											className="block w-80 py-2 px-8 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
 										>
 											<option>Human Resources</option>
 											<option>ICT</option>
@@ -326,44 +501,73 @@ const edit = () => {
 									</div>
 									{/* Button new department */}
 									
-									<Popup contentStyle={{background:"#0B3768", borderRadius:"1rem"}}
+									<Popup contentStyle={{background:"white", borderRadius:"1rem", borderWidth:2 ,borderColor:"rgb(209 213 219)"}} className="mr-10 "
 									trigger={<div className="flex flex-col gap-2">
-									<button
+                                     <Tooltip className="bg-transparent text-black text-xs mt-3 ml-3"
+                                      content="Add/Delete Departments"
+                                      animate={{
+                                      mount: { scale: 1, y: 0 },
+                                      unmount: { scale: 0, y: 25 },
+                                      }}>
+                                      <Button
 									type="submit"
-									className="w-48 mt-7 inline-flex justify-center py-2 px-1 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+									className="w-16 mt-5 inline-flex justify-center py-2 px-1 text-black scale-100 bg-transparent text-2xl hover:scale-125"
 								>
-								     Add New Department
-								</button>
-									</div>} position="bottom">
-									<div className="m-1 p-2 w-64 px-0">
-	<div>
-		<h6 className="font-semibold text-xl text-white pt-2 pb-4 pl-3">Add New Department</h6>
-		<div className="flex flex-row mx-2 mt-2 mb-4">
-			<input type="text" class="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new department" required />
-		</div>
+								     <AutoFixHigh />
+								    </Button>
+                                      </Tooltip>
+									</div>} position="left">
+									{/* <div className="m-1 p-2 w-64 px-0"> */}
+	{/* <div> */}
+		{/* <h6 className="font-semibold text-xl text-white pt-2 pb-4 pl-3">Add New Department</h6> */}
+		{/* <div className="flex flex-row mx-2 mt-2 mb-4"> */}
+			{/* <input type="text" class="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new department" required /> */}
+		{/* </div> */}
+	{/* </div> */}
+	{/* <div className=" w-80 h-72">
+	<Tabs >
+      <TabsHeader >
+        {data.map(({ label, value }) => (
+          <Tab key={value} value={value}>
+			{label}
+            
+          </Tab>
+        ))}
+      </TabsHeader>
+      <TabsBody>
+        {data.map(({ value, desc }) => (
+          <TabPanel  key={value} value={value}>
+            {desc}
+          </TabPanel>
+        ))}
+      </TabsBody>
+    </Tabs>
 	</div>
-	
-
-	{/* BUTTOM PART */}
-	<div className="flex p-4 gap-4">
-								<button
-									type="submit"
-									className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-								>
-									Cancel
-								</button>
-								<button
-									type="submit"
-									className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-								>
-									Save
-								</button>
-							</div>
-	</div>
-
-	
-
-	
+	 */}
+	  <div className="w-80 h-64" >
+      <div className="space-x-3 border-b ">
+        {/* Loop through tab data and render button for each. */}
+        {tabsData.map((tab, idx) => {
+          return (
+            <button
+              key={idx}
+              className={` border-b-2 text-sm duration-150 ml-3 mr-1 px-4 ${
+                idx === activeTabIndex
+                  ? "bg-gray-200  rounded-xl border-gray-400"
+                  : " hover:border-gray-200"
+              }`}
+              // Change the active tab on click.
+              onClick={() => setActiveTabIndex(idx)}>
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
+      {/* Show active tab content. */}
+      <div className="py-4 p-3 mt-1">
+        <p>{tabsData[activeTabIndex].content}</p>
+      </div>
+    </div>
 									</Popup>
 									</div>
 
@@ -377,63 +581,55 @@ const edit = () => {
 											id="position"
 											name="position"
 											autoComplete="Position"
-											className="block w-48 py-2 px-8 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+											className="block w-80 py-2 px-8 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
 										>
 											<option>Backend Developer</option>
 											<option>DevOps</option>
 											<option>data Analyst</option>
 										</select>
 									</div>
-									<Popup contentStyle={{background:"#0B3768", borderRadius:"1rem"}}
+									<Popup contentStyle={{background:"white", borderRadius:"1rem", borderWidth:2 ,borderColor:"rgb(209 213 219)"}}
 									trigger={<div className="flex flex-col gap-2">
-									<button
+									<Tooltip className="bg-transparent text-black text-xs mt-3 ml-3"
+                                      content="Add/Delete Positions"
+                                      animate={{
+                                      mount: { scale: 1, y: 0 },
+                                      unmount: { scale: 0, y: 25 },
+                                      }}>
+                                      <Button
 									type="submit"
-									className="w-48 mt-7 inline-flex justify-center py-2 px-1 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+									className="w-16 mt-5 inline-flex justify-center py-2 px-1 text-black scale-100 bg-transparent text-2xl hover:scale-125"
 								>
-								     Add New Position
-								    </button>
-									</div>} position="bottom">
-									<div className="m-1 p-2 w-64 px-0">
-	<div>
-		<h6 className="font-semibold text-xl text-white pt-2 pb-4 pl-3 ml-5">Add New Position</h6>
-		<div className="flex flex-col mx-2 mt-2 mb-2">
-			{/* <input type="" class="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new position" required /> */}
-			<label htmlFor="checkDepartment" className=" text-sm font-bold text-white pb-1 ml-2 ">
-											Select Department
-			</label>
-			<select 
-											id="department"
-											name="department"
-											autoComplete="department"
-											className="flex flex-col w-52 ml-2 py-2 px-8 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-										>
-											<option>Human Resources</option>
-											<option>ICT</option>
-											<option>Business Analyst</option>
-										</select>
-		</div>
-		<div className="flex flex-row mx-2 mt-2 mb-4">
-			<input type="text" class="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new position" required />
-		</div>
-	</div>
+								     <AutoFixHigh />
+								    </Button>
+                                      </Tooltip>
+									
+									</div>} position="left">
 	
-
-	{/* BUTTOM PART */}
-	<div className="flex p-4 gap-4">
-								<button
-									type="submit"
-									className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-								>
-									Cancel
-								</button>
-								<button
-									type="submit"
-									className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-								>
-									Save
-								</button>
-							</div>
-	</div>
+									<div className="w-80 h-80" >
+      <div className="space-x-3 border-b ">
+        {/* Loop through tab data and render button for each. */}
+        {tabsData2.map((tab, idx) => {
+          return (
+            <button
+              key={idx}
+              className={` border-b-2 text-sm duration-150 ml-4 mr-1 px-5${
+                idx === activeTabIndex
+                  ? "bg-gray-200  rounded-xl border-gray-400"
+                  : " hover:border-gray-200"
+              }`}
+              // Change the active tab on click.
+              onClick={() => setActiveTabIndex(idx)}>
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
+      {/* Show active tab content. */}
+      <div className="py-4 p-3 mt-1">
+        <p>{tabsData2[activeTabIndex].content}</p>
+      </div>
+    </div>
 
 	
 
@@ -679,7 +875,5 @@ const edit = () => {
 			</div>
 		</section>
 	);
-    }
-  
+}
 
-export default edit

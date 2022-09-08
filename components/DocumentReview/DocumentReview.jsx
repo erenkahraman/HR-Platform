@@ -1,7 +1,7 @@
 const DocumentReview = ({ title }) => {
 	return (
 		<div className="flex w-48 flex-col gap-2">
-			<label htmlFor="status" className="block text-sm">
+			<label htmlFor="status" className="block text-sm font-semibold">
 				{title}
 			</label>
 			<select
