@@ -17,6 +17,7 @@ import Popup from "reactjs-popup";
 import news from "./news";
 import { useRouter } from "next/router";
 import { Link } from "@mui/material";
+import { Birthdays } from "../../components/Birthdays";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -474,30 +475,7 @@ export default function Dashboard() {
 
             {/* Birthday Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
-              <Reminder
-                color="text-purple-500"
-                title="Lia Ciobanu"
-                category="ICT"
-                time="21 august 2022"
-              />
-              <Reminder
-                color="text-purple-500"
-                title="Rimma Cechir"
-                category="ICT"
-                time="25 august 2022"
-              />
-              <Reminder
-                color="text-purple-500"
-                title="Person"
-                category="Business Analyst"
-                time="1 september 2022"
-              />
-              <Reminder
-                color="text-purple-500"
-                title="Person"
-                category="Human Resurces"
-                time="25 september 2022"
-              />
+              <Birthdays />
             </div>
           </div>
         </div>
