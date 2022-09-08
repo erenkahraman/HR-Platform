@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import loginImage from "../../public/loginImage.png";
 import extramusLogo from "../../public/extramusLogo.png";
 import Link from "next/link";
-import Modal from "../../components/Modal/modal3"
+import Modal from "../../components/LiaModal/model4"
 
 export default function Login() {
 
-	const [modalOn,setModalOn]=useState(false);
-	const [choice,setChoice]=useState(false);
+	const [modalOn, setModalOn] = useState(false);
+	const [choice, setChoice] = useState(false);
 
-	const clicked =() => {
+	const clicked = () => {
 		setModalOn(true)
 	}
 
@@ -56,10 +56,23 @@ export default function Login() {
 								className="p-3 border-[1px] bg-[#E4EBF7] rounded-md w-80"
 								placeholder="Password"
 							/>
-							<a href="#" className="text-[#0070ba] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
-								Forgot password?
-							</a>
+							<div className="flex felx-r justify-between ">
+								<a href="/login/forgot" className="text-[#0070ba] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
+									Forgot password?
+								</a>
+								<div className="text-gray-600 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
+								<label>Remember me
+									<input type="checkbox"className="w-4 h-4 rounded border-gray-300 ml-1 " />
+								</label>
+								</div>
+							</div>
+
 						</div>
+					</div>
+
+					<div class="flex flex-row items-center">
+						<input id="link-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 rounded border-gray-300 " />
+						<label for="link-checkbox" class="ml-2 text-sm font-medium text-black">I agree with the <a class="text-blue-600 hover:underline">terms and conditions</a>.</label>
 					</div>
 
 					{/* Submit Button */}

@@ -1,6 +1,6 @@
 import FeedSchedule from "../../components/Feed/FeedSchedule"
 import AddIcon from '@mui/icons-material/Add';
-import Modal from "../../components/Modal/modal";
+import Modal from "../../components/LiaModal/model";
 import {useState} from "react";
 
 function weeklySchedule() {
@@ -34,11 +34,7 @@ function weeklySchedule() {
             </div>
 
           
-            {/* {choice && 
-            <div className="flex justify-center">
-              <div className="flex justify-center w-1/3 bg-red-400 m-4 p-6 text-lg text-white">You have been bitten!!!!</div>
-            </div>
-            } */}
+           
 
             {modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} />}
           

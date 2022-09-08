@@ -6,7 +6,7 @@ import {MdDone} from "react-icons/md"
 import {MdOutlineCancel} from "react-icons/md"
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import Modal from "../../components/Modal/modal2"
+import Modal from "../../components/LiaModal/model3"
 
 export default function ApplicantsList() {
 

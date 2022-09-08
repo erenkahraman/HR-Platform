@@ -5,7 +5,7 @@ import "../styles/globals.css";
 function MyApp({ Component, pageProps }) {
 	const router = useRouter();
 
-	if (router.asPath === "/login") {
+	if (router.asPath === "/login" || router.asPath === "/login/forgot"  ) {
 		return <Component {...pageProps} />;
 	} else {
 		return (
