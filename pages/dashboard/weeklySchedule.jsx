@@ -1,7 +1,17 @@
 import FeedSchedule from "../../components/Feed/FeedSchedule"
 import AddIcon from '@mui/icons-material/Add';
+import Modal from "../../components/Modal/modal";
+import {useState} from "react";
 
 function weeklySchedule() {
+  
+  const [modalOn,setModalOn]=useState(false);
+  const [choice,setChoice]=useState(false);
+
+  const clicked =() => {
+    setModalOn(true)
+  }
+
   return (
     <section className="relative w-full">
       <div className="w-full mb-12">
@@ -15,13 +25,24 @@ function weeklySchedule() {
               </div>
             </div>
             <div className="flex gap-2">
-              <button>
+              <button onClick={clicked}>
                 <span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
                   <AddIcon />
                   <p className="text-m">Add Schedule</p>
                 </span>
               </button>
             </div>
+
+          
+            {/* {choice && 
+            <div className="flex justify-center">
+              <div className="flex justify-center w-1/3 bg-red-400 m-4 p-6 text-lg text-white">You have been bitten!!!!</div>
+            </div>
+            } */}
+
+            {modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} />}
+          
+
           </div>
 
           <div className="block w-full overflow-x-auto">
