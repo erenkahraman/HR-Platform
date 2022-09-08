@@ -28,7 +28,8 @@
     "react-select": "^5.4.0",
     "react-select-country-list": "^2.2.3",
     "react-toastify": "^9.0.8",
-    "reactjs-popup": "^2.0.5"
+    "reactjs-popup": "^2.0.5",
+    "slate-react": "^0.82.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",

@@ -4,31 +4,19 @@ import { AiOutlineEdit } from "react-icons/ai"
 import { RiAccountCircleLine } from "react-icons/ri"
 import {MdDone} from "react-icons/md"
 import {MdOutlineCancel} from "react-icons/md"
-import Popup from "reactjs-popup"
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import Modal from "../../components/Modal/modal2"
 
 export default function ApplicantsList() {
 
+	const [modalOn,setModalOn]=useState(false);
+	const [choice,setChoice]=useState(false);
 
-	const save = () => {
-		confirmAlert({
-			title: 'Confirm to submit',
-			message: 'Are you sure you want to save ?',
-			buttons: [
-			  {
-				label: 'Yes',
-				onClick: () => alert('Click Yes')
-			  },
-			  {
-				label: 'No',
-				onClick: () => alert('Click No')
-			  }
-			]
-			
-		  });
+	const clicked =() => {
+		setModalOn(true)
 	}
-
+	
 	const cancel = () => {
 		confirmAlert({
 			title: 'Confirm to submit',
@@ -82,19 +70,19 @@ export default function ApplicantsList() {
 	
 								{/* Radio check */}
 								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none bg-[#50d71e] read-only:bg-gray-100 p-2" />
+									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..."  />
 									<label className="text-sm pl-1 ">Terranova da Sibari</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-100 p-2" />
+									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
 									<label className="text-sm pl-1 ">Bivo Cantinella</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-100 p-2 " />
+									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ... " />
 									<label className="text-sm pl-1 ">Sibari</label>
 								</div>
 								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-100 p-2" />
+									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
 									<label className="text-sm pl-1">Spezzano Albanese Terme</label>
 								</div>
 								{/* search */}
@@ -171,36 +159,15 @@ export default function ApplicantsList() {
 									</td>
 
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
-										{/* ICONS */}
+										{/* ICONS AND BUTTONS */}
 										<div className="flex flex-row">
 											<button className="px-0.75">
 												<MdDeleteOutline onClick={cancel} />
 											</button>
-											<Popup  contentStyle={{background:"#0B3768", borderRadius:"0.25rem"}} trigger={<button><AiOutlineEdit /></button>}  position="left center">
-												<div className="flex flex-row">
-													<div >
-														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-6 text-sm p-4 mx-7" type="text" name="applicant" value="Alena Mango" required />
-													</div>
-													<div>
-														<input  className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7 " type="text" name="arrivalDate" value="09/02/2022" required />
-													</div>
-													<div>
-														<input className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7" type="time" name="arrivalTime" value="12:00" required />
-													</div>
-													<div>
-														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-5 text-sm p-4 mx-7" type="text" name="arrivalCity" value="Sibari" required />
-													</div>
-													<div>
-														<input className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-5 text-sm p-4 mx-7" type="text" name="pickUpBy" value="Francesco Di Marco" required />
-													</div>
-													<div>
-														<div className="flex flex-row rounded border-none bg-[#0B3768] h-full text-white align-middle px-4 text-sm p-4 mx-4 ">
-														<button onClick={save}><MdDone className="hover:fill-[#15803d] mr-1 h-6 w-4"/></button>
-														<button onClick={cancel}>< MdOutlineCancel className='hover:fill-[#991b1b]  h-6 w-4' /></button>
-														</div>
-													</div>
-												</div>
-											</Popup>
+											
+											<button onClick={clicked}><AiOutlineEdit /></button>
+											{modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} />}
+
 											<button className="px-0.75">
 												<RiAccountCircleLine onClick={profile}/>
 											</button>
