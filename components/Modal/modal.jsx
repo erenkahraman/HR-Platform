@@ -21,7 +21,7 @@ const Modal = ({ setModalOn, setChoice }) => {
                         <p className="font-semibold text-xl text-white">The new scheduele for this week</p>
                      </div>
                      <div>
-                     <textarea class="rounded border-none text-black h-96 w-96 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" style={{resize:"none"}} placeholder="Type the information..." required />
+                     <textarea className="rounded border-none text-black h-96 w-96 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" style={{resize:"none"}} placeholder="Type the information..." required />
                      </div>
                     <div className="flex justify-end ">
                         <button onClick={handleOKClick} className="rounded mt-4 p-2 text-white hover:bg-[#15803d]">Save</button>
