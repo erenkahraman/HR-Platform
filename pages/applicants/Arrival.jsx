@@ -4,7 +4,7 @@ import { AiOutlineEdit } from "react-icons/ai"
 import { RiAccountCircleLine } from "react-icons/ri"
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import Modal from '../../components/Modal/modal1';
+import Modal from '../../components/LiaModal/model1';
 // import Popup from "reactjs-popup" //used for popup
 
 export default function ApplicantsList() {

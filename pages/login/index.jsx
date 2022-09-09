@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import loginImage from "../../public/loginImage.png";
 import extramusLogo from "../../public/extramusLogo.png";
 import Link from "next/link";
-import Modal from "../../components/Modal/modal3"
+import Modal from "../../components/LiaModal/model4"
 
 export default function Login() {
 

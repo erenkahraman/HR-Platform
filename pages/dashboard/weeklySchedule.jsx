@@ -1,6 +1,6 @@
 import FeedSchedule from "../../components/Feed/FeedSchedule"
 import AddIcon from '@mui/icons-material/Add';
-import Modal from "../../components/Modal/modal";
+import Modal from "../../components/LiaModal/model";
 import {useState} from "react";
 
 function weeklySchedule() {
