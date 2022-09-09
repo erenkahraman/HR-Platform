@@ -1,10 +1,19 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import loginImage from "../../public/loginImage.png";
 import extramusLogo from "../../public/extramusLogo.png";
 import Link from "next/link";
+import Modal from "../../components/Modal/modal3"
 
 export default function Login() {
+
+	const [modalOn,setModalOn]=useState(false);
+	const [choice,setChoice]=useState(false);
+
+	const clicked =() => {
+		setModalOn(true)
+	}
+
 	return (
 		<div className=" h-screen py-20 px-[200px] text-gray-600">
 			{/* Container */}
@@ -63,9 +72,10 @@ export default function Login() {
 
 						<p>
 							Don&apos;t have an account?{" "}
-							<a href="#" className="text-[#0070ba]">
+							<button onClick={clicked} className="text-[#0070ba]">
 								Sign Up
-							</a>
+							</button>
+							{modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} />}
 						</p>
 					</div>
 				</div>
