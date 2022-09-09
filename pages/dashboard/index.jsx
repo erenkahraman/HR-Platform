@@ -150,6 +150,16 @@ export default function Dashboard() {
 							<div className="flex flex-row mx-2 mt-2 mb-4">
 								<h2 className="font-semibold text-l text-white ">By: </h2>
 								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Type your name..." required />
+							</div >
+							<div className="flex flex-row mx-2 mt-2 mb-4">
+							<label className="font-semibold text-l text-white ">
+								To: 
+								<select className="rounded border-none bg-[#e0f2fe] text-black text-sm h-7 w-72 ml-2 p-0 pl-3">
+									<option>HR</option>
+									<option>Main Staff</option>
+									<option>Antonio</option>
+								</select>
+							</label>
 							</div>
 						</div>
 
