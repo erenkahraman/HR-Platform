@@ -108,18 +108,18 @@ const DocumentList = () => {
             <div className="flex gap-4 items-center">
               <div className="flex font-semibold">
                 <p>
-                  {student.firstName} {student.lastName}
+                  {student.student.firstName} {student.student.lastName}
                 </p>
               </div>
               <div className="flex items-center gap-1 text-xs font-light text-gray-500">
                 <WorkOutline className="text-sm" />
-                <p>{student.applicant.department}</p>
+                <p>{student.department}</p>
               </div>
             </div>
             {/* Top Right */}
             <div className="flex gap-2">
               <div className="py-1 px-2 text-xs rounded bg-sky-200 text-blue-900">
-                Arriving at {student.applicant.arrivalDate}
+                Arriving at {student.arrivalDate}
               </div>
               <MoreHoriz className="cursor-pointer" />
             </div>
@@ -140,7 +140,7 @@ const DocumentList = () => {
           <div className="flex justify-between">
             {/* Bottom Left */}
             <div className="flex items-center gap-1 text-xs font-light text-gray-500">
-              <p>Applied on {student.applicant.applicationDate}</p>
+              <p>Applied on {student.applicationDate}</p>
             </div>
             <div className="flex cursor-pointer">
               {/* Bottom Right */}
