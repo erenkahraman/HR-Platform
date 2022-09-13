@@ -22,11 +22,11 @@ export default function Dashboard() {
 
 
 	return (
-		<div className="flex flex-col w-full">
+		<div className="sm:static flex flex-col w-full">
 			{/* Top */}
-			<div className="flex flex-[1]">
+			<div className="sm:static flex flex-[1]">
 				{/* Image Container */}
-				<div className="flex flex-[1] items-center justify-center">
+				<div className="sm:hidden flex flex-[1] items-center justify-center">
 					<Image src={dashboardImage} alt="test" width="180" height="180" />
 				</div>
 				{/* Right */}
@@ -42,7 +42,7 @@ export default function Dashboard() {
 						</p>
 
 					</div>
-				</div>git
+				</div>
 			</div>
 			{/* Button Container*/}
 			<div className="flex gap-3">

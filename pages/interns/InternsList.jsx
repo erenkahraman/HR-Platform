@@ -29,14 +29,14 @@ export default function ApplicantsList() {
     
 
 	return (
-		<section className="relative w-full">
+		<section className="relative w-full sm:static">
 			<div className="w-full mb-12">
-				<div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
+				<div className="relative sm:static flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
 					{/* Title Container */}
 					<div className="flex justify-between rounded-t mb-0 px-4 py-3 border-0 bg-white">
 						<div className="flex flex-col">
 						<div className="flex flex-wrap items-center">
-							<div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
+							<div className="relative sm:static w-full px-4 max-w-full flex-grow flex-1 ">
 								<h3 className="font-semibold text-2xl">Interns List</h3>
 							</div>
 						</div>
