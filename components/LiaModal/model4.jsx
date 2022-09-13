@@ -17,11 +17,11 @@ const Modal = ({ setModalOn, setChoice }) => {
 
     return (
 
-        <div className="fixed inset-0 z-50   ">
+        <div className="fixed inset-0 z-50 sm:bg-zinc-100">
 
-            <div className="flex h-screen justify-end mr-64 items-center shadow-2xl">
+            <div className="flex h-screen justify-end mr-64 items-center shadow-2xl sm:m-0 sm:justify-center sm:h-full">
 
-                <div className="justify-center bg-gradient-to-b from-blue-700 via-blue-800 to-blue-900 border-4 border-none rounded-xl px-16 py-10 shadow-2xl">
+                <div className="justify-center bg-gradient-to-b from-blue-700 via-blue-800 to-blue-900 border-4 border-none rounded-xl px-16 py-10 shadow-2xl sm:p-3">
 
                     <div className="flex flex-col" >
                         {/* Extramus Logo */}
@@ -69,7 +69,7 @@ const Modal = ({ setModalOn, setChoice }) => {
 
                         {/* Button create account and near to him*/}
                         <div className="flex flex-col items-center text-white mt-6 ">
-                            <button onClick={handleOKClick} className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300font-medium rounded-lg text-sm px-3 py-2 text-center mb-4">Create Account</button>
+                            <button onClick={handleOKClick} className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center mb-4">Create Account</button>
                             <p className="text-sm">Have an account?<button className="font-semibold px-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ..." onClick={handleCancelClick}>Log In</button></p>
                         </div>
 

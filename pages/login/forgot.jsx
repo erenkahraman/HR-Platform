@@ -6,19 +6,17 @@ import Link from "next/link";
 
 export default function forgot() {
 
-
-
 	return (
-		<div className=" h-screen py-20 px-[200px] text-gray-600">
+		<div className=" h-screen py-20 px-[200px] text-gray-600 sm:px-0">
 			{/* Container */}
 			<div className=" h-full flex">
 				{/* Left Side */}
-				<div className="shadow-xl w-1/2 flex items-center justify-center">
+				<div className="shadow-xl w-1/2 flex items-center justify-center sm:hidden">
 					<Image src={forgotImage} alt="loginImg" />
 				</div>
 
 				{/* Right Side */}
-				<div className="w-1/2 flex flex-col items-center justify-center gap-12 pb-[60px]">
+				<div className="w-1/2 flex flex-col items-center justify-center gap-12 pb-[60px] sm:w-screen">
 					<div className="w-full flex flex-col gap-5">
 						{/* Extramus Logo */}
 						<div className=" w-full flex justify-center">
@@ -31,15 +29,15 @@ export default function forgot() {
 						</div>
 
 						{/* Title and Sub Title */}
-						<div className="w-full flex flex-col items-center gap-1 mb-2">
-							<p className="text-4xl">Did you forgot your password ?</p>
+						<div className="w-full flex flex-col items-center gap-1 mb-2 sm:w-screen">
+							<p className="text-4xl sm:ml-6">Did you forgot your password ?</p>
 							<p className="mt-8 text-xl">
 								Please enter here your email :
 							</p>
 						</div>
 						{/* Input */}
-						<div className=" flex flex-col items-center">
-							<input type="email" className="text-black rounded-md w-96 placeholder:italic" placeholder="ex: exemplu@extramus.eu" required />
+						<div className=" flex flex-col items-center sm">
+							<input type="email" className="text-black rounded-md w-96 placeholder:italic sm:w-80" placeholder="ex: exemplu@extramus.eu" required />
 						</div>
 					</div>
 
