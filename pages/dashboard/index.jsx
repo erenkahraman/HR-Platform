@@ -14,9 +14,7 @@ import Feed from "../../components/Feed/Feed";
 import FeedSchedule from "../../components/Feed/FeedSchedule"
 import Upcoming from "../../components/Upcoming/Upcoming";
 import Popup from "reactjs-popup"
-import news from "./news"
 
-//fsdfa
 
 export default function Dashboard() {
 
@@ -152,6 +150,16 @@ export default function Dashboard() {
 							<div className="flex flex-row mx-2 mt-2 mb-4">
 								<h2 className="font-semibold text-l text-white ">By: </h2>
 								<input type="text" class="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Type your name..." required />
+							</div >
+							<div className="flex flex-row mx-2 mt-2 mb-4">
+							<label className="font-semibold text-l text-white ">
+								To: 
+								<select className="rounded border-none bg-[#e0f2fe] text-black text-sm h-7 w-72 ml-2 p-0 pl-3">
+									<option>HR</option>
+									<option>Main Staff</option>
+									<option>Antonio</option>
+								</select>
+							</label>
 							</div>
 						</div>
 
@@ -165,7 +173,7 @@ export default function Dashboard() {
 							</div>
 						</div>
 
-						{/* BUTTOM PART */}
+						{/* BOTTOM PART */}
 						<div className="flex flex-row pt-20">
 							<input type='date' class="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 " />
 							<div className="pl-20">
@@ -186,11 +194,11 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">What's New</div>
 							<a
-								href="/."
+								href="/dashboard/news"
 								className="viewAll flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All (18)</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All (18)</div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
 								</div>
@@ -208,18 +216,18 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">Weekly Schedule</div>
 							<a
-								href="./news"
+								href="\dashboard\weeklySchedule"
 								className="viewAll flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All</div>
+								<button class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
-								</div>
+								</button>
 							</a>
 						</div>
 						{/* Weekly Schedule Content */}
-						<div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+						<div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2 max-h-64 scroll-bar">
 							<FeedSchedule />
 						</div>
 
@@ -234,11 +242,11 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">Daily Reminder</div>
 							<a
-								href="./"
+								href="/dashboard/dailyRemainder"
 								className="flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All (12)</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All (12)</div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
 								</div>
@@ -288,11 +296,11 @@ export default function Dashboard() {
 								Upcoming Arrival and Departure
 							</div>
 							<a
-								href="./"
+								href="/dashboard/upcoming"
 								className="flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All (8)</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All (8)</div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
 								</div>
@@ -340,11 +348,11 @@ export default function Dashboard() {
 						<div className="flex items-center justify-between">
 							<div className="text-xl font-semibold">Upcoming Birthdays 🥳🍰🎉</div>
 							<a
-								href="./"
+								href="/dashboard/birthday"
 								className="flex items-center justify-center text-[#2F80ED]"
 							>
-								<div>View All (6)</div>
-								<div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">View All (6)</div>
+								<div class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
 									{" "}
 									<ArrowForward className="text-md" />
 								</div>
