@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Feed from "../../components/Feed/Feed";
 
 const WhatsNewViewAll = () => {
   const [data, setData] = useState([]);
@@ -14,7 +15,10 @@ const WhatsNewViewAll = () => {
   return (
     <div>
       {data.map((whatsNew) => (
-        <div key={whatsNew.id}>
+        <div
+          key={whatsNew.id}
+          className="items-center w-full border-collapse bg-white"
+        >
           <div className="flex m-2 py-4">
             <div className="flex flex-[1] flex-col gap-2 p-2">
               <div className="text-sm font-semibold">{whatsNew.date}</div>
