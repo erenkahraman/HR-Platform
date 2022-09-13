@@ -1,140 +1,146 @@
-import {
-  Add,
-  Circle,
-  MoreHoriz,
-  SystemUpdateAlt,
-  HowToReg,
-} from "@mui/icons-material";
-import { CircularProgress } from "@mui/material";
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import {Circle} from "@mui/icons-material";
+import { MdDeleteOutline } from "react-icons/md"
+import { AiOutlineEdit } from "react-icons/ai"
+import { RiAccountCircleLine } from "react-icons/ri"
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 export default function ApplicantsList() {
-  // set progress bar
-  let setProgressBar = (progress) => {
-    switch (progress) {
-      case "New Candidate":
-        return "20%";
-      case "HR Interview":
-        return "40%";
-      case "CEO Interview":
-        return "60%";
-      case "Completing Documents":
-        return "80%";
-      case "Completed":
-        return "100%";
-      default:
-        return "0%";
-    }
-  };
 
-  const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
+	const cancel = () => {
+		confirmAlert({
+			title: 'Confirm to submit',
+			message: 'Are you sure you want to delete ?',
+			buttons: [
+				{
+					label: 'Yes',
+					onClick: () => alert('Click Yes')
+				},
+				{
+					label: 'No',
+					onClick: () => alert('Click No')
+				}
+			]
+		});
+	}
 
-  useEffect(() => {
-    setLoading(true);
-    fetch("/api/student")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
-  if (isloading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
+	// const profile = () => {
+	// 	confirmAlert({
+	// 		title: 'Confirm to submit',
+	// 		message: 'Are you sure you want to go to the profile ?',
+	// 		buttons: [
+	// 			{
+	// 				label: 'Yes',
+	// 				onClick: () => alert('Click Yes')
+	// 			},
+	// 			{
+	// 				label: 'No',
+	// 				onClick: () => alert('Click No')
+	// 			}
+	// 		]
 
-  return (
-    <section className="relative w-full">
-      <div className="w-full mb-12">
-        <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
-          {/* Title Container */}
-          <div className="flex justify-between rounded-t mb-0 px-4 py-3 border-0 bg-white">
-            <div className="flex flex-wrap items-center">
-              <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-                <h3 className="font-semibold text-2xl">Profile</h3>
-              </div>
+	// 	});
+	// }
+
+    
+
+
+    return (
+        <section className="relative w-full">
+            <div className="w-full mb-12">
+                <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+                    {/* Title Container */}
+                    <div className="flex justify-between rounded-t  px-4 pt-6 pb-10 border-0 bg-white ">
+                        <div className="flex flex-wrap items-center">
+                            <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
+                                <h3 className="font-semibold text-2xl">All Profiles</h3>
+                            </div>
+                        </div>
+                        {/* search */}
+                        <form class="flex items-center ">
+                            <div class="relative w-full">
+                                <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-white-500 dark:text-white-400" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <input type="text" id="simple-search" class="rounded border-none bg-[#0B3768]/75 px-10 text-white h-8 placeholder:italic placeholder:text-white/30 placeholder:text-sm" placeholder="Search..." required />
+                            </div>
+                            <button type="submit" class="w-10 px-2 rounded border-none bg-blue-100 h-8 ml-1 mr-2 hover:bg-[#0B3768]/75 ">
+                                <svg class="w-5 h-5" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                <span class="sr-only">Search</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    {/* Table */}
+                    <div className="block w-full overflow-x-auto ">
+                        <table className="items-center w-full border-collapse bg-white">
+                            {/* Table Head */}
+                            <thead>
+                                <tr>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Applicant
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Departament
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Position
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Status
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Personal Email
+                                    </th>
+                                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            {/* Table Body */}
+                            <tbody className="divide-y">
+                                <tr>
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                                        <span className=" font-bold">Alessio Rocco </span>
+                                    </td>
+
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        ITC
+                                    </td>
+
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        Front Web Developer
+                                    </td>
+
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        <div className="flex items-center gap-2">
+                                            <Circle className="h-3 w-3 text-yellow-500" />
+                                            On Progress
+                                        </div>
+                                    </td>
+
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                        email@personal.com
+                                    </td>
+
+                                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                    <div className="flex flex-row text-md">
+											<button className="px-2">
+												<MdDeleteOutline onClick={cancel} />
+											</button>
+											<button><AiOutlineEdit /></button>
+                                            </div>
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div className="flex gap-2">
-              <Link href="/import-list">
-                <span className="gap-1 hover:bg-gray-200 group flex items-center rounded-md bg-gray-300 text-gray-500 text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-                  <SystemUpdateAlt className="text-sm" />
-                  CSV Import
-                </span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className="block w-full overflow-x-auto ">
-            <table className="items-center w-full border-collapse bg-white">
-              {/* Table Head */}
-              <thead>
-                <tr>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Full Name
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Department / Position
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Arrival Date
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Departure Date
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Email
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-
-              {/* Table Body */}
-              <tbody className="divide-y">
-                {data.map((student) => (
-                  <tr key={student._id}>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                      <span className="ml-3 font-bold">
-                        {" "}
-                        {student.firstName} {student.lastName}{" "}
-                      </span>
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {student.applicant.department}
-                      {" / "}
-                      {student.applicant.position}
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {student.applicant.arrivalDate}
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {student.applicant.departureDate}
-                    </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {student.email}
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                      <a
-                        href="#pablo"
-                        className="text-blueGray-500 block py-1 px-3"
-                        // onClick={addToInterns(student)}
-                      >
-                        <HowToReg />
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 }
