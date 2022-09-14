@@ -8,8 +8,6 @@ import Modal from '../../components/LiaModal/model1';
 // import Popup from "reactjs-popup" //used for popup
 
 
-//gjjhglg
-
 export default function ApplicantsList() {
 
 	const [modalOn,setModalOn]=useState(false);
