@@ -15,13 +15,18 @@ const ReminderViewAll = () => {
   return (
     <div>
       {data.map((reminder) => (
-        <div key={reminder.id} className="flex w-full">
-          <div className="flex-[5] flex flex-col">
-            <div className="text-sm font-semibold">{reminder.title}</div>
-            <div className="text-xs font-light ">{reminder.category}</div>
-          </div>
-          <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
-            {reminder.date}
+        <div
+          key={reminder.id}
+          className="items-center w-full border-collapse bg-white"
+        >
+          <div className="flex m-2 py-4">
+            <div className="flex-[5] flex flex-col">
+              <div className="text-sm font-semibold">{reminder.title}</div>
+              <div className="text-xs font-light ">{reminder.category}</div>
+            </div>
+            <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
+              {reminder.date}
+            </div>
           </div>
         </div>
       ))}
