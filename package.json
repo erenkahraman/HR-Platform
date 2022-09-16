@@ -12,10 +12,12 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@emotion/unitless": "^0.8.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.10.3",
     "@popperjs/core": "2.9.1",
     "@tailwindcss/forms": "^0.5.2",
+    "bson": "^4.7.0",
     "flowbite": "^1.5.3",
     "flowbite-react": "^0.1.10",
     "moment": "^2.29.4",
@@ -23,23 +25,15 @@
     "mongoose": "^6.5.0",
     "next": "12.2.1",
     "react": "18.2.0",
-<<<<<<< HEAD
-    "react-csv": "^2.2.2",
-=======
     "react-confirm-alert": "^3.0.6",
->>>>>>> Lia
+    "react-csv": "^2.2.2",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "react-select": "^5.4.0",
     "react-select-country-list": "^2.2.3",
-<<<<<<< HEAD
-    "reactjs-popup": "^2.0.5",
-    "react-scripts": "3.4.1"
-=======
     "react-toastify": "^9.0.8",
     "reactjs-popup": "^2.0.5",
     "slate-react": "^0.82.1"
->>>>>>> Lia
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",
