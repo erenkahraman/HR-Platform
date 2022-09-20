@@ -9,7 +9,7 @@ import {MdOutlineCancel} from "react-icons/md"
 import {
 	CalendarMonthOutlined,
 	CoPresent,
-	DashboardOutlined,
+	DashboardOutlined,   
 	FlightLandOutlined,
 	FlightTakeoffOutlined,
 	GroupOutlined,
@@ -87,13 +87,13 @@ export default function Sidebar() {
 
 	const sideBarListItem = () => {
 		let result =
-			"flex w-40 sm:w-32 items-center px-6 sm:pl-0 py-2 gap-2 hover:text-[#2F80ED] hover:bg-sky-50";
+			"flex  w-40 sm:w-32 items-center px-6 sm:pl-0 py-2 gap-2 hover:text-[#2F80ED] hover:bg-sky-50";
 
 		return result;
 	};
 
 	const sideBarListSeperator = () => {
-		let result = "flex items-center px-6 py-2 mt-4 sm:pl-0 text-gray-700";
+		let result = "flex  items-center px-6 py-2 mt-4 sm:pl-0 text-gray-700";
 
 		return result;
 	};
@@ -101,10 +101,10 @@ export default function Sidebar() {
 	
 
 	return (
-		<div className=" h-screen  text-gray-400">
+		<div className=" h-screen sm:h-screen fixed text-gray-400">
 			<>
-			<div className="ml-3 w-full mt-4">
-				<ul className="sidebarList text-sm font-light">
+			<div className="ml-3 w-full sm:h-screen fixed mt-4">
+				<ul className="fixed sm:h-screen text-sm font-light">
 					{Menus.map((menu, index) => (
 						<li
 							key={index}

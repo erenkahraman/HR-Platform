@@ -6,7 +6,9 @@ import {MdDone} from "react-icons/md"
 import {MdOutlineCancel} from "react-icons/md"
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import Modal from "../../components/LiaModal/model3"
+import Modal from "../../components/LiaModal/model3";
+import Link from "next/link";
+import { Tooltip, Button } from "@material-tailwind/react";
 
 export default function ApplicantsList() {
 
@@ -60,7 +62,7 @@ export default function ApplicantsList() {
 					<div className="flex justify-between rounded-t mb-0 px-4 pt-3 border-0 bg-white">
 						<div className="flex flex-wrap items-center">
 							<div className="relative w-full px-3 max-w-full flex-grow flex-1 ">
-								<h3 className="font-semibold text-2xl">Applicant Deprture</h3>
+								<h3 className="font-semibold text-2xl">Applicant Departure</h3>
 							</div>
 						</div>
 					</div>
@@ -91,7 +93,7 @@ export default function ApplicantsList() {
 										<div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
 											<svg aria-hidden="true" class="w-5 h-5 text-white-500 dark:text-white-400" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
 										</div>
-										<input type="text" id="simple-search" class="rounded border-none bg-[#0B3768]/75 px-10 text-white h-8 placeholder:italic placeholder:text-white/30 placeholder:text-sm" placeholder="Search..." required />
+										<input type="text" id="simple-search" class="rounded border-none bg-[#0B3768] px-10 text-white h-8 placeholder:italic placeholder:text-white placeholder:text-sm" placeholder="Search..." required />
 									</div>
 									<button type="submit" class="w-10 px-2 rounded border-none bg-blue-100 h-8 ml-1 mr-2 hover:bg-[#0B3768]/75 ">
 										<svg class="w-5 h-5" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -161,17 +163,38 @@ export default function ApplicantsList() {
 									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
 										{/* ICONS AND BUTTONS */}
 										<div className="flex flex-row">
-											<button className="px-0.75">
-												<MdDeleteOutline onClick={cancel} />
-											</button>
-											
-											<button onClick={clicked}><AiOutlineEdit /></button>
-											{modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} />}
+										<Tooltip className="bg-transparent text-black mt-2"
+                                         content="Delete"
+                                         animate={{
+                                         mount: { scale: 1, y: 0 },
+                                         unmount: { scale: 0, y: 25 },
+                                        }}>
+                                        <Button  variant="gradient" className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 " onClick={cancel}><MdDeleteOutline /></Button>
+                                        </Tooltip>
 
-											<button className="px-0.75">
-												<RiAccountCircleLine onClick={profile}/>
-											</button>
 											
+										<Tooltip className="bg-transparent text-black mt-2"
+                                          content="Edit"
+                                          animate={{
+                                          mount: { scale: 1, y: 0 },
+                                          unmount: { scale: 0, y: 25 },
+                                        }}>
+                                        <Button  variant="gradient" className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 " onClick={clicked}><AiOutlineEdit /></Button>
+                                        </Tooltip>
+										{modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} />}
+
+										<Tooltip className="bg-transparent text-black mt-2"
+                                           content="Edit Profile"
+                                           animate={{
+                                           mount: { scale: 1, y: 0 },
+                                           unmount: { scale: 0, y: 25 },
+                                        }}>
+                                        <Button  variant="gradient" className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 ">
+									    <Link href="/applicants/edit">
+									    <RiAccountCircleLine />
+                                        </Link>
+										</Button>
+                                      </Tooltip>	
 										</div>
 									</td>
 								</tr>

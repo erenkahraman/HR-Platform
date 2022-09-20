@@ -16,36 +16,36 @@ const Modal = ({ setModalOn, setChoice }) => {
 
             <div className="flex h-screen justify-center items-center ">
 
-                <div className="flex-col justify-center bg-white py-12 px-24 border-4 border-[#0b3768] rounded-xl ">
-
+                <div className="flex-col justify-center bg-[#0B3768] py-12 px-24 border-4 rounded-xl ">
+                <div className="flex  text-lg  text-white ml-10 mb-6" >Edit Applicant Departure </div>
                     <div className="flex flex-column mb-10" >
                         <div className="">
                             <div >
-                                <label className="text-m font-semibold" >Name: </label>
-                                <input className="rounded border-none bg-[#0B3768] text-white align-middle text-sm my-3 p-2 ml-20" type="text" name="applicant" value="Alena Mango" required />
+                                <label className="text-sm font-semibold text-white" >Name: </label>
+                                <input className="rounded border-none bg-white text-black align-middle text-sm my-3 p-2 ml-20" type="text" name="applicant" value="Alena Mango" required />
                             </div>
                             <div>
-                            <label className="text-m font-semibold">Departure date: </label>
-                                <input className="rounded border-none bg-[#0B3768] text-white align-middle text-sm my-3 p-2 ml-3" type="text" name="arrivalDate" value="09/02/2022" required />
+                            <label className="text-sm font-semibold text-white">Departure date: </label>
+                                <input className="rounded border-none bg-white text-black align-middle text-sm my-3 p-2 ml-6" type="text" name="arrivalDate" value="09/02/2022" required />
                             </div>
                             <div>
-                            <label className="text-m font-semibold">Departure time: </label>
-                                <input className="rounded border-none bg-[#0B3768] text-white align-middle text-sm my-3 p-2 ml-3" type="time" name="arrivalTime" value="12:00" required />
+                            <label className="text-sm font-semibold text-white">Departure time: </label>
+                                <input className="rounded border-none bg-white text-black align-middle text-sm my-3 p-2 ml-6" type="time" name="arrivalTime" value="12:00" required />
                             </div>
                             <div>
-                            <label className="text-m font-semibold">Departure city: </label>
-                                <input className="rounded border-none bg-[#0B3768] text-white align-middle text-sm my-3 p-2 ml-4" type="text" name="arrivalCity" value="Sibari" required />
+                            <label className="text-sm font-semibold text-white">Departure city: </label>
+                                <input className="rounded border-none bg-white text-black align-middle text-sm my-3 p-2 ml-8" type="text" name="arrivalCity" value="Sibari" required />
                             </div>
                             <div>
-                            <label className="text-m font-semibold">Pick up by: </label>
-                                <input className="rounded border-none bg-[#0B3768] text-white align-middle text-sm my-3 p-2 ml-11" type="text" name="pickUpBy" value="Francesco Di Marco" required />
+                            <label className="text-sm font-semibold text-white">Pick up by: </label>
+                                <input className="rounded border-none bg-white text-black align-middle text-sm my-3 p-2 ml-14" type="text" name="pickUpBy" value="Francesco Di Marco" required />
                             </div>
                         </div>
 
                     </div>
                     <div className="flex  justify-end ">
-                        <button onClick={handleOKClick} className="mr-2 p-2 rounded text-black font-semibold hover:bg-[#15803d]">Save</button>
-                        <button onClick={handleCancelClick} className="p-2 rounded text-black font-semibold hover:bg-[#991b1b]">Cancel</button>
+                    <button onClick={handleCancelClick} className=" rounded px-4 py-2 text-white  bg-blue-400 ">Cancel</button>
+                <button onClick={handleOKClick} className="rounded px-4 py-2 ml-4 text-white bg-green-400 ">Save </button>
                     </div>
 
                 </div>

@@ -9,6 +9,7 @@ import * as React from 'react';
 import {useState} from "react";
 import Modal5 from "../../components/Modal/Modal5.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
+import { AiOutlineEdit } from "react-icons/ai";
 
 
 
@@ -161,39 +162,20 @@ export default function ApplicantsList() {
 										Ongoing
 									</td>
 
-									<Popup contentStyle={{background:"transparent", borderRadius:"1rem"}}
-									trigger={<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-									<Tooltip className="bg-transparent text-black mt-3"
-                                      content="More Actions"
+									<td className="border-t-0 px-6  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+									<Tooltip className="bg-transparent text-black mt-2"
+                                      content="Edit"
                                       animate={{
                                       mount: { scale: 1, y: 0 },
                                       unmount: { scale: 0, y: 25 },
                                       }}>
-                                      <Button  variant="gradient" className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"><MoreHoriz /></Button>
+                                      <Button  variant="gradient" className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
+									  <Link href="/applicants/edit">
+									  <AiOutlineEdit className="m-2 mb-0 mt-0" />
+                                        </Link>
+									  </Button>
                                       </Tooltip>
-									</td>} position="bottom">
-                                    <div class="h-48 w-52 ml-5...">
-                                    <div className="flex flex-col ml-8 ">
-                                    
-
-                                <div>
-                                   <Link href="/applicants/edit">
-                                      <span className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]">
-                                        Edit
-                                      </span>
-                                   </Link>                            
-                                </div>
-                                    </div>
-                                    </div> 
-	
-	
-
-	{/* </div> */}
-	
-
-	
-									</Popup>
-
+									</td>
 
 
 								</tr>
