@@ -6,7 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Modal4 from "../../components/Modal/Modal4.jsx";
 import Popup from "reactjs-popup";
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal5 from "../../components/Modal/Modal5.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
 
@@ -23,7 +23,21 @@ export default function ApplicantsList() {
   const clicked5 = () => {
     setModalOn5(true);
   };
+  const [data, setData] = useState([]);
+  const [isloading, setLoading] = useState(true);
 
+  useEffect(() => {
+    setLoading(true);
+    fetch("/api/intern")
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, []);
+  console.log(data);
+  if (isloading) return <p>Loading...</p>;
+  if (!data) return <p>No profile data</p>;
   return (
     <section className="relative w-full sm:static">
       <div className="w-full mb-12">
@@ -59,50 +73,50 @@ export default function ApplicantsList() {
           <div className="flex flex-row-reverse mt-4 mb-2">
             <div className="flex flex-row-reverse bg-white mt-0 mb-4 ml-auto ">
               {/* search */}
-              <form class="flex items-center h-9">
-                <div class="relative w-full h-full">
-                  <div class="flex absolute h-full inset-y-0 left-0 items-center pl-3 pointer-events-none">
+              <form className="flex items-center h-9">
+                <div className="relative w-full h-full">
+                  <div className="flex absolute h-full inset-y-0 left-0 items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-                      class="w-5 h-5 text-white-500 dark:text-white-400"
+                      className="w-5 h-5 text-white-500 dark:text-white-400"
                       fill="white"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       ></path>
                     </svg>
                   </div>
                   <input
                     type="text"
                     id="simple-search"
-                    class="h-full w-52 rounded-r-lg  border-none bg-[#0B3768] px-10 text-white  placeholder:italic placeholder:text-white placeholder:text-sm"
+                    className="h-full w-52 rounded-r-lg  border-none bg-[#0B3768] px-10 text-white  placeholder:italic placeholder:text-white placeholder:text-sm"
                     placeholder="Search..."
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  class="w-8 px-2 rounded border-none h-full bg-blue-100  ml-1 mr-2 hover:bg-[#0B3768]/75 "
+                  clasclassNames="w-8 px-2 rounded border-none h-full bg-blue-100  ml-1 mr-2 hover:bg-[#0B3768]/75 "
                 >
                   <svg
-                    class="w-5 h-5"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="black"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWEidth="2"
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     ></path>
                   </svg>
-                  <span class="sr-only">Search</span>
+                  <span className="sr-only">Search</span>
                 </button>
               </form>
               <div className="">
@@ -170,93 +184,98 @@ export default function ApplicantsList() {
 
               {/* Table Body */}
               <tbody className="divide-y">
-                <tr>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                    <span className="ml-3 font-bold"> Alessio Rocco </span>
-                  </td>
+                {data.map((intern) => (
+                  <tr key={intern.id}>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                      <span className="ml-3 font-bold">
+                        {intern.student.firstName}
+                        {intern.student.lastName}
+                      </span>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    25/08/2021
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.startDate}
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    Human Resources
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.endDate}
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    Human
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.durationInWeeks}
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    HI
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.departement}
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    Ho
-                  </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    Ongoing
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.position}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      Ongoing
+                    </td>
 
-                  <Popup
-                    contentStyle={{
-                      background: "transparent",
-                      borderRadius: "1rem",
-                    }}
-                    trigger={
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                        <Tooltip
-                          className="bg-transparent text-black mt-3"
-                          content="More Actions"
-                          animate={{
-                            mount: { scale: 1, y: 0 },
-                            unmount: { scale: 0, y: 25 },
-                          }}
-                        >
-                          <Button
-                            variant="gradient"
-                            className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+                    <Popup
+                      contentStyle={{
+                        background: "transparent",
+                        borderRadius: "1rem",
+                      }}
+                      trigger={
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                          <Tooltip
+                            className="bg-transparent text-black mt-3"
+                            content="More Actions"
+                            animate={{
+                              mount: { scale: 1, y: 0 },
+                              unmount: { scale: 0, y: 25 },
+                            }}
                           >
-                            <MoreHoriz />
-                          </Button>
-                        </Tooltip>
-                      </td>
-                    }
-                    position="bottom"
-                  >
-                    <div class="h-48 w-52 ml-5...">
-                      <div className="flex flex-col ml-8 ">
-                        <div>
-                          <Link href="/applicants/edit">
-                            <span className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]">
-                              Edit
-                            </span>
-                          </Link>
-                        </div>
+                            <Button
+                              variant="gradient"
+                              className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+                            >
+                              <MoreHoriz />
+                            </Button>
+                          </Tooltip>
+                        </td>
+                      }
+                      position="bottom"
+                    >
+                      <div className="h-48 w-52 ml-5...">
+                        <div className="flex flex-col ml-8 ">
+                          <div>
+                            <Link href="/applicants/edit">
+                              <span className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]">
+                                Edit
+                              </span>
+                            </Link>
+                          </div>
 
-                        <div>
-                          <button
-                            onClick={clicked5}
-                            type="submit"
-                            className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
-                          >
-                            End Internship
-                          </button>
-                          {choice5}
+                          <div>
+                            <button
+                              onClick={clicked5}
+                              type="submit"
+                              className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                            >
+                              End Internship
+                            </button>
+                            {choice5}
 
-                          {modalOn5 && (
-                            <Modal5
-                              setModalOn5={setModalOn5}
-                              setChoice5={setChoice5}
-                            />
-                          )}
+                            {modalOn5 && (
+                              <Modal5
+                                setModalOn5={setModalOn5}
+                                setChoice5={setChoice5}
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* </div> */}
-                  </Popup>
-                </tr>
+                      {/* </div> */}
+                    </Popup>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
