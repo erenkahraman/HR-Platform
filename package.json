@@ -10,11 +10,12 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@coreui/react": "^4.3.1",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@emotion/unitless": "^0.8.0",
     "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.10.3",
+    "@mui/material": "^5.10.4",
     "@popperjs/core": "2.9.1",
     "@tailwindcss/forms": "^0.5.2",
     "bson": "^4.7.0",
@@ -34,6 +35,7 @@
     "react-select-country-list": "^2.2.3",
     "react-toastify": "^9.0.8",
     "reactjs-popup": "^2.0.5",
+    "tippy.js": "^6.3.7",
     "slate-react": "^0.82.1"
   },
   "devDependencies": {

@@ -3,8 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import extramusLogoWhite from "../../public/extramusLogoWhite.png";
-import Popup from "reactjs-popup"
+import Popup from "reactjs-popup";
 import Notification from "../Feed/Notification";
+import { HiOutlineMenu } from "react-icons/hi";
+import { useState } from "react";
+import { Sidebar } from ".";
 
 export default function Navbar() {
   const current = new Date();
@@ -38,12 +41,19 @@ export default function Navbar() {
           <p className="cursor-pointer">Ario Anindito</p>
         </Link>
 
-        <Popup contentStyle={{ marginTop:"10px"}} trigger={<button><ArrowDropDown className="cursor-pointer text-4xl" /></button>} position="bottom center" >
-					<div className="bg-[#0b3768] font-semibold rounded-md p-2 text-white transition ease-in-out delay-150 hover:text-[#0b3768] hover:bg-gray-100 hover:font-bold hover:-translate-y-0.5 hover:scale-90 hover: duration-200 ...">
-						<Link href="/login">Log Out</Link>
-					</div>
-				</Popup>
-				
+        <Popup
+          contentStyle={{ marginTop: "10px" }}
+          trigger={
+            <button>
+              <ArrowDropDown className="cursor-pointer text-4xl" />
+            </button>
+          }
+          position="bottom center"
+        >
+          <div className="bg-[#0b3768] font-semibold rounded-md p-2 text-white transition ease-in-out delay-150 hover:text-[#0b3768] hover:bg-gray-100 hover:font-bold hover:-translate-y-0.5 hover:scale-90 hover: duration-200 ...">
+            <Link href="/login">Log Out</Link>
+          </div>
+        </Popup>
       </div>
     </div>
   );
@@ -55,10 +65,12 @@ export default function Navbar() {
 // 	2
 // </span>
 
-{/* <div className="bg-[#0B3768] text-white">
+{
+  /* <div className="bg-[#0B3768] text-white">
 						<h2 className="text-xl text-semibold p-2">Notifications</h2>
 						<div className="h-0.5 bg-white"></div>
 						<Notification />
 						<Notification />
 						<Notification />
-					</div> */}
+					</div> */
+}

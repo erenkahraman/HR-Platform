@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Reminder } from "../components/Reminder";
 import { Feed } from "../components/Feed";
 import Script from "next/script";
+import Link from "next/link";
+import { Dashboard } from "../pages/dashboard/index";
 
 export default function Home() {
   return (
