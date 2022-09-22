@@ -297,10 +297,3 @@ export default function ApplicantsList() {
     </section>
   );
 }
-
-export async function getStaticProps() {
-  const res = await fetch(`${server}/api/applicant`);
-  const students = await res.json();
-
-  return { props: students };
-}

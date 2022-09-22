@@ -6,7 +6,7 @@ import {
   Visibility,
   AccessTime,
 } from "@mui/icons-material";
-
+import { DocumentList } from "../../components/DocumentList";
 export default function Documents() {
   return (
     <div className="flex flex-col w-full gap-2">
