@@ -41,6 +41,9 @@ export default function ApplicantsNew() {
       applicationDate: event.target.applicationDate.value,
       arrivalDate: event.target.arrivalDate.value,
       departureDate: event.target.departureDate.value,
+      departureTime: event.target.departureTime.value,
+      departureCity: event.target.departureCity.value,
+      pickUpBy: event.target.pickUpBy.value,
       progress: event.target.progress.value,
       department: event.target.department.value,
       position: event.target.position.value,
@@ -468,7 +471,7 @@ export default function ApplicantsNew() {
                           <div className="flex flex-row mx-2 mt-2 mb-4">
                             <input
                               type="text"
-                              class="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+                              className="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
                               placeholder="Introduce new position"
                               required
                             />
@@ -523,9 +526,53 @@ export default function ApplicantsNew() {
                       />
                     </div>
                   </div>
+                  <div className="flex gap-4">
+                    {/* Departure city */}
+                    <div className="flex flex-[1] flex-col gap-2">
+                      <label htmlFor="arrival-date" className="block text-sm">
+                        Departure City
+                      </label>
+                      <select
+                        id="departureCity"
+                        name="departureCity"
+                        autoComplete="departureCity"
+                        className="flex flex-col w-52 ml-2 py-2 px-8 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      >
+                        <option>Terranova da Sibari</option>
+                        <option>Bivo Cantinella</option>
+                        <option>Sibari</option>
+                        <option>Spezzano Albanese Terme</option>
+                      </select>
+                    </div>
 
+                    {/* Who Pıcked By */}
+                    <div className="flex flex-[1] flex-col gap-2">
+                      <label htmlFor="departure-date" className="block text-sm">
+                        Picked By
+                      </label>
+                      <input
+                        type="text"
+                        name="pickUpBy"
+                        id="pickUpBy"
+                        autoComplete="given-name"
+                        className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                  </div>
                   {/* Application Progress */}
                   <div className="flex gap-4">
+                    <div className="flex flex-[1] flex-col gap-2">
+                      <label htmlFor="departure-date" className="block text-sm">
+                        Departure Time
+                      </label>
+                      <input
+                        type="time"
+                        name="departureTime"
+                        id="departureTime"
+                        autoComplete="given-name"
+                        className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
                     <div className="flex flex-[1] flex-col gap-2">
                       <label htmlFor="Progress" className="block text-sm">
                         Progress
@@ -542,6 +589,7 @@ export default function ApplicantsNew() {
                         <option>Completed</option>
                       </select>
                     </div>
+
                     {
                       //No need for this as it's gonna be changed automatically
                       /* Application Status 

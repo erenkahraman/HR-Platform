@@ -19,6 +19,7 @@ export default async function handler(req, res) {
               pipeline: [{ $match: { applicationStatus: "On Process" } }],
               localField: "student",
               foreignField: "_id",
+
               as: "student",
             },
           },

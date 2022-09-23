@@ -9,6 +9,21 @@ import { Circle } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
 const DocumentListContent = ({ title, pos, status }) => {
+  const [data, setData] = useState([]);
+  const [isloading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(true);
+    fetch("/api/applicant")
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, []);
+  console.log(data);
+  if (isloading) return <p>Loading...</p>;
+  if (!data) return <p>No profile data</p>;
+
   const Border = () => {
     let isRounded;
     let statusColor;
