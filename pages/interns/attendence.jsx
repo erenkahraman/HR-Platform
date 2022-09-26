@@ -6,10 +6,25 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
-
-function attendence() {
+import { useState, useEffect } from "react";
+import reactSelect from "react-select";
+function Attendence() {
   //  const notify =() => toast ("Please check if everything before saving!");
+  const [data, setData] = useState([]);
+  const [isloading, setLoading] = useState(true);
 
+  useEffect(() => {
+    setLoading(true);
+    fetch("/api/intern")
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, []);
+  console.log(data);
+  if (isloading) return <p>Loading...</p>;
+  if (!data) return <p>No profile data</p>;
   const save = () => {
     confirmAlert({
       title: "Confirm to submit",
@@ -52,7 +67,7 @@ function attendence() {
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white">
             <div className="flex flex-wrap items-center">
               <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-                <h3 className="font-semibold text-2xl">Applicant Attendance</h3>
+                <h3 className="font-semibold text-2xl">Intern Attendance</h3>
               </div>
             </div>
             <div className="flex gap-2">
@@ -152,87 +167,92 @@ function attendence() {
 
               {/* Table Body */}
               <tbody className="divide-y">
-                <tr>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
-                    <div className="font-bold"> Alessio Rocco </div>
-                  </td>
+                {data.map((intern) => (
+                  <tr key={intern.id}>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
+                      <div className="font-bold">
+                        {" "}
+                        {intern.student.firstName} {intern.student.lastName}
+                      </div>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    <input
-                      type="date"
-                      className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    ></input>
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      <input
+                        type="date"
+                        className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      ></input>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    <select
-                      id="country"
-                      className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                    >
-                      <option>Present</option>
-                      <option>Late</option>
-                      <option>Day off</option>
-                      <option>Excused leave</option>
-                      <option>Sick</option>
-                      <option>Unexecused leave</option>
-                    </select>
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      <select
+                        id="country"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      >
+                        <option>Present</option>
+                        <option>Late</option>
+                        <option>Day off</option>
+                        <option>Excused leave</option>
+                        <option>Sick</option>
+                        <option>Unexecused leave</option>
+                      </select>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    <div className="flex flex-col gap-1">
-                      <div>0</div>
-                    </div>
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      <div className="flex flex-col gap-1">
+                        <div>{intern.attendance.present}</div>
+                      </div>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    <div className="flex flex-col gap-1">
-                      <div>1</div>
-                    </div>
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      <div className="flex flex-col gap-1">
+                        <div>{intern.attendance.late}</div>
+                      </div>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    <div className="flex flex-col gap-1">
-                      <div>2</div>
-                    </div>
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      <div className="flex flex-col gap-1">
+                        <div>{intern.attendance.dayOff}</div>
+                      </div>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    <div className="flex flex-col gap-1">
-                      <div>1</div>
-                    </div>
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      <div className="flex flex-col gap-1">
+                        <div>{intern.attendance.excusedLeave}</div>
+                      </div>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    <div className="flex flex-col gap-1">
-                      <div>0</div>
-                    </div>
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      <div className="flex flex-col gap-1">
+                        <div>{intern.attendance.sick}</div>
+                      </div>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    <div className="flex flex-col gap-1">
-                      <div>0</div>
-                    </div>
-                  </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      <div className="flex flex-col gap-1">
+                        <div>{intern.attendance.unexcusedleave}</div>
+                      </div>
+                    </td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex flex-r">
-                        {/* ICONS */}
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      <div className="flex flex-col gap-1">
+                        <div className="flex flex-r">
+                          {/* ICONS */}
 
-                        {/* <button onClick={notify}><CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" /></button>
+                          {/* <button onClick={notify}><CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" /></button>
 												<ToastContainer /> */}
 
-                        <button onClick={save}>
-                          <CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
-                        </button>
+                          <button onClick={save}>
+                            <CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
+                          </button>
 
-                        <button onClick={cancel}>
-                          <CancelIcon className="h-6 fill-[#0b3768] hover:fill-[#991b1b]" />
-                        </button>
+                          <button onClick={cancel}>
+                            <CancelIcon className="h-6 fill-[#0b3768] hover:fill-[#991b1b]" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -242,4 +262,4 @@ function attendence() {
   );
 }
 
-export default attendence;
+export default Attendence;
