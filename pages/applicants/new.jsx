@@ -18,10 +18,15 @@ export default function ApplicantsNew() {
   const updateDepartingCountry = (departingCountry) => {
     setDepartingCountry(departingCountry);
   };
-
+  const [submitStatus, setSubmitStatus] = useState();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const applicantId = new mongoose.Types.ObjectId();
+    if(submitStatus=="Cancel"){
+    router.push("/applicants/list");
+    }else{
+
+    
+    const applicantId = new mongoose.Types.ObjectId();44
     const studentId = new mongoose.Types.ObjectId();
     const student = {
       _id: studentId,
@@ -87,7 +92,7 @@ export default function ApplicantsNew() {
     await fetch(endpointstudent, optionsStudent);
     await fetch(endpointapplicant, optionApplicant);
     router.push("/applicants/list");
-  };
+}};
 
   return (
     <section className="relative w-full">
@@ -742,12 +747,16 @@ export default function ApplicantsNew() {
               <div className="flex p-4 gap-4">
                 <button
                   type="submit"
+                  value="Cancel"
+                  onClick={() => setSubmitStatus("Cancel")}
                   className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-500 bg-gray-300 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
+                  value="Save"
+                  onClick={() => setSubmitStatus("Save")}
                   className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Save
