@@ -75,15 +75,13 @@ export default function ApplicantsList() {
               {/* search */}
               <form className="flex items-center h-9">
                 <div className="relative w-full h-full">
-                  <div
-                   className="flex absolute h-full inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <div className="flex absolute h-full inset-y-0 left-0 items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-                      
                       className="w-5 h-5 text-white-500 dark:text-white-400"
                       fill="white"
                       viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg" 
+                      xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         fillRule="evenodd"
@@ -103,7 +101,6 @@ export default function ApplicantsList() {
                 <button
                   type="submit"
                   clasclassNames="w-8 px-2 rounded border-none h-full bg-blue-100  ml-1 mr-2 hover:bg-[#0B3768]/75 "
-                  onClick="alert('Search button clicked!')"
                 >
                   <svg
                     className="w-5 h-5"
@@ -140,19 +137,13 @@ export default function ApplicantsList() {
               </div>
             </div>
             <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black">
-              <button 
-              onClick={clicked4}
-              className="rounded-xl text-lg font-bold hover:bg-slate-200"> 
+              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
                 All
               </button>
-              <button 
-              onClick={clicked4}
-              className="rounded-xl text-lg font-bold hover:bg-slate-200">
+              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
                 Ongoing
               </button>
-              <button 
-              onClick={clicked4}
-              className="rounded-xl text-lg font-bold hover:bg-slate-200">
+              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
                 Finished
               </button>
             </div>

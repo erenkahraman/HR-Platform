@@ -242,7 +242,6 @@ export default function ApplicantsList({ students }) {
                             <button
                               type="submit"
                               className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                              onClick={clicked}
                             >
                               Edit
                             </button>
