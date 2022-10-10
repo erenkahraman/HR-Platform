@@ -14,7 +14,7 @@ import Popup from "reactjs-popup";
 import * as React from "react";
 import Modal from "../../components/Modal/Modal.jsx";
 import { useState } from "react";
-import Modal1 from "../../components/Modal/Modal1.jsx";
+import Modal1 from "../../components/LiaModal/model1";
 import Modal2 from "../../components/Modal/Modal2.jsx";
 import { CSVLink, CSVDownload } from "react-csv";
 
