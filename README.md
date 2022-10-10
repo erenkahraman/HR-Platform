@@ -1,4 +1,4 @@
-#HR Platform
+##HR Platform
 
 ## Installation
 
