@@ -1,5 +1,31 @@
 # HR Platform
 
+# Front End
+HR Platform it's based on the React, Next JS and CSS Tailwind. The code is structured and it have the necesar comments so is pretty easy to catch it. Also we are using some components what were already installed before, or we intalled them here, things for alarm, modal, icons,etc. Pay atention to the json package everything is writed where. Also I suggest you to give a look of already created component in sites like : Mui, React-Boostrap, Floowbite, also if you have a hard time with the CSS Tilwind, use their oficial site, you can find anything about how to write it in CSS Tailwind where. This is all.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Getting started
