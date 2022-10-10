@@ -1,9 +1,9 @@
-##HR Platform
+## HR Platform
 
 ## Installation
 
 ```
-git clone https://github.com/iaincollins/nextjs-starter.git
+git clone https://gitlab.com/e4079/hr-platform.git
 npm install
 npm run dev
 ```
