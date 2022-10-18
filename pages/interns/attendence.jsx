@@ -1,17 +1,28 @@
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { Backdrop, CircularProgress, Alert, Collapse, IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import Link from "next/link";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { confirmAlert } from "react-confirm-alert";
+import SaveIcon from '@mui/icons-material/Save';
+import EditIcon from '@mui/icons-material/Edit';
 import "react-confirm-alert/src/react-confirm-alert.css";
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
 import { useState, useEffect } from "react";
 import reactSelect from "react-select";
+import { CheckCircle } from "@mui/icons-material";
+import EditAttendance from "../../components/Modal/EditAttendance";
 function Attendence() {
   //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  const [date, setDate] = useState('');
+  const [status, setStatus] = useState('');
+  const [intern, setIntern] = useState();
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [editAttendanceModel, setAttendanceEditModel] = useState(false);
+  const [dateIncluded, setDateIncluded] = useState(false)
 
   useEffect(() => {
     setLoading(true);
@@ -22,45 +33,78 @@ function Attendence() {
         setLoading(false);
       });
   }, []);
-  console.log(data);
-  if (isloading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
-  const save = () => {
-    confirmAlert({
-      title: "Confirm to submit",
-      message: "Are you sure you want to save ?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => alert("Click Yes"),
-        },
-        {
-          label: "No",
-          onClick: () => alert("Click No"),
-        },
-      ],
-    });
+
+  const save = (intern) => {
+    setOpenAlert(false);
+    setIntern(intern)
+    if (status && date) {
+      setOpen(false)
+      confirmAlert({
+        message: "Are you sure you want to save ?",
+        buttons: [
+          {
+            label: "Yes",
+            onClick: async () => {
+              setOpen(true);
+              intern.attendance.statusOfTheDay = status;
+              intern.attendance[status].count++;
+              intern.attendance[status].dates.push(date)
+              const JSONintern = JSON.stringify(intern);
+              const endpoint = `/api/intern/${intern._id}`;
+              const options = {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Origin": "*",
+                },
+                body: JSONintern,
+              };
+              await fetch(endpoint, options);
+              setOpen(false);
+            },
+          },
+          {
+            label: "No",
+          },
+        ],
+      });
+      setStatus("");
+      setDate("");
+    } else {
+      setOpenAlert(true)
+    }
+
   };
 
-  const cancel = () => {
-    confirmAlert({
-      title: "Confirm to submit",
-      message: "Are you sure you want to delete ?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => alert("Click Yes"),
-        },
-        {
-          label: "No",
-          onClick: () => alert("Click No"),
-        },
-      ],
-    });
-  };
+  const disableStatus = (intern, dt) => {
+    if (intern.attendance.present.dates.includes(dt)
+      || intern.attendance.late.dates.includes(dt)
+      || intern.attendance.dayOff.dates.includes(dt)
+      || intern.attendance.excusedLeave.dates.includes(dt)
+      || intern.attendance.sick.dates.includes(dt)
+      || intern.attendance.unexcusedleave.dates.includes(dt))
+      setDateIncluded(true)
+    else setDateIncluded(false)
+  }
+
+  if (isloading) return <Backdrop
+    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    open={open}
+  >
+    <CircularProgress color="inherit" />
+  </Backdrop>;
+  if (!data) return <p>No profile data</p>;
+
+
 
   return (
     <section className="relative w-full">
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="w-full mb-12">
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           {/* Title Container */}
@@ -125,7 +169,26 @@ function Attendence() {
               </form>
             </div>
           </div>
-
+          <Collapse in={openAlert}>
+            <Alert
+              severity="warning"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setOpenAlert(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              sx={{ mb: 2 }}
+            >
+              Choose Date/Status for the student !
+            </Alert>
+          </Collapse>
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
             <table className="items-center w-full border-collapse bg-white">
@@ -139,7 +202,7 @@ function Attendence() {
                     DATE
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    SITUATION
+                    STATUS
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     PRESENT
@@ -160,99 +223,114 @@ function Attendence() {
                     UNEXCUSED LEAVE
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    ACTION
+                    SAVE
                   </th>
                 </tr>
               </thead>
 
               {/* Table Body */}
               <tbody className="divide-y">
-                {data.map((intern) => (
-                  <tr key={intern.id}>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
-                      <div className="font-bold">
-                        {" "}
-                        {intern.student.firstName} {intern.student.lastName}
-                      </div>
-                    </td>
+                {data.length == 0 ?
+                  <tr className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">The interns list is empty</tr>
+                  :
+                  data.map((intern) => (
 
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                      <input
-                        type="date"
-                        className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      ></input>
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                      <select
-                        id="country"
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                      >
-                        <option>Present</option>
-                        <option>Late</option>
-                        <option>Day off</option>
-                        <option>Excused leave</option>
-                        <option>Sick</option>
-                        <option>Unexecused leave</option>
-                      </select>
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                      <div className="flex flex-col gap-1">
-                        <div>{intern.attendance.present}</div>
-                      </div>
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                      <div className="flex flex-col gap-1">
-                        <div>{intern.attendance.late}</div>
-                      </div>
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                      <div className="flex flex-col gap-1">
-                        <div>{intern.attendance.dayOff}</div>
-                      </div>
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                      <div className="flex flex-col gap-1">
-                        <div>{intern.attendance.excusedLeave}</div>
-                      </div>
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                      <div className="flex flex-col gap-1">
-                        <div>{intern.attendance.sick}</div>
-                      </div>
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                      <div className="flex flex-col gap-1">
-                        <div>{intern.attendance.unexcusedleave}</div>
-                      </div>
-                    </td>
-
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                      <div className="flex flex-col gap-1">
-                        <div className="flex flex-r">
-                          {/* ICONS */}
-
-                          {/* <button onClick={notify}><CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" /></button>
-												<ToastContainer /> */}
-
-                          <button onClick={save}>
-                            <CheckCircleIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
-                          </button>
-
-                          <button onClick={cancel}>
-                            <CancelIcon className="h-6 fill-[#0b3768] hover:fill-[#991b1b]" />
-                          </button>
+                    <tr key={intern.id}>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
+                        <div className="font-bold">
+                          {" "}
+                          {intern.student.firstName} {intern.student.lastName}
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <input
+                          type="date"
+                          className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          onInput={e => {
+                            setDate(e.target.value)
+                            disableStatus(intern, e.target.value)
+                            setStatus('')
+                          }}
+                        ></input>
+                      </td>
+
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        {dateIncluded ?
+                          <div className="text-red-600/75">Attendance already set!</div> :
+                          <select
+                            id="country"
+                            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            onClick={e => setStatus(e.target.value)}
+                          >
+                            <option value="">-</option>
+                            <option value="present" >Present</option>
+                            <option value="late" >Late</option>
+                            <option value="dayOff" >Day off</option>
+                            <option value="excusedLeave" >Excused leave</option>
+                            <option value="sick" >Sick</option>
+                            <option value="unexcusedleave" >Unexecused leave</option>
+                          </select>
+                        }
+
+                      </td>
+
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <div className="flex flex-col gap-1">
+                          <div >{intern.attendance.present.count}</div>
+                        </div>
+                      </td>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <div className="flex flex-col gap-1">
+                          <div>{intern.attendance.late.count}</div>
+                        </div>
+                      </td>
+
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <div className="flex flex-col gap-1">
+                          <div>{intern.attendance.dayOff.count}</div>
+                        </div>
+                      </td>
+
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <div className="flex flex-col gap-1">
+                          <div>{intern.attendance.excusedLeave.count}</div>
+                        </div>
+                      </td>
+
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <div className="flex flex-col gap-1">
+                          <div>{intern.attendance.sick.count}</div>
+                        </div>
+                      </td>
+
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <div className="flex flex-col gap-1">
+                          <div>{intern.attendance.unexcusedleave.count}</div>
+                        </div>
+                      </td>
+
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <div className="flex flex-col gap-1">
+                          <div className="flex flex-r">
+                            <div>
+                              <button onClick={() => save(intern)} title="Save">
+                                <CheckCircle className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
+                              </button>
+                            </div>
+                            <button title="Edit" >
+                              <SaveIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" onClick={e => { setAttendanceEditModel(true) }} />
+                              {editAttendanceModel && (<EditAttendance
+                                intern={intern}
+                                setModel={setAttendanceEditModel}
+                              />)}
+
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

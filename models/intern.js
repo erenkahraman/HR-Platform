@@ -12,13 +12,31 @@ const InternSchema = new mongoose.Schema({
   position: { type: String, maxlength: 30 },
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
   attendance: {
-    date: { type: String, default: 0 },
-    present: { type: Number, default: 0, date: "" },
-    dayOff: { type: Number, default: 0, date: "" },
-    late: { type: Number, default: 0, date: "" },
-    excusedLeave: { type: Number, default: 0, date: "" },
-    sick: { type: Number, default: 0, date: "" },
-    unexcusedleave: { type: Number, default: 0, date: "" },
+    statusOfTheDay: { type: String, default: '' },
+    present: {
+      count: { type: Number, default: 0 },
+      dates: Array
+    },
+    dayOff: {
+      count: { type: Number, default: 0 },
+      dates: Array
+    },
+    late: {
+      count: { type: Number, default: 0 },
+      dates: Array
+    },
+    excusedLeave: {
+      count: { type: Number, default: 0 },
+      dates: Array
+    },
+    sick: {
+      count: { type: Number, default: 0 },
+      dates: Array
+    },
+    unexcusedleave: {
+      count: { type: Number, default: 0 },
+      dates: Array
+    }
   },
 });
 

@@ -6,13 +6,13 @@ import {
   HowToReg,
 } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Backdrop } from "@mui/material";
 import Link from "next/link";
 import { useEffect } from "react";
 import { server } from "../../next.config";
 import Popup from "reactjs-popup";
 import * as React from "react";
-import Modal from "../../components/Modal/Modal.jsx";
+import AcceptAplcntModal from "../../components/Modal/AcceptAplcntModal.jsx";
 import { useState } from "react";
 import Modal1 from "../../components/LiaModal/model1";
 import Modal2 from "../../components/Modal/Modal2.jsx";
@@ -71,7 +71,11 @@ export default function ApplicantsList({ students }) {
       });
   }, []);
   console.log(data);
-  if (isloading) return <p>Loading...</p>;
+  if (isloading) return <Backdrop
+  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+>
+  <CircularProgress color="inherit" />
+</Backdrop>;
   if (!data) return <p>No profile data</p>;
 
   const headers = [
@@ -242,7 +246,7 @@ export default function ApplicantsList({ students }) {
                             <button
                               type="submit"
                               className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                              onClick={clicked}
+                              //onClick={clicked}
                             >
                               Edit
                             </button>
@@ -259,7 +263,7 @@ export default function ApplicantsList({ students }) {
                             {choice}
 
                             {modalOn && (
-                              <Modal
+                              <AcceptAplcntModal
                                 setModalOn={setModalOn}
                                 setChoice={setChoice}
                                 stdId={applicant.student._id}

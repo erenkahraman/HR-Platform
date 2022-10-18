@@ -23,13 +23,13 @@ const Feed = () => {
           </div>
           <div className="flex flex-[3] flex-col gap-2 p-2">
             <div className="text-sm font-semibold">{whatsNew.title}</div>
-            <div className="text-xs font-light">{whatsNew.title}</div>
+            <div className="text-xs font-light">{whatsNew.paragraph}</div>
           </div>
-          <div className="flex flex-[1] p-2">
+          {/*<div className="flex flex-[1] p-2">
             <div className="flex h-fit text-sm font-semibold underline cursor-pointer">
               Read More
             </div>
-          </div>
+      </div>*/}
         </div>
       ))}
     </div>

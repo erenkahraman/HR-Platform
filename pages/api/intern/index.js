@@ -16,6 +16,7 @@ export default async function handler(req, res){
                     {
                         $lookup: {
                             from: Student.collection.name,
+                            //This is to avoid having the student both in intern and applicant list
                             pipeline: [
                                 { $match: { applicationStatus: "Accepted" } }
                             ],
