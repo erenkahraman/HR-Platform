@@ -36,12 +36,13 @@ export default function ApplicantsList() {
       });
   }, []);
   console.log(data);
-  if (isloading) return <Backdrop
-    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-  ><CircularProgress color="inherit" />
-  </Backdrop>;;
   return (
     <section className="relative w-full sm:static">
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isloading}
+      ><CircularProgress color="inherit" />
+      </Backdrop>
       <div className="w-full mb-12">
         <div className="relative sm:static flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
           {/* Title Container */}

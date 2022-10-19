@@ -38,6 +38,12 @@ const InternSchema = new mongoose.Schema({
       dates: Array
     }
   },
+  departure : {
+    departureDate : String,
+    departureTime: String,
+    departureCity: String,
+    pickBy: String,
+  }
 });
 
 export default mongoose.models.Intern || mongoose.model("Intern", InternSchema);

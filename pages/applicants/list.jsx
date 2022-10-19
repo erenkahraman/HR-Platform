@@ -70,12 +70,7 @@ export default function ApplicantsList({ students }) {
         setLoading(false);
       });
   }, []);
-  console.log(data);
-  if (isloading) return <Backdrop
-  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
->
-  <CircularProgress color="inherit" />
-</Backdrop>;
+
   if (!data) return <p>No profile data</p>;
 
   const headers = [
@@ -119,6 +114,12 @@ export default function ApplicantsList({ students }) {
 
   return (
     <section className="relative w-full">
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isloading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="w-full mb-12">
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           {/* Title Container */}
@@ -246,7 +247,7 @@ export default function ApplicantsList({ students }) {
                             <button
                               type="submit"
                               className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                              //onClick={clicked}
+                            //onClick={clicked}
                             >
                               Edit
                             </button>

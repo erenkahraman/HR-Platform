@@ -1,17 +1,26 @@
 import React from "react";
 import mongoose from "mongoose";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Spinner, Button } from "flowbite-react";
 
 const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
   const router = useRouter();
   const [spinnerState, SetSpinnerState] = useState(false)
+  const [departments, setDepartments] = useState([])
+  const [positions, setPositions] = useState([])
   const handleCancelClick = () => {
     setChoice(false);
     setModalOn(false);
   };
 
+  useEffect(() => {
+    fetch("/api/department")
+      .then((res) => res.json())
+      .then((data) => {
+        setDepartments(data);
+      });
+  }, []);
   const calculateWeeks = (start, end) => {
     const msInWeek = 1000 * 60 * 60 * 24 * 7;
     return Math.round(Math.abs(Date.parse(end) - Date.parse(start)) / msInWeek);
@@ -111,10 +120,12 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
                   name="department"
                   id="department"
                   className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  onClick={e => setPositions(departments[e.target.value].positions)}
                 >
-                  <option>HR</option>
-                  <option>ICT</option>
-                  <option>DA</option>
+                  {departments.map((department, i) => (
+                    <option value={i} >{department.department}</option>
+                  ))}
+                  
                 </select>
               </div>
 
@@ -130,9 +141,9 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
                   id="position"
                   className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 >
-                  <option>Position1</option>
-                  <option>Position2</option>
-                  <option>Position3</option>
+                  {positions.map((position) => (
+                    <option>{position}</option>
+                  ))}
                 </select>
               </div>
 
@@ -159,7 +170,7 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
                     </svg>
                     <span class="sr-only">Loading...</span>
                   </div> : null
-                  }
+                }
               </div>
             </div>
           </div>
