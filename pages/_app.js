@@ -3,6 +3,8 @@ import { Layout } from "../components/Layout";
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import { useEffect } from "react";
+import { app } from "../pages/verifyToken/index";
+import cookie from "js-cookie";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   useEffect(() => {
@@ -12,6 +14,26 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     }
   }, []);
   const router = useRouter();
+
+  /// for Token Check
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await app();
+      return data;
+    };
+    const result = fetchData().catch(console.error);
+    result.then(function (val) {
+      if (
+        val !== true &&
+        (router.asPath !== "/login" && router.asPath !== "/login/forgot" && router.asPath !== "/404")
+      ) {
+        router.push("/login");
+        cookie?.remove("token");
+        cookie?.remove("user");
+      }
+    });
+  }, [router]);
+  /// for Token Check
 
   if (router.asPath === "/login" || router.asPath === "/login/forgot") {
     return (

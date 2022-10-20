@@ -17,7 +17,7 @@ export default async (req, res) => {
           res.status(400).json({ message: "All fields must be filled" });
         } else {
           
-          const HashedPassword = await bcrypt.hash(password, 12);
+          const HashedPassword = await bcrypt.hash(password,process.env.JWT_SECRET);
           const newUser = await new User({
             name: name,
             phoneNumber: phoneNumber,

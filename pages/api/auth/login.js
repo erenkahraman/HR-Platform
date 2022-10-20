@@ -4,7 +4,7 @@ import User from "../../../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-dbConnect(); 
+dbConnect();
 
 export default async (req, res) => {
   try {
@@ -23,13 +23,19 @@ export default async (req, res) => {
           } else {
             const token = jwt.sign(
               { userId: user.id },
-              ""+process.env.JWT_SECRET,
+              process.env.JWT_SECRET,
               {
                 expiresIn: "7d",
               }
             );
-              const {email,_id}= user
-            res.status(201).json({ message: "Login Successful", user:{email,_id}, token });
+            const { email, _id } = user;
+            res
+              .status(201)
+              .json({
+                message: "Login Successful",
+                user: { email, _id },
+                token,
+              });
           }
         }
       }
