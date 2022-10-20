@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
-const Feed = () => {
+
+const Feed = ({setOpen}) => {
   const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
   useEffect(() => {
-    setLoading(true);
+    setOpen(true);
     fetch("/api/whatsNew")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+        setOpen(false);
       });
   }, []);
   return (
     <div>
-      {data.slice(data.length - 3).map((whatsNew) => (
+      {data.slice(-3).reverse().map((whatsNew) => (
         <div className="flex m-2 py-4" key={whatsNew.id}>
           <div className="flex flex-[1] flex-col gap-2 p-2">
             <div className="text-sm font-semibold">{whatsNew.date}</div>

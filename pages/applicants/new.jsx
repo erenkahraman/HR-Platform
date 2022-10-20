@@ -6,7 +6,14 @@ import Select from "react-select";
 import Popup from "reactjs-popup";
 import { Cancel, Verified } from "@mui/icons-material";
 import mongoose from "mongoose";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress, Alert, Collapse, IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Dayjs } from "dayjs";
+import { TextField } from "@mui/material";
+import moment from "moment/moment";
 
 export default function ApplicantsNew() {
 
@@ -22,6 +29,13 @@ export default function ApplicantsNew() {
   const [dbDepartment, setDbDepartment] = useState([])
   // get positions from DB when choosing positions
   const [positions, setPositions] = useState([])
+  const [birthday, setBirtthday] = useState(null)
+  const [hrInterviewDate, setHrInterviewDate] = useState(null)
+  const [ceoInterviewDate, setCeoInterviewDate] = useState(null)
+  const [applicationDate, setApplicationDate] = useState(null)
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+  const [openAlert, setOpenAlert] = useState(false)
 
 
   // Get departments from DB
@@ -31,6 +45,7 @@ export default function ApplicantsNew() {
       .then((res) => res.json())
       .then((data) => {
         setDbDepartment(data);
+        setPositions(data[0].positions)
         setOpen(false)
       });
   }, []);
@@ -55,75 +70,85 @@ export default function ApplicantsNew() {
 
   //handles the submit of the whole new applicant form
   const handleSubmit = async (event) => {
-    setOpen(true)
     event.preventDefault();
-    const applicantId = new mongoose.Types.ObjectId();
-    const studentId = new mongoose.Types.ObjectId();
-    const student = {
-      _id: studentId,
-      firstName: event.target.firstName.value,
-      lastName: event.target.lastName.value,
-      email: event.target.email.value,
-      dateOfBirth: event.target.dateOfBirth.value,
-      sex: event.target.sex.value,
-      phoneNumber: event.target.phoneNumber.value,
-      university: event.target.university.value,
-      nationality: nationalityValue.label,
-      departingCountry: departingCountryValue.label,
-      applicant: applicantId,
-    };
-    const applicant = {
-      _id: applicantId,
-      applicationDate: event.target.applicationDate.value,
-      startDate: event.target.startDate.value,
-      endDate: event.target.endDate.value,
-      arrivalTime: event.target.arrivalTime.value,
-      arrivalCity: event.target.arrivalCity.value,
-      pickUpBy: event.target.pickUpBy.value,
-      progress: event.target.progress.value,
-      department: event.target.department.value,
-      position: event.target.position.value,
-      hrInterviewDate: event.target.hrInterviewDate.value,
-      ceoInterviewDate: event.target.ceoInterviewDate.value,
-      interviewNotes: event.target.interviewNotes.value.trim(),
-      rejectionReasons: event.target.rejectionReasons.value.trim(),
-      student: studentId,
-      documents: {
-        curiculumVitae: event.target.resume.value,
-        learningAgreement: event.target.lrnargmt.value,
-        acceptanceLetter: event.target.acptltr.value,
-        accommodationLetter: event.target.acmdtltr.value,
-        arrivalTickets: event.target.arvltckt.value,
-        internDevelopmentPlan: event.target.idp.value,
-        confidentialityLetter: event.target.confltr.value,
-        identification: event.target.ident.value,
-      }
-    };
-    const JSONdstudent = JSON.stringify(student);
-    const JSONapplicant = JSON.stringify(applicant);
-    const endpointstudent = '/api/student';
-    const endpointapplicant = '/api/applicant';
-    const optionsStudent = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSONdstudent,
-    };
-    const optionApplicant = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSONapplicant,
-    };
-    console.log(JSONapplicant)
-    await fetch(endpointstudent, optionsStudent);
-    await fetch(endpointapplicant, optionApplicant);
-    router.push('/applicants/list')
-    setOpen(false)
+    if (birthday
+      && hrInterviewDate
+      && ceoInterviewDate
+      && applicationDate
+      && startDate
+      && endDate) {
+      setOpen(true)
+      const applicantId = new mongoose.Types.ObjectId();
+      const studentId = new mongoose.Types.ObjectId();
+      const student = {
+        _id: studentId,
+        firstName: event.target.firstName.value,
+        lastName: event.target.lastName.value,
+        email: event.target.email.value,
+        dateOfBirth: moment(birthday).format("DD-MM-YYYY"),
+        sex: event.target.sex.value,
+        phoneNumber: event.target.phoneNumber.value,
+        university: event.target.university.value,
+        nationality: nationalityValue.label,
+        departingCountry: departingCountryValue.label,
+        applicant: applicantId,
+      };
+      const applicant = {
+        _id: applicantId,
+        applicationDate: moment(applicationDate).format("DD-MM-YYYY"),
+        startDate: moment(startDate).format("DD-MM-YYYY"),
+        endDate: moment(endDate).format("DD-MM-YYYY"),
+        arrivalTime: event.target.arrivalTime.value,
+        arrivalCity: event.target.arrivalCity.value,
+        pickUpBy: event.target.pickUpBy.value,
+        progress: event.target.progress.value,
+        department: event.target.department.value,
+        position: event.target.position.value,
+        hrInterviewDate: moment(hrInterviewDate).format("DD-MM-YYYY"),
+        ceoInterviewDate: moment(ceoInterviewDate).format("DD-MM-YYYY"),
+        interviewNotes: event.target.interviewNotes.value.trim(),
+        rejectionReasons: event.target.rejectionReasons.value.trim(),
+        student: studentId,
+        documents: {
+          curiculumVitae: event.target.resume.value,
+          learningAgreement: event.target.lrnargmt.value,
+          acceptanceLetter: event.target.acptltr.value,
+          accommodationLetter: event.target.acmdtltr.value,
+          arrivalTickets: event.target.arvltckt.value,
+          internDevelopmentPlan: event.target.idp.value,
+          confidentialityLetter: event.target.confltr.value,
+          identification: event.target.ident.value,
+        }
+      };
+      const JSONdstudent = JSON.stringify(student);
+      const JSONapplicant = JSON.stringify(applicant);
+      const endpointstudent = '/api/student';
+      const endpointapplicant = '/api/applicant';
+      const optionsStudent = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSONdstudent,
+      };
+      const optionApplicant = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSONapplicant,
+      };
+      //console.log(JSONapplicant)
+      await fetch(endpointstudent, optionsStudent);
+      await fetch(endpointapplicant, optionApplicant);
+      router.push('/applicants/list')
+      setOpen(false)
+    }
+    else
+      setOpenAlert(true)
+
   }
 
   //Add new department to DB
@@ -290,13 +315,17 @@ export default function ApplicantsNew() {
                       <label htmlFor="email-address" className="block text-sm">
                         Date of Birth
                       </label>
-                      <input
-                        type="date"
-                        name="date-of-birth"
-                        required
-                        id="dateOfBirth"
-                        className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          value={birthday}
+                          onChange={(newValue) => {
+                            setBirtthday(newValue)
+                          }}
+                          renderInput={(params) => <TextField {...params} />}
+
+                        />
+                      </LocalizationProvider>
+
                     </div>
 
                     {/* Nationality */}
@@ -387,13 +416,16 @@ export default function ApplicantsNew() {
                         <label htmlFor="applied-on" className="block text-sm">
                           Applied on
                         </label>
-                        <input
-                          type="date"
-                          name="applied-on"
-                          id="applicationDate"
-                          required
-                          className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            value={applicationDate}
+                            onChange={(newValue) => {
+                              setApplicationDate(newValue)
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+
+                          />
+                        </LocalizationProvider>
                       </div>
 
                       {/* Interview Date */}
@@ -401,13 +433,16 @@ export default function ApplicantsNew() {
                         <label htmlFor="applied-on" className="block text-sm">
                           HR Interview Date
                         </label>
-                        <input
-                          type="date"
-                          name="interview-date"
-                          id="hrInterviewDate"
-                          required
-                          className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            value={hrInterviewDate}
+                            onChange={(newValue) => {
+                              setHrInterviewDate(newValue)
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+
+                          />
+                        </LocalizationProvider>
                       </div>
                     </div>
                     <div className="flex gap-4	">
@@ -416,13 +451,16 @@ export default function ApplicantsNew() {
                         <label htmlFor="ceo-interview" className="block text-sm">
                           CEO Interview Date
                         </label>
-                        <input
-                          type="date"
-                          name="ceoInterviewDate"
-                          id="ceoInterviewDate"
-                          required
-                          className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            value={ceoInterviewDate}
+                            onChange={(newValue) => {
+                              setCeoInterviewDate(newValue)
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+
+                          />
+                        </LocalizationProvider>
                       </div>
                     </div>
 
@@ -438,10 +476,10 @@ export default function ApplicantsNew() {
                           name="department"
                           autoComplete="department"
                           className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          onClick={e => setPositions(dbDepartment[e.target.value].positions)}
+                          onChange={e => setPositions(dbDepartment[e.target.selectedIndex].positions)}
                         >
                           {dbDepartment.map((department, i) => (
-                            <option value={i} >{department.department}</option>
+                            <option disabled={department.positions.length == 0} >{department.department}</option>
                           ))}
                         </select>
                       </div>
@@ -475,7 +513,7 @@ export default function ApplicantsNew() {
                                 className="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
                                 placeholder="Introduce new department"
                                 required
-                                onInput={e => setDepartment(e.target.value)}
+                                onChange={e => setDepartment(e.target.value)}
                               />
                             </div>
                           </div>
@@ -509,16 +547,17 @@ export default function ApplicantsNew() {
                         {positions.length == 0 ?
                           <div className="text-red-600/75">No positions available for this department</div>
                           :
-                        <select
-                          id="position"
-                          name="position"
-                          autoComplete="Position"
-                          className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        >
-                          {positions.map((position) => (
-                            <option key={position}>{position}</option>
-                          ))}
-                        </select>}
+                          <select
+                            id="position"
+                            name="position"
+                            autoComplete="Position"
+                            required
+                            className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          >
+                            {positions.map((position) => (
+                              <option key={position}>{position}</option>
+                            ))}
+                          </select>}
                       </div>
                       <Popup
                         contentStyle={{
@@ -599,13 +638,16 @@ export default function ApplicantsNew() {
                         <label htmlFor="arrival-date" className="block text-sm">
                           Start Date
                         </label>
-                        <input
-                          type="date"
-                          name="arrival-date"
-                          id="startDate"
-                          required
-                          className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            value={startDate}
+                            onChange={(newValue) => {
+                              setStartDate(newValue)
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+
+                          />
+                        </LocalizationProvider>
                       </div>
 
                       {/* Departure Date */}
@@ -613,13 +655,16 @@ export default function ApplicantsNew() {
                         <label htmlFor="departure-date" className="block text-sm">
                           End Date
                         </label>
-                        <input
-                          type="date"
-                          name="departure-date"
-                          id="endDate"
-                          required
-                          className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            value={endDate}
+                            onChange={(newValue) => {
+                              setEndDate(newValue)
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+
+                          />
+                        </LocalizationProvider>
                       </div>
                     </div>
                     <div className="flex gap-4">
@@ -854,6 +899,26 @@ export default function ApplicantsNew() {
                     Save
                   </button>
                 </div>
+                <Collapse in={openAlert}>
+                  <Alert
+                    severity="warning"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpenAlert(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                  >
+                    Make sure to fill all the dates !
+                  </Alert>
+                </Collapse>
               </form>
             </div>
           </div>

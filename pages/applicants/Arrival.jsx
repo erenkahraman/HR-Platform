@@ -162,95 +162,101 @@ export default function ApplicantsList() {
 
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
-            <table className="items-center w-full border-collapse bg-white">
-              {/* Table Head */}
-              <thead>
-                <tr>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
-                    Full Name
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
-                    Departure Date
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
-                    Departure Time
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
-                    Departure City
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
-                    Pick Up By
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
-                    Action
-                  </th>
-                </tr>
-              </thead>
+            {data.length === 0 ?
+              <div className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
+                  p-4 flex items-center">
+                The Interns list is empty at the moment!
+              </div>
+              :
+              <table className="items-center w-full border-collapse bg-white">
+                {/* Table Head */}
+                <thead>
+                  <tr>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                      Full Name
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                      Arrival Date
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                      Arrival Time
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                      Arrival City
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                      Pick Up By
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
 
-              {/* Table Body */}
-              <tbody className="divide-y">
-                {data.map((applicant) => (
-                  <tr key={applicant._id}>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                      <span className="ml-3 font-bold">
-                        {" "}
-                        {applicant.student.firstName}{" "}
-                        {applicant.student.lastName}{" "}
-                      </span>
-                    </td>
+                {/* Table Body */}
+                <tbody className="divide-y">
+                  {data.map((applicant) => (
+                    <tr key={applicant._id}>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                        <span className="ml-3 font-bold">
+                          {" "}
+                          {applicant.student.firstName}{" "}
+                          {applicant.student.lastName}{" "}
+                        </span>
+                      </td>
 
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {applicant.departureDate}
-                    </td>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        {applicant.departureDate}
+                      </td>
 
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {applicant.departureTime}
-                    </td>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        {applicant.departureTime}
+                      </td>
 
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {applicant.departureCity}
-                    </td>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {applicant.pickUpBy}
-                    </td>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        {applicant.departureCity}
+                      </td>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        {applicant.pickUpBy}
+                      </td>
 
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
-                      {/* ICONS */}
-                      <div className="flex flex-row">
-                        <Tooltip
-                          className="bg-transparent text-black mt-2"
-                          content="Delete"
-                          animate={{
-                            mount: { scale: 1, y: 0 },
-                            unmount: { scale: 0, y: 25 },
-                          }}
-                        >
-                          <Button
-                            variant="gradient"
-                            className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 "
-                            onClick={cancel}
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
+                        {/* ICONS */}
+                        <div className="flex flex-row">
+                          <Tooltip
+                            className="bg-transparent text-black mt-2"
+                            content="Delete"
+                            animate={{
+                              mount: { scale: 1, y: 0 },
+                              unmount: { scale: 0, y: 25 },
+                            }}
                           >
-                            <MdDeleteOutline />
-                          </Button>
-                        </Tooltip>
-                        <Tooltip
-                          className="bg-transparent text-black mt-2"
-                          content="Edit"
-                          animate={{
-                            mount: { scale: 1, y: 0 },
-                            unmount: { scale: 0, y: 25 },
-                          }}
-                        >
-                          <Button
-                            variant="gradient"
-                            className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 "
-                            onClick={clicked}
+                            <Button
+                              variant="gradient"
+                              className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 "
+                              onClick={cancel}
+                            >
+                              <MdDeleteOutline />
+                            </Button>
+                          </Tooltip>
+                          <Tooltip
+                            className="bg-transparent text-black mt-2"
+                            content="Edit"
+                            animate={{
+                              mount: { scale: 1, y: 0 },
+                              unmount: { scale: 0, y: 25 },
+                            }}
                           >
-                            <AiOutlineEdit />
-                          </Button>
-                        </Tooltip>
+                            <Button
+                              variant="gradient"
+                              className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 "
+                              onClick={clicked}
+                            >
+                              <AiOutlineEdit />
+                            </Button>
+                          </Tooltip>
 
-                        {/* <Popup  contentStyle={{background:"#0B3768", borderRadius:"0.25rem"}} trigger={<button><AiOutlineEdit /></button>}  position="left center">
+                          {/* <Popup  contentStyle={{background:"#0B3768", borderRadius:"0.25rem"}} trigger={<button><AiOutlineEdit /></button>}  position="left center">
 												<div className="flex flex-row">
 													<div >
 														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-6 text-sm p-4 mx-7" type="text" name="applicant" value="Alena Mango" required />
@@ -274,39 +280,39 @@ export default function ApplicantsList() {
 												</div>
 											</Popup> */}
 
-                        {modalOn && (
-                          <Modal
-                            setModalOn={setModalOn}
-                            setChoice={setChoice}
-                          />
-                        )}
+                          {modalOn && (
+                            <Modal
+                              setModalOn={setModalOn}
+                              setChoice={setChoice}
+                            />
+                          )}
 
-                        <Tooltip
-                          className="bg-transparent text-black mt-2"
-                          content="Edit Profile"
-                          animate={{
-                            mount: { scale: 1, y: 0 },
-                            unmount: { scale: 0, y: 25 },
-                          }}
-                        >
-                          <Button
-                            variant="gradient"
-                            className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 "
+                          <Tooltip
+                            className="bg-transparent text-black mt-2"
+                            content="Edit Profile"
+                            animate={{
+                              mount: { scale: 1, y: 0 },
+                              unmount: { scale: 0, y: 25 },
+                            }}
                           >
-                            <Link href="/applicants/edit">
-                              <RiAccountCircleLine />
-                            </Link>
-                          </Button>
-                        </Tooltip>
-                        {/* <button className="px-0.75">
+                            <Button
+                              variant="gradient"
+                              className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 "
+                            >
+                              <Link href="/applicants/edit">
+                                <RiAccountCircleLine />
+                              </Link>
+                            </Button>
+                          </Tooltip>
+                          {/* <button className="px-0.75">
 												<RiAccountCircleLine onClick={profile} />
 											</button> */}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>}
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import {
   UploadFileOutlined,
   AnnouncementOutlined,
   Cancel,
-  Verified,
+  Verified
 } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
@@ -18,9 +18,12 @@ import news from "./news";
 import { useRouter } from "next/router";
 import { Link } from "@mui/material";
 import { Birthdays } from "../../components/Birthdays";
-
+import { useState } from "react";
+import { CircularProgress, Backdrop } from "@mui/material";
 export default function Dashboard() {
+
   const router = useRouter();
+  const [open, setOpen] = useState(false)
 
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -74,6 +77,12 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col w-full">
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       {/* Top */}
       <div className="flex flex-[1]">
         {/* Image Container */}
@@ -350,7 +359,7 @@ export default function Dashboard() {
             </div>
             {/* What's New Content */}
             <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-              <Feed />
+              <Feed setOpen={setOpen} />
             </div>
             {/* Weekly Schedule */}
           </div>
@@ -396,7 +405,7 @@ export default function Dashboard() {
 
             {/* Daily Reminder Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
-              <Reminder />
+              <Reminder setOpen={setOpen}/>
             </div>
           </div>
 

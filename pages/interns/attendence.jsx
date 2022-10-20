@@ -11,6 +11,9 @@ import { useState, useEffect } from "react";
 import reactSelect from "react-select";
 import { CheckCircle } from "@mui/icons-material";
 import EditAttendance from "../../components/Modal/EditAttendance";
+
+
+
 function Attendence() {
   //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
