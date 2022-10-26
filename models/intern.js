@@ -46,28 +46,7 @@ const InternSchema = new mongoose.Schema({
     departureCity: String,
     pickBy: String,
   },
-  documents: {
-    learningAgreementAfter: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    accommodationLetter: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    internDevelopmentPlan: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    confidentialityAgrement: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-  }
+  documents: [{type: Map, of: String}],
 });
 
 export default mongoose.models.Intern || mongoose.model("Intern", InternSchema);

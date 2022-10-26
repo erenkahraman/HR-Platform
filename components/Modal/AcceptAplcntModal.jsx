@@ -36,6 +36,12 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
       endDate: event.target.endDate.value,
       departement: event.target.department.value,
       position: event.target.position.value,
+      documents: [
+        { name :"Intern Development Plan", status: "Not Submitted"},
+        { name :"learning Agreement After", sstatus: "Not Submitted"},
+        { name :"Accommodation Letter", status: "Not Submitted"},
+        { name :"Confidentiality Agrement", status: "Not Submitted"},
+      ],
       student: stdId,
     };
     intern.durationInWeeks = await calculateWeeks(
