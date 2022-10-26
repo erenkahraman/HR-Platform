@@ -60,7 +60,7 @@ const DocumentList = () => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      {data.length === 0 ?
+      {data.length == 0 ?
         <div className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
                   p-4 flex items-center">
           The Applicants list is empty at the moment!
