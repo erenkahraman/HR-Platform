@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+const statusEnum = ["Not Submitted", "Needs Review", "Incorrect", "Correct"];
+
 const InternSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -38,11 +40,33 @@ const InternSchema = new mongoose.Schema({
       dates: Array
     }
   },
-  departure : {
-    departureDate : String,
+  departure: {
+    departureDate: String,
     departureTime: String,
     departureCity: String,
     pickBy: String,
+  },
+  documents: {
+    learningAgreementAfter: {
+      type: String,
+      enum: statusEnum,
+      default: "Not Submitted",
+    },
+    accommodationLetter: {
+      type: String,
+      enum: statusEnum,
+      default: "Not Submitted",
+    },
+    internDevelopmentPlan: {
+      type: String,
+      enum: statusEnum,
+      default: "Not Submitted",
+    },
+    confidentialityAgrement: {
+      type: String,
+      enum: statusEnum,
+      default: "Not Submitted",
+    },
   }
 });
 

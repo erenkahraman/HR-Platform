@@ -108,17 +108,14 @@ export default function ApplicantsNew() {
         ceoInterviewDate: moment(ceoInterviewDate).format("DD-MM-YYYY"),
         interviewNotes: event.target.interviewNotes.value.trim(),
         rejectionReasons: event.target.rejectionReasons.value.trim(),
-        student: studentId,
-        documents: {
-          curiculumVitae: event.target.resume.value,
-          learningAgreement: event.target.lrnargmt.value,
-          acceptanceLetter: event.target.acptltr.value,
-          accommodationLetter: event.target.acmdtltr.value,
-          arrivalTickets: event.target.arvltckt.value,
-          internDevelopmentPlan: event.target.idp.value,
-          confidentialityLetter: event.target.confltr.value,
-          identification: event.target.ident.value,
-        }
+        documents: [
+          { name :"Curiculum Vitae", status: event.target.resume.value},
+          { name :"Motivation Letter", status: event.target.mtvtnltr.value},
+          { name :"Arrival Tickets", status: "Not Submitted"},
+          { name :"Learning Agreement", status: "Not Submitted"},
+          { name :"Acceptance Letter", status: "Not Submitted"}
+        ],
+        student: studentId
       };
       const JSONdstudent = JSON.stringify(student);
       const JSONapplicant = JSON.stringify(applicant);
@@ -140,11 +137,11 @@ export default function ApplicantsNew() {
         },
         body: JSONapplicant,
       };
-      //console.log(JSONapplicant)
+      //console.log(JSONdstudent)
+      console.log(JSONapplicant)
       await fetch(endpointstudent, optionsStudent);
       await fetch(endpointapplicant, optionApplicant);
       router.push('/applicants/list')
-      setOpen(false)
     }
     else
       setOpenAlert(true)
@@ -478,7 +475,7 @@ export default function ApplicantsNew() {
                           className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                           onChange={e => setPositions(dbDepartment[e.target.selectedIndex].positions)}
                         >
-                          {dbDepartment.map((department, i) => (
+                          {dbDepartment.map((department) => (
                             <option disabled={department.positions.length == 0} >{department.department}</option>
                           ))}
                         </select>
@@ -733,28 +730,6 @@ export default function ApplicantsNew() {
                           <option>Completed</option>
                         </select>
                       </div>
-
-                      {
-                        //No need for this as it's gonna be changed automatically
-                        /* Application Status 
-                      <div className="flex flex-[1] flex-col gap-2">
-                        <label htmlFor="status" className="block text-sm">
-                          Status
-                        </label>
-                        <select
-                          name="status"
-                          id="status"
-                          className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        >
-                          <option>Accepted</option>
-                          <option>On Progress</option>
-                          <option>No Answer</option>
-                          <option>On Board</option>
-                          <option>Rejected</option>
-  
-                        </select>
-                      </div>*/
-                      }
                     </div>
                   </div>
                 </div>
@@ -835,23 +810,10 @@ export default function ApplicantsNew() {
                     </div>
                     <div className="flex gap-6 justify-start">
                       <DocumentReview title="Curriculum Vitae" id="resume" />
-                      <DocumentReview title="Learning Agreement" id="lrnargmt" />
-                      <DocumentReview title="Acceptance Letter" id="acptltr" />
-                      <DocumentReview
-                        title="Accommodation Letter"
-                        id="acmdtltr"
-                      />
+                      <DocumentReview title="Motivation Letter" id="mtvtnltr" />
                     </div>
-                    <div className="flex gap-6 justify-start">
-                      <DocumentReview title="Arrival Tickets" id="arvltckt" />
-                      <DocumentReview title="Intern Development Plan" id="idp" />
-                      <DocumentReview
-                        title="Confidentiality Letter"
-                        id="confltr"
-                      />
-                      <DocumentReview title="Identification" id="ident" />
-                    </div>
-                    <div className="flex gap-6 justify-start">
+                    {/**
+                     * <div className="flex gap-6 justify-start">
                       <DocumentReview title="Grant" />
                       <div className="flex w-48 flex-col gap-2">
                         <label htmlFor="cv" className="block text-sm">
@@ -880,6 +842,9 @@ export default function ApplicantsNew() {
                         </select>
                       </div>
                     </div>
+                     * 
+                     */}
+
                   </div>
                 </div>
 

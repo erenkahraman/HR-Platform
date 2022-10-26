@@ -1,6 +1,7 @@
 import { getMongoDb } from "../../../util/mongodb";
 import Student from "../../../models/student";
 import Applicant from "../../../models/applicant";
+import Intern from "../../../models/intern";
 import dbConnect from "../../../util/mongodb";
 
 export default async function handler(req, res){
@@ -20,18 +21,12 @@ export default async function handler(req, res){
               foreignField: "_id",
               as: "applicant",
             },
-          },
-          /*{
-                    ** intern lookup to be added later
-                    $lookup: {
-                        from: Applicant.collection.name,
-                        localField: 'applicant',
-                        foreignField: '_id',
-                        as: 'applicant'
-                    }
-                },*/
-          {
-            $unwind: "$applicant",
+            $lookup: {
+              from: Intern.collection.name,
+              localField: "intern",
+              foreignField: "_id",
+              as: "intern",
+            },
           },
         ])
         .toArray();

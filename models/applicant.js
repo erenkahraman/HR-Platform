@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const statusEnum = ["Not Submitted", "Need Review", "Incorrect", "Correct"];
+//const statusEnum = ["Not Submitted", "Needs Review", "Incorrect", "Correct"];
+
 const ApplicantSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,49 +20,8 @@ const ApplicantSchema = new mongoose.Schema({
   ceoInterviewDate: { type: String, required: true, maxlength: 30 },
   interviewNotes: { type: String, required: true },
   rejectionReasons: { type: String, required: true },
+  documents: [{type: Map, of: String}],
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
-  documents: {
-    curiculumVitae: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    learningAgreement: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    acceptanceLetter: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    accommodationLetter: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    arrivalTickets: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    internDevelopmentPlan: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    confidentialityLetter: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-    identification: {
-      type: String,
-      enum: statusEnum,
-      default: "Not Submitted",
-    },
-  },
 });
 
 export default mongoose.models.Applicant || mongoose.model("Applicant", ApplicantSchema);
