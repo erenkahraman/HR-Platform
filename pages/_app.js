@@ -22,11 +22,16 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       return data;
     };
     const result = fetchData().catch(console.error);
+
     result.then(function (val) {
       if (
         val !== true &&
-        (router.asPath !== "/login" && router.asPath !== "/login/forgot" && router.asPath !== "/404")
+        router.asPath !== "/login" &&
+        router.asPath !== "/login/forgot" &&
+        router.asPath.search("/404") !== 0 &&
+        router.asPath.search("/login/resetPassword/") !== 0
       ) {
+        
         router.push("/login");
         cookie?.remove("token");
         cookie?.remove("user");
@@ -35,7 +40,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   }, [router]);
   /// for Token Check
 
-  if (router.asPath === "/login" || router.asPath === "/login/forgot") {
+  if (
+    router.asPath === "/login" ||
+    router.asPath === "/login/forgot" ||
+    router.asPath.search("/login/resetPassword/") === 0
+  ) {
     return (
       <SessionProvider session={session}>
         <Component {...pageProps} />{" "}
