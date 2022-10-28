@@ -30,10 +30,10 @@ export default async function handler(req, res) {
         });
 
         const message = await client.sendAsync({
-          text: `${process.env.NEXTAUTH_URL}/login/resetPassword/${token}`,
+          text: `its For Change your password : ${process.env.NEXTAUTH_URL}/login/resetPassword/${token}`,
           from: process.env.GOOGLE_USER,
           to: email,
-          subject: "testing emailjs",
+          subject: "testing Change Password ",
         });
 
         res.status(200).end(JSON.stringify({ message: "Send Mail" }));

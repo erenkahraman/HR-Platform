@@ -17,9 +17,8 @@ const Modal = ({ setModalOn, setChoice }) => {
   const { data: session } = useSession();
 
   const handleOKClick = async (e) => {
+    try{
     if(password === repPassword){
-        
-    
     e.preventDefault();
     const config = {
       headers: {
@@ -33,10 +32,18 @@ const Modal = ({ setModalOn, setChoice }) => {
     );
     setChoice(true);
     setModalOn(false);
+    alert("Registration successful")
     console.log(data);
  } else{
     // Eğer 2 şifre uyumlu değilse uyarı verilecek //frontend //if 2 password is not same , will make warm pop-up
- }};
+    alert("Password is not same")
+ }
+
+}catch(error){
+  alert(error.response.data.message);
+    console.error(error.response.data)
+}
+};
   // const handleOKClick = () => {
   //   setChoice(true);
   //   setModalOn(false);

@@ -2,9 +2,16 @@ import { parseCookies } from "nookies";
 import axios from "axios";
 import { useState } from "react";
 
-export async function app() {
+export async function app(value) {
   const cookies = parseCookies();
-  const token = cookies?.token;
+  var token;
+  token = cookies?.token;
+  if (value === "ConfirmByAdminToken") {
+    token = cookies?.ConfirmByAdminToken;
+  }
+  if (value === "resetPassword") {
+    token = cookies?.PasswordChangeToken;
+  }
 
   const config = {
     headers: {
@@ -12,8 +19,8 @@ export async function app() {
     },
   };
   try {
-    if(token !== undefined) {
-    var data = await axios.post(`/api/auth/tokenCheck`, { token }, config);
+    if (token !== undefined) {
+      var data = await axios.post(`/api/auth/tokenCheck`, { token }, config);
     }
   } catch (e) {
     console.error(e);

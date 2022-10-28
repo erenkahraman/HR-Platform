@@ -21,21 +21,28 @@ export default async (req, res) => {
           if (!doMatch) {
             res.status(404).json({ message: "Password Doesn't Match" });
           } else {
-            const token = jwt.sign(
-              { userId: user.id },
-              process.env.JWT_SECRET,
-              {
-                expiresIn: "7d",
-              }
-            );
-            const { email, _id } = user;
-            res
-              .status(201)
-              .json({
+            if (user.confirmation === "0") {
+              res
+                .status(404)
+                .json({
+                  message:
+                    "Your account is not yet approved by Extramus. Please get contact with an Authorized person to approve your registration.",
+                });
+            } else {
+              const token = jwt.sign(
+                { userId: user.id },
+                process.env.JWT_SECRET,
+                {
+                  expiresIn: "7d",
+                }
+              );
+              const { email, _id } = user;
+              res.status(201).json({
                 message: "Login Successful",
                 user: { email, _id },
                 token,
               });
+            }
           }
         }
       }

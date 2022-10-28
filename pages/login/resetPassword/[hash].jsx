@@ -25,9 +25,9 @@ export default function forgot() {
       const token = path.slice(
         path.indexOf("resetPassword/") + "resetPassword/".length
       );
-      cookie.set("token", token);
+      cookie.set("PasswordChangeToken", token);
       const fetchData = async () => {
-        const data = await app();
+        const data = await app("resetPassword");
         return data;
       };
       const result = fetchData().catch(console.error);
@@ -36,7 +36,7 @@ export default function forgot() {
         if (val !== true) {
           // jwt disapproved.
           router.push("/login");
-          cookie?.remove("token");
+          cookie?.remove("PasswordChangeToken");
         }
       });
 
@@ -54,6 +54,7 @@ export default function forgot() {
           config
         );
         alert("Password changed successfully");
+        cookie?.remove("PasswordChangeToken");
         router.push("/login")
 
       } catch (error) {

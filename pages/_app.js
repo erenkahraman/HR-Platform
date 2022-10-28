@@ -29,12 +29,21 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         router.asPath !== "/login" &&
         router.asPath !== "/login/forgot" &&
         router.asPath.search("/404") !== 0 &&
-        router.asPath.search("/login/resetPassword/") !== 0
+        router.asPath.search("/login/resetPassword/") !== 0 &&
+        router.asPath.search("/login/confirmByAdmin/") !== 0
       ) {
-        
         router.push("/login");
         cookie?.remove("token");
         cookie?.remove("user");
+      }
+      if (
+        val === true &&
+        (router.asPath === "/login" ||
+          router.asPath === "/login/forgot" ||
+          router.asPath.search("/login/resetPassword/") === 0 ||
+          router.asPath.search("/login/confirmByAdmin/") === 0)
+      ) {
+        router.push("/dashboard");
       }
     });
   }, [router]);
@@ -43,7 +52,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   if (
     router.asPath === "/login" ||
     router.asPath === "/login/forgot" ||
-    router.asPath.search("/login/resetPassword/") === 0
+    (router.asPath.search("/login/resetPassword/") === 0 &&
+      router.asPath.search("/login/confirmByAdmin/") !== 0)
   ) {
     return (
       <SessionProvider session={session}>
