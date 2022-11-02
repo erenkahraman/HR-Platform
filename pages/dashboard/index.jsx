@@ -4,7 +4,7 @@ import {
   UploadFileOutlined,
   AnnouncementOutlined,
   Cancel,
-  Verified
+  Verified,
 } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
@@ -18,12 +18,9 @@ import news from "./news";
 import { useRouter } from "next/router";
 import { Link } from "@mui/material";
 import { Birthdays } from "../../components/Birthdays";
-import { useState } from "react";
-import { CircularProgress, Backdrop } from "@mui/material";
-export default function Dashboard() {
 
+export default function Dashboard() {
   const router = useRouter();
-  const [open, setOpen] = useState(false)
 
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -72,17 +69,127 @@ export default function Dashboard() {
       body: JSONReminder,
     };
     await fetch(endpointReminder, Reminder);
+    console.log(Reminder);
+    const response = await fetch(endpointReminder, Reminder);
+    const data = await response.json();
+    console.log(data);
+    router.reload();
+  };
+  const handleUpcoming = async (event) => {
+    event.preventDefault();
+
+    const upcoming = {
+      title: event.target.title.value,
+      category: event.target.category.value,
+      date: event.target.date.value,
+      whoPosted: event.target.whoPosted.value,
+    };
+    const JSONUpcoming = JSON.stringify(upcoming);
+    console.log(JSONUpcoming);
+    const endpointUpcoming = "/api/upcoming";
+    const Upcoming = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSONUpcoming,
+    };
+    await fetch(endpointUpcoming, Upcoming);
+    console.log(Upcoming);
+    const response = await fetch(endpointUpcoming, Upcoming);
+    const data = await response.json();
+    console.log(data);
+    router.reload();
+  };
+  const handleBirthdays = async (event) => {
+    event.preventDefault();
+
+    const birthdays = {
+      title: event.target.title.value,
+      category: event.target.category.value,
+      date: event.target.date.value,
+      whoPosted: event.target.whoPosted.value,
+    };
+    const JSONBirthdays = JSON.stringify(birthdays);
+    console.log(JSONBirthdays);
+    const endpointBirthdays = "/api/birthdays";
+    const Birthdays = {
+
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSONBirthdays,
+    };
+    await fetch(endpointBirthdays, Birthdays);
+    console.log(Birthdays);
+    const response = await fetch(endpointBirthdays, Birthdays);
+    const data = await response.json();
+    console.log(data);
+    router.reload();
+  };
+  const handleFeed = async (event) => {
+    event.preventDefault();
+
+    const feed = {
+      title: event.target.title.value,
+      category: event.target.category.value,
+      date: event.target.date.value,
+      whoPosted: event.target.whoPosted.value,
+    };
+    const JSONFeed = JSON.stringify(feed);
+    console.log(JSONFeed);
+    const endpointFeed = "/api/feed";
+    const Feed = {
+      method: "POST",
+      headers: {
+
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSONFeed,
+    };
+    await fetch(endpointFeed, Feed);
+    console.log(Feed);
+    const response = await fetch(endpointFeed, Feed);
+    const data = await response.json();
+    console.log(data);
+    router.reload();
+  };
+  const handleFeedSchedule = async (event) => {
+    event.preventDefault();
+
+    const feedSchedule = {
+
+      title: event.target.title.value,
+      category: event.target.category.value,
+      date: event.target.date.value,
+      whoPosted: event.target.whoPosted.value,
+    };
+    const JSONFeedSchedule = JSON.stringify(feedSchedule);
+    console.log(JSONFeedSchedule);
+    const endpointFeedSchedule = "/api/feedSchedule";
+    const FeedSchedule = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSONFeedSchedule,
+    };
+    await fetch(endpointFeedSchedule, FeedSchedule);
+    console.log(FeedSchedule);
+    const response = await fetch(endpointFeedSchedule, FeedSchedule);
+    const data = await response.json();
+    console.log(data);
     router.reload();
   };
 
+
   return (
     <div className="flex flex-col w-full">
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
       {/* Top */}
       <div className="flex flex-[1]">
         {/* Image Container */}
@@ -359,7 +466,7 @@ export default function Dashboard() {
             </div>
             {/* What's New Content */}
             <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-              <Feed setOpen={setOpen} />
+              <Feed />
             </div>
             {/* Weekly Schedule */}
           </div>
@@ -405,7 +512,7 @@ export default function Dashboard() {
 
             {/* Daily Reminder Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
-              <Reminder setOpen={setOpen}/>
+              <Reminder />
             </div>
           </div>
 

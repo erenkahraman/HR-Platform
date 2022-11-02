@@ -1,5 +1,5 @@
-import { MoreHoriz, SystemUpdateAlt } from "@mui/icons-material";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { Add, Circle, MoreHoriz, SystemUpdateAlt } from "@mui/icons-material";
+import Image from "next/image";
 import Link from "next/link";
 import { BsPeopleFill } from "react-icons/bs";
 import EditIcon from "@mui/icons-material/Edit";
@@ -10,7 +10,8 @@ import { useState, useEffect } from "react";
 import Modal5 from "../../components/Modal/Modal5.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
 
-export default function ApplicantsList() {
+
+export default function InternList() {
   const [modalOn4, setModalOn4] = useState(false);
   const [choice4, setChoice4] = useState(false);
 
@@ -26,23 +27,35 @@ export default function ApplicantsList() {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const [search, setSearch] = useState("");
+
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleChange = (event) => {
+    setSearch(event.target.value);
+  }; //search 
+  const getInterns = async () => {
+    const response = await fetch("http://localhost:3000/api/interns");
+    const data = await response.json();
+    setData(data);
+    setLoading(false);
+  };
+
+  
+   useEffect(() => {
     setLoading(true);
-    fetch("/api/intern")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
-  console.log(data);
-  return (
+     fetch("/api/intern")
+       .then((res) => res.json())
+       .then((data) => {
+         setData(data);
+         setLoading(false);
+       });
+   }, []);
+   console.log(data);
+   if (isloading) return <p>Loading...</p>;
+   if (!data) return <p>No profile data</p>;
+   return (
     <section className="relative w-full sm:static">
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isloading}
-      ><CircularProgress color="inherit" />
-      </Backdrop>
       <div className="w-full mb-12">
         <div className="relative sm:static flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
           {/* Title Container */}
@@ -79,14 +92,14 @@ export default function ApplicantsList() {
               <form className="flex items-center h-9">
                 <div className="relative w-full h-full">
                   <div
-                    className="flex absolute h-full inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                   className="flex absolute h-full inset-y-0 left-0 items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-
+                      
                       className="w-5 h-5 text-white-500 dark:text-white-400"
                       fill="white"
                       viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns="http://www.w3.org/2000/svg" 
                     >
                       <path
                         fillRule="evenodd"
@@ -142,20 +155,20 @@ export default function ApplicantsList() {
                 </select>
               </div>
             </div>
-            <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black">
-              <button
-                onClick={clicked4}
-                className="rounded-xl text-lg font-bold hover:bg-slate-200">
+            <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black ">
+              <button 
+              onClick={clicked4}
+              className="rounded-xl text-lg font-bold hover:bg-slate-200"> 
                 All
               </button>
-              <button
-                onClick={clicked4}
-                className="rounded-xl text-lg font-bold hover:bg-slate-200">
+              <button 
+              onClick={clicked4}
+              className="rounded-xl text-lg font-bold hover:bg-slate-200">
                 Ongoing
               </button>
-              <button
-                onClick={clicked4}
-                className="rounded-xl text-lg font-bold hover:bg-slate-200">
+              <button 
+              onClick={clicked4}
+              className="rounded-xl text-lg font-bold hover:bg-slate-200">
                 Finished
               </button>
             </div>
@@ -163,139 +176,137 @@ export default function ApplicantsList() {
 
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
-            {data.length === 0 ?
-              <div className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
-                  p-4 flex items-center">
-                The Interns list is empty at the moment!
-              </div>
-              :
-              <table className="items-center w-full border-collapse bg-white">
-                {/* Table Head */}
-                <thead>
-                  <tr>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Full Name
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Start Date
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      End Date
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Duration In Weeks
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Departement
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Position
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Status
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
+            <table className="items-center w-full border-collapse bg-white">
+              {/* Table Head */}
+              <thead>
+                <tr>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Full Name
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Start Date
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    End Date
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Duration In Weeks
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Departement
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Position
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Status
+                  </th>
+                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                    Action
+                  </th>
+                </tr>
+              </thead>
 
-                {/* Table Body */}
-                <tbody className="divide-y">
-                  {data.map((intern) => (
-                    <tr key={intern.id}>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                        <span className="ml-3 font-bold">
-                          {intern.student.firstName} {intern.student.lastName}
-                        </span>
-                      </td>
+              {/* Table Body */}
+              <tbody className="divide-y">
+                {data
+                .filter((intern) => {
+                  return search.toLowerCase() === '' ? intern : intern.name.toLowerCase().includes(search.toLowerCase())
+                })
+                .map((intern) => (
+                  <tr key={intern.id}>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                      <span className="ml-3 font-bold">
+                        {intern.student.firstName}
+                        {intern.student.lastName}
+                      </span>
+                    </td>
 
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.startDate}
-                      </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.startDate}
+                    </td>
 
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.endDate}
-                      </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.endDate}
+                    </td>
 
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.durationInWeeks}
-                      </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.durationInWeeks}
+                    </td>
 
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.departement}
-                      </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.departement}
+                    </td>
 
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.position}
-                      </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        Ongoing
-                      </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {intern.position}
+                    </td>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      Ongoing
+                    </td>
 
-                      <Popup
-                        contentStyle={{
-                          background: "transparent",
-                          borderRadius: "1rem",
-                        }}
-                        trigger={
-                          <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                            <Tooltip
-                              className="bg-transparent text-black mt-3"
-                              content="More Actions"
-                              animate={{
-                                mount: { scale: 1, y: 0 },
-                                unmount: { scale: 0, y: 25 },
-                              }}
+                    <Popup
+                      contentStyle={{
+                        background: "transparent",
+                        borderRadius: "1rem",
+                      }}
+                      trigger={
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                          <Tooltip
+                            className="bg-transparent text-black mt-3"
+                            content="More Actions"
+                            animate={{
+                              mount: { scale: 1, y: 0 },
+                              unmount: { scale: 0, y: 25 },
+                            }}
+                          >
+                            <Button
+                              variant="gradient"
+                              className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
                             >
-                              <Button
-                                variant="gradient"
-                                className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-                              >
-                                <MoreHoriz />
-                              </Button>
-                            </Tooltip>
-                          </td>
-                        }
-                        position="bottom"
-                      >
-                        <div className="h-48 w-52 ml-5...">
-                          <div className="flex flex-col ml-8 ">
-                            <div>
-                              <Link href="/applicants/edit">
-                                <span className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]">
-                                  Edit
-                                </span>
-                              </Link>
-                            </div>
-
-                            <div>
-                              <button
-                                onClick={clicked5}
-                                type="submit"
-                                className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
-                              >
-                                End Internship
+                              <MoreHoriz />
+                            </Button>
+                          </Tooltip>
+                        </td>
+                      }
+                      position="bottom"
+                    >
+                      <div className="h-48 w-52 ml-5...">
+                        <div className="flex flex-col ml-8 ">
+                          <div>
+                            <Link href="/applicants/edit">
+                              <button className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]">
+                                Edit
                               </button>
-                              {choice5}
+                            </Link>
+                          </div>
 
-                              {modalOn5 && (
-                                <Modal5
-                                  setModalOn5={setModalOn5}
-                                  setChoice5={setChoice5}
-                                />
-                              )}
-                            </div>
+                          <div>
+                            <button
+                              onClick={clicked5}
+                              type="submit"
+                              className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                            >
+                              End Internship
+                            </button>
+                            {choice5}
+
+                            {modalOn5 && (
+                              <Modal5
+                                setModalOn5={setModalOn5}
+                                setChoice5={setChoice5}
+                              />
+                            )}
                           </div>
                         </div>
+                      </div>
 
-                        {/* </div> */}
-                      </Popup>
-                    </tr>
-                  ))
-                  }
-                </tbody>
-              </table>}
+                      {/* </div> */}
+                    </Popup>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

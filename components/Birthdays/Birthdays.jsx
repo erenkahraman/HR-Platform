@@ -18,7 +18,7 @@ const Reminder = ({ color }) => {
 
   return (
     <div>
-      {data.map((reminder) => (
+      {data.slice(data.length - 5) .map((reminder) => (
         <div key={reminder.id} className="flex w-full">
           <div className="flex-[1] flex items-center justify-center">
             <Circle className={circleColor()} />

@@ -1,23 +1,23 @@
 import { Circle } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-const Reminder = ({ color, setOpen }) => {
+const Reminder = ({ color }) => {
   const circleColor = () => {
     let result = "text-sm " + color;
     return result;
   };
   const [data, setData] = useState([]);
+  const [isloading, setLoading] = useState(true);
   useEffect(() => {
-    setOpen(true);
+    setLoading(true);
     fetch("/api/reminder")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
-        setOpen(false);
       });
   }, []);
   return (
     <div>
-      {data.slice(-3).reverse().map((reminder) => (
+      {data.slice(data.length - 3).map((reminder) => (
         <div key={reminder.id} className="flex w-full">
           <div className="flex-[1] flex items-center justify-center">
             <Circle className={circleColor()} />

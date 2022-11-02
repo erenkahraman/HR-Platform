@@ -11,7 +11,6 @@ export default function ApplicantsNew() {
 							</div>
 						</div>
 					</div>
-
 					{/* Forms Container */}
 					<div className="flex">
 						<form className="flex flex-[1]" action="#" method="POST">
