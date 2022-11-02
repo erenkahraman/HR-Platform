@@ -23,6 +23,7 @@ function Attendence() {
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+  const [openAlertIncludedDate, setOpenAlertIncludedDate] = useState(false);
   const [editAttendanceModel, setAttendanceEditModel] = useState(false);
   const [dateIncluded, setDateIncluded] = useState(false)
 
@@ -38,43 +39,47 @@ function Attendence() {
 
   const save = (intern) => {
     setOpenAlert(false);
+    setOpenAlertIncludedDate(false);
     setIntern(intern)
-    if (status && date) {
-      setOpen(false)
-      confirmAlert({
-        message: "Are you sure you want to save ?",
-        buttons: [
-          {
-            label: "Yes",
-            onClick: async () => {
-              setOpen(true);
-              intern.attendance.statusOfTheDay = status;
-              intern.attendance[status].count++;
-              intern.attendance[status].dates.push(date)
-              const JSONintern = JSON.stringify(intern);
-              const endpoint = `/api/intern/${intern._id}`;
-              const options = {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Access-Control-Allow-Origin": "*",
-                },
-                body: JSONintern,
-              };
-              await fetch(endpoint, options);
-              setOpen(false);
+    if (!dateIncluded) {
+      if (status && date) {
+        setOpen(false)
+        confirmAlert({
+          message: "Are you sure you want to save ?",
+          buttons: [
+            {
+              label: "Yes",
+              onClick: async () => {
+                setOpen(true);
+                intern.attendance.statusOfTheDay = status;
+                intern.attendance[status].count++;
+                intern.attendance[status].dates.push(date)
+                const JSONintern = JSON.stringify(intern);
+                const endpoint = `/api/intern/${intern._id}`;
+                const options = {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                  },
+                  body: JSONintern,
+                };
+                await fetch(endpoint, options);
+                setOpen(false);
+              },
             },
-          },
-          {
-            label: "No",
-          },
-        ],
-      });
-      setStatus("");
-      setDate("");
-    } else {
-      setOpenAlert(true)
-    }
+            {
+              label: "No",
+            },
+          ],
+        });
+        setStatus("");
+        setDate("");
+      } else {
+        setOpenAlert(true)
+      }
+    } else
+      setOpenAlertIncludedDate(true)
 
   };
 
@@ -191,6 +196,26 @@ function Attendence() {
               Choose Date/Status for the student !
             </Alert>
           </Collapse>
+          <Collapse in={openAlertIncludedDate}>
+                  <Alert
+                    severity="warning"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpenAlertIncludedDate(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                  >
+                    Status already set for the select date !
+                  </Alert>
+                </Collapse> 
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
             <table className="items-center w-full border-collapse bg-white">
@@ -237,6 +262,7 @@ function Attendence() {
                   :
                   data.map((intern) => (
 
+
                     <tr key={intern.id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">
@@ -258,23 +284,19 @@ function Attendence() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        {dateIncluded ?
-                          <div className="text-red-600/75">Attendance already set!</div> :
-                          <select
-                            id="country"
-                            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                            onClick={e => setStatus(e.target.value)}
-                          >
-                            <option value="">-</option>
-                            <option value="present" >Present</option>
-                            <option value="late" >Late</option>
-                            <option value="dayOff" >Day off</option>
-                            <option value="excusedLeave" >Excused leave</option>
-                            <option value="sick" >Sick</option>
-                            <option value="unexcusedleave" >Unexecused leave</option>
-                          </select>
-                        }
-
+                        <select
+                          id="country"
+                          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          onClick={e => setStatus(e.target.value)}
+                        >
+                          <option value="">-</option>
+                          <option value="present" >Present</option>
+                          <option value="late" >Late</option>
+                          <option value="dayOff" >Day off</option>
+                          <option value="excusedLeave" >Excused leave</option>
+                          <option value="sick" >Sick</option>
+                          <option value="unexcusedleave" >Unexecused leave</option>
+                        </select>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">

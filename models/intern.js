@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+const statusEnum = ["Not Submitted", "Needs Review", "Incorrect", "Correct"];
+
 const InternSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -38,12 +40,13 @@ const InternSchema = new mongoose.Schema({
       dates: Array
     }
   },
-  departure : {
-    departureDate : String,
+  departure: {
+    departureDate: String,
     departureTime: String,
     departureCity: String,
     pickBy: String,
-  }
+  },
+  documents: [{type: Map, of: String}],
 });
 
 export default mongoose.models.Intern || mongoose.model("Intern", InternSchema);

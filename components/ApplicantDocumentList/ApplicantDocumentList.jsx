@@ -7,40 +7,22 @@ import {
 } from "@mui/icons-material";
 import { Circle } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import { Backdrop, CircularProgress } from "@mui/material";
+import Link from "next/link";
 
-const DocumentListContent = ({ title, pos, status }) => {
-  const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(true);
-    fetch("/api/applicant")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
-  console.log(data);
-  if (isloading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
+const DocumentListContent = ({ title, status }) => {
 
   const Border = () => {
     let isRounded;
     let statusColor;
 
-    pos === "left"
-      ? (isRounded = " rounded-l-md ")
-      : pos === "right"
-      ? (isRounded = " rounded-r-md ")
-      : isRounded;
-
-    status === "correct"
+    status === "Correct"
       ? (statusColor = " bg-green-400 ")
-      : status === "incorrect"
-      ? (statusColor = " bg-red-400 ")
-      : status === "review"
-      ? (statusColor = " bg-blue-400 ")
-      : (statusColor = " bg-gray-400 ");
+      : status === "Incorrect"
+        ? (statusColor = " bg-red-400 ")
+        : status === "Needs Review"
+          ? (statusColor = " bg-blue-400 ")
+          : (statusColor = " bg-gray-400 ");
 
     let result =
       "flex flex-col items-center px-2 py-1 w-full gap-1 text-white " +
@@ -57,18 +39,6 @@ const DocumentListContent = ({ title, pos, status }) => {
   );
 };
 
-const Contents = [
-  { title: "Curiculum Vitae", pos: "left", status: "correct" },
-  { title: "Learning Agreement", pos: "mid", status: "correct" },
-  { title: "Invitation Letter", pos: "mid", status: "review" },
-  { title: "Accomodation Letter", pos: "mid", status: "null" },
-  { title: "Arrival Tickets", pos: "mid", status: "null" },
-  { title: "Intern Dev Plan", pos: "mid", status: "incorrect" },
-  { title: "Confidentiality Letter", pos: "mid", status: "null" },
-  { title: "Identification", pos: "mid", status: "null" },
-  { title: "PCR Result", pos: "right", status: "null" },
-];
-
 const DocumentList = () => {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
@@ -78,66 +48,78 @@ const DocumentList = () => {
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+        setLoading(false)
       });
   }, []);
 
   return (
     <div className="flex flex-col w-full gap-2">
-      {data.map((student) => (
-        <div
-          className="flex flex-col w-full py-2 px-6 gap-2 bg-white border rounded-md"
-          key={student.id}
-        >
-          {/* Top */}
-          <div className="flex justify-between">
-            {/* Top Left */}
-            <div className="flex gap-4 items-center">
-              <div className="flex font-semibold">
-                <p>
-                  {student.student.firstName} {student.student.lastName}
-                </p>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isloading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      {data.length == 0 ?
+        <div className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
+                  p-4 flex items-center">
+          The Applicants list is empty at the moment!
+          <div className="text-blue-600/75 pl-1"><Link href="/applicants/new"> Add a new applicant</Link></div></div>
+        :
+        data.map((student, index) => (
+          <div
+            className="flex flex-col w-full py-2 px-6 gap-2 bg-white border rounded-md"
+            key={student.id}
+          >
+            {/* Top */}
+            <div className="flex justify-between">
+              {/* Top Left */}
+              <div className="flex gap-4 items-center">
+                <div className="flex font-semibold">
+                  <p>
+                    {student.student.firstName} {student.student.lastName}
+                  </p>
+                </div>
+                <div className="flex items-center gap-1 text-xs font-light text-gray-500">
+                  <WorkOutline className="text-sm" />
+                  <p>{student.department}</p>
+                </div>
               </div>
-              <div className="flex items-center gap-1 text-xs font-light text-gray-500">
-                <WorkOutline className="text-sm" />
-                <p>{student.department}</p>
+              {/* Top Right */}
+              <div className="flex gap-2">
+                <div className="py-1 px-2 text-xs rounded bg-sky-200 text-blue-900">
+                  Starting the {student.startDate}
+                </div>
+                <MoreHoriz className="cursor-pointer" />
               </div>
             </div>
-            {/* Top Right */}
-            <div className="flex gap-2">
-              <div className="py-1 px-2 text-xs rounded bg-sky-200 text-blue-900">
-                Arriving at {student.arrivalDate}
-              </div>
-              <MoreHoriz className="cursor-pointer" />
-            </div>
-          </div>
 
-          {/* Middle */}
-          <div className="flex gap-[2px]">
-            {Contents.map((content, index) => (
-              <DocumentListContent
-                key={index}
-                title={content.title}
-                pos={content.pos}
-                status={content.status}
-              />
-            ))}
-          </div>
-          {/* Bottom */}
-          <div className="flex justify-between">
-            {/* Bottom Left */}
-            <div className="flex items-center gap-1 text-xs font-light text-gray-500">
-              <p>Applied on {student.applicationDate}</p>
+            {/* Middle */}
+            <div className="flex gap-[2px]">
+              {data[index].documents.map((content, index) => (
+                <DocumentListContent
+                  key={index}
+                  title={content.name}
+                  status={content.status}
+                />
+              ))}
             </div>
-            <div className="flex cursor-pointer">
-              {/* Bottom Right */}
-              <div className="py-1 px-2 text-xs text-blue-900">
-                View All Documents
+            {/* Bottom */}
+            <div className="flex justify-between">
+              {/* Bottom Left */}
+              <div className="flex items-center gap-1 text-xs font-light text-gray-500">
+                <p>Applied on {student.applicationDate}</p>
               </div>
-              <ArrowRightAlt />
+              <div className="flex cursor-pointer">
+                {/* Bottom Right */}
+                <div className="py-1 px-2 text-xs text-blue-900">
+                  View All Documents
+                </div>
+                <ArrowRightAlt />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 };
