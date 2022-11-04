@@ -20,14 +20,16 @@ export default async function handler(req, res){
               localField: "applicant",
               foreignField: "_id",
               as: "applicant",
-            },
+            }
+          },
+          {
             $lookup: {
               from: Intern.collection.name,
               localField: "intern",
               foreignField: "_id",
               as: "intern",
             },
-          },
+          }
         ])
         .toArray();
       res.status(200).json(students);

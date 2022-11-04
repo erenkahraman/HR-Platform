@@ -6,78 +6,83 @@ import Select from "react-select";
 import Popup from "reactjs-popup";
 import { Cancel, Verified } from "@mui/icons-material";
 import mongoose from "mongoose";
-import { Backdrop, CircularProgress, Alert, Collapse, IconButton } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Dayjs } from "dayjs";
+import {
+  Backdrop,
+  CircularProgress,
+  Alert,
+  Collapse,
+  IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TextField } from "@mui/material";
 import moment from "moment/moment";
+import { Dayjs } from "dayjs";
 
 export default function ApplicantsNew() {
-
   const router = useRouter();
-  const [nationalityValue, setNationality] = useState('');
-  const [departingCountryValue, setDepartingCountry] = useState('');
+  const [nationalityValue, setNationality] = useState("");
+  const [departingCountryValue, setDepartingCountry] = useState("");
   //for adding new department
-  const [department, setDepartment] = useState('')
-  const [newPosition, setNewPosition] = useState('')
-  const [selectedDprtmnt, setSelectedDprtmnt] = useState('')
+  const [department, setDepartment] = useState("");
+  const [newPosition, setNewPosition] = useState("");
+  const [selectedDprtmnt, setSelectedDprtmnt] = useState("");
   const [open, setOpen] = useState(false);
   // get dprtmnts from DB
-  const [dbDepartment, setDbDepartment] = useState([])
+  const [dbDepartment, setDbDepartment] = useState([]);
   // get positions from DB when choosing positions
-  const [positions, setPositions] = useState([])
-  const [birthday, setBirtthday] = useState(null)
-  const [hrInterviewDate, setHrInterviewDate] = useState(null)
-  const [ceoInterviewDate, setCeoInterviewDate] = useState(null)
-  const [applicationDate, setApplicationDate] = useState(null)
-  const [startDate, setStartDate] = useState(null)
-  const [endDate, setEndDate] = useState(null)
-  const [openAlert, setOpenAlert] = useState(false)
-
+  const [positions, setPositions] = useState([]);
+  const [birthday, setBirtthday] = useState(null);
+  const [hrInterviewDate, setHrInterviewDate] = useState(null);
+  const [ceoInterviewDate, setCeoInterviewDate] = useState(null);
+  const [applicationDate, setApplicationDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [openAlert, setOpenAlert] = useState(false);
 
   // Get departments from DB
   useEffect(() => {
-    setOpen(true)
+    setOpen(true);
     fetch("/api/department")
       .then((res) => res.json())
       .then((data) => {
         setDbDepartment(data);
-        setPositions(data[0].positions)
-        setOpen(false)
+        setPositions(data[0].positions);
+        setOpen(false);
       });
   }, []);
 
   // get countries list from react-select-country-list
   const options = useMemo(() => countryList().getData(), []);
-  const updateNationality = nationality => {
+  const updateNationality = (nationality) => {
     setNationality(nationality);
-  }
+  };
 
   // get all the existing department from DB
 
-
   // load countries in countries checkbox
-  const updateDepartingCountry = departingCountry => {
+  const updateDepartingCountry = (departingCountry) => {
     setDepartingCountry(departingCountry);
-  }
+  };
   // handles changes of new department value
-  const handleChange = data => {
+  const handleChange = (data) => {
     setDepartment(data.target.value);
   };
 
   //handles the submit of the whole new applicant form
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (birthday
-      && hrInterviewDate
-      && ceoInterviewDate
-      && applicationDate
-      && startDate
-      && endDate) {
-      setOpen(true)
+    if (
+      birthday &&
+      hrInterviewDate &&
+      ceoInterviewDate &&
+      applicationDate &&
+      startDate &&
+      endDate
+    ) {
+      setOpen(true);
       const applicantId = new mongoose.Types.ObjectId();
       const studentId = new mongoose.Types.ObjectId();
       const student = {
@@ -109,91 +114,87 @@ export default function ApplicantsNew() {
         interviewNotes: event.target.interviewNotes.value.trim(),
         rejectionReasons: event.target.rejectionReasons.value.trim(),
         documents: [
-          { name :"Curiculum Vitae", status: event.target.resume.value},
-          { name :"Motivation Letter", status: event.target.mtvtnltr.value},
-          { name :"Arrival Tickets", status: "Not Submitted"},
-          { name :"Learning Agreement", status: "Not Submitted"},
-          { name :"Acceptance Letter", status: "Not Submitted"}
+          { name: "Curiculum Vitae", status: event.target.resume.value },
+          { name: "Motivation Letter", status: event.target.mtvtnltr.value },
+          { name: "Arrival Tickets", status: "Not Submitted" },
+          { name: "Learning Agreement", status: "Not Submitted" },
+          { name: "Acceptance Letter", status: "Not Submitted" },
         ],
-        student: studentId
+        student: studentId,
       };
       const JSONdstudent = JSON.stringify(student);
       const JSONapplicant = JSON.stringify(applicant);
-      const endpointstudent = '/api/student';
-      const endpointapplicant = '/api/applicant';
+      const endpointstudent = "/api/student";
+      const endpointapplicant = "/api/applicant";
       const optionsStudent = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
         body: JSONdstudent,
       };
       const optionApplicant = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
         body: JSONapplicant,
       };
       //console.log(JSONdstudent)
-      console.log(JSONapplicant)
+      console.log(JSONapplicant);
       await fetch(endpointstudent, optionsStudent);
       await fetch(endpointapplicant, optionApplicant);
-      router.push('/applicants/list')
-    }
-    else
-      setOpenAlert(true)
-
-  }
+      router.push("/applicants/list");
+    } else setOpenAlert(true);
+  };
 
   //Add new department to DB
   const addDepartment = async () => {
-    setOpen(true)
+    setOpen(true);
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({ department }),
     };
-    await fetch('/api/department', options);
-    updateDepartment()
-  }
+    await fetch("/api/department", options);
+    updateDepartment();
+  };
   const updateDepartment = () => {
-    fetch('/api/department')
+    fetch("/api/department")
       .then((res) => res.json())
       .then((data) => {
-        setDbDepartment(data)
-        setOpen(false)
-      })
-  }
+        setDbDepartment(data);
+        setOpen(false);
+      });
+  };
 
   // ** ADD NEW POSITION
 
   const addNewPosition = async () => {
-    setOpen(true)
+    setOpen(true);
     if (newPosition) {
       const options = {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify(newPosition),
       };
       await fetch(`/api/department/${selectedDprtmnt._id}`, options);
-      updateDepartment()
-      alert(`Added ${newPosition} to the department list`)
+      updateDepartment();
+      alert(`Added ${newPosition} to the department list`);
     }
-
-  }
+  };
   return (
     <div>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
       >
         <CircularProgress color="inherit" />
@@ -316,13 +317,11 @@ export default function ApplicantsNew() {
                         <DatePicker
                           value={birthday}
                           onChange={(newValue) => {
-                            setBirtthday(newValue)
+                            setBirtthday(newValue);
                           }}
                           renderInput={(params) => <TextField {...params} />}
-
                         />
                       </LocalizationProvider>
-
                     </div>
 
                     {/* Nationality */}
@@ -390,7 +389,10 @@ export default function ApplicantsNew() {
 
                     {/* Departing Country */}
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="departingCountry" className="block text-sm">
+                      <label
+                        htmlFor="departingCountry"
+                        className="block text-sm"
+                      >
                         Departing Country
                       </label>
                       <Select
@@ -405,7 +407,9 @@ export default function ApplicantsNew() {
                   {/* Section */}
                   {/* Internship Details */}
                   <div className="flex flex-[1] flex-col gap-4 px-4 py-5">
-                    <div className="mb-2 font-semibold">Application Details</div>
+                    <div className="mb-2 font-semibold">
+                      Application Details
+                    </div>
 
                     <div className="flex gap-4">
                       {/* Applied on */}
@@ -417,10 +421,9 @@ export default function ApplicantsNew() {
                           <DatePicker
                             value={applicationDate}
                             onChange={(newValue) => {
-                              setApplicationDate(newValue)
+                              setApplicationDate(newValue);
                             }}
                             renderInput={(params) => <TextField {...params} />}
-
                           />
                         </LocalizationProvider>
                       </div>
@@ -434,10 +437,9 @@ export default function ApplicantsNew() {
                           <DatePicker
                             value={hrInterviewDate}
                             onChange={(newValue) => {
-                              setHrInterviewDate(newValue)
+                              setHrInterviewDate(newValue);
                             }}
                             renderInput={(params) => <TextField {...params} />}
-
                           />
                         </LocalizationProvider>
                       </div>
@@ -445,24 +447,28 @@ export default function ApplicantsNew() {
                     <div className="flex gap-4	">
                       {/* CEO Interview Date */}
                       <div className="flex flex-[1] flex-col gap-2">
-                        <label htmlFor="ceo-interview" className="block text-sm">
+                        <label
+                          htmlFor="ceo-interview"
+                          className="block text-sm"
+                        >
                           CEO Interview Date
                         </label>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             value={ceoInterviewDate}
                             onChange={(newValue) => {
-                              setCeoInterviewDate(newValue)
+                              setCeoInterviewDate(newValue);
                             }}
                             renderInput={(params) => <TextField {...params} />}
-
                           />
                         </LocalizationProvider>
                       </div>
                     </div>
 
                     {/* Department */}
-                    <div className="mb-2 font-semibold flex gap-4 pt-3">Internship Details</div>
+                    <div className="mb-2 font-semibold flex gap-4 pt-3">
+                      Internship Details
+                    </div>
                     <div className="flex gap-4">
                       <div className="flex flex-col gap-2">
                         <label htmlFor="department" className="block text-sm">
@@ -473,10 +479,16 @@ export default function ApplicantsNew() {
                           name="department"
                           autoComplete="department"
                           className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          onChange={e => setPositions(dbDepartment[e.target.selectedIndex].positions)}
+                          onChange={(e) =>
+                            setPositions(
+                              dbDepartment[e.target.selectedIndex].positions
+                            )
+                          }
                         >
                           {dbDepartment.map((department) => (
-                            <option disabled={department.positions.length == 0} >{department.department}</option>
+                            <option disabled={department.positions.length == 0}>
+                              {department.department}
+                            </option>
                           ))}
                         </select>
                       </div>
@@ -510,7 +522,7 @@ export default function ApplicantsNew() {
                                 className="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
                                 placeholder="Introduce new department"
                                 required
-                                onChange={e => setDepartment(e.target.value)}
+                                onChange={(e) => setDepartment(e.target.value)}
                               />
                             </div>
                           </div>
@@ -541,9 +553,11 @@ export default function ApplicantsNew() {
                         <label htmlFor="department" className="block text-sm">
                           Position
                         </label>
-                        {positions.length == 0 ?
-                          <div className="text-red-600/75">No positions available for this department</div>
-                          :
+                        {positions.length == 0 ? (
+                          <div className="text-red-600/75">
+                            No positions available for this department
+                          </div>
+                        ) : (
                           <select
                             id="position"
                             name="position"
@@ -554,7 +568,8 @@ export default function ApplicantsNew() {
                             {positions.map((position) => (
                               <option key={position}>{position}</option>
                             ))}
-                          </select>}
+                          </select>
+                        )}
                       </div>
                       <Popup
                         contentStyle={{
@@ -591,10 +606,16 @@ export default function ApplicantsNew() {
                                 name="department"
                                 autoComplete="department"
                                 className="flex flex-col w-52 ml-2 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                onClick={e => setSelectedDprtmnt(dbDepartment[e.target.value])}
+                                onClick={(e) =>
+                                  setSelectedDprtmnt(
+                                    dbDepartment[e.target.value]
+                                  )
+                                }
                               >
                                 {dbDepartment.map((department, i) => (
-                                  <option value={i} >{department.department}</option>
+                                  <option value={i}>
+                                    {department.department}
+                                  </option>
                                 ))}
                               </select>
                             </div>
@@ -604,7 +625,7 @@ export default function ApplicantsNew() {
                                 className="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
                                 placeholder="Introduce new position"
                                 required
-                                onInput={e => setNewPosition(e.target.value)}
+                                onInput={(e) => setNewPosition(e.target.value)}
                               />
                             </div>
                           </div>
@@ -639,27 +660,28 @@ export default function ApplicantsNew() {
                           <DatePicker
                             value={startDate}
                             onChange={(newValue) => {
-                              setStartDate(newValue)
+                              setStartDate(newValue);
                             }}
                             renderInput={(params) => <TextField {...params} />}
-
                           />
                         </LocalizationProvider>
                       </div>
 
                       {/* Departure Date */}
                       <div className="flex flex-[1] flex-col gap-2">
-                        <label htmlFor="departure-date" className="block text-sm">
+                        <label
+                          htmlFor="departure-date"
+                          className="block text-sm"
+                        >
                           End Date
                         </label>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             value={endDate}
                             onChange={(newValue) => {
-                              setEndDate(newValue)
+                              setEndDate(newValue);
                             }}
                             renderInput={(params) => <TextField {...params} />}
-
                           />
                         </LocalizationProvider>
                       </div>
@@ -686,7 +708,10 @@ export default function ApplicantsNew() {
 
                       {/* Who Pıcked By */}
                       <div className="flex flex-[1] flex-col gap-2">
-                        <label htmlFor="departure-date" className="block text-sm">
+                        <label
+                          htmlFor="departure-date"
+                          className="block text-sm"
+                        >
                           Picked up By
                         </label>
                         <input
@@ -703,7 +728,10 @@ export default function ApplicantsNew() {
                     {/* Application Progress */}
                     <div className="flex gap-4">
                       <div className="flex flex-[1] flex-col gap-2">
-                        <label htmlFor="departure-date" className="block text-sm">
+                        <label
+                          htmlFor="departure-date"
+                          className="block text-sm"
+                        >
                           Arrival Time
                         </label>
                         <input
@@ -844,7 +872,6 @@ export default function ApplicantsNew() {
                     </div>
                      * 
                      */}
-
                   </div>
                 </div>
 
@@ -890,6 +917,5 @@ export default function ApplicantsNew() {
         </div>
       </section>
     </div>
-
   );
 }
