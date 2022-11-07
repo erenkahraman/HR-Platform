@@ -4,7 +4,7 @@ import {
   UploadFileOutlined,
   AnnouncementOutlined,
   Cancel,
-  Verified
+  Verified,
 } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
@@ -21,9 +21,8 @@ import { Birthdays } from "../../components/Birthdays";
 import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 export default function Dashboard() {
-
   const router = useRouter();
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -78,7 +77,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col w-full">
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
       >
         <CircularProgress color="inherit" />
@@ -405,7 +404,7 @@ export default function Dashboard() {
 
             {/* Daily Reminder Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
-              <Reminder setOpen={setOpen}/>
+              <Reminder setOpen={setOpen} />
             </div>
           </div>
 
@@ -468,18 +467,20 @@ export default function Dashboard() {
             {/* Daily Reminder Title*/}
             <div className="flex items-center justify-between">
               <div className="text-xl font-semibold">
-                Upcoming Birthdays 🥳🍰🎉
+                This Month's Birthdays 🥳🍰🎉
               </div>
-              <a
+              {/*
+                 <a
                 href="./"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
-                <div>View All (6)</div>
+                <div>{View All (6)}</div>
                 <div>
                   {" "}
                   <ArrowForward className="text-md" />
                 </div>
               </a>
+        */}
             </div>
 
             {/* Birthday Content */}
