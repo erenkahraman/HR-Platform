@@ -84,6 +84,9 @@ function Attendence() {
       }
     } else setOpenAlertIncludedDate(true);
   };
+  const clicked = () => {
+    setAttendanceEditModel(true);
+  };
 
   const disableStatus = (intern, dt) => {
     if (
@@ -268,7 +271,7 @@ function Attendence() {
                   </tr>
                 ) : (
                   data.map((intern) => (
-                    <tr key={intern.id}>
+                    <tr key={intern._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">
                           {" "}
@@ -352,11 +355,11 @@ function Attendence() {
                             <button title="Edit">
                               <SaveIcon
                                 className="h-6 fill-[#0b3768] hover:fill-[#15803d]"
-                                onClick={(e) => {
-                                  setAttendanceEditModel(true);
-                                }}
+                                onClick={(e) =>
+                                  setAttendanceEditModel(intern._id)
+                                }
                               />
-                              {editAttendanceModel && (
+                              {editAttendanceModel === intern._id && (
                                 <EditAttendance
                                   intern={intern}
                                   setModel={setAttendanceEditModel}

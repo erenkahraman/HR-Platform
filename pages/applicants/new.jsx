@@ -143,7 +143,7 @@ export default function ApplicantsNew() {
         body: JSONapplicant,
       };
       //console.log(JSONdstudent)
-      console.log(JSONapplicant);
+      //console.log(JSONapplicant);
       await fetch(endpointstudent, optionsStudent);
       await fetch(endpointapplicant, optionApplicant);
       router.push("/applicants/list");

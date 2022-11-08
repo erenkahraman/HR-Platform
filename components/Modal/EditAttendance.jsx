@@ -15,7 +15,6 @@ const EditAttendance = ({ intern, setModel }) => {
     parseInt(today.getMonth() + 1) +
     "-" +
     today.getFullYear();
-  console.log(intern);
 
   const deleteDate = (date) => {
     confirmAlert({
@@ -29,8 +28,6 @@ const EditAttendance = ({ intern, setModel }) => {
           label: "Yes",
           onClick: async () => {
             setOpen(true);
-            console.log("before deleteing");
-            console.log(intern.attendance[status].dates);
             intern.attendance[status].dates.splice(dates.indexOf(date), 1);
             intern.attendance[status].count--;
             const JSONintern = JSON.stringify(intern);
@@ -151,7 +148,7 @@ const EditAttendance = ({ intern, setModel }) => {
                                 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 
                                 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
                   onClick={(e) => {
-                    setModel(false);
+                    setModel(undefined);
                   }}
                 >
                   Close
