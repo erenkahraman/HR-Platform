@@ -4,7 +4,7 @@ import {
   UploadFileOutlined,
   AnnouncementOutlined,
   Cancel,
-  Verified
+  Verified,
 } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
@@ -20,9 +20,11 @@ import { Link } from "@mui/material";
 import { Birthdays } from "../../components/Birthdays";
 import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
+import cookie from "js-cookie";
 export default function Dashboard() {
   const router = useRouter();
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+    const token = cookie?.get("token");
 
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -33,6 +35,7 @@ export default function Dashboard() {
       postedBy: event.target.postedBy.value,
       date: event.target.date.value,
       paragraph: event.target.paragraph.value,
+      token: token,
     };
     const JSONnew = JSON.stringify(whatsNew);
     console.log(JSONnew);
@@ -58,6 +61,7 @@ export default function Dashboard() {
       category: event.target.category.value,
       date: event.target.date.value,
       whoPosted: event.target.whoPosted.value,
+      token:token
     };
     const JSONReminder = JSON.stringify(reminder);
     console.log(JSONReminder);
@@ -77,7 +81,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col w-full">
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
       >
         <CircularProgress color="inherit" />
@@ -404,7 +408,7 @@ export default function Dashboard() {
 
             {/* Daily Reminder Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
-              <Reminder setOpen={setOpen}/>
+              <Reminder setOpen={setOpen} />
             </div>
           </div>
 

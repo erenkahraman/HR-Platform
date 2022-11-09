@@ -1,16 +1,32 @@
 import { useEffect, useState } from "react";
 import { Circle } from "@mui/icons-material";
+import axios from "axios";
+import cookie from "js-cookie";
 
 const ReminderViewAll = () => {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  const token = cookie.get("token");
   useEffect(() => {
     setLoading(true);
-    fetch("/api/reminderViewAll")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-      });
+    const asyncRequest = async () => {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.get(
+        `/api/reminder`,
+        { params: { token: token } },
+        config
+      );
+      setData(data);
+    };
+    try {
+      asyncRequest();
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
   return (
     <div>
