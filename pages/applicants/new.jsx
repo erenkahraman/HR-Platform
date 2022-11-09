@@ -1,6 +1,6 @@
 import { DocumentReview } from "../../components/DocumentReview";
 import countryList from "react-select-country-list";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import Select from "react-select";
 import Popup from "reactjs-popup";
@@ -70,8 +70,7 @@ export default function ApplicantsNew() {
   const handleChange = (data) => {
     setDepartment(data.target.value);
   };
-
-  //handles the submit of the whole new applicant form
+  const [submitStatus, setSubmitStatus] = useState();
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (
@@ -235,6 +234,7 @@ export default function ApplicantsNew() {
                         </span>
                         <button
                           type="button"
+                          onClick={() => alert("Upload Photo")}
                           className="ml-4 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                         >
                           Change
@@ -531,14 +531,15 @@ export default function ApplicantsNew() {
                           <div className="flex p-4 gap-4">
                             <button
                               type="submit"
-                              className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                              onClick={() => setSubmitStatus("Cancel")}
+                              className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-500 bg-gray-300 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                             >
                               Cancel
                             </button>
                             <button
                               type="submit"
+                              onClick={() => setSubmitStatus("Save")}
                               className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                              onClick={addDepartment}
                             >
                               Save
                             </button>
@@ -634,14 +635,17 @@ export default function ApplicantsNew() {
                           <div className="flex p-4 gap-4">
                             <button
                               type="submit"
+                              value="Cancel"
+                              onClick={() => setSubmitStatus("Cancel")}
                               className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                             >
                               Cancel
                             </button>
                             <button
                               type="submit"
+                              value="Save"
+                              onClick={() => setSubmitStatus("Save")}
                               className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                              onClick={addNewPosition}
                             >
                               Save
                             </button>

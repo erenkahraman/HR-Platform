@@ -18,8 +18,7 @@ import news from "./news";
 import { useRouter } from "next/router";
 import { Link } from "@mui/material";
 import { Birthdays } from "../../components/Birthdays";
-import { useState } from "react";
-import { CircularProgress, Backdrop } from "@mui/material";
+
 export default function Dashboard() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -358,7 +357,7 @@ export default function Dashboard() {
             </div>
             {/* What's New Content */}
             <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-              <Feed setOpen={setOpen} />
+              <Feed />
             </div>
             {/* Weekly Schedule */}
           </div>

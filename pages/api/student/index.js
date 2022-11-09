@@ -4,10 +4,10 @@ import Applicant from "../../../models/applicant";
 import Intern from "../../../models/intern";
 import dbConnect from "../../../util/mongodb";
 
-export default async function handler(req, res){
-    const { method } = req;
-    const db = await getMongoDb();
-    await dbConnect();
+export default async function handler(req, res) {
+  const { method } = req;
+  const db = await getMongoDb();
+  await dbConnect();
 
   if (method === "GET") {
     try {

@@ -16,10 +16,10 @@ const DocumentListContent = ({ title, pos, status }) => {
     status === "Correct"
       ? (statusColor = " bg-green-400 ")
       : status === "Incorrect"
-        ? (statusColor = " bg-red-400 ")
-        : status === "Needs Review"
-          ? (statusColor = " bg-blue-400 ")
-          : (statusColor = " bg-gray-400 ");
+      ? (statusColor = " bg-red-400 ")
+      : status === "Needs Review"
+      ? (statusColor = " bg-blue-400 ")
+      : (statusColor = " bg-gray-400 ");
 
     let result =
       "flex flex-col items-center px-2 py-1 w-full gap-1 text-white " +
@@ -45,24 +45,26 @@ const DocumentList = () => {
       .then((res) => res.json())
       .then((data) => {
         setData(data);
-        setLoading(false)
+        setLoading(false);
       });
   }, []);
 
   return (
     <div className="flex flex-col w-full gap-2">
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isloading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      {data.length == 0 ?
-        <div className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
-                  p-4 flex items-center">
+      {data.length == 0 ? (
+        <div
+          className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
+                  p-4 flex items-center"
+        >
           The Interns list is empty at the moment!
         </div>
-        :
+      ) : (
         data.map((intern, index) => (
           <div
             className="flex flex-col w-full py-2 px-6 gap-2 bg-white border rounded-md"
@@ -79,7 +81,9 @@ const DocumentList = () => {
                 </div>
                 <div className="flex items-center gap-1 text-xs font-light text-gray-500">
                   <WorkOutline className="text-sm" />
-                  <p>{intern.departement} / {intern.position}</p>
+                  <p>
+                    {intern.departement} / {intern.position}
+                  </p>
                 </div>
               </div>
               {/* Top Right */}
@@ -105,7 +109,9 @@ const DocumentList = () => {
             <div className="flex justify-between">
               {/* Bottom Left */}
               <div className="flex items-center gap-1 text-xs font-light text-gray-500">
-                <p>Internship Period from: {intern.startDate} to {intern.endDate}</p>
+                <p>
+                  Internship Period from: {intern.startDate} to {intern.endDate}
+                </p>
               </div>
               <div className="flex cursor-pointer">
                 {/* Bottom Right */}
@@ -116,7 +122,8 @@ const DocumentList = () => {
               </div>
             </div>
           </div>
-        ))}
+        ))
+      )}
     </div>
   );
 };

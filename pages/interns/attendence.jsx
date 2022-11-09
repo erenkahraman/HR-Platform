@@ -237,7 +237,7 @@ function Attendence() {
                     DATE
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    STATUS
+                    SITUATION
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     PRESENT
@@ -258,7 +258,7 @@ function Attendence() {
                     UNEXCUSED LEAVE
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    SAVE
+                    ACTION
                   </th>
                 </tr>
               </thead>
@@ -322,25 +322,25 @@ function Attendence() {
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.dayOff.count}</div>
+                          <div>{intern.attendance.dayOff}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.excusedLeave.count}</div>
+                          <div>{intern.attendance.excusedLeave}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.sick.count}</div>
+                          <div>{intern.attendance.sick}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.unexcusedleave.count}</div>
+                          <div>{intern.attendance.unexcusedleave}</div>
                         </div>
                       </td>
 

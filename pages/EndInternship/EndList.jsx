@@ -126,13 +126,19 @@ export default function ApplicantsList() {
               </div>
             </div>
             <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black">
-              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
+              <button 
+              onClick={clicked4}
+              className="rounded-xl text-lg font-bold hover:bg-slate-200">
                 All
               </button>
-              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
+              <button 
+              onClick={clicked4}
+              className="rounded-xl text-lg font-bold hover:bg-slate-200">
                 Ongoing
               </button>
-              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
+              <button 
+              onClick={clicked4}
+              className="rounded-xl text-lg font-bold hover:bg-slate-200">
                 Finished
               </button>
             </div>

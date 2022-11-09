@@ -6,13 +6,13 @@ import {
   HowToReg,
 } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
-import { CircularProgress, Backdrop } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import Link from "next/link";
 import { useEffect } from "react";
 import { server } from "../../next.config";
 import Popup from "reactjs-popup";
 import * as React from "react";
-import AcceptAplcntModal from "../../components/Modal/AcceptAplcntModal.jsx";
+import Modal from "../../components/Modal/Modal.jsx";
 import { useState } from "react";
 import Modal1 from "../../components/LiaModal/model1";
 import Modal2 from "../../components/Modal/Modal2.jsx";
@@ -21,22 +21,25 @@ import { CSVLink, CSVDownload } from "react-csv";
 export default function ApplicantsList({ students }) {
   const [modalOn, setModalOn] = useState(false);
   const [choice, setChoice] = useState(false);
-  const [modalOn1, setModalOn1] = useState(false);
-  const [choice1, setChoice1] = useState(false);
-  const [modalOn2, setModalOn2] = useState(false);
-  const [choice2, setChoice2] = useState(false);
-  const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
 
   const clicked = () => {
     setModalOn(true);
   };
+
+  const [modalOn1, setModalOn1] = useState(false);
+  const [choice1, setChoice1] = useState(false);
+
   const clicked1 = () => {
     setModalOn1(true);
   };
+
+  const [modalOn2, setModalOn2] = useState(false);
+  const [choice2, setChoice2] = useState(false);
+
   const clicked2 = () => {
     setModalOn2(true);
   };
+
   // set progress bar
   let setProgressBar = (progress) => {
     switch (progress) {
@@ -64,7 +67,8 @@ export default function ApplicantsList({ students }) {
         setLoading(false);
       });
   }, []);
-
+  console.log(data);
+  if (isloading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
 
   const headers = [

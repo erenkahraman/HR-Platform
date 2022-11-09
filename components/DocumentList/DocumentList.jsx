@@ -153,8 +153,8 @@ const Contents = [
 
 const DocumentList = () => {
   const [open, setOpen] = useState(false);
-
   const handleOpen = () => setOpen(!open);
+
 
   return (
     <div className="flex flex-col w-full py-2 px-6 gap-2 bg-white border rounded-md">
@@ -291,7 +291,7 @@ const DocumentList = () => {
                     </div>
                   </div>
                 </DialogBody>
-                <DialogFooter>
+                <DialogFooter >
                   <Button
                     variant="text"
                     color="red"
