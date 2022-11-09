@@ -21,7 +21,6 @@ import { Birthdays } from "../../components/Birthdays";
 import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 export default function Dashboard() {
-
   const router = useRouter();
   const [open, setOpen] = useState(false)
 
