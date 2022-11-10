@@ -1,9 +1,15 @@
-import { Backdrop, CircularProgress, Alert, Collapse, IconButton } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
+import {
+  Backdrop,
+  CircularProgress,
+  Alert,
+  Collapse,
+  IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { confirmAlert } from "react-confirm-alert";
-import SaveIcon from '@mui/icons-material/Save';
+import SaveIcon from "@mui/icons-material/Save";
 import "react-confirm-alert/src/react-confirm-alert.css";
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
@@ -12,20 +18,18 @@ import reactSelect from "react-select";
 import { CheckCircle } from "@mui/icons-material";
 import EditAttendance from "../../components/Modal/EditAttendance";
 
-
-
 function Attendence() {
   //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState('');
-  const [status, setStatus] = useState('');
+  const [date, setDate] = useState("");
+  const [status, setStatus] = useState("");
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [openAlertIncludedDate, setOpenAlertIncludedDate] = useState(false);
   const [editAttendanceModel, setAttendanceEditModel] = useState(false);
-  const [dateIncluded, setDateIncluded] = useState(false)
+  const [dateIncluded, setDateIncluded] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -40,10 +44,10 @@ function Attendence() {
   const save = (intern) => {
     setOpenAlert(false);
     setOpenAlertIncludedDate(false);
-    setIntern(intern)
+    setIntern(intern);
     if (!dateIncluded) {
       if (status && date) {
-        setOpen(false)
+        setOpen(false);
         confirmAlert({
           message: "Are you sure you want to save ?",
           buttons: [
@@ -53,7 +57,7 @@ function Attendence() {
                 setOpen(true);
                 intern.attendance.statusOfTheDay = status;
                 intern.attendance[status].count++;
-                intern.attendance[status].dates.push(date)
+                intern.attendance[status].dates.push(date);
                 const JSONintern = JSON.stringify(intern);
                 const endpoint = `/api/intern/${intern._id}`;
                 const options = {
@@ -76,38 +80,42 @@ function Attendence() {
         setStatus("");
         setDate("");
       } else {
-        setOpenAlert(true)
+        setOpenAlert(true);
       }
-    } else
-      setOpenAlertIncludedDate(true)
-
+    } else setOpenAlertIncludedDate(true);
+  };
+  const clicked = () => {
+    setAttendanceEditModel(true);
   };
 
   const disableStatus = (intern, dt) => {
-    if (intern.attendance.present.dates.includes(dt)
-      || intern.attendance.late.dates.includes(dt)
-      || intern.attendance.dayOff.dates.includes(dt)
-      || intern.attendance.excusedLeave.dates.includes(dt)
-      || intern.attendance.sick.dates.includes(dt)
-      || intern.attendance.unexcusedleave.dates.includes(dt))
-      setDateIncluded(true)
-    else setDateIncluded(false)
-  }
+    if (
+      intern.attendance.present.dates.includes(dt) ||
+      intern.attendance.late.dates.includes(dt) ||
+      intern.attendance.dayOff.dates.includes(dt) ||
+      intern.attendance.excusedLeave.dates.includes(dt) ||
+      intern.attendance.sick.dates.includes(dt) ||
+      intern.attendance.unexcusedleave.dates.includes(dt)
+    )
+      setDateIncluded(true);
+    else setDateIncluded(false);
+  };
 
-  if (isloading) return <Backdrop
-    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-    open={open}
-  >
-    <CircularProgress color="inherit" />
-  </Backdrop>;
+  if (isloading)
+    return (
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
   if (!data) return <p>No profile data</p>;
-
-
 
   return (
     <section className="relative w-full">
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
       >
         <CircularProgress color="inherit" />
@@ -197,25 +205,25 @@ function Attendence() {
             </Alert>
           </Collapse>
           <Collapse in={openAlertIncludedDate}>
-                  <Alert
-                    severity="warning"
-                    action={
-                      <IconButton
-                        aria-label="close"
-                        color="inherit"
-                        size="small"
-                        onClick={() => {
-                          setOpenAlertIncludedDate(false);
-                        }}
-                      >
-                        <CloseIcon fontSize="inherit" />
-                      </IconButton>
-                    }
-                    sx={{ mb: 2 }}
-                  >
-                    Status already set for the select date !
-                  </Alert>
-                </Collapse> 
+            <Alert
+              severity="warning"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setOpenAlertIncludedDate(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              sx={{ mb: 2 }}
+            >
+              Status already set for the select date !
+            </Alert>
+          </Collapse>
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
             <table className="items-center w-full border-collapse bg-white">
@@ -229,7 +237,7 @@ function Attendence() {
                     DATE
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    STATUS
+                    SITUATION
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     PRESENT
@@ -250,20 +258,20 @@ function Attendence() {
                     UNEXCUSED LEAVE
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    SAVE
+                    ACTION
                   </th>
                 </tr>
               </thead>
 
               {/* Table Body */}
               <tbody className="divide-y">
-                {data.length == 0 ?
-                  <tr className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">The interns list is empty</tr>
-                  :
+                {data.length == 0 ? (
+                  <tr className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                    The interns list is empty
+                  </tr>
+                ) : (
                   data.map((intern) => (
-
-
-                    <tr key={intern.id}>
+                    <tr key={intern._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">
                           {" "}
@@ -275,10 +283,10 @@ function Attendence() {
                         <input
                           type="date"
                           className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                          onInput={e => {
-                            setDate(e.target.value)
-                            disableStatus(intern, e.target.value)
-                            setStatus('')
+                          onInput={(e) => {
+                            setDate(e.target.value);
+                            disableStatus(intern, e.target.value);
+                            setStatus("");
                           }}
                         ></input>
                       </td>
@@ -287,21 +295,23 @@ function Attendence() {
                         <select
                           id="country"
                           className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          onClick={e => setStatus(e.target.value)}
+                          onClick={(e) => setStatus(e.target.value)}
                         >
                           <option value="">-</option>
-                          <option value="present" >Present</option>
-                          <option value="late" >Late</option>
-                          <option value="dayOff" >Day off</option>
-                          <option value="excusedLeave" >Excused leave</option>
-                          <option value="sick" >Sick</option>
-                          <option value="unexcusedleave" >Unexecused leave</option>
+                          <option value="present">Present</option>
+                          <option value="late">Late</option>
+                          <option value="dayOff">Day off</option>
+                          <option value="excusedLeave">Excused leave</option>
+                          <option value="sick">Sick</option>
+                          <option value="unexcusedleave">
+                            Unexecused leave
+                          </option>
                         </select>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div >{intern.attendance.present.count}</div>
+                          <div>{intern.attendance.present.count}</div>
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
@@ -342,19 +352,26 @@ function Attendence() {
                                 <CheckCircle className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
                               </button>
                             </div>
-                            <button title="Edit" >
-                              <SaveIcon className="h-6 fill-[#0b3768] hover:fill-[#15803d]" onClick={e => { setAttendanceEditModel(true) }} />
-                              {editAttendanceModel && (<EditAttendance
-                                intern={intern}
-                                setModel={setAttendanceEditModel}
-                              />)}
-
+                            <button title="Edit">
+                              <SaveIcon
+                                className="h-6 fill-[#0b3768] hover:fill-[#15803d]"
+                                onClick={(e) =>
+                                  setAttendanceEditModel(intern._id)
+                                }
+                              />
+                              {editAttendanceModel === intern._id && (
+                                <EditAttendance
+                                  intern={intern}
+                                  setModel={setAttendanceEditModel}
+                                />
+                              )}
                             </button>
                           </div>
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  ))
+                )}
               </tbody>
             </table>
           </div>

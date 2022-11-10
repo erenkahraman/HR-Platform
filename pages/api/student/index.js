@@ -4,10 +4,10 @@ import Applicant from "../../../models/applicant";
 import Intern from "../../../models/intern";
 import dbConnect from "../../../util/mongodb";
 
-export default async function handler(req, res){
-    const { method } = req;
-    const db = await getMongoDb();
-    await dbConnect();
+export default async function handler(req, res) {
+  const { method } = req;
+  const db = await getMongoDb();
+  await dbConnect();
 
   if (method === "GET") {
     try {
@@ -20,14 +20,16 @@ export default async function handler(req, res){
               localField: "applicant",
               foreignField: "_id",
               as: "applicant",
-            },
+            }
+          },
+          {
             $lookup: {
               from: Intern.collection.name,
               localField: "intern",
               foreignField: "_id",
               as: "intern",
             },
-          },
+          }
         ])
         .toArray();
       res.status(200).json(students);

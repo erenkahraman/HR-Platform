@@ -362,7 +362,7 @@ export default function Dashboard() {
             </div>
             {/* What's New Content */}
             <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-              <Feed setOpen={setOpen} />
+              <Feed />
             </div>
             {/* Weekly Schedule */}
           </div>
@@ -471,18 +471,20 @@ export default function Dashboard() {
             {/* Daily Reminder Title*/}
             <div className="flex items-center justify-between">
               <div className="text-xl font-semibold">
-                Upcoming Birthdays 🥳🍰🎉
+                This Month's Birthdays 🥳🍰🎉
               </div>
-              <a
+              {/*
+                 <a
                 href="./"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
-                <div>View All (6)</div>
+                <div>{View All (6)}</div>
                 <div>
                   {" "}
                   <ArrowForward className="text-md" />
                 </div>
               </a>
+        */}
             </div>
 
             {/* Birthday Content */}

@@ -9,7 +9,7 @@ const Reminder = ({ color }) => {
   const [isloading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
-    fetch("/api/intern")
+    fetch("/api/birthday")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -18,20 +18,21 @@ const Reminder = ({ color }) => {
 
   return (
     <div>
-      {data.map((reminder) => (
-        <div key={reminder.id} className="flex w-full">
+      {data.map((student) => (
+        <div key={student.id} className="flex w-full">
           <div className="flex-[1] flex items-center justify-center">
             <Circle className={circleColor()} />
           </div>
           <div className="flex-[5] flex flex-col">
             <div className="text-sm font-semibold">
-              {reminder.student.firstName}
-              {reminder.student.lastName}
+              {student.firstName} {student.lastName}
             </div>
-            <div className="text-xs font-light ">{reminder.departement}</div>
+            <div className="text-xs font-light ">
+              {student.applicant.position}
+            </div>
           </div>
           <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
-            {reminder.student.dateOfBirth}
+            {student.day} / {student.month}
           </div>
         </div>
       ))}

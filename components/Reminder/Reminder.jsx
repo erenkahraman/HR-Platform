@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
 
-const Reminder = ({ color, setOpen }) => {
+const Reminder = ({ color }) => {
   const circleColor = () => {
     let result = "text-sm " + color;
     return result;
   };
   const [data, setData] = useState([]);
   const token = cookie.get("token");
+  const [isloading, setLoading] = useState(true);
   useEffect(() => {
-    setOpen(true);
+    setLoading(true);
     const asyncRequest = async () => {
       const config = {
         headers: {
@@ -24,34 +25,31 @@ const Reminder = ({ color, setOpen }) => {
         config
       );
       setData(data);
-      setOpen(false);
+      setLoading(false);
     };
     try {
       asyncRequest();
     } catch (e) {
       console.error(e);
-      setOpen(false);
+      setLoading(false);
     }
   }, []);
   return (
     <div>
-      {data
-        ?.slice(-3)
-        .reverse()
-        .map((reminder) => (
-          <div key={reminder.id} className="flex w-full">
-            <div className="flex-[1] flex items-center justify-center">
-              <Circle className={circleColor()} />
-            </div>
-            <div className="flex-[5] flex flex-col">
-              <div className="text-sm font-semibold">{reminder.title}</div>
-              <div className="text-xs font-light ">{reminder.category}</div>
-            </div>
-            <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
-              {reminder.date}
-            </div>
+      {data.slice(data.length - 3).map((reminder) => (
+        <div key={reminder.id} className="flex w-full">
+          <div className="flex-[1] flex items-center justify-center">
+            <Circle className={circleColor()} />
           </div>
-        ))}
+          <div className="flex-[5] flex flex-col">
+            <div className="text-sm font-semibold">{reminder.title}</div>
+            <div className="text-xs font-light ">{reminder.category}</div>
+          </div>
+          <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
+            {reminder.date}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

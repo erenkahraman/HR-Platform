@@ -81,7 +81,7 @@ const DocumentList = () => {
             <div className="flex gap-4 items-center">
               <div className="flex font-semibold">
                 <p>
-                  {student.firstName} {student.lastName}
+                  {student.firstName} {"student.lastName"}
                 </p>
               </div>
               <div className="flex items-center gap-1 text-xs font-light text-gray-500">
@@ -117,7 +117,8 @@ const DocumentList = () => {
             </div>
             <div className="flex cursor-pointer">
               {/* Bottom Right */}
-              <div className="py-1 px-2 text-xs text-blue-900">
+              <div 
+              className="py-1 px-2 text-xs text-blue-900">
                 View All Documents
               </div>
               <ArrowRightAlt />

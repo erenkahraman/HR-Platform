@@ -4,67 +4,52 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import Modal from "../../components/LiaModal/model1";
 import Link from "next/link";
 import { Tooltip, Button } from "@material-tailwind/react";
 import { useEffect } from "react";
+import { Backdrop, CircularProgress } from "@mui/material";
 // import Popup from "reactjs-popup" //used for popup
 
 export default function ApplicantsList() {
-  const [modalOn, setModalOn] = useState(false);
-  const [choice, setChoice] = useState(false);
-
-  const clicked = () => {
-    setModalOn(true);
-  };
-
-  const cancel = () => {
-    confirmAlert({
-      title: "Confirm to submit",
-      message: "Are you sure you want to delete ?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => alert("Click Yes"),
-        },
-        {
-          label: "No",
-          onClick: () => alert("Click No"),
-        },
-      ],
-    });
-  };
-
-  const profile = () => {
-    confirmAlert({
-      title: "Confirm to submit",
-      message: "Are you sure you want to go to the profile ?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => alert("Click Yes"),
-        },
-        {
-          label: "No",
-          onClick: () => alert("Click No"),
-        },
-      ],
-    });
-  };
-
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  // cities to get from checkbox
+  const [cities, setCities] = useState([]);
 
   useEffect(() => {
+    setOpen(true);
     fetch("/api/applicant")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+        setOpen(false);
       });
   }, []);
-  console.log(data);
 
+  const handleChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setCities([...cities, value]);
+    } else {
+      setCities(cities.filter((e) => e !== value));
+    }
+  };
+
+  const filterCities = (app) => {
+    if (cities.length == 0) {
+      return app;
+    } else {
+      return cities.includes(app.arrivalCity);
+    }
+  };
   return (
     <section className="relative w-full sm:static">
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className="w-full mb-12 sm:static">
         <div className=" sm:static flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           {/* Title Container */}
@@ -79,33 +64,67 @@ export default function ApplicantsList() {
             <div>
               <div className="flex flex-row justify-between font-semibold pl-4 pt-5 pb-10">
                 {/* Radio check */}
-                <div className="pr-3 pl-1.5 pt-3">
+                <div class="pr-3 pl-1.5 pt-3">
                   <input
-                    type="radio"
-                    className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..."
+                    id="checked-checkbox"
+                    type="checkbox"
+                    name="city"
+                    value="Terranova da Sibari"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    onChange={handleChange}
                   />
-                  <label className="text-sm pl-1 ">Terranova da Sibari</label>
+                  <label
+                    htmlFor="checked-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Terranova da Sibari
+                  </label>
                 </div>
-                <div className="pr-3 pl-1.5 pt-3">
+                <div class="pr-3 pl-1.5 pt-3">
                   <input
-                    type="radio"
-                    className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..."
+                    id="checked-checkbox"
+                    type="checkbox"
+                    name="city"
+                    value="Bivo Cantinella"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    onChange={handleChange}
                   />
-                  <label className="text-sm pl-1 ">Bivo Cantinella</label>
+                  <label
+                    htmlFor="checked-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Bivo Cantinella
+                  </label>
                 </div>
-                <div className="pr-3 pl-1.5 pt-3">
+                <div class="pr-3 pl-1.5 pt-3">
                   <input
-                    type="radio"
-                    className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..."
+                    id="checked-checkbox"
+                    type="checkbox"
+                    name="city"
+                    value="Sibari"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    onChange={handleChange}
                   />
-                  <label className="text-sm pl-1 ">Sibari</label>
+                  <label
+                    htmlFor="checked-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Sibari
+                  </label>
                 </div>
-                <div className="pr-3 pl-1.5 pt-3">
+                <div class="pr-3 pl-1.5 pt-3">
                   <input
-                    type="radio"
-                    className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..."
+                    id="checked-checkbox"
+                    type="checkbox"
+                    name="city"
+                    value="Spezzano Albanese Terme"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    onChange={handleChange}
                   />
-                  <label className="text-sm pl-1">
+                  <label
+                    htmlFor="checked-checkbox"
+                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
                     Spezzano Albanese Terme
                   </label>
                 </div>
@@ -162,12 +181,17 @@ export default function ApplicantsList() {
 
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
-            {data.length === 0 ?
-              <div className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
-                  p-4 flex items-center">
-                The Interns list is empty at the moment!
+            {data.length === 0 ? (
+              <div
+                className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
+                  p-4 flex items-center"
+              >
+                The Applicants list is empty at the moment!
+                <div className="text-blue-600/75 pl-1">
+                  <Link href="/applicants/new"> Add a new applicant</Link>
+                </div>
               </div>
-              :
+            ) : (
               <table className="items-center w-full border-collapse bg-white">
                 {/* Table Head */}
                 <thead>
@@ -187,15 +211,12 @@ export default function ApplicantsList() {
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                       Pick Up By
                     </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
-                      Action
-                    </th>
                   </tr>
                 </thead>
 
                 {/* Table Body */}
                 <tbody className="divide-y">
-                  {data.map((applicant) => (
+                  {data.filter(filterCities).map((applicant) => (
                     <tr key={applicant._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                         <span className="ml-3 font-bold">
@@ -206,113 +227,24 @@ export default function ApplicantsList() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.departureDate}
+                        {applicant.startDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.departureTime}
+                        {applicant.arrivalTime || "Uknown"}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.departureCity}
+                        {applicant.arrivalCity}
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         {applicant.pickUpBy}
                       </td>
-
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
-                        {/* ICONS */}
-                        <div className="flex flex-row">
-                          <Tooltip
-                            className="bg-transparent text-black mt-2"
-                            content="Delete"
-                            animate={{
-                              mount: { scale: 1, y: 0 },
-                              unmount: { scale: 0, y: 25 },
-                            }}
-                          >
-                            <Button
-                              variant="gradient"
-                              className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 "
-                              onClick={cancel}
-                            >
-                              <MdDeleteOutline />
-                            </Button>
-                          </Tooltip>
-                          <Tooltip
-                            className="bg-transparent text-black mt-2"
-                            content="Edit"
-                            animate={{
-                              mount: { scale: 1, y: 0 },
-                              unmount: { scale: 0, y: 25 },
-                            }}
-                          >
-                            <Button
-                              variant="gradient"
-                              className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 "
-                              onClick={clicked}
-                            >
-                              <AiOutlineEdit />
-                            </Button>
-                          </Tooltip>
-
-                          {/* <Popup  contentStyle={{background:"#0B3768", borderRadius:"0.25rem"}} trigger={<button><AiOutlineEdit /></button>}  position="left center">
-												<div className="flex flex-row">
-													<div >
-														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-6 text-sm p-4 mx-7" type="text" name="applicant" value="Alena Mango" required />
-													</div>
-													<div>
-														<input  className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7 " type="text" name="arrivalDate" value="09/02/2022" required />
-													</div>
-													<div>
-														<input className="rounded border-none bg-[#0B3768] text-white align-middle px-6 text-sm p-4 mx-7" type="time" name="arrivalTime" value="12:00" required />
-													</div>
-													<div>
-														<input  className="rounded border-none bg-[#0B3768] text-white align-middle w-36 px-5 text-sm p-4 mx-7" type="text" name="arrivalCity" value="Sibari" required />
-													</div>
-												</div>
-													<div>
-														<div className="flex flex-row rounded border-none bg-[#0B3768] h-full text-white align-middle px-4 text-sm p-4 mx-4 ">
-														<button onClick={save}><MdDone className="hover:fill-[#15803d] mr-1 h-6 w-4"/></button>
-														<button onClick={cancel}>< MdOutlineCancel className='hover:fill-[#991b1b]  h-6 w-4' /></button>
-														</div>
-													</div>
-												</div>
-											</Popup> */}
-
-                          {modalOn && (
-                            <Modal
-                              setModalOn={setModalOn}
-                              setChoice={setChoice}
-                            />
-                          )}
-
-                          <Tooltip
-                            className="bg-transparent text-black mt-2"
-                            content="Edit Profile"
-                            animate={{
-                              mount: { scale: 1, y: 0 },
-                              unmount: { scale: 0, y: 25 },
-                            }}
-                          >
-                            <Button
-                              variant="gradient"
-                              className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 "
-                            >
-                              <Link href="/applicants/edit">
-                                <RiAccountCircleLine />
-                              </Link>
-                            </Button>
-                          </Tooltip>
-                          {/* <button className="px-0.75">
-												<RiAccountCircleLine onClick={profile} />
-											</button> */}
-                        </div>
-                      </td>
                     </tr>
                   ))}
                 </tbody>
-              </table>}
+              </table>
+            )}
           </div>
         </div>
       </div>
