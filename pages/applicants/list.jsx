@@ -6,35 +6,30 @@ import {
   HowToReg,
 } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Backdrop } from "@mui/material";
 import Link from "next/link";
 import { useEffect } from "react";
 import { server } from "../../next.config";
 import Popup from "reactjs-popup";
 import * as React from "react";
-import Modal from "../../components/Modal/Modal.jsx";
+import AcceptAplcntModal from "../../components/Modal/AcceptAplcntModal.jsx";
 import { useState } from "react";
-import Modal1 from "../../components/LiaModal/model1";
+import NoAnswerModal from "../../components/Modal/NoAnswerModal";
 import Modal2 from "../../components/Modal/Modal2.jsx";
 import { CSVLink, CSVDownload } from "react-csv";
 
 export default function ApplicantsList({ students }) {
   const [modalOn, setModalOn] = useState(false);
   const [choice, setChoice] = useState(false);
+  const [noAnswerModal, setNoAnswerModal] = useState(false);
+  const [modalOn2, setModalOn2] = useState(false);
+  const [choice2, setChoice2] = useState(false);
+  const [data, setData] = useState([]);
+  const [isloading, setLoading] = useState(true);
 
   const clicked = () => {
     setModalOn(true);
   };
-
-  const [modalOn1, setModalOn1] = useState(false);
-  const [choice1, setChoice1] = useState(false);
-
-  const clicked1 = () => {
-    setModalOn1(true);
-  };
-
-  const [modalOn2, setModalOn2] = useState(false);
-  const [choice2, setChoice2] = useState(false);
 
   const clicked2 = () => {
     setModalOn2(true);
@@ -67,9 +62,6 @@ export default function ApplicantsList({ students }) {
         setLoading(false);
       });
   }, []);
-  console.log(data);
-  if (isloading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
 
   const headers = [
     { label: "First name", key: "student.firstName" },
@@ -282,18 +274,17 @@ export default function ApplicantsList({ students }) {
 
                             <div>
                               <button
-                                onClick={clicked1}
+                                onClick={(e) => setNoAnswerModal(true)}
                                 type="submit"
                                 className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
                               >
                                 No Answer
                               </button>
-                              {choice1}
 
-                              {modalOn1 && (
-                                <Modal1
-                                  setModalOn1={setModalOn1}
-                                  setChoice1={setChoice1}
+                              {noAnswerModal && (
+                                <NoAnswerModal
+                                  student={applicant.student}
+                                  setNoAnswerModal={setNoAnswerModal}
                                 />
                               )}
                             </div>

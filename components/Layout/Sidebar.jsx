@@ -69,7 +69,7 @@ export default function Sidebar() {
     },
 
     { title: "END INTERNSHIP", isSeperator: true },
-    {
+    /*{
       title: "List",
       href: "/EndInternship/EndList",
       icon: <List />,
@@ -80,7 +80,7 @@ export default function Sidebar() {
       href: "/EndInternship/EndDocuments",
       icon: <InsertDriveFileOutlined />,
       isOn: false,
-    },
+    },*/
     {
       title: "Departure",
       href: "/EndInternship/EndDeparture",

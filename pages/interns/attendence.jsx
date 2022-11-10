@@ -322,25 +322,25 @@ function Attendence() {
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.dayOff}</div>
+                          <div>{intern.attendance.dayOff.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.excusedLeave}</div>
+                          <div>{intern.attendance.excusedLeave.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.sick}</div>
+                          <div>{intern.attendance.sick.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.unexcusedleave}</div>
+                          <div>{intern.attendance.unexcusedleave.count}</div>
                         </div>
                       </td>
 

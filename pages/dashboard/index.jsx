@@ -18,6 +18,8 @@ import news from "./news";
 import { useRouter } from "next/router";
 import { Link } from "@mui/material";
 import { Birthdays } from "../../components/Birthdays";
+import { useState } from "react";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 export default function Dashboard() {
   const router = useRouter();
