@@ -88,4 +88,4 @@ const model1 = ({ setModalOn, setChoice }) => {
   );
 };
 
-export default NoAnswerModal;
+export default model1;

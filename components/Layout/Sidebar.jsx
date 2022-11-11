@@ -34,6 +34,12 @@ export default function Sidebar() {
       icon: <CalendarMonthOutlined />,
       isOn: false,
     },
+    {
+      title: "Profile",
+      href: "/Profile/list",
+      icon: <GroupOutlined />,
+      isOn: false,
+    },
     { title: "APPLICANTS", isSeperator: true },
     { title: "List", href: "/applicants/list", icon: <List />, isOn: false },
     {
@@ -85,12 +91,6 @@ export default function Sidebar() {
       title: "Departure",
       href: "/EndInternship/EndDeparture",
       icon: <FlightTakeoffOutlined />,
-      isOn: false,
-    },
-    {
-      title: "Profile",
-      href: "/Profile/list",
-      icon: <GroupOutlined />,
       isOn: false,
     },
   ];

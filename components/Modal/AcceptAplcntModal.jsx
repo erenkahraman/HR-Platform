@@ -34,7 +34,7 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
       _id: id,
       startDate: event.target.startDate.value,
       endDate: event.target.endDate.value,
-      departement: event.target.department.value,
+      departement: departments[event.target.department.value].department,
       position: event.target.position.value,
       documents: [
         { name: "Intern Development Plan", status: "Not Submitted" },
@@ -51,6 +51,9 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
     const JSONintern = JSON.stringify(intern);
     const endpointIntern = "/api/intern";
     const endpointstudent = `/api/student/${stdId}`;
+    const endpointDepartment = `/api/department/${
+      departments[event.target.department.value]._id
+    }`;
     const optionsIntern = {
       method: "POST",
       headers: {
@@ -70,6 +73,15 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
         applicationStatus: "Accepted",
       }),
     };
+    const optionsDepartment = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(id),
+    };
+    await fetch(endpointDepartment, optionsDepartment);
     await fetch(endpointstudent, optionsStudent);
     await fetch(endpointIntern, optionsIntern);
     setChoice(true);
@@ -125,12 +137,12 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
                   name="department"
                   id="department"
                   className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  onClick={(e) =>
-                    setPositions(departments[e.target.selectedIndex].positions)
-                  }
+                  onClick={(e) => {
+                    setPositions(departments[e.target.selectedIndex].positions);
+                  }}
                 >
                   {departments.map((department, i) => (
-                    <option>{department.department}</option>
+                    <option value={i}>{department.department}</option>
                   ))}
                 </select>
               </div>
