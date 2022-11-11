@@ -21,6 +21,8 @@ import { TextField } from "@mui/material";
 import moment from "moment/moment";
 import { Dayjs } from "dayjs";
 import { useEffect } from "react";
+import axios from "axios";
+import cookie from "js-cookie";
 
 export default function ApplicantsNew() {
   const router = useRouter();
@@ -42,17 +44,32 @@ export default function ApplicantsNew() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [openAlert, setOpenAlert] = useState(false);
+  const token = cookie.get("token");
 
   // Get departments from DB
   useEffect(() => {
     setOpen(true);
-    fetch("/api/department")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/department`,
+          { params: { token: token } },
+          config
+        );
         setDbDepartment(data);
         setPositions(data[0].positions);
         setOpen(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setOpen(false);
+      }
+    };
+    asyncRequest();
   }, []);
 
   // get countries list from react-select-country-list
@@ -97,6 +114,7 @@ export default function ApplicantsNew() {
         nationality: nationalityValue.label,
         departingCountry: departingCountryValue.label,
         applicant: applicantId,
+        token: token,
       };
       const applicant = {
         _id: applicantId,
@@ -121,6 +139,7 @@ export default function ApplicantsNew() {
           { name: "Acceptance Letter", status: "Not Submitted" },
         ],
         student: studentId,
+        token: token,
       };
       const JSONdstudent = JSON.stringify(student);
       const JSONapplicant = JSON.stringify(applicant);
@@ -159,18 +178,41 @@ export default function ApplicantsNew() {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify({ department }),
+      body: JSON.stringify({ department, token }),
     };
     await fetch("/api/department", options);
     updateDepartment();
   };
   const updateDepartment = () => {
-    fetch("/api/department")
-      .then((res) => res.json())
-      .then((data) => {
-        setDbDepartment(data);
-        setOpen(false);
-      });
+      setOpen(true);
+      const asyncRequest = async () => {
+        try {
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          };
+          const { data } = await axios.get(
+            `/api/department`,
+            { params: { token: token } },
+            config
+          );
+          setDbDepartment(data);
+          setOpen(false);
+        } catch (e) {
+          console.error(e);
+          setOpen(false);
+        }
+      };
+      asyncRequest();
+   
+    //
+    // fetch("/api/department")
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setDbDepartment(data);
+    //     setOpen(false);
+    //   });
   };
 
   // ** ADD NEW POSITION
@@ -184,7 +226,7 @@ export default function ApplicantsNew() {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify(newPosition),
+        body: JSON.stringify(newPosition, token),
       };
       await fetch(`/api/department/${selectedDprtmnt._id}`, options);
       updateDepartment();
@@ -487,7 +529,9 @@ export default function ApplicantsNew() {
                           }
                         >
                           {dbDepartment.map((department) => (
-                            <option disabled={department.positions.length == 0}>
+                            <option
+                              disabled={department.positions?.length == 0}
+                            >
                               {department.department}
                             </option>
                           ))}
@@ -555,7 +599,7 @@ export default function ApplicantsNew() {
                         <label htmlFor="department" className="block text-sm">
                           Position
                         </label>
-                        {positions.length == 0 ? (
+                        {positions?.length == 0 ? (
                           <div className="text-red-600/75">
                             No positions available for this department
                           </div>
@@ -567,7 +611,7 @@ export default function ApplicantsNew() {
                             required
                             className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                           >
-                            {positions.map((position) => (
+                            {positions?.map((position) => (
                               <option key={position}>{position}</option>
                             ))}
                           </select>

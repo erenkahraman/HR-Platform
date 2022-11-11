@@ -9,7 +9,8 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import Modal5 from "../../components/Modal/Modal5.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
-
+import axios from "axios";
+import cookie from "js-cookie";
 
 export default function InternList() {
   const [modalOn4, setModalOn4] = useState(false);
@@ -26,6 +27,7 @@ export default function InternList() {
   };
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  const token = cookie.get("token");
 
   const [search, setSearch] = useState("");
 
@@ -35,22 +37,45 @@ export default function InternList() {
     setSearch(event.target.value);
   }; //search 
   const getInterns = async () => {
-    const response = await fetch("http://localhost:3000/api/interns");
+    const response = await fetch("http://localhost:3000/api/interns",json.stringify(token));
     const data = await response.json();
     setData(data);
     setLoading(false);
   };
 
-  
-   useEffect(() => {
+  useEffect(() => {
     setLoading(true);
-     fetch("/api/intern")
-       .then((res) => res.json())
-       .then((data) => {
-         setData(data);
-         setLoading(false);
-       });
-   }, []);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/intern`,
+          { params: { token: token } },
+          config
+        );
+        setData(data);
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
+  }, []);
+  
+  //  useEffect(() => {
+  //   setLoading(true);
+  //    fetch("/api/intern")
+  //      .then((res) => res.json())
+  //      .then((data) => {
+  //        setData(data);
+  //        setLoading(false);
+  //      });
+  //  }, []);
    console.log(data);
    if (isloading) return <p>Loading...</p>;
    if (!data) return <p>No profile data</p>;

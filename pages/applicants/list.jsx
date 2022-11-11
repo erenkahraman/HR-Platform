@@ -17,6 +17,8 @@ import { useState } from "react";
 import NoAnswerModal from "../../components/Modal/NoAnswerModal";
 import Modal2 from "../../components/Modal/Modal2.jsx";
 import { CSVLink, CSVDownload } from "react-csv";
+import axios from "axios";
+import cookie from "js-cookie";
 
 export default function ApplicantsList({ students }) {
   const [modalOn, setModalOn] = useState(false);
@@ -26,7 +28,8 @@ export default function ApplicantsList({ students }) {
   const [choice2, setChoice2] = useState(false);
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-
+  const token = cookie.get("token");
+  
   const clicked = () => {
     setModalOn(true);
   };
@@ -53,15 +56,55 @@ export default function ApplicantsList({ students }) {
     }
   };
 
+  
+
   useEffect(() => {
     setLoading(true);
-    fetch("/api/applicant")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/applicant`,
+          { params: { token: token } },
+          config
+        );
         setData(data);
         setLoading(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
   }, []);
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const asyncRequest = async () => {
+  //     const config = {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     };
+  //     const { data } = await axios.get(
+  //       `/api/applicant`,
+  //       { params: { token: token } },
+  //       config
+  //     );
+  //     setData(data);
+  //     setLoading(false);
+  //   };
+  //   try {
+  //     asyncRequest();
+  //   } catch (e) {
+  //     console.error(e);
+  //     setLoading(false);
+  //   }
+  // }, []);
 
   const headers = [
     { label: "First name", key: "student.firstName" },

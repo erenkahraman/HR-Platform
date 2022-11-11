@@ -1,6 +1,8 @@
 import React from "react";
+import cookie from "js-cookie";
 
 const Modal2 = ({ setModalOn2, setChoice2 }) => {
+  const token = cookie.get("token");
   const handleOKClick2 = () => {
     setChoice2(true);
     setModalOn2(false);
@@ -24,7 +26,7 @@ const Modal2 = ({ setModalOn2, setChoice2 }) => {
       intern.startDate,
       intern.endDate
     );
-    const JSONintern = JSON.stringify(intern);
+    const JSONintern = JSON.stringify({intern,token});
     const endpointIntern = "/api/intern";
     const endpointstudent = `/api/student/${stdId}`;
     const optionsIntern = {
@@ -44,6 +46,7 @@ const Modal2 = ({ setModalOn2, setChoice2 }) => {
       body: JSON.stringify({
         intern: id,
         applicationStatus: "Accepted",
+        token:token
       }),
     };
     await fetch(endpointstudent, optionsStudent);

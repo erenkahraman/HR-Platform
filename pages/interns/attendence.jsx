@@ -17,6 +17,8 @@ import { useState, useEffect } from "react";
 import reactSelect from "react-select";
 import { CheckCircle } from "@mui/icons-material";
 import EditAttendance from "../../components/Modal/EditAttendance";
+import axios from "axios";
+import cookie from "js-cookie";
 
 function Attendence() {
   //  const notify =() => toast ("Please check if everything before saving!");
@@ -30,16 +32,42 @@ function Attendence() {
   const [openAlertIncludedDate, setOpenAlertIncludedDate] = useState(false);
   const [editAttendanceModel, setAttendanceEditModel] = useState(false);
   const [dateIncluded, setDateIncluded] = useState(false);
+  const token = cookie.get("token");
 
   useEffect(() => {
     setLoading(true);
-    fetch("/api/intern")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/intern`,
+          { params: { token: token } },
+          config
+        );
         setData(data);
         setLoading(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
   }, []);
+
+  
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetch("/api/intern")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setData(data);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
   const save = (intern) => {
     setOpenAlert(false);
@@ -58,6 +86,7 @@ function Attendence() {
                 intern.attendance.statusOfTheDay = status;
                 intern.attendance[status].count++;
                 intern.attendance[status].dates.push(date);
+                intern.token = token;
                 const JSONintern = JSON.stringify(intern);
                 const endpoint = `/api/intern/${intern._id}`;
                 const options = {

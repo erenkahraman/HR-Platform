@@ -3,24 +3,56 @@ import mongoose from "mongoose";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Spinner, Button } from "flowbite-react";
+import axios from "axios";
+import cookie from "js-cookie";
 
 const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
   const router = useRouter();
   const [spinnerState, SetSpinnerState] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [positions, setPositions] = useState([]);
+  const token = cookie.get("token");
+  
   const handleCancelClick = () => {
     setChoice(false);
     setModalOn(false);
   };
 
+
+  // Get Departments
   useEffect(() => {
-    fetch("/api/department")
-      .then((res) => res.json())
-      .then((data) => {
+    setOpen(true);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/department`,
+          { params: { token: token } },
+          config
+        );
         setDepartments(data);
-      });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    asyncRequest();
   }, []);
+
+
+  // useEffect(() => {
+  //   fetch("/api/department")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setDepartments(data);
+  //     });
+  // }, []);
+
+
+
   const calculateWeeks = (start, end) => {
     const msInWeek = 1000 * 60 * 60 * 24 * 7;
     return Math.round(Math.abs(Date.parse(end) - Date.parse(start)) / msInWeek);
@@ -43,6 +75,7 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
         { name: "Confidentiality Agrement", status: "Not Submitted" },
       ],
       student: stdId,
+      token:token,
     };
     intern.durationInWeeks = await calculateWeeks(
       intern.startDate,
@@ -68,6 +101,7 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
       body: JSON.stringify({
         intern: id,
         applicationStatus: "Accepted",
+        token:token,
       }),
     };
     await fetch(endpointstudent, optionsStudent);

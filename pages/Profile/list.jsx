@@ -11,13 +11,16 @@ import Modal5 from "../../components/Modal/Modal5.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
 import { AiOutlineEdit } from "react-icons/ai";
 import { Backdrop, CircularProgress } from "@mui/material";
+import axios from "axios";
+import cookie from "js-cookie";
 
 export default function ApplicantsList() {
   const [modalOn4, setModalOn4] = useState(false);
   const [choice4, setChoice4] = useState(false);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const token = cookie.get("token");
+  
   const clicked4 = () => {
     setModalOn4(true);
   };
@@ -30,14 +33,39 @@ export default function ApplicantsList() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/api/student")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/student`,
+          { params: { token: token } },
+          config
+        );
         setStudents(data);
-        console.log(data);
         setLoading(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
   }, []);
+
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetch("/api/student")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setStudents(data);
+  //       console.log(data);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
   return (
     <section className="relative w-full sm:static">
