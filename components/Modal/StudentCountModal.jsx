@@ -2,28 +2,28 @@ import React from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { BsPeopleFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
+import LoadingState from "../Utils/LoadingState";
 
-const InternsCountModal = ({ setIcModal }) => {
-  const handleCancelClick4 = () => {
-    setIcModal(false);
-  };
-
+const StudentCountModal = ({ setScModal, type }) => {
   const [departments, setDepartment] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/department")
       .then((res) => res.json())
       .then((data) => {
         setDepartment(data);
+        setOpen(false);
       });
   });
 
   return (
     <div className=" opacity-90  bg-zinc-300 fixed inset-0 z-50   ">
+      {open && <LoadingState open={open} />}
       <div className="flex h-screen justify-center items-center  ">
         <div className="flex-col overflow-x-auto bg-white border-4 m-4 rounded-xl px-10 p-0 ">
           <button
-            onClick={handleCancelClick4}
+            onClick={(e) => setScModal(false)}
             className=" rounded px-4 py-2  text-black text-2xl"
           >
             <MdOutlineCancel />
@@ -36,9 +36,7 @@ const InternsCountModal = ({ setIcModal }) => {
                 </div>
                 <div className="flex flex-col text-sm font-bold ">
                   <div>{department.department}</div>
-                  <div className="text-xl ml-3 ">
-                    {department.interns.length}
-                  </div>
+                  <div className="text-xl ml-3 ">{department[type].length}</div>
                 </div>
               </div>
             ))}
@@ -49,4 +47,4 @@ const InternsCountModal = ({ setIcModal }) => {
   );
 };
 
-export default InternsCountModal;
+export default StudentCountModal;

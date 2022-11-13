@@ -6,20 +6,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import Popup from "reactjs-popup";
 import * as React from "react";
 import { useState, useEffect } from "react";
-import Modal5 from "../../components/Modal/Modal5.jsx";
-import InternsCountModal from "../../components/Modal/InternsCountModal.jsx";
+import StudentCountModal from "../../components/Modal/StudentCountModal.jsx";
+import EndInternshipModal from "../../components/Modal/EndInternshipModal.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
 
 export default function InternList() {
-  // intern count modal
-  const [icModal, setIcModal] = useState(false);
-
-  const [modalOn5, setModalOn5] = useState(false);
-  const [choice5, setChoice5] = useState(false);
-
-  const clicked5 = () => {
-    setModalOn5(true);
-  };
+  // student count modal
+  const [scModal, setScModal] = useState(false);
+  // End Internship modal
+  const [eiModal, setEiModal] = useState(false);
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
 
@@ -40,9 +35,6 @@ export default function InternList() {
         setLoading(false);
       });
   }, []);
-  console.log(data);
-  if (isloading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
   return (
     <section className="relative w-full sm:static">
       <div className="w-full mb-12">
@@ -58,7 +50,6 @@ export default function InternList() {
               <button className="mr-16 text-sm text-blue-300 hover:text-blue-500  ">
                 View All
               </button>
-              {icModal && <InternsCountModal setIcModal={setIcModal} />}
             </div>
             <div className="flex gap-2">
               <Link href="/import-list">
@@ -138,14 +129,19 @@ export default function InternList() {
             </div>
             <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black ">
               <button
-                onClick={(e) => setIcModal(true)}
+                onClick={(e) => setScModal(true)}
                 className="rounded-xl text-lg font-bold hover:bg-slate-200"
               >
                 Statistics
               </button>
             </div>
           </div>
-
+          {scModal && (
+            <StudentCountModal
+              setScModal={setScModal}
+              type={"onGoingInterns"}
+            />
+          )}
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
             <table className="items-center w-full border-collapse bg-white">
@@ -193,8 +189,7 @@ export default function InternList() {
                     <tr key={intern.id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                         <span className="ml-3 font-bold">
-                          {intern.student.firstName}
-                          {intern.student.lastName}
+                          {intern.student.firstName} {intern.student.lastName}
                         </span>
                       </td>
 
@@ -259,18 +254,17 @@ export default function InternList() {
 
                             <div>
                               <button
-                                onClick={clicked5}
+                                onClick={(e) => setEiModal(true)}
                                 type="submit"
                                 className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
                               >
                                 End Internship
                               </button>
-                              {choice5}
 
-                              {modalOn5 && (
-                                <Modal5
-                                  setModalOn5={setModalOn5}
-                                  setChoice5={setChoice5}
+                              {eiModal && (
+                                <EndInternshipModal
+                                  intern={intern}
+                                  setEiModal={setEiModal}
                                 />
                               )}
                             </div>

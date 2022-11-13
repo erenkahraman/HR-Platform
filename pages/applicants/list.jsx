@@ -19,8 +19,7 @@ import Modal2 from "../../components/Modal/Modal2.jsx";
 import { CSVLink, CSVDownload } from "react-csv";
 
 export default function ApplicantsList({ students }) {
-  const [modalOn, setModalOn] = useState(false);
-  const [choice, setChoice] = useState(false);
+  const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
   const [noAnswerModal, setNoAnswerModal] = useState(false);
   const [modalOn2, setModalOn2] = useState(false);
   const [choice2, setChoice2] = useState(false);
@@ -257,16 +256,14 @@ export default function ApplicantsList({ students }) {
                               <button
                                 className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
                                 type="submit"
-                                onClick={clicked}
+                                onClick={(e) => setAcceptAplcntModal(true)}
                               >
                                 Accept
                               </button>
-                              {choice}
 
-                              {modalOn && (
+                              {acceptAplcntModal && (
                                 <AcceptAplcntModal
-                                  setModalOn={setModalOn}
-                                  setChoice={setChoice}
+                                  setAcceptAplcntModal={setAcceptAplcntModal}
                                   stdId={applicant.student._id}
                                 />
                               )}
