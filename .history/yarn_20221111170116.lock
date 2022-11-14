@@ -311,11 +311,14 @@
   dependencies:
     "@date-io/core" "^2.16.0"
 
+<<<<<<< HEAD
 "@document/ready@^1.1.0":
   "integrity" "sha512-6+WVFpdHHhCGuWaGkE07MU/GyMCJsu7P0Fua0OA0jsWWxQXp33Wo03A80NBuEljDIlaw8QDg3VDD5ptkpWx3JA=="
   "resolved" "https://registry.npmjs.org/@document/ready/-/ready-1.1.0.tgz"
   "version" "1.1.0"
 
+=======
+>>>>>>> main
 "@emotion/babel-plugin@^11.10.0":
   "integrity" "sha512-xNQ57njWTFVfPAc3cjfuaPdsgLp5QOSuRsj9MA6ndEhH/AzuZM86qIQzt6rq+aGBwj3n5/TkLmU5lhAfdRmogA=="
   "resolved" "https://registry.npmjs.org/@emotion/babel-plugin/-/babel-plugin-11.10.2.tgz"
@@ -724,10 +727,17 @@
     "prop-types" "^15.8.1"
     "react-is" "^18.2.0"
 
+<<<<<<< HEAD
+"@mui/x-date-pickers@^5.0.6":
+  "integrity" "sha512-DTdA6psDnyLir6dyKyjsMLEMA6rHHsZqEw0vKxsIsNoYRWQ+cBGqPS6VWKzibuv8QnqGxp3BRHz0R3Dtg2SDqg=="
+  "resolved" "https://registry.npmjs.org/@mui/x-date-pickers/-/x-date-pickers-5.0.6.tgz"
+  "version" "5.0.6"
+=======
 "@mui/x-date-pickers@^5.0.8":
   "integrity" "sha512-L+9WOyoxIPxj86dk4G/zyVsiakQjBX0MJTIPMNSRitxFi4I6T8KlasdpGUHfnni/EAjqR36w0d/BDwCjc/7gPQ=="
   "resolved" "https://registry.npmjs.org/@mui/x-date-pickers/-/x-date-pickers-5.0.8.tgz"
   "version" "5.0.8"
+>>>>>>> main
   dependencies:
     "@babel/runtime" "^7.18.9"
     "@date-io/core" "^2.15.0"

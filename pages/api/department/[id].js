@@ -40,6 +40,22 @@ export default async function handler (req, res) {
                     data: error
                 })
             }
+            case 'POST':
+            try {
+                const department = await Department.findByIdAndUpdate(id, {$addToSet: {interns: req.body}}, {
+                    new: true,
+                    runValidators: true,
+                });
+                return res.status(200).json({
+                    success: true,
+                    data: department
+                })
+            } catch (error) {
+                return res.status(500).json({
+                    success: false,
+                    data: error
+                })
+            }
         case 'DELETE':
             try {
                 const department = await Department.deleteOne({ _id: id });
@@ -54,7 +70,7 @@ export default async function handler (req, res) {
                 })
             }
         default:
-            res.setHeaders("Allow", ["GET", "PUT", "DELETE"]);
+            res.setHeaders("Allow", ["GET", "POST", "PUT", "DELETE"]);
             return res
                 .status(405)
                 .json({ success: false })
