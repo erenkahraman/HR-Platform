@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { BsPeopleFill } from "react-icons/bs";
 import EditIcon from "@mui/icons-material/Edit";
-import Modal4 from "../../components/Modal/Modal4.jsx";
 import Popup from "reactjs-popup";
 import * as React from "react";
 import { useState, useEffect } from "react";
@@ -92,10 +91,6 @@ export default function ApplicantsList() {
               >
                 View All
               </button>
-              {choice4}
-              {modalOn4 && (
-                <Modal4 setModalOn4={setModalOn4} setChoice4={setChoice4} />
-              )}{" "}
               {/*
               Accepted', 'Rejected', 'No Answer', 'Intership Finished','On Process
               */}
