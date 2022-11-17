@@ -30,7 +30,14 @@ export default function ApplicantsList({ students }) {
   const [edit , setEdit] = useState(false);
   const [intern , setIntern] = useState({});
   const [open, setOpen] = useState(false);
+  const { id } = intern;
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
 
+  const clicked3 = (intern) => {
+    setIntern(intern);
+    setOpen3(true);
+  };
 
   const clicked = () => {
     setModalOn(true);
@@ -252,7 +259,7 @@ export default function ApplicantsList({ students }) {
                               <button
                                 type="submit"
                                 className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                                // onClick={clicked}
+                                onClick={clicked3}
                               >
                                 Edit
                               </button>

@@ -7,18 +7,10 @@ import { color } from "@mui/system";
 
  const departmanColor = (department) => {
   switch (department) {
-    case "The Information And Communications Technology":
+    case "Information Technology":
       return "text-blue-400";
     case "Human Resources":
       return "text-green-400";
-    case "Digital Marketing":
-      return "text-pink-400";
-    case "Business & Data Analysis":
-      return "text-orange-400";
-    case "Project Management":
-      return "text-purple-400";
-    case "Language Teaching":
-      return "text-yellow-400";
     default:
       return "";
   }
@@ -81,3 +73,25 @@ export default InternsCountModal;
 
 
 
+// if (department.interns.length < 2) {
+//       return (
+//         <div
+//           className={`flex flex-col gap-2 items-center justify-center w-20 h-20 rounded-full ${color.green}`}
+//         >
+
+
+//           <div className="text-white text-2xl">{department.interns.length}</div>  
+//           <div className="text-white text-xs">{department.department}</div>
+//         </div>
+//       );
+//     } else if (department.interns.length < 3) {
+//       return (
+//         <div
+//           className={`flex flex-col gap-2 items-center justify-center w-20 h-20 rounded-full ${color.blue}`}
+//         >
+//           <div className="text-white text-2xl">{department.interns.length}</div>
+//           <div className="text-white text-xs">{department.department}</div>
+//         </div>
+//       );
+//     }    
+//   ]);

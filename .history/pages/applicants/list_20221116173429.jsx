@@ -30,6 +30,20 @@ export default function ApplicantsList({ students }) {
   const [edit , setEdit] = useState(false);
   const [intern , setIntern] = useState({});
   const [open, setOpen] = useState(false);
+  const [setEditModalsetEditModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [setEditApplicantModal] = useState(false);
+  
+  
+
+
+  const clicked3 = (intern) => {
+    setEditModal(true);
+    setIntern(intern);
+    setEditApplicantModal(true);
+    setEditApplicant(true);
+
+  };
 
 
   const clicked = () => {
@@ -252,7 +266,11 @@ export default function ApplicantsList({ students }) {
                               <button
                                 type="submit"
                                 className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                                // onClick={clicked}
+                                onClick={() => {
+                                  setEditModal(true);
+                                  setEditApplicant(applicant);
+                                }
+                              }
                               >
                                 Edit
                               </button>

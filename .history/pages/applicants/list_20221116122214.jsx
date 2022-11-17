@@ -17,7 +17,6 @@ import { useState } from "react";
 import NoAnswerModal from "../../components/Modal/NoAnswerModal";
 import Modal2 from "../../components/Modal/Modal2.jsx";
 import { CSVLink, CSVDownload } from "react-csv";
-import EditAttendance from "../../components/Modal/EditAttendance";
 
 export default function ApplicantsList({ students }) {
   const [modalOn, setModalOn] = useState(false);
@@ -27,10 +26,6 @@ export default function ApplicantsList({ students }) {
   const [choice2, setChoice2] = useState(false);
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [edit , setEdit] = useState(false);
-  const [intern , setIntern] = useState({});
-  const [open, setOpen] = useState(false);
-
 
   const clicked = () => {
     setModalOn(true);
@@ -252,7 +247,7 @@ export default function ApplicantsList({ students }) {
                               <button
                                 type="submit"
                                 className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                                // onClick={clicked}
+                                onClick={clicked}
                               >
                                 Edit
                               </button>

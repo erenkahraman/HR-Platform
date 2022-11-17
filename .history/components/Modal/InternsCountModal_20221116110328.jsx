@@ -12,7 +12,7 @@ import { color } from "@mui/system";
     case "Human Resources":
       return "text-green-400";
     case "Digital Marketing":
-      return "text-pink-400";
+      return "text-red-400";
     case "Business & Data Analysis":
       return "text-orange-400";
     case "Project Management":

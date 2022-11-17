@@ -194,7 +194,7 @@ export default function InternList() {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                         <span className="ml-3 font-bold">
                           {intern.student.firstName} {intern.student.lastName}
-                          
+
                         </span>
                       </td>
 

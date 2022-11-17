@@ -31,6 +31,28 @@ export default function ApplicantsList({ students }) {
   const [intern , setIntern] = useState({});
   const [open, setOpen] = useState(false);
 
+  const [editModal, setEditModal] = useState(false);
+  const [setEditApplicantModal] = useState(false);
+  
+  
+  const EditApplicantModal = () => {
+    setEditApplicantModal(true);
+
+  };
+
+
+  const setEditModalOn = () => {
+    setEditModal(true);
+  };
+
+  const clicked3 = (intern) => {
+    setEditModal(true);
+    setIntern(intern);
+    setEditApplicantModal(true);
+    setEditApplicant(true);
+
+  };
+
 
   const clicked = () => {
     setModalOn(true);
@@ -252,10 +274,19 @@ export default function ApplicantsList({ students }) {
                               <button
                                 type="submit"
                                 className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                                // onClick={clicked}
+                                onClick={() => {
+                                  setEditModal(true);
+                                  setEditApplicantModal(applicant);
+                                }
+                              }
                               >
                                 Edit
                               </button>
+
+                              {editModal && (
+                                <EditApplicantModal applicant={editApplicantModal} />
+                              )}
+
                             </div>
 
                             <div className="felx cursor-pointer">
