@@ -24,7 +24,7 @@ import cookie from "js-cookie";
 export default function Dashboard() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-    const token = cookie?.get("token");
+  const token = cookie?.get("token");
 
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -61,7 +61,7 @@ export default function Dashboard() {
       category: event.target.category.value,
       date: event.target.date.value,
       whoPosted: event.target.whoPosted.value,
-      token:token
+      token: token,
     };
     const JSONReminder = JSON.stringify(reminder);
     console.log(JSONReminder);
@@ -433,36 +433,7 @@ export default function Dashboard() {
 
             {/* Arrival Departure Content*/}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2 px-4">
-              <Upcoming
-                name="Marcus Botosh"
-                department="ICT"
-                status="Arriving"
-                time="02 September 2022"
-              />
-              <Upcoming
-                name="Talan Carder"
-                department="Human Resources"
-                status="Departing"
-                time="03 September 2022"
-              />
-              <Upcoming
-                name="Jordyn Dias"
-                department="Project Management"
-                status="Departing"
-                time="05 September 2022"
-              />
-              <Upcoming
-                name="Cooper Gouse"
-                department="Business Analyst"
-                status="Arriving"
-                time="07 September 2022"
-              />
-              <Upcoming
-                name="Desirae Stanton"
-                department="ICT"
-                status="Arriving"
-                time="10 September 2022"
-              />
+              <Upcoming />
             </div>
           </div>
 

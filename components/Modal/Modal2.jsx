@@ -18,7 +18,7 @@ const Modal2 = ({ setModalOn2, setChoice2 }) => {
       _id: id,
       startDate: event.target.startDate.value,
       endDate: event.target.endDate.value,
-      departement: event.target.department.value,
+      department: event.target.department.value,
       position: event.target.position.value,
       student: stdId,
     };

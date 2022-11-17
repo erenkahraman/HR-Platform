@@ -10,9 +10,10 @@ const InternSchema = new mongoose.Schema({
   startDate: { type: String },
   endDate: { type: String },
   durationInWeeks: { type: Number },
-  departement: { type: String, maxlength: 30 },
+  department: { type: String, maxlength: 30 },
   position: { type: String, maxlength: 30 },
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
+  status: { type: String },
   attendance: {
     statusOfTheDay: { type: String, default: '' },
     present: {

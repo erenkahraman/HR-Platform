@@ -21,7 +21,6 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
 
   // Get Departments
   useEffect(() => {
-    setOpen(true);
     const asyncRequest = async () => {
       try {
         const config = {
@@ -66,7 +65,7 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
       _id: id,
       startDate: event.target.startDate.value,
       endDate: event.target.endDate.value,
-      departement: departments[event.target.department.value].department,
+      department: departments[event.target.department.value].department,
       position: event.target.position.value,
       documents: [
         { name: "Intern Development Plan", status: "Not Submitted" },
