@@ -20,11 +20,11 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TextField } from "@mui/material";
 import moment from "moment/moment";
 import { Dayjs } from "dayjs";
+import { useForm, Controller } from "react-hook-form";
+import LoadingState from "../../components/Utils/LoadingState";
 
 export default function ApplicantsNew() {
   const router = useRouter();
-  const [nationalityValue, setNationality] = useState("");
-  const [departingCountryValue, setDepartingCountry] = useState("");
   //for adding new department
   const [department, setDepartment] = useState("");
   const [newPosition, setNewPosition] = useState("");
@@ -34,13 +34,21 @@ export default function ApplicantsNew() {
   const [dbDepartment, setDbDepartment] = useState([]);
   // get positions from DB when choosing positions
   const [positions, setPositions] = useState([]);
-  const [birthday, setBirtthday] = useState(null);
-  const [hrInterviewDate, setHrInterviewDate] = useState(null);
-  const [ceoInterviewDate, setCeoInterviewDate] = useState(null);
-  const [applicationDate, setApplicationDate] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [openAlert, setOpenAlert] = useState(false);
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const docs = [
+    "Curriculum Vitae",
+    "Motivation Letter",
+    "Arrival Tickets",
+    "Learning Agreement",
+    "Acceptance Letter",
+  ];
 
   // Get departments from DB
   useEffect(() => {
@@ -55,98 +63,47 @@ export default function ApplicantsNew() {
   }, []);
 
   // get countries list from react-select-country-list
-  const options = useMemo(() => countryList().getData(), []);
-  const updateNationality = (nationality) => {
-    setNationality(nationality);
-  };
+  const countries = useMemo(() => countryList().getLabels(), []);
 
-  // get all the existing department from DB
-
-  // load countries in countries checkbox
-  const updateDepartingCountry = (departingCountry) => {
-    setDepartingCountry(departingCountry);
-  };
   // handles changes of new department value
   const handleChange = (data) => {
     setDepartment(data.target.value);
   };
   const [submitStatus, setSubmitStatus] = useState();
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (
-      birthday &&
-      hrInterviewDate &&
-      ceoInterviewDate &&
-      applicationDate &&
-      startDate &&
-      endDate
-    ) {
-      setOpen(true);
-      const applicantId = new mongoose.Types.ObjectId();
-      const studentId = new mongoose.Types.ObjectId();
-      const student = {
-        _id: studentId,
-        firstName: event.target.firstName.value,
-        lastName: event.target.lastName.value,
-        email: event.target.email.value,
-        dateOfBirth: moment(birthday).format("DD-MM-YYYY"),
-        sex: event.target.sex.value,
-        phoneNumber: event.target.phoneNumber.value,
-        university: event.target.university.value,
-        nationality: nationalityValue.label,
-        departingCountry: departingCountryValue.label,
-        applicant: applicantId,
-      };
-      const applicant = {
-        _id: applicantId,
-        applicationDate: moment(applicationDate).format("DD-MM-YYYY"),
-        startDate: moment(startDate).format("DD-MM-YYYY"),
-        endDate: moment(endDate).format("DD-MM-YYYY"),
-        arrivalTime: event.target.arrivalTime.value,
-        arrivalCity: event.target.arrivalCity.value,
-        pickUpBy: event.target.pickUpBy.value,
-        progress: event.target.progress.value,
-        department: event.target.department.value,
-        position: event.target.position.value,
-        hrInterviewDate: moment(hrInterviewDate).format("DD-MM-YYYY"),
-        ceoInterviewDate: moment(ceoInterviewDate).format("DD-MM-YYYY"),
-        interviewNotes: event.target.interviewNotes.value.trim(),
-        rejectionReasons: event.target.rejectionReasons.value.trim(),
-        documents: [
-          { name: "Curiculum Vitae", status: event.target.resume.value },
-          { name: "Motivation Letter", status: event.target.mtvtnltr.value },
-          { name: "Arrival Tickets", status: "Not Submitted" },
-          { name: "Learning Agreement", status: "Not Submitted" },
-          { name: "Acceptance Letter", status: "Not Submitted" },
-        ],
-        student: studentId,
-      };
-      const JSONdstudent = JSON.stringify(student);
-      const JSONapplicant = JSON.stringify(applicant);
-      const endpointstudent = "/api/student";
-      const endpointapplicant = "/api/applicant";
-      const optionsStudent = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSONdstudent,
-      };
-      const optionApplicant = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSONapplicant,
-      };
-      //console.log(JSONdstudent)
-      //console.log(JSONapplicant);
-      await fetch(endpointstudent, optionsStudent);
-      await fetch(endpointapplicant, optionApplicant);
-      router.push("/applicants/list");
-    } else setOpenAlert(true);
+  const submitData = async (data) => {
+    //setOpen(true);
+
+    const applicantId = new mongoose.Types.ObjectId();
+    const studentId = new mongoose.Types.ObjectId();
+    data.student._id = studentId;
+    data.student.applicant = applicantId;
+    data.applicant._id = applicantId;
+    data.applicant.student = studentId;
+    const JSONdstudent = JSON.stringify(data.student);
+    const JSONapplicant = JSON.stringify(data.applicant);
+    const endpointstudent = "/api/student";
+    const endpointapplicant = "/api/applicant";
+    const optionsStudent = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSONdstudent,
+    };
+    const optionApplicant = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSONapplicant,
+    };
+    console.log(JSONdstudent);
+    console.log(JSONapplicant);
+    await fetch(endpointstudent, optionsStudent);
+    await fetch(endpointapplicant, optionApplicant);
+    router.push("/applicants/list");
   };
 
   //Add new department to DB
@@ -168,6 +125,7 @@ export default function ApplicantsNew() {
       .then((res) => res.json())
       .then((data) => {
         setDbDepartment(data);
+        setPositions(data[0].positions);
         setOpen(false);
       });
   };
@@ -192,12 +150,7 @@ export default function ApplicantsNew() {
   };
   return (
     <div>
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <LoadingState open={open} />
       <section className="relative w-full">
         <div className="w-full">
           <div className="relative flex flex-col min-w-0 break-words w-full rounded">
@@ -212,7 +165,10 @@ export default function ApplicantsNew() {
 
             {/* Forms Container */}
             <div>
-              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={handleSubmit(submitData)}
+              >
                 {/* Top  */}
                 <div className="flex gap-6">
                   {/* Section */}
@@ -248,26 +204,32 @@ export default function ApplicantsNew() {
                         First name
                       </label>
                       <input
+                        {...register("student.firstName", {
+                          required: "First name is required",
+                        })}
                         type="text"
-                        name="first-name"
-                        id="firstName"
-                        required
                         autoComplete="given-name"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
+                      <p className="text-sm font-thin text-red-600">
+                        {errors.student?.firstName?.message}
+                      </p>
                     </div>
                     <div className="flex flex-col gap-2">
                       <label htmlFor="last-name" className="block text-sm">
                         Last name
                       </label>
                       <input
+                        {...register("student.lastName", {
+                          required: "Last name is required",
+                        })}
                         type="text"
-                        name="last-name"
-                        id="lastName"
-                        required
                         autoComplete="family-name"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
+                      <p className="text-sm font-thin text-red-600">
+                        {errors.student?.lastName?.message}
+                      </p>
                     </div>
 
                     {/* Sex */}
@@ -276,8 +238,7 @@ export default function ApplicantsNew() {
                       <div className="flex mt-1 gap-4">
                         <div className="flex items-center">
                           <input
-                            id="sex"
-                            name="gender"
+                            {...register("student.sex")}
                             type="radio"
                             value="Male"
                             defaultChecked
@@ -292,8 +253,6 @@ export default function ApplicantsNew() {
                         </div>
                         <div className="flex items-center">
                           <input
-                            id="sex"
-                            name="gender"
                             type="radio"
                             value="Female"
                             className="focus:ring-blue-500 text-blue-600 border-gray-300"
@@ -310,18 +269,32 @@ export default function ApplicantsNew() {
 
                     {/* Date of Birth */}
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="email-address" className="block text-sm">
+                      <label htmlFor="birthday" className="block text-sm">
                         Date of Birth
                       </label>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={birthday}
-                          onChange={(newValue) => {
-                            setBirtthday(newValue);
-                          }}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                      </LocalizationProvider>
+                      <Controller
+                        control={control}
+                        name="student.dateOfBirth"
+                        rules={{
+                          required: "Please, enter a birth date",
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                              value={value || null}
+                              onChange={(date) => {
+                                onChange(date?.isValid ? date : null);
+                              }}
+                              renderInput={(params) => (
+                                <TextField {...params} />
+                              )}
+                            />
+                          </LocalizationProvider>
+                        )}
+                      />
+                      <p className="text-sm font-thin text-red-600">
+                        {errors.student?.dateOfBirth?.message}
+                      </p>
                     </div>
 
                     {/* Nationality */}
@@ -329,12 +302,28 @@ export default function ApplicantsNew() {
                       <label htmlFor="Nationality" className="block text-sm">
                         Nationality
                       </label>
-                      <Select
-                        instanceId="Nationality"
-                        options={options}
-                        value={nationalityValue}
-                        onChange={updateNationality}
+                      <Controller
+                        control={control}
+                        name="student.nationality"
+                        rules={{
+                          required: "Please, enter the nationality",
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                          <select
+                            onChange={onChange}
+                            autoComplete="Nationality"
+                            className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          >
+                            <option value="">Select...</option>
+                            {countries.map((country) => (
+                              <option value={value}>{country}</option>
+                            ))}
+                          </select>
+                        )}
                       />
+                      <p className="text-sm font-thin text-red-600">
+                        {errors.student?.nationality?.message}
+                      </p>
                     </div>
                   </div>
                   {/* Section */}
@@ -348,28 +337,32 @@ export default function ApplicantsNew() {
                         Email
                       </label>
                       <input
+                        {...register("student.email", {
+                          required: "Please, enter the email",
+                        })}
                         type="text"
-                        name="email"
-                        id="email"
                         autoComplete="email"
-                        required
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
+                      <p className="text-sm font-thin text-red-600">
+                        {errors.student?.email?.message}
+                      </p>
                     </div>
 
                     {/* Phone Number */}
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="phone" className="block text-sm">
-                        Phone Number
-                      </label>
+                      <label className="block text-sm">Phone Number</label>
                       <input
+                        {...register("student.phoneNumber", {
+                          required: "Please, enter the phone number",
+                        })}
                         type="text"
-                        name="phone"
-                        id="phoneNumber"
                         autoComplete="phone"
-                        required
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
+                      <p className="text-sm font-thin text-red-600">
+                        {errors.student?.phoneNumber?.message}
+                      </p>
                     </div>
 
                     {/* University */}
@@ -378,13 +371,16 @@ export default function ApplicantsNew() {
                         University
                       </label>
                       <input
+                        {...register("student.university", {
+                          required: "Please, enter the university",
+                        })}
                         type="text"
-                        name="university"
-                        id="university"
                         autoComplete="university"
-                        required
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
+                      <p className="text-sm font-thin text-red-600">
+                        {errors.student?.university?.message}
+                      </p>
                     </div>
 
                     {/* Departing Country */}
@@ -395,12 +391,29 @@ export default function ApplicantsNew() {
                       >
                         Departing Country
                       </label>
-                      <Select
-                        instanceId="departingCountry"
-                        options={options}
-                        value={departingCountryValue}
-                        onChange={updateDepartingCountry}
+
+                      <Controller
+                        control={control}
+                        name="student.departingCountry"
+                        rules={{
+                          required: "Please, enter the departing country",
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                          <select
+                            onChange={onChange}
+                            autoComplete="departingCountry"
+                            className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          >
+                            <option value="">Select...</option>
+                            {countries.map((country) => (
+                              <option value={value}>{country}</option>
+                            ))}
+                          </select>
+                        )}
                       />
+                      <p className="text-sm font-thin text-red-600">
+                        {errors.student?.departingCountry?.message}
+                      </p>
                     </div>
                   </div>
 
@@ -417,15 +430,29 @@ export default function ApplicantsNew() {
                         <label htmlFor="applied-on" className="block text-sm">
                           Applied on
                         </label>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
-                            value={applicationDate}
-                            onChange={(newValue) => {
-                              setApplicationDate(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </LocalizationProvider>
+                        <Controller
+                          control={control}
+                          name="applicant.applicationDate"
+                          rules={{
+                            required: "Please, enter the application date",
+                          }}
+                          render={({ field: { onChange, value } }) => (
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                value={value || null}
+                                onChange={(date) => {
+                                  onChange(date?.isValid ? date : null);
+                                }}
+                                renderInput={(params) => (
+                                  <TextField {...params} />
+                                )}
+                              />
+                            </LocalizationProvider>
+                          )}
+                        />
+                        <p className="text-sm font-thin text-red-600">
+                          {errors.applicant?.applicationDate?.message}
+                        </p>
                       </div>
 
                       {/* Interview Date */}
@@ -433,15 +460,29 @@ export default function ApplicantsNew() {
                         <label htmlFor="applied-on" className="block text-sm">
                           HR Interview Date
                         </label>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
-                            value={hrInterviewDate}
-                            onChange={(newValue) => {
-                              setHrInterviewDate(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </LocalizationProvider>
+                        <Controller
+                          control={control}
+                          name="applicant.hrInterviewDate"
+                          rules={{
+                            required: "Please, enter the HR interview date",
+                          }}
+                          render={({ field: { onChange, value } }) => (
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                value={value || null}
+                                onChange={(date) => {
+                                  onChange(date?.isValid ? date : null);
+                                }}
+                                renderInput={(params) => (
+                                  <TextField {...params} />
+                                )}
+                              />
+                            </LocalizationProvider>
+                          )}
+                        />
+                        <p className="text-sm font-thin text-red-600">
+                          {errors.applicant?.hrInterviewDate?.message}
+                        </p>
                       </div>
                     </div>
                     <div className="flex gap-4	">
@@ -453,15 +494,29 @@ export default function ApplicantsNew() {
                         >
                           CEO Interview Date
                         </label>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
-                            value={ceoInterviewDate}
-                            onChange={(newValue) => {
-                              setCeoInterviewDate(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </LocalizationProvider>
+                        <Controller
+                          control={control}
+                          name="applicant.ceoInterviewDate"
+                          rules={{
+                            required: "Please, enter the CEO interview date",
+                          }}
+                          render={({ field: { onChange, value } }) => (
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                value={value || null}
+                                onChange={(date) => {
+                                  onChange(date?.isValid ? date : null);
+                                }}
+                                renderInput={(params) => (
+                                  <TextField {...params} />
+                                )}
+                              />
+                            </LocalizationProvider>
+                          )}
+                        />
+                        <p className="text-sm font-thin text-red-600">
+                          {errors.applicant?.ceoInterviewDate?.message}
+                        </p>
                       </div>
                     </div>
 
@@ -475,22 +530,32 @@ export default function ApplicantsNew() {
                           Department
                         </label>
                         <select
+                          {...register("applicant.department", {
+                            required: "Please, select a department",
+                          })}
                           id="department"
-                          name="department"
                           autoComplete="department"
                           className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          onChange={(e) =>
+                          onChange={(e) => {
                             setPositions(
                               dbDepartment[e.target.selectedIndex].positions
-                            )
-                          }
+                            );
+                          }}
                         >
                           {dbDepartment.map((department) => (
-                            <option disabled={department.positions.length == 0}>
+                            <option
+                              value={department.department}
+                              key={department._id}
+                              disabled={department.positions.length == 0}
+                            >
                               {department.department}
                             </option>
                           ))}
                         </select>
+
+                        <p className="text-sm font-thin text-red-600">
+                          {errors.applicant?.department?.message}
+                        </p>
                       </div>
                       {/* Button new department */}
 
@@ -521,7 +586,6 @@ export default function ApplicantsNew() {
                                 type="text"
                                 className="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
                                 placeholder="Introduce new department"
-                                required
                                 onChange={(e) => setDepartment(e.target.value)}
                               />
                             </div>
@@ -551,7 +615,7 @@ export default function ApplicantsNew() {
                     {/* Position */}
                     <div className="flex gap-4">
                       <div className="flex flex-col gap-2">
-                        <label htmlFor="department" className="block text-sm">
+                        <label htmlFor="position" className="block text-sm">
                           Position
                         </label>
                         {positions.length == 0 ? (
@@ -560,17 +624,23 @@ export default function ApplicantsNew() {
                           </div>
                         ) : (
                           <select
-                            id="position"
-                            name="position"
+                            {...register("applicant.position", {
+                              required: "Please, select a position",
+                            })}
                             autoComplete="Position"
-                            required
                             className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                           >
+                            <option value="">Select...</option>
                             {positions.map((position) => (
-                              <option key={position}>{position}</option>
+                              <option value={position} key={position}>
+                                {position}
+                              </option>
                             ))}
                           </select>
                         )}
+                        <p className="text-sm font-thin text-red-600">
+                          {errors.applicant?.position?.message}
+                        </p>
                       </div>
                       <Popup
                         contentStyle={{
@@ -595,7 +665,7 @@ export default function ApplicantsNew() {
                               Add New Position
                             </h6>
                             <div className="flex flex-col mx-2 mt-2 mb-2">
-                              {/* <input type="" class="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new position" required /> */}
+                              {/* <input type="" class="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new position"  /> */}
                               <label
                                 htmlFor="checkDepartment"
                                 className=" text-sm font-bold text-white pb-1 ml-2 "
@@ -614,7 +684,7 @@ export default function ApplicantsNew() {
                                 }
                               >
                                 {dbDepartment.map((department, i) => (
-                                  <option value={i}>
+                                  <option key={department._id} value={i}>
                                     {department.department}
                                   </option>
                                 ))}
@@ -625,7 +695,6 @@ export default function ApplicantsNew() {
                                 type="text"
                                 className="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
                                 placeholder="Introduce new position"
-                                required
                                 onInput={(e) => setNewPosition(e.target.value)}
                               />
                             </div>
@@ -660,15 +729,29 @@ export default function ApplicantsNew() {
                         <label htmlFor="arrival-date" className="block text-sm">
                           Start Date
                         </label>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
-                            value={startDate}
-                            onChange={(newValue) => {
-                              setStartDate(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </LocalizationProvider>
+                        <Controller
+                          control={control}
+                          name="applicant.startDate"
+                          rules={{
+                            required: "Please, enter the start date",
+                          }}
+                          render={({ field: { onChange, value } }) => (
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                value={value || null}
+                                onChange={(date) => {
+                                  onChange(date?.isValid ? date : null);
+                                }}
+                                renderInput={(params) => (
+                                  <TextField {...params} />
+                                )}
+                              />
+                            </LocalizationProvider>
+                          )}
+                        />
+                        <p className="text-sm font-thin text-red-600">
+                          {errors.applicant?.startDate?.message}
+                        </p>
                       </div>
 
                       {/* Departure Date */}
@@ -679,15 +762,29 @@ export default function ApplicantsNew() {
                         >
                           End Date
                         </label>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
-                            value={endDate}
-                            onChange={(newValue) => {
-                              setEndDate(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </LocalizationProvider>
+                        <Controller
+                          control={control}
+                          name="applicant.endDate"
+                          rules={{
+                            required: "Please, enter the end date",
+                          }}
+                          render={({ field: { onChange, value } }) => (
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                value={value || null}
+                                onChange={(date) => {
+                                  onChange(date?.isValid ? date : null);
+                                }}
+                                renderInput={(params) => (
+                                  <TextField {...params} />
+                                )}
+                              />
+                            </LocalizationProvider>
+                          )}
+                        />
+                        <p className="text-sm font-thin text-red-600">
+                          {errors.applicant?.endDate?.message}
+                        </p>
                       </div>
                     </div>
                     <div className="flex gap-4">
@@ -697,10 +794,8 @@ export default function ApplicantsNew() {
                           Arrival City
                         </label>
                         <select
-                          id="arrivalCity"
-                          name="arrivalCity"
+                          {...register("applicant.arrivalCity")}
                           autoComplete="arrivalCity"
-                          required
                           className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         >
                           <option>Terranova da Sibari</option>
@@ -719,10 +814,8 @@ export default function ApplicantsNew() {
                           Picked up By
                         </label>
                         <input
+                          {...register("applicant.pickUpBy")}
                           type="text"
-                          name="pickUpBy"
-                          id="pickUpBy"
-                          required
                           autoComplete="given-name"
                           placeholder="Francesco di Marco"
                           className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -739,9 +832,8 @@ export default function ApplicantsNew() {
                           Arrival Time
                         </label>
                         <input
+                          {...register("applicant.arrivalTime")}
                           type="time"
-                          name="arrivalTime"
-                          id="arrivalTime"
                           autoComplete="given-name"
                           className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />
@@ -751,8 +843,9 @@ export default function ApplicantsNew() {
                           Progress
                         </label>
                         <select
-                          id="progress"
-                          name="Progress"
+                          {...register("applicant.progress", {
+                            required: "Please, enter the currrent progress",
+                          })}
                           className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         >
                           <option>New Candidate</option>
@@ -761,6 +854,9 @@ export default function ApplicantsNew() {
                           <option>Completing Documents</option>
                           <option>Completed</option>
                         </select>
+                        <p className="text-sm font-thin text-red-600">
+                          {errors.applicant?.progress?.message}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -777,10 +873,8 @@ export default function ApplicantsNew() {
                     </label>
                     <div className="mt-1">
                       <textarea
-                        id="interviewNotes"
-                        name="interview-notes"
+                        {...register("applicant.interviewNotes")}
                         rows={2}
-                        required
                         className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
                         defaultValue={""}
                       />
@@ -798,10 +892,8 @@ export default function ApplicantsNew() {
                     </label>
                     <div className="mt-1">
                       <textarea
-                        id="rejectionReasons"
-                        name="rejectio-reasons"
+                        {...register("applicant.rejectionReasons")}
                         rows={2}
-                        required
                         className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
                         defaultValue={""}
                       />
@@ -812,7 +904,7 @@ export default function ApplicantsNew() {
                   </div>
                 </div>
 
-                <div className="flex p-4">
+                {/*<div className="flex p-4">
                   <div className="flex flex-col w-1/3 gap-2">
                     <label
                       htmlFor="company-website"
@@ -833,7 +925,7 @@ export default function ApplicantsNew() {
                       />
                     </div>
                   </div>
-                </div>
+                        </div>*/}
 
                 <div className="flex p-4">
                   <div className="flex flex-col w-full gap-4">
@@ -841,8 +933,9 @@ export default function ApplicantsNew() {
                       Application Documents
                     </div>
                     <div className="flex gap-6 justify-start">
-                      <DocumentReview title="Curriculum Vitae" id="resume" />
-                      <DocumentReview title="Motivation Letter" id="mtvtnltr" />
+                      {docs.map((docs, i) => (
+                        <DocumentReview register={register} title={docs} />
+                      ))}
                     </div>
                     {/**
                      * <div className="flex gap-6 justify-start">
@@ -895,7 +988,7 @@ export default function ApplicantsNew() {
                     Save
                   </button>
                 </div>
-                <Collapse in={openAlert}>
+                {/*<Collapse in={openAlert}>
                   <Alert
                     severity="warning"
                     action={
@@ -914,7 +1007,7 @@ export default function ApplicantsNew() {
                   >
                     Make sure to fill all the dates !
                   </Alert>
-                </Collapse>
+                  </Collapse>*/}
               </form>
             </div>
           </div>

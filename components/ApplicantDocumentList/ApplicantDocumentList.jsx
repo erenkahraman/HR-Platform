@@ -20,6 +20,7 @@ import {
 } from "@material-tailwind/react";
 import { DocumentReview } from "../../components/DocumentReview";
 import { set } from "mongoose";
+import LoadingState from "../Utils/LoadingState";
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
@@ -70,12 +71,7 @@ const DocumentList = () => {
 
   return (
     <div className="flex flex-col w-full gap-2">
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isloading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <LoadingState open={open} />
       {data.length == 0 ? (
         <div
           className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
@@ -103,7 +99,9 @@ const DocumentList = () => {
                 </div>
                 <div className="flex items-center gap-1 text-xs font-light text-gray-500">
                   <WorkOutline className="text-sm" />
-                  <p>{student.department}</p>
+                  <p>
+                    {student.department} / {student.position}
+                  </p>
                 </div>
               </div>
               {/* Top Right */}
@@ -133,7 +131,7 @@ const DocumentList = () => {
                   handler={handleOpen}
                   className="fixed  w-1/2 h-2/3 ml-64 px-80 p-0 pl-8 mt-32 border-2 border-[#0B3768] rounded-xl shadow-lg shadow-[#0B3768]"
                 >
-                  <DialogHeader>Edit Documents</DialogHeader>
+                  {/*<DialogHeader>Edit Documents</DialogHeader>*/}
                   <DialogBody className="" divider>
                     <div className="flex p-4">
                       <div className="flex flex-col w-full gap-4">
@@ -244,11 +242,11 @@ const DocumentList = () => {
 
             {/* Middle */}
             <div className="flex gap-[2px]">
-              {data[index].documents.map((content, index) => (
+              {Object.keys(data[index].documents).map((name) => (
                 <DocumentListContent
                   key={index}
-                  title={content.name}
-                  status={content.status}
+                  title={name}
+                  status={data[index].documents[name]}
                 />
               ))}
             </div>
@@ -257,13 +255,6 @@ const DocumentList = () => {
               {/* Bottom Left */}
               <div className="flex items-center gap-1 text-xs font-light text-gray-500">
                 <p>Applied on {student.applicationDate}</p>
-              </div>
-              <div className="flex cursor-pointer">
-                {/* Bottom Right */}
-                <div className="py-1 px-2 text-xs text-blue-900">
-                  View All Documents
-                </div>
-                <ArrowRightAlt />
               </div>
             </div>
           </div>

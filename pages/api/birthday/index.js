@@ -19,27 +19,22 @@ export default async function handler(req, res) {
               as: "applicant",
             },
           },
+
           {
-            $unwind: "$applicant",
-          },
-          {
-            $project: {   
+            $project: {
+              _id: 1,
               firstName: 1,
               lastName: 1,
               dateOfBirth: 1,
               "applicant.position": 1,
-              date: {
-                $dateFromString: {
-                  dateString: "$dateOfBirth",
-                  format: "%d-%m-%Y",
-                },
-              },
+              month: { $month: "$dateOfBirth" },
+              day: { $dayOfMonth: "$dateOfBirth" },
             },
           },
           {
             $match: {
               $expr: {
-                $eq: [{ $month: "$date" }, { $month: new Date() }],
+                $eq: [{ $month: "$dateOfBirth" }, { $month: new Date() }],
               },
             },
           },
@@ -48,17 +43,6 @@ export default async function handler(req, res) {
               date: 1,
             },
           },
-          {
-            $project: {
-              _id: 1,
-              firstName: 1,
-              lastName: 1,
-              dateOfBirth: 1,
-              "applicant.position": 1,
-              month : { $month : "$date"},
-              day : { $dayOfMonth : "$date"}
-            },
-          }
         ])
         .toArray();
       res.status(200).json(applicant);

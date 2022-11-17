@@ -19,8 +19,29 @@ export default async function handler(req, res) {
               pipeline: [{ $match: { applicationStatus: "On Process" } }],
               localField: "student",
               foreignField: "_id",
-
               as: "student",
+            },
+          },
+          {
+            $set: {
+              applicationDate: {
+                $dateToString: { format: "%d/%m/%Y", date: "$applicationDate" },
+              },
+              startDate: {
+                $dateToString: { format: "%d/%m/%Y", date: "$startDate" },
+              },
+              endDate: {
+                $dateToString: { format: "%d/%m/%Y", date: "$endDate" },
+              },
+              hrInterviewDate: {
+                $dateToString: { format: "%d/%m/%Y", date: "$hrInterviewDate" },
+              },
+              ceoInterviewDate: {
+                $dateToString: {
+                  format: "%d-%m-%Y",
+                  date: "$ceoInterviewDate",
+                },
+              },
             },
           },
           {
