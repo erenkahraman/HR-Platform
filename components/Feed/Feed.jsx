@@ -5,29 +5,31 @@ const Feed = () => {
   const token = cookie.get("token");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  
   useEffect(() => {
     setLoading(true);
     const asyncRequest = async () => {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const { data } = await axios.get(
-        `/api/whatsNew`,
-        { params: { token: token } },
-        config
-      );
-      setData(data);
-      setLoading(false);
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/whatsNew`,
+          { params: { token: token } },
+          config
+        );
+        setData(data);
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
     };
-    try {
-      asyncRequest();
-    } catch (e) {
-      console.error(e);
-      setLoading(false);
-    }
+    asyncRequest();
   }, []);
+
   ////////
   return (
     <div>

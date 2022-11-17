@@ -16,6 +16,8 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
+import axios from "axios";
+import cookie from "js-cookie";
 
 const DocumentListContent = ({ title, pos, status }) => {
   const Border = () => {
@@ -54,15 +56,41 @@ const DocumentList = () => {
 
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  const token = cookie.get("token");
+  
   useEffect(() => {
     setLoading(true);
-    fetch("/api/intern")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/intern`,
+          { params: { token: token } },
+          config
+        );
         setData(data);
         setLoading(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
   }, []);
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetch("/api/intern")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setData(data);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
   return (
     <div className="flex flex-col w-full gap-2">

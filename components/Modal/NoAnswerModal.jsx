@@ -2,11 +2,11 @@ import React from "react";
 import { useState } from "react";
 import LoadingState from "../Utils/LoadingState";
 import { useRouter } from "next/router";
-
+import cookie from "js-cookie";
 const NoAnswerModal = ({ student, setNoAnswerModal }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-
+  const token = cookie.get("token");
   const handleChange = async () => {
     setOpen(true);
     console.log(student._id);
@@ -19,6 +19,7 @@ const NoAnswerModal = ({ student, setNoAnswerModal }) => {
       },
       body: JSON.stringify({
         applicationStatus: "No Answer",
+        token:token,
       }),
     };
     await fetch(endpoint, options);

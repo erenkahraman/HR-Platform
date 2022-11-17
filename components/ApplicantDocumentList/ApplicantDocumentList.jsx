@@ -20,6 +20,8 @@ import {
 } from "@material-tailwind/react";
 import { DocumentReview } from "../../components/DocumentReview";
 import { set } from "mongoose";
+import axios from "axios";
+import cookie from "js-cookie";
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
@@ -58,14 +60,30 @@ const DocumentList = () => {
 
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  const token = cookie.get("token");
+  
   useEffect(() => {
     setLoading(true);
-    fetch("/api/applicant")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/applicant`,
+          { params: { token: token } },
+          config
+        );
         setData(data);
         setLoading(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
   }, []);
 
   return (
@@ -130,7 +148,6 @@ const DocumentList = () => {
                 </Tooltip>
                 <Dialog
                   open={open}
-                  handler={handleOpen}
                   className="fixed  w-1/2 h-2/3 ml-64 px-80 p-0 pl-8 mt-32 border-2 border-[#0B3768] rounded-xl shadow-lg shadow-[#0B3768]"
                 >
                   <DialogHeader>Edit Documents</DialogHeader>

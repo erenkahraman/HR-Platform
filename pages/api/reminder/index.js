@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     tokenCheckFunction(token);
   } catch (e) {
     console.error(e);
-    return e;
+    res.status(401).json("Unauthorized User");
   }
   // Token CHECK
 

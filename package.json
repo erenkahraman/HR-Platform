@@ -39,6 +39,7 @@
     "mongoose": "^6.5.0",
     "next": "12.2.1",
     "next-auth": "^4.12.3",
+    "next-swagger-doc": "^0.3.6",
     "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-bootstrap-icons": "^1.8.4",
@@ -52,6 +53,7 @@
     "react-toastify": "^9.0.8",
     "reactjs-popup": "^2.0.5",
     "slate-react": "^0.82.1",
+    "swagger-ui-react": "^4.15.5",
     "tippy.js": "^6.3.7",
     "validator": "^13.7.0"
   },
