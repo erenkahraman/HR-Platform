@@ -23,6 +23,7 @@ export default function Login() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    try{
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -33,11 +34,14 @@ export default function Login() {
       { email, password },
       config
     );
-
+    alert("Login successful")
     cookie.set("token", data.token);
     cookie.set("user", JSON.stringify(data.user));
     router.push("/dashboard");
-	
+	}catch(e){ 
+    alert(e.response.data.message);
+    console.error(e.response.data)
+  }
   };
 
   const clicked = () => {
@@ -114,19 +118,19 @@ export default function Login() {
             </div>
           </div>
 
-          <div class="flex flex-row items-center sm:ml-6">
+          <div className="flex flex-row items-center sm:ml-6">
             <input
               id="link-checkbox"
               type="checkbox"
               value=""
-              class="w-4 h-4 text-blue-600 rounded border-gray-300 "
+              className="w-4 h-4 text-blue-600 rounded border-gray-300 "
             />
             <label
-              for="link-checkbox"
-              class="ml-2 text-sm font-medium text-black"
+              htmlFor="link-checkbox"
+              className="ml-2 text-sm font-medium text-black"
             >
               I agree with the{" "}
-              <a class="text-blue-600 hover:underline"> terms and conditions</a>
+              <a className="text-blue-600 hover:underline"> terms and conditions</a>
               .
             </label>
           </div>
