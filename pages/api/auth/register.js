@@ -4,9 +4,9 @@ import { SMTPClient } from "emailjs";
 import User from "../../../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-dbConnect();
 
 export default async (req, res) => {
+  await dbConnect();
   try {
     if (req.method === "POST") {
       const { name, phoneNumber, email, password } = req.body;
@@ -39,7 +39,7 @@ export default async (req, res) => {
             host: "smtp.gmail.com",
             ssl: true,
           });
-          
+
           const token = jwt.sign(
             {
               email: newUser.email,
