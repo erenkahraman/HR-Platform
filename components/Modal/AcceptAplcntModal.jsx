@@ -3,20 +3,46 @@ import mongoose from "mongoose";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { Spinner, Button } from "flowbite-react";
+import axios from "axios";
+import cookie from "js-cookie";
 
 const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
   const router = useRouter();
   const [spinnerState, SetSpinnerState] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [positions, setPositions] = useState([]);
+  const token = cookie.get("token");
 
+  // Get Departments
   useEffect(() => {
-    fetch("/api/department")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/department`,
+          { params: { token: token } },
+          config
+        );
         setDepartments(data);
-      });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    asyncRequest();
   }, []);
+
+  // useEffect(() => {
+  //   fetch("/api/department")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setDepartments(data);
+  //     });
+  // }, []);
+
   const calculateWeeks = (start, end) => {
     const msInWeek = 1000 * 60 * 60 * 24 * 7;
     return Math.round(Math.abs(Date.parse(end) - Date.parse(start)) / msInWeek);
@@ -30,7 +56,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
       _id: id,
       startDate: event.target.startDate.value,
       endDate: event.target.endDate.value,
-      departement: departments[event.target.department.value].department,
+      department: departments[event.target.department.value].department,
       position: event.target.position.value,
       documents: [
         { name: "Intern Development Plan", status: "Not Submitted" },
@@ -39,6 +65,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
         { name: "Confidentiality Agrement", status: "Not Submitted" },
       ],
       student: stdId,
+      token: token,
     };
     intern.durationInWeeks = await calculateWeeks(
       intern.startDate,
@@ -67,6 +94,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
       body: JSON.stringify({
         intern: intern._id,
         applicationStatus: "Accepted",
+        token: token,
       }),
     };
     const optionsDepartment = {

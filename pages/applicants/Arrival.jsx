@@ -4,11 +4,12 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import Modal from "../../components/LiaModal/model1";
 import Link from "next/link";
 import { Tooltip, Button } from "@material-tailwind/react";
 import { useEffect } from "react";
 import { Backdrop, CircularProgress } from "@mui/material";
+import axios from "axios";
+import cookie from "js-cookie";
 // import Popup from "reactjs-popup" //used for popup
 
 export default function ApplicantsList() {
@@ -16,16 +17,34 @@ export default function ApplicantsList() {
   const [open, setOpen] = useState(false);
   // cities to get from checkbox
   const [cities, setCities] = useState([]);
+  const token = cookie.get("token");
+
 
   useEffect(() => {
     setOpen(true);
-    fetch("/api/applicant")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/applicant`,
+          { params: { token: token } },
+          config
+        );
         setData(data);
         setOpen(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setOpen(false);
+      }
+    };
+    asyncRequest();
   }, []);
+
+
 
   const handleChange = (e) => {
     const { value, checked } = e.target;

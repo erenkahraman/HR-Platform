@@ -1,5 +1,8 @@
 import { Circle } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import cookie from "js-cookie";
+
 const Reminder = ({ color }) => {
   const circleColor = () => {
     let result = "text-sm " + color;
@@ -7,13 +10,30 @@ const Reminder = ({ color }) => {
   };
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  const token = cookie.get("token");
+
   useEffect(() => {
     setLoading(true);
-    fetch("/api/birthday")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/birthday`,
+          { params: { token: token } },
+          config
+        );
         setData(data);
-      });
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
   }, []);
 
   if (data.length !== 0) {

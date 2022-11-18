@@ -7,6 +7,8 @@ import {
 } from "@mui/icons-material";
 import { Circle } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import cookie from "js-cookie";
 
 const DocumentListContent = ({ title, pos, status }) => {
   const Border = () => {
@@ -57,14 +59,41 @@ const Contents = [
 const DocumentList = () => {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  const token = cookie.get("token");
+  
   useEffect(() => {
     setLoading(true);
-    fetch("/api/applicant")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/applicant`,
+          { params: { token: token } },
+          config
+        );
         setData(data);
-      });
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
   }, []);
+
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetch("/api/applicant")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setData(data);
+  //     });
+  // }, []);
 
   return (
     <div className="flex flex-col w-full gap-2">

@@ -3,10 +3,13 @@ import { useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
 import { confirmAlert } from "react-confirm-alert";
 import { Backdrop, CircularProgress } from "@mui/material";
+import cookie from "js-cookie";
+
 const EditAttendance = ({ intern, setModel }) => {
   const [dates, setDates] = useState([]);
   const [status, setStatus] = useState("present");
   const [open, setOpen] = useState(false);
+  const token = cookie.get("token");
 
   let today = new Date();
   let date =
@@ -30,6 +33,7 @@ const EditAttendance = ({ intern, setModel }) => {
             setOpen(true);
             intern.attendance[status].dates.splice(dates.indexOf(date), 1);
             intern.attendance[status].count--;
+            intern.token=token;
             const JSONintern = JSON.stringify(intern);
             const endpoint = `/api/intern/${intern._id}`;
             const options = {

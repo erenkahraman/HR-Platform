@@ -10,24 +10,52 @@ import Modal5 from "../../components/Modal/EndInternshipModal.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
 import { AiOutlineEdit } from "react-icons/ai";
 import { Backdrop, CircularProgress } from "@mui/material";
+import axios from "axios";
+import cookie from "js-cookie";
 import LoadingState from "../../components/Utils/LoadingState.jsx";
 import StudentCountModal from "../../components/Modal/StudentCountModal.jsx";
 
 export default function ApplicantsList() {
   const [students, setStudents] = useState([]);
   const [open, setOpen] = useState(false);
+  const token = cookie.get("token");
   const [scModal, setScModal] = useState(false);
   const [type, setType] = useState("");
 
   useEffect(() => {
     setOpen(true);
-    fetch("/api/student")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/student`,
+          { params: { token: token } },
+          config
+        );
         setStudents(data);
         setOpen(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setOpen(false);
+      }
+    };
+    asyncRequest();
   }, []);
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetch("/api/student")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setStudents(data);
+  //       console.log(data);
+  //       setLoading(false);
+  //     });
+  // }, []);
 
   return (
     <section className="relative w-full sm:static">
@@ -191,7 +219,7 @@ export default function ApplicantsList() {
                       Status
                     </th>
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Departement / Position
+                      Department / Position
                     </th>
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                       Start Date

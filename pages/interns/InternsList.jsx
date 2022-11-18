@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import StudentCountModal from "../../components/Modal/StudentCountModal.jsx";
 import EndInternshipModal from "../../components/Modal/EndInternshipModal.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
+import axios from "axios";
+import cookie from "js-cookie";
 
 export default function InternList() {
   // student count modal
@@ -17,6 +19,7 @@ export default function InternList() {
   const [eiModal, setEiModal] = useState(false);
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  const token = cookie.get("token");
 
   const [search, setSearch] = useState("");
 
@@ -25,15 +28,38 @@ export default function InternList() {
   const handleChange = (event) => {
     setSearch(event.target.value);
   }; //search
+  const getInterns = async () => {
+    const response = await fetch(
+      "http://localhost:3000/api/interns",
+      json.stringify(token)
+    );
+    const data = await response.json();
+    setData(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
     setLoading(true);
-    fetch("/api/intern")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/intern`,
+          { params: { token: token } },
+          config
+        );
         setData(data);
         setLoading(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
   }, []);
   return (
     <section className="relative w-full sm:static">
@@ -161,7 +187,7 @@ export default function InternList() {
                     Duration In Weeks
                   </th>
                   <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Departement
+                    Department
                   </th>
                   <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     Position
@@ -206,7 +232,7 @@ export default function InternList() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.departement}
+                        {intern.department}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">

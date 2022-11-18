@@ -1,9 +1,25 @@
 import { getMongoDb } from "../../../util/mongodb";
 import Applicant from "../../../models/applicant";
 import Student from "../../../models/student";
+import { tokenCheckFunction } from "../auth/tokenCheck";
 
 export default async function handler(req, res) {
   const { method } = req;
+
+  // Token CHECK
+  let token = req.query.token
+    ? req.query.token
+    : req.body.token
+    ? req.body.token
+    : "";
+  try {
+    tokenCheckFunction(token);
+  } catch (e) {
+    console.error(e);
+    res.status(401).json("Unauthorized User");
+  }
+  // Token CHECK
+
   const db = await getMongoDb();
 
   if (method === "GET") {

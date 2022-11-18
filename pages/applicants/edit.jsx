@@ -13,11 +13,13 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
+import cookie from "js-cookie";
 
 export default function ApplicantsNew() {
   const [nationalityValue, setNationality] = useState("");
   const [departingCountryValue, setDepartingCountry] = useState("");
   const options = useMemo(() => countryList().getData(), []);
+  const token = cookie.get("token");
   const updateNationality = (nationality) => {
     setNationality(nationality);
   };
@@ -236,6 +238,7 @@ export default function ApplicantsNew() {
         ceoInterview: event.target.ceoInterview.value,
         status: event.target.status.value,
       },
+      token:token,
     };
     const JSONdata = JSON.stringify(data);
     const endpoint = "/api/student";

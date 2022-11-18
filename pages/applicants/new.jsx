@@ -19,7 +19,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TextField } from "@mui/material";
 import moment from "moment/moment";
-import { Dayjs } from "dayjs";
+import axios from "axios";
+import cookie from "js-cookie";
 import { useForm, Controller } from "react-hook-form";
 import LoadingState from "../../components/Utils/LoadingState";
 
@@ -53,13 +54,27 @@ export default function ApplicantsNew() {
   // Get departments from DB
   useEffect(() => {
     setOpen(true);
-    fetch("/api/department")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/department`,
+          { params: { token: token } },
+          config
+        );
         setDbDepartment(data);
         setPositions(data[0].positions);
         setOpen(false);
-      });
+      } catch (e) {
+        console.error(e);
+        setOpen(false);
+      }
+    };
+    asyncRequest();
   }, []);
 
   // get countries list from react-select-country-list
@@ -115,7 +130,7 @@ export default function ApplicantsNew() {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify({ department }),
+      body: JSON.stringify({ department, token }),
     };
     await fetch("/api/department", options);
     updateDepartment();
@@ -141,7 +156,7 @@ export default function ApplicantsNew() {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify(newPosition),
+        body: JSON.stringify(newPosition, token),
       };
       await fetch(`/api/department/${selectedDprtmnt._id}`, options);
       updateDepartment();
@@ -618,7 +633,7 @@ export default function ApplicantsNew() {
                         <label htmlFor="position" className="block text-sm">
                           Position
                         </label>
-                        {positions.length == 0 ? (
+                        {positions?.length == 0 ? (
                           <div className="text-red-600/75">
                             No positions available for this department
                           </div>

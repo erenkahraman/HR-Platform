@@ -1,15 +1,36 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import cookie from "js-cookie";
 const Feed = () => {
+  const token = cookie.get("token");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
+  
   useEffect(() => {
     setLoading(true);
-    fetch("/api/whatsNew")
-      .then((res) => res.json())
-      .then((data) => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/whatsNew`,
+          { params: { token: token } },
+          config
+        );
         setData(data);
-      });
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
   }, []);
+
+  ////////
   return (
     <div>
       {data.slice(data.length - 3).map((whatsNew) => (
