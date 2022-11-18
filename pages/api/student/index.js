@@ -46,6 +46,46 @@ export default async function handler(req, res) {
               as: "intern",
             },
           },
+          {
+            $unwind: "$applicant",
+          },
+          {
+            $set: {
+              dateOfBirth: {
+                $dateToString: { format: "%d/%m/%Y", date: "$dateOfBirth" },
+              },
+              "applicant.startDate": {
+                $dateToString: {
+                  format: "%d/%m/%Y",
+                  date: "$applicant.startDate",
+                },
+              },
+              "applicant.applicationDate": {
+                $dateToString: {
+                  format: "%d/%m/%Y",
+                  date: "$applicant.applicationDate",
+                },
+              },
+              "applicant.endDate": {
+                $dateToString: {
+                  format: "%d/%m/%Y",
+                  date: "$applicant.endDate",
+                },
+              },
+              "applicant.hrInterviewDate": {
+                $dateToString: {
+                  format: "%d/%m/%Y",
+                  date: "$applicant.hrInterviewDate",
+                },
+              },
+              "applicant.ceoInterviewDate": {
+                $dateToString: {
+                  format: "%d/%m/%Y",
+                  date: "$applicant.ceoInterviewDate",
+                },
+              },
+            },
+          },
         ])
         .toArray();
       res.status(200).json(students);

@@ -253,16 +253,16 @@ export default function ApplicantsList() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.applicant[0].department} /{" "}
-                        {student.applicant[0].position}
+                        {student.applicant.department} /{" "}
+                        {student.applicant.position}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.applicant[0].startDate}
+                        {student.applicant.startDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.applicant[0].endDate}
+                        {student.applicant.endDate}
                       </td>
 
                       <td className="border-t-0 px-6  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">

@@ -7,8 +7,8 @@ import { tokenCheckFunction } from "../auth/tokenCheck";
 export default async function handler(req, res) {
   const { method } = req;
 
-    // Token CHECK
-    let token = req.query.token
+  // Token CHECK
+  let token = req.query.token
     ? req.query.token
     : req.body.token
     ? req.body.token
@@ -39,6 +39,9 @@ export default async function handler(req, res) {
             },
           },
           {
+            $unwind: "$student",
+          },
+          {
             $set: {
               applicationDate: {
                 $dateToString: { format: "%d/%m/%Y", date: "$applicationDate" },
@@ -58,10 +61,13 @@ export default async function handler(req, res) {
                   date: "$ceoInterviewDate",
                 },
               },
+              "student.dateOfBirth": {
+                $dateToString: {
+                  format: "%d/%m/%Y",
+                  date: "$student.dateOfBirth",
+                },
+              },
             },
-          },
-          {
-            $unwind: "$student",
           },
         ])
         .toArray();
