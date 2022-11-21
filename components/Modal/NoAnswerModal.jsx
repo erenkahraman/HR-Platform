@@ -9,7 +9,6 @@ const NoAnswerModal = ({ student, setNoAnswerModal }) => {
   const token = cookie.get("token");
   const handleChange = async () => {
     setOpen(true);
-    console.log(student._id);
     const endpoint = `/api/student/${student._id}`;
     const options = {
       method: "PUT",

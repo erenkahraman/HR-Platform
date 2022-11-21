@@ -24,7 +24,6 @@ const Upcoming = () => {
         );
         setData(data);
         setLoading(false);
-        console.log({ data });
       } catch (e) {
         console.error(e);
         setLoading(false);
@@ -32,7 +31,7 @@ const Upcoming = () => {
     };
     asyncRequest();
   }, []);
- console.log(data)
+
   const statusColor = (status) => {
     let colorText;
 
@@ -47,18 +46,18 @@ const Upcoming = () => {
 
   return (
     <div>
-		 {data.map((intern) => (
-      <div className="flex w-full">
-        <div className="flex-[1] flex flex-col">
-          <div className="text-sm font-semibold">{intern.name}</div>
-          <div className="text-xs font-light ">{intern.department}</div>
+      {data.map((intern) => (
+        <div className="flex w-full">
+          <div className="flex-[1] flex flex-col">
+            <div className="text-sm font-semibold">{intern.name}</div>
+            <div className="text-xs font-light ">{intern.department}</div>
+          </div>
+          <div className={statusColor(intern.action)}>{intern.action}</div>
+          <div className="flex-[1] flex items-center justify-center text-xs text-gray-500">
+            {intern.date}
+          </div>
         </div>
-        <div className={statusColor(intern.action)}>{intern.action}</div>
-        <div className="flex-[1] flex items-center justify-center text-xs text-gray-500">
-          {intern.date}
-        </div>
-      </div>
-	  ))}
+      ))}
     </div>
   );
 };

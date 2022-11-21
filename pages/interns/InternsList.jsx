@@ -73,7 +73,6 @@ export default function InternList() {
   //        setLoading(false);
   //      });
   //  }, []);
-   console.log(data);
    if (isloading) return <p>Loading...</p>;
    if (!data) return <p>No profile data</p>;
    return (
