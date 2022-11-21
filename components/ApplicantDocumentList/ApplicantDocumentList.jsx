@@ -1,21 +1,11 @@
-import {
-  ArrowRightAlt,
-  AssignmentTurnedInOutlined,
-  CheckCircleOutline,
-  MoreHoriz,
-  WorkOutline,
-} from "@mui/icons-material";
-import { Circle } from "@mui/icons-material";
+import { CheckCircleOutline, WorkOutline } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { Backdrop, CircularProgress } from "@mui/material";
 import Link from "next/link";
-import { DocumentList as DocumentListt } from "../../components/DocumentList";
 import { Tooltip, Button } from "@material-tailwind/react";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../Utils/LoadingState";
-import { useForm } from "react-hook-form";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 
 const DocumentListContent = ({ title, status }) => {
@@ -139,6 +129,7 @@ const DocumentList = () => {
                     student={student}
                     index={index}
                     students={students}
+                    type="applicant"
                   />
                 )}
               </div>

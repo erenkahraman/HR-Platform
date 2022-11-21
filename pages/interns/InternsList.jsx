@@ -11,6 +11,7 @@ import EndInternshipModal from "../../components/Modal/EndInternshipModal.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
 import axios from "axios";
 import cookie from "js-cookie";
+import LoadingState from "../../components/Utils/LoadingState.jsx";
 
 export default function InternList() {
   // student count modal
@@ -20,23 +21,6 @@ export default function InternList() {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   const token = cookie.get("token");
-
-  const [search, setSearch] = useState("");
-
-  const [searchResults, setSearchResults] = useState([]);
-
-  const handleChange = (event) => {
-    setSearch(event.target.value);
-  }; //search
-  const getInterns = async () => {
-    const response = await fetch(
-      "http://localhost:3000/api/interns",
-      json.stringify(token)
-    );
-    const data = await response.json();
-    setData(data);
-    setLoading(false);
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -63,6 +47,7 @@ export default function InternList() {
   }, []);
   return (
     <section className="relative w-full sm:static">
+      <LoadingState open={isloading} />
       <div className="w-full mb-12">
         <div className="relative sm:static flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
           {/* Title Container */}
@@ -170,73 +155,76 @@ export default function InternList() {
           )}
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
-            <table className="items-center w-full border-collapse bg-white">
-              {/* Table Head */}
-              <thead>
-                <tr>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Full Name
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Start Date
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    End Date
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Duration In Weeks
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Department
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Position
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Status
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Action
-                  </th>
-                </tr>
-              </thead>
+            {data.length === 0 ? (
+              <div
+                className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
+                  p-4 flex items-center"
+              >
+                The Interns list is empty at the moment!
+                <div className="text-blue-600/75 pl-1">
+                  <Link href="/applicants/list"> Add a new intern</Link>
+                </div>
+              </div>
+            ) : (
+              <table className="items-center w-full border-collapse bg-white">
+                {/* Table Head */}
+                <thead>
+                  <tr>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Full Name
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Start Date
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      End Date
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Duration In Weeks
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Department
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Position
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Status
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
 
-              {/* Table Body */}
-              <tbody className="divide-y">
-                {data
-                  .filter((intern) => {
-                    return search.toLowerCase() === ""
-                      ? intern
-                      : intern.name
-                          .toLowerCase()
-                          .includes(search.toLowerCase());
-                  })
-                  .map((intern) => (
-                    <tr key={intern.id}>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                {/* Table Body */}
+                <tbody className="divide-y">
+                  {data.map((student) => (
+                    <tr key={student.intern.id}>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                         <span className="ml-3 font-bold">
-                          {intern.student.firstName} {intern.student.lastName}
+                          {student.firstName} {student.lastName}{" "}
                         </span>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.startDate}
+                        {student.intern.startDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.endDate}
+                        {student.intern.endDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.durationInWeeks}
+                        {student.intern.durationInWeeks}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.department}
+                        {student.intern.department}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.position}
+                        {student.intern.position}
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         Ongoing
@@ -289,7 +277,7 @@ export default function InternList() {
 
                               {eiModal && (
                                 <EndInternshipModal
-                                  intern={intern}
+                                  intern={student.intern}
                                   setEiModal={setEiModal}
                                 />
                               )}
@@ -301,8 +289,9 @@ export default function InternList() {
                       </Popup>
                     </tr>
                   ))}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

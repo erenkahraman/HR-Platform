@@ -17,9 +17,9 @@ import { useState } from "react";
 import NoAnswerModal from "../../components/Modal/NoAnswerModal";
 import Modal2 from "../../components/Modal/Modal2.jsx";
 import { CSVLink, CSVDownload } from "react-csv";
-import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
+import LoadingState from "../../components/Utils/LoadingState";
 
 export default function ApplicantsList({ students }) {
   const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
@@ -28,12 +28,12 @@ export default function ApplicantsList({ students }) {
   const [choice2, setChoice2] = useState(false);
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [edit , setEdit] = useState(false);
-  const [intern , setIntern] = useState({});
+  const [edit, setEdit] = useState(false);
+  const [intern, setIntern] = useState({});
   const [open, setOpen] = useState(false);
 
   const token = cookie.get("token");
-  
+
   const clicked = () => {
     setModalOn(true);
   };
@@ -59,8 +59,6 @@ export default function ApplicantsList({ students }) {
         return "0%";
     }
   };
-
-  
 
   useEffect(() => {
     setLoading(true);
@@ -151,12 +149,7 @@ export default function ApplicantsList({ students }) {
 
   return (
     <section className="relative w-full">
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isloading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <LoadingState open={isloading} />
       <div className="w-full mb-12">
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           {/* Title Container */}
@@ -225,39 +218,40 @@ export default function ApplicantsList({ students }) {
 
                 {/* Table Body */}
                 <tbody className="divide-y">
-                  {data.map((applicant) => (
-                    <tr key={applicant._id}>
+                  {data.map((student) => (
+                    <tr key={student._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                         <span className="ml-3 font-bold">
-                          {applicant.student.firstName}{" "}
-                          {applicant.student.lastName}{" "}
+                          {student.firstName} {student.lastName}{" "}
                         </span>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.applicationDate}
+                        {student.applicant.applicationDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.department}
+                        {student.applicant.department}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.position}
+                        {student.applicant.position}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{applicant.progress}</div>
+                          <div>{student.applicant.progress}</div>
                           <div className="flex items-center">
                             <span className="mr-2">
-                              {setProgressBar(applicant.progress)}
+                              {setProgressBar(student.applicant.progress)}
                             </span>
                             <div className="relative w-full">
                               <div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
                                 <div
                                   style={{
-                                    width: setProgressBar(applicant.progress),
+                                    width: setProgressBar(
+                                      student.applicant.progress
+                                    ),
                                   }}
                                   className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
                                 ></div>
@@ -312,7 +306,7 @@ export default function ApplicantsList({ students }) {
                               {acceptAplcntModal && (
                                 <AcceptAplcntModal
                                   setAcceptAplcntModal={setAcceptAplcntModal}
-                                  stdId={applicant.student._id}
+                                  stdId={student._id}
                                 />
                               )}
                             </div>
@@ -328,7 +322,7 @@ export default function ApplicantsList({ students }) {
 
                               {noAnswerModal && (
                                 <NoAnswerModal
-                                  student={applicant.student}
+                                  student={student}
                                   setNoAnswerModal={setNoAnswerModal}
                                 />
                               )}

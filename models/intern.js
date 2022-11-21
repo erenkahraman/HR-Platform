@@ -15,31 +15,31 @@ const InternSchema = new mongoose.Schema({
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
   status: { type: String },
   attendance: {
-    statusOfTheDay: { type: String, default: '' },
+    statusOfTheDay: { type: String, default: "" },
     present: {
       count: { type: Number, default: 0 },
-      dates: Array
+      dates: Array,
     },
     dayOff: {
       count: { type: Number, default: 0 },
-      dates: Array
+      dates: Array,
     },
     late: {
       count: { type: Number, default: 0 },
-      dates: Array
+      dates: Array,
     },
     excusedLeave: {
       count: { type: Number, default: 0 },
-      dates: Array
+      dates: Array,
     },
     sick: {
       count: { type: Number, default: 0 },
-      dates: Array
+      dates: Array,
     },
     unexcusedleave: {
       count: { type: Number, default: 0 },
-      dates: Array
-    }
+      dates: Array,
+    },
   },
   departure: {
     departureDate: String,
@@ -47,7 +47,7 @@ const InternSchema = new mongoose.Schema({
     departureCity: String,
     pickBy: String,
   },
-  documents: [{type: Map, of: String}],
+  documents: { type: Map, of: String },
 });
 
 export default mongoose.models.Intern || mongoose.model("Intern", InternSchema);

@@ -9,7 +9,6 @@ const NoAnswerModal = ({ student, setNoAnswerModal }) => {
   const token = cookie.get("token");
   const handleChange = async () => {
     setOpen(true);
-    console.log(student._id);
     const endpoint = `/api/student/${student._id}`;
     const options = {
       method: "PUT",
@@ -19,7 +18,7 @@ const NoAnswerModal = ({ student, setNoAnswerModal }) => {
       },
       body: JSON.stringify({
         applicationStatus: "No Answer",
-        token:token,
+        token: token,
       }),
     };
     await fetch(endpoint, options);

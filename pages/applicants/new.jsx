@@ -35,6 +35,7 @@ export default function ApplicantsNew() {
   const [dbDepartment, setDbDepartment] = useState([]);
   // get positions from DB when choosing positions
   const [positions, setPositions] = useState([]);
+  const token = cookie.get("token");
 
   const {
     control,
@@ -67,6 +68,7 @@ export default function ApplicantsNew() {
           config
         );
         setDbDepartment(data);
+        console.log(data);
         setPositions(data[0].positions);
         setOpen(false);
       } catch (e) {
@@ -86,8 +88,7 @@ export default function ApplicantsNew() {
   };
   const [submitStatus, setSubmitStatus] = useState();
   const submitData = async (data) => {
-    //setOpen(true);
-
+    setOpen(true);
     const applicantId = new mongoose.Types.ObjectId();
     const studentId = new mongoose.Types.ObjectId();
     data.student._id = studentId;
