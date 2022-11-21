@@ -6,18 +6,12 @@ import { Spinner, Button } from "flowbite-react";
 import axios from "axios";
 import cookie from "js-cookie";
 
-const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
+const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
   const router = useRouter();
   const [spinnerState, SetSpinnerState] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [positions, setPositions] = useState([]);
   const token = cookie.get("token");
-  
-  const handleCancelClick = () => {
-    setChoice(false);
-    setModalOn(false);
-  };
-
 
   // Get Departments
   useEffect(() => {
@@ -41,7 +35,6 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
     asyncRequest();
   }, []);
 
-
   // useEffect(() => {
   //   fetch("/api/department")
   //     .then((res) => res.json())
@@ -49,8 +42,6 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
   //       setDepartments(data);
   //     });
   // }, []);
-
-
 
   const calculateWeeks = (start, end) => {
     const msInWeek = 1000 * 60 * 60 * 24 * 7;
@@ -74,7 +65,7 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
         { name: "Confidentiality Agrement", status: "Not Submitted" },
       ],
       student: stdId,
-      token:token,
+      token: token,
     };
     intern.durationInWeeks = await calculateWeeks(
       intern.startDate,
@@ -101,23 +92,22 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        intern: id,
+        intern: intern._id,
         applicationStatus: "Accepted",
-        token:token,
+        token: token,
       }),
     };
     const optionsDepartment = {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify(id),
+      body: JSON.stringify({ type: "ONGOING", onGoingInterns: id }),
     };
     await fetch(endpointDepartment, optionsDepartment);
     await fetch(endpointstudent, optionsStudent);
     await fetch(endpointIntern, optionsIntern);
-    setChoice(true);
     router.push("/interns/InternsList");
   };
 
@@ -200,7 +190,7 @@ const AcceptAplcntModal = ({ setModalOn, setChoice, stdId }) => {
 
               <div className="flex  flex-row ml-6">
                 <button
-                  onClick={handleCancelClick}
+                  onClick={(e) => setAcceptAplcntModal(false)}
                   className=" rounded px-4 py-2 text-white  bg-[#d42624] "
                 >
                   Cancel

@@ -44,6 +44,8 @@ const Upcoming = () => {
     return result;
   };
 
+
+
   return (
     <div>
       {data.map((intern) => (

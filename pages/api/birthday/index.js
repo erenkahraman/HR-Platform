@@ -35,35 +35,7 @@ export default async function handler(req, res) {
               as: "applicant",
             },
           },
-          {
-            $unwind: "$applicant",
-          },
-          {
-            $project: {
-              firstName: 1,
-              lastName: 1,
-              dateOfBirth: 1,
-              "applicant.position": 1,
-              date: {
-                $dateFromString: {
-                  dateString: "$dateOfBirth",
-                  format: "%d-%m-%Y",
-                },
-              },
-            },
-          },
-          {
-            $match: {
-              $expr: {
-                $eq: [{ $month: "$date" }, { $month: new Date() }],
-              },
-            },
-          },
-          {
-            $sort: {
-              date: 1,
-            },
-          },
+
           {
             $project: {
               _id: 1,
@@ -71,8 +43,20 @@ export default async function handler(req, res) {
               lastName: 1,
               dateOfBirth: 1,
               "applicant.position": 1,
-              month: { $month: "$date" },
-              day: { $dayOfMonth: "$date" },
+              month: { $month: "$dateOfBirth" },
+              day: { $dayOfMonth: "$dateOfBirth" },
+            },
+          },
+          {
+            $match: {
+              $expr: {
+                $eq: [{ $month: "$dateOfBirth" }, { $month: new Date() }],
+              },
+            },
+          },
+          {
+            $sort: {
+              date: 1,
             },
           },
         ])

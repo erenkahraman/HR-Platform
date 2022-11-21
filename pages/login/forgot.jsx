@@ -23,13 +23,12 @@ export default function forgot() {
         { email },
         config
       );
-	  alert("the Mail sent successfully. Please Check your MailBox");
-	  router.push("/login");
+      alert("the Mail sent successfully. Please Check your MailBox");
+      router.push("/login");
     } catch (error) {
-	  alert(error.response.data.message);
+      alert(error.response.data.message);
       console.error(error.response.data); // NOTE - use "error.response.data` (not "error")
     }
-   
   };
 
   return (

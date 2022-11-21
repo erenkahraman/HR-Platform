@@ -6,32 +6,24 @@ import EditIcon from "@mui/icons-material/Edit";
 import Popup from "reactjs-popup";
 import * as React from "react";
 import { useState, useEffect } from "react";
-import Modal5 from "../../components/Modal/Modal5.jsx";
+import Modal5 from "../../components/Modal/EndInternshipModal.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
 import { AiOutlineEdit } from "react-icons/ai";
 import { Backdrop, CircularProgress } from "@mui/material";
 import axios from "axios";
 import cookie from "js-cookie";
+import LoadingState from "../../components/Utils/LoadingState.jsx";
+import StudentCountModal from "../../components/Modal/StudentCountModal.jsx";
 
 export default function ApplicantsList() {
-  const [modalOn4, setModalOn4] = useState(false);
-  const [choice4, setChoice4] = useState(false);
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const token = cookie.get("token");
-  
-  const clicked4 = () => {
-    setModalOn4(true);
-  };
-  const [modalOn5, setModalOn5] = useState(false);
-  const [choice5, setChoice5] = useState(false);
-
-  const clicked5 = () => {
-    setModalOn5(true);
-  };
+  const [scModal, setScModal] = useState(false);
+  const [type, setType] = useState("");
 
   useEffect(() => {
-    setLoading(true);
+    setOpen(true);
     const asyncRequest = async () => {
       try {
         const config = {
@@ -45,15 +37,14 @@ export default function ApplicantsList() {
           config
         );
         setStudents(data);
-        setLoading(false);
+        setOpen(false);
       } catch (e) {
         console.error(e);
-        setLoading(false);
+        setOpen(false);
       }
     };
     asyncRequest();
   }, []);
-
 
   // useEffect(() => {
   //   setLoading(true);
@@ -68,13 +59,7 @@ export default function ApplicantsList() {
 
   return (
     <section className="relative w-full sm:static">
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-      ;
+      <LoadingState open={open} />
       <div className="w-full mb-12">
         <div className="relative sm:static flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
           {/* Title Container */}
@@ -85,15 +70,6 @@ export default function ApplicantsList() {
                   <h3 className="font-semibold text-2xl">Students</h3>
                 </div>
               </div>
-              <button
-                onClick={clicked4}
-                className="flex mr-52 ml-5 text-sm text-blue-300 hover:text-blue-500  "
-              >
-                View All
-              </button>
-              {/*
-              Accepted', 'Rejected', 'No Answer', 'Intership Finished','On Process
-              */}
               <div className="flex flex-col gap-4 justify-between rounded-t px-4 pt-4 mb-4 pb-6 border-b-2 border-gray-400">
                 <div className="flex gap-4 text-xs">
                   <div className="flex flex-col gap-2">
@@ -195,18 +171,27 @@ export default function ApplicantsList() {
               </div>
             </div>
             <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black">
-              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
-                All
-              </button>
-              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
+              <button
+                className="rounded-xl text-lg font-bold hover:bg-slate-200"
+                onClick={(e) => {
+                  setScModal(true);
+                  setType("onGoingInterns");
+                }}
+              >
                 Ongoing
               </button>
-              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
+              <button
+                className="rounded-xl text-lg font-bold hover:bg-slate-200"
+                onClick={(e) => {
+                  setScModal(true);
+                  setType("finishedInterns");
+                }}
+              >
                 Finished
               </button>
             </div>
           </div>
-
+          {scModal && <StudentCountModal setScModal={setScModal} type={type} />}
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
             {students.length === 0 ? (
@@ -268,16 +253,16 @@ export default function ApplicantsList() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student?.applicant[0]?.department} /{" "}
-                        {student?.applicant[0]?.position}
+                        {student.applicant.department} /{" "}
+                        {student.applicant.position}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.applicant[0]?.startDate}
+                        {student.applicant.startDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.applicant[0]?.endDate}
+                        {student.applicant.endDate}
                       </td>
 
                       <td className="border-t-0 px-6  align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
