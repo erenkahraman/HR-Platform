@@ -12,6 +12,7 @@ import { Tooltip, Button } from "@material-tailwind/react";
 import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../../components/Utils/LoadingState.jsx";
+import useTableSearch from "../../hooks/useTableSearch.js";
 
 export default function InternList() {
   // student count modal
@@ -21,6 +22,9 @@ export default function InternList() {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   const token = cookie.get("token");
+  const [searchedVal, setSearchedVal] = useState("");
+
+  const { filteredData } = useTableSearch({ data, searchedVal });
 
   useEffect(() => {
     setLoading(true);
@@ -72,71 +76,44 @@ export default function InternList() {
             </div>
           </div>
           <div className="flex flex-row-reverse mt-4 mb-2">
-            <div className="flex flex-row-reverse bg-white mt-0 mb-4 ml-auto ">
+            <div className="flex flex-row-reverse bg-white mr-5 mt-0 mb-4 ml-auto ">
               {/* search */}
-              <form className="flex items-center h-9">
-                <div className="relative w-full h-full">
-                  <div className="flex absolute h-full inset-y-0 left-0 items-center pl-3 pointer-events-none">
+              <form>
+                <label
+                  htmlFor="default-search"
+                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                >
+                  Search
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-                      className="w-5 h-5 text-white-500 dark:text-white-400"
-                      fill="white"
-                      viewBox="0 0 20 20"
+                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        fillRule="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clipRule="evenodd"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       ></path>
                     </svg>
                   </div>
                   <input
-                    type="text"
-                    id="simple-search"
-                    className="h-full w-52 rounded-r-lg  border-none bg-[#0B3768] px-10 text-white  placeholder:italic placeholder:text-white placeholder:text-sm"
+                    type="search"
+                    id="default-search"
+                    class="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search..."
-                    required
+                    onChange={(e) => {
+                      setSearchedVal(e.target.value);
+                    }}
                   />
                 </div>
-                <button
-                  type="submit"
-                  clasclassNames="w-8 px-2 rounded border-none h-full bg-blue-100  ml-1 mr-2 hover:bg-[#0B3768]/75 "
-                  onClick="alert('Search button clicked!')"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="black"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWEidth="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    ></path>
-                  </svg>
-                  <span className="sr-only">Search</span>
-                </button>
               </form>
-              <div className="">
-                <select
-                  name="filter"
-                  className="rounded-l-lg h-9 border-r-transparent w-30 border-[#0B3768] border-r-white bg-[#0B3768] text-white text-sm font-bold "
-                  required
-                >
-                  <option value="" disabled selected>
-                    Categories{" "}
-                  </option>
-                  <option value="Date">Name</option>
-                  <option value="Date">Date</option>
-                  <option value="Department">Department</option>
-                  <option value="Position">Position</option>
-                  <option value="Status">Status</option>
-                </select>
-              </div>
             </div>
             <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black ">
               <button
@@ -199,7 +176,7 @@ export default function InternList() {
 
                 {/* Table Body */}
                 <tbody className="divide-y">
-                  {data.map((student) => (
+                  {filteredData.map((student) => (
                     <tr key={student.intern.id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                         <span className="ml-3 font-bold">

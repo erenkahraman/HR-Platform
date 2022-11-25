@@ -58,7 +58,6 @@ function Attendence() {
     asyncRequest();
   }, []);
 
-  
   // useEffect(() => {
   //   setLoading(true);
   //   fetch("/api/intern")
@@ -299,12 +298,12 @@ function Attendence() {
                     The interns list is empty
                   </tr>
                 ) : (
-                  data.map((intern) => (
-                    <tr key={intern._id}>
+                  data.map((student) => (
+                    <tr key={student.intern._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">
                           {" "}
-                          {intern.student.firstName} {intern.student.lastName}
+                          {student.firstName} {student.lastName}
                         </div>
                       </td>
 
@@ -314,7 +313,7 @@ function Attendence() {
                           className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           onInput={(e) => {
                             setDate(e.target.value);
-                            disableStatus(intern, e.target.value);
+                            disableStatus(student.intern, e.target.value);
                             setStatus("");
                           }}
                         ></input>
@@ -340,36 +339,40 @@ function Attendence() {
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.present.count}</div>
+                          <div>{student.intern.attendance.present.count}</div>
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.late.count}</div>
-                        </div>
-                      </td>
-
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.dayOff.count}</div>
+                          <div>{student.intern.attendance.late.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.excusedLeave.count}</div>
+                          <div>{student.intern.attendance.dayOff.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.sick.count}</div>
+                          <div>
+                            {student.intern.attendance.excusedLeave.count}
+                          </div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{intern.attendance.unexcusedleave.count}</div>
+                          <div>{student.intern.attendance.sick.count}</div>
+                        </div>
+                      </td>
+
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <div className="flex flex-col gap-1">
+                          <div>
+                            {student.intern.attendance.unexcusedleave.count}
+                          </div>
                         </div>
                       </td>
 
@@ -377,7 +380,10 @@ function Attendence() {
                         <div className="flex flex-col gap-1">
                           <div className="flex flex-r">
                             <div>
-                              <button onClick={() => save(intern)} title="Save">
+                              <button
+                                onClick={() => save(student.intern)}
+                                title="Save"
+                              >
                                 <CheckCircle className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
                               </button>
                             </div>
@@ -385,12 +391,12 @@ function Attendence() {
                               <SaveIcon
                                 className="h-6 fill-[#0b3768] hover:fill-[#15803d]"
                                 onClick={(e) =>
-                                  setAttendanceEditModel(intern._id)
+                                  setAttendanceEditModel(student.intern._id)
                                 }
                               />
-                              {editAttendanceModel === intern._id && (
+                              {editAttendanceModel === student.intern._id && (
                                 <EditAttendance
-                                  intern={intern}
+                                  intern={student.intern}
                                   setModel={setAttendanceEditModel}
                                 />
                               )}

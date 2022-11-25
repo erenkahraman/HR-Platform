@@ -20,6 +20,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../../components/Utils/LoadingState";
+import useTableSearch from "../../hooks/useTableSearch";
 
 export default function ApplicantsList({ students }) {
   const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
@@ -31,6 +32,8 @@ export default function ApplicantsList({ students }) {
   const [edit, setEdit] = useState(false);
   const [intern, setIntern] = useState({});
   const [open, setOpen] = useState(false);
+  const [searchedVal, setSearchedVal] = useState("");
+  const { filteredData } = useTableSearch({ data, searchedVal });
 
   const token = cookie.get("token");
 
@@ -151,7 +154,7 @@ export default function ApplicantsList({ students }) {
     <section className="relative w-full">
       <LoadingState open={isloading} />
       <div className="w-full mb-12">
-        <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+        <div className="relative flex flex-col bg-white min-w-0 break-words w-full mb-6 shadow-lg rounded">
           {/* Title Container */}
           <div className="flex justify-between rounded-t mb-0 px-4 py-3 border-0 bg-white">
             <div className="flex flex-wrap items-center">
@@ -172,6 +175,54 @@ export default function ApplicantsList({ students }) {
                   Add Candidate
                 </span>
               </Link>
+            </div>
+          </div>
+
+          {/*Search*/}
+          <div className="flex flex-row-reverse mt-4 mb-2">
+            <div className="flex flex-row-reverse bg-white mr-5 mt-0 mb-4 ml-auto ">
+              {/* search */}
+              <form>
+                <label
+                  htmlFor="default-search"
+                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                >
+                  Search
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg
+                      aria-hidden="true"
+                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    type="search"
+                    id="default-search"
+                    class="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search..."
+                    onChange={(e) => {
+                      setSearchedVal(e.target.value);
+                    }}
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black ">
+              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
+                Statistics
+              </button>
             </div>
           </div>
 
@@ -218,7 +269,7 @@ export default function ApplicantsList({ students }) {
 
                 {/* Table Body */}
                 <tbody className="divide-y">
-                  {data.map((student) => (
+                  {filteredData.map((student) => (
                     <tr key={student._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                         <span className="ml-3 font-bold">

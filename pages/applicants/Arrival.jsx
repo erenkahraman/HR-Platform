@@ -7,7 +7,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import Link from "next/link";
 import { Tooltip, Button } from "@material-tailwind/react";
 import { useEffect } from "react";
-import { Backdrop, CircularProgress } from "@mui/material";
+import LoadingState from "../../components/Utils/LoadingState";
 import axios from "axios";
 import cookie from "js-cookie";
 // import Popup from "reactjs-popup" //used for popup
@@ -18,7 +18,6 @@ export default function ApplicantsList() {
   // cities to get from checkbox
   const [cities, setCities] = useState([]);
   const token = cookie.get("token");
-
 
   useEffect(() => {
     setOpen(true);
@@ -44,8 +43,6 @@ export default function ApplicantsList() {
     asyncRequest();
   }, []);
 
-
-
   const handleChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -55,21 +52,16 @@ export default function ApplicantsList() {
     }
   };
 
-  const filterCities = (app) => {
+  const filterCities = (student) => {
     if (cities.length == 0) {
-      return app;
+      return student;
     } else {
-      return cities.includes(app.arrivalCity);
+      return cities.includes(student.applicant.arrivalCity);
     }
   };
   return (
     <section className="relative w-full sm:static">
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <LoadingState open={open} />
       <div className="w-full mb-12 sm:static">
         <div className=" sm:static flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
           {/* Title Container */}
@@ -94,7 +86,7 @@ export default function ApplicantsList() {
                     onChange={handleChange}
                   />
                   <label
-                    htmlFor="checked-checkbox"
+                    htmlFor="Terranova da Sibari"
                     class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
                     Terranova da Sibari
@@ -110,7 +102,7 @@ export default function ApplicantsList() {
                     onChange={handleChange}
                   />
                   <label
-                    htmlFor="checked-checkbox"
+                    htmlFor="Bivo Cantinella"
                     class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
                     Bivo Cantinella
@@ -126,7 +118,7 @@ export default function ApplicantsList() {
                     onChange={handleChange}
                   />
                   <label
-                    htmlFor="checked-checkbox"
+                    htmlFor="Sibari"
                     class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
                     Sibari
@@ -142,13 +134,13 @@ export default function ApplicantsList() {
                     onChange={handleChange}
                   />
                   <label
-                    htmlFor="checked-checkbox"
+                    htmlFor="Spezzano Albanese Terme"
                     class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
                     Spezzano Albanese Terme
                   </label>
                 </div>
-                {/* search */}
+                {/* search 
                 <form className="flex items-center ">
                   <div className="relative w-full">
                     <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -195,6 +187,7 @@ export default function ApplicantsList() {
                     <span className="sr-only">Search</span>
                   </button>
                 </form>
+                */}
               </div>
             </div>
           </div>
@@ -236,29 +229,28 @@ export default function ApplicantsList() {
 
                 {/* Table Body */}
                 <tbody className="divide-y">
-                  {data.filter(filterCities).map((applicant) => (
-                    <tr key={applicant._id}>
+                  {data.filter(filterCities).map((student) => (
+                    <tr key={student.applicant._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                         <span className="ml-3 font-bold">
                           {" "}
-                          {applicant.student.firstName}{" "}
-                          {applicant.student.lastName}{" "}
+                          {student.firstName} {student.lastName}{" "}
                         </span>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.startDate}
+                        {student.applicant.startDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.arrivalTime || "Uknown"}
+                        {student.applicant.arrivalTime || "Uknown"}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.arrivalCity}
+                        {student.applicant.arrivalCity}
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.pickUpBy}
+                        {student.applicant.pickUpBy}
                       </td>
                     </tr>
                   ))}
