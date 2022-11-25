@@ -12,7 +12,6 @@ const useTableSearch = ({ data, searchedVal }) => {
       setFilteredData(filtered);
     } else setFilteredData(data);
   }, [searchedVal, data]);
-
   return { filteredData };
 };
 

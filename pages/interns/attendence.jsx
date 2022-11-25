@@ -19,6 +19,7 @@ import { CheckCircle } from "@mui/icons-material";
 import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
+import useTableSearch from "../../hooks/useTableSearch";
 
 function Attendence() {
   //  const notify =() => toast ("Please check if everything before saving!");
@@ -33,6 +34,9 @@ function Attendence() {
   const [editAttendanceModel, setAttendanceEditModel] = useState(false);
   const [dateIncluded, setDateIncluded] = useState(false);
   const token = cookie.get("token");
+
+  const [searchedVal, setSearchedVal] = useState("");
+  const { filteredData } = useTableSearch({ data, searchedVal });
 
   useEffect(() => {
     setLoading(true);
@@ -57,16 +61,6 @@ function Attendence() {
     };
     asyncRequest();
   }, []);
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   fetch("/api/intern")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setData(data);
-  //       setLoading(false);
-  //     });
-  // }, []);
 
   const save = (intern) => {
     setOpenAlert(false);
@@ -164,51 +158,41 @@ function Attendence() {
                   Month Attendance
                 </span>
               </Link>
-              <form className="flex flex-r justify-between">
-                <div className="relative w-full">
-                  <div className="flex absolute inset-y-0 left-0 items-center pl-3 py-2 pointer-events-none">
+              <form>
+                <label
+                  htmlFor="default-search"
+                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                >
+                  Search
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-                      className="w-5 h-5 text-white-500 dark:text-white-400"
-                      fill="white"
-                      viewBox="0 0 20 20"
+                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        strokeWidth="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clipRule="evenodd"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       ></path>
                     </svg>
                   </div>
                   <input
-                    type="text"
-                    id="simple-search"
-                    className="rounded border-none bg-[#0B3768]/75 px-10 text-white h-10 placeholder:italic placeholder:text-white/30 placeholder:text-sm"
-                    placeholder="Search by name.."
-                    required
+                    type="search"
+                    id="default-search"
+                    class="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search..."
+                    onChange={(e) => {
+                      setSearchedVal(e.target.value);
+                    }}
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="w-10 px-2 py-2 rounded border-none bg-blue-100 h-10 ml-1 mr-2 hover:bg-[#0B3768]/75 "
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="black"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    ></path>
-                  </svg>
-                  <span className="sr-only">Search</span>
-                </button>
               </form>
             </div>
           </div>
@@ -298,7 +282,7 @@ function Attendence() {
                     The interns list is empty
                   </tr>
                 ) : (
-                  data.map((student) => (
+                  filteredData.map((student) => (
                     <tr key={student.intern._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">

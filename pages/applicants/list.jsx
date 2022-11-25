@@ -33,6 +33,8 @@ export default function ApplicantsList({ students }) {
   const [intern, setIntern] = useState({});
   const [open, setOpen] = useState(false);
   const [searchedVal, setSearchedVal] = useState("");
+
+  // Custom hook to search the table
   const { filteredData } = useTableSearch({ data, searchedVal });
 
   const token = cookie.get("token");
