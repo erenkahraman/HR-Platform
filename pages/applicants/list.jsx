@@ -17,9 +17,10 @@ import { useState } from "react";
 import NoAnswerModal from "../../components/Modal/NoAnswerModal";
 import Modal2 from "../../components/Modal/Modal2.jsx";
 import { CSVLink, CSVDownload } from "react-csv";
-import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
+import LoadingState from "../../components/Utils/LoadingState";
+import useTableSearch from "../../hooks/useTableSearch";
 
 export default function ApplicantsList({ students }) {
   const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
@@ -28,12 +29,16 @@ export default function ApplicantsList({ students }) {
   const [choice2, setChoice2] = useState(false);
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [edit , setEdit] = useState(false);
-  const [intern , setIntern] = useState({});
+  const [edit, setEdit] = useState(false);
+  const [intern, setIntern] = useState({});
   const [open, setOpen] = useState(false);
+  const [searchedVal, setSearchedVal] = useState("");
+
+  // Custom hook to search the table
+  const { filteredData } = useTableSearch({ data, searchedVal });
 
   const token = cookie.get("token");
-  
+
   const clicked = () => {
     setModalOn(true);
   };
@@ -59,8 +64,6 @@ export default function ApplicantsList({ students }) {
         return "0%";
     }
   };
-
-  
 
   useEffect(() => {
     setLoading(true);
@@ -151,14 +154,9 @@ export default function ApplicantsList({ students }) {
 
   return (
     <section className="relative w-full">
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isloading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <LoadingState open={isloading} />
       <div className="w-full mb-12">
-        <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+        <div className="relative flex flex-col bg-white min-w-0 break-words w-full mb-6 shadow-lg rounded">
           {/* Title Container */}
           <div className="flex justify-between rounded-t mb-0 px-4 py-3 border-0 bg-white">
             <div className="flex flex-wrap items-center">
@@ -179,6 +177,54 @@ export default function ApplicantsList({ students }) {
                   Add Candidate
                 </span>
               </Link>
+            </div>
+          </div>
+
+          {/*Search*/}
+          <div className="flex flex-row-reverse mt-4 mb-2">
+            <div className="flex flex-row-reverse bg-white mr-5 mt-0 mb-4 ml-auto ">
+              {/* search */}
+              <form>
+                <label
+                  htmlFor="default-search"
+                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                >
+                  Search
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg
+                      aria-hidden="true"
+                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    type="search"
+                    id="default-search"
+                    class="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search..."
+                    onChange={(e) => {
+                      setSearchedVal(e.target.value);
+                    }}
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black ">
+              <button className="rounded-xl text-lg font-bold hover:bg-slate-200">
+                Statistics
+              </button>
             </div>
           </div>
 
@@ -225,39 +271,40 @@ export default function ApplicantsList({ students }) {
 
                 {/* Table Body */}
                 <tbody className="divide-y">
-                  {data.map((applicant) => (
-                    <tr key={applicant._id}>
+                  {filteredData.map((student) => (
+                    <tr key={student._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                         <span className="ml-3 font-bold">
-                          {applicant.student.firstName}{" "}
-                          {applicant.student.lastName}{" "}
+                          {student.firstName} {student.lastName}{" "}
                         </span>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.applicationDate}
+                        {student.applicant.applicationDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.department}
+                        {student.applicant.department}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {applicant.position}
+                        {student.applicant.position}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{applicant.progress}</div>
+                          <div>{student.applicant.progress}</div>
                           <div className="flex items-center">
                             <span className="mr-2">
-                              {setProgressBar(applicant.progress)}
+                              {setProgressBar(student.applicant.progress)}
                             </span>
                             <div className="relative w-full">
                               <div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
                                 <div
                                   style={{
-                                    width: setProgressBar(applicant.progress),
+                                    width: setProgressBar(
+                                      student.applicant.progress
+                                    ),
                                   }}
                                   className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
                                 ></div>
@@ -312,7 +359,7 @@ export default function ApplicantsList({ students }) {
                               {acceptAplcntModal && (
                                 <AcceptAplcntModal
                                   setAcceptAplcntModal={setAcceptAplcntModal}
-                                  stdId={applicant.student._id}
+                                  stdId={student._id}
                                 />
                               )}
                             </div>
@@ -328,7 +375,7 @@ export default function ApplicantsList({ students }) {
 
                               {noAnswerModal && (
                                 <NoAnswerModal
-                                  student={applicant.student}
+                                  student={student}
                                   setNoAnswerModal={setNoAnswerModal}
                                 />
                               )}

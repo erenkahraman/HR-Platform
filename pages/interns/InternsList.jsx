@@ -11,6 +11,8 @@ import EndInternshipModal from "../../components/Modal/EndInternshipModal.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
 import axios from "axios";
 import cookie from "js-cookie";
+import LoadingState from "../../components/Utils/LoadingState.jsx";
+import useTableSearch from "../../hooks/useTableSearch.js";
 
 export default function InternList() {
   // student count modal
@@ -20,23 +22,9 @@ export default function InternList() {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   const token = cookie.get("token");
+  const [searchedVal, setSearchedVal] = useState("");
 
-  const [search, setSearch] = useState("");
-
-  const [searchResults, setSearchResults] = useState([]);
-
-  const handleChange = (event) => {
-    setSearch(event.target.value);
-  }; //search
-  const getInterns = async () => {
-    const response = await fetch(
-      "http://localhost:3000/api/interns",
-      json.stringify(token)
-    );
-    const data = await response.json();
-    setData(data);
-    setLoading(false);
-  };
+  const { filteredData } = useTableSearch({ data, searchedVal });
 
   useEffect(() => {
     setLoading(true);
@@ -63,6 +51,7 @@ export default function InternList() {
   }, []);
   return (
     <section className="relative w-full sm:static">
+      <LoadingState open={isloading} />
       <div className="w-full mb-12">
         <div className="relative sm:static flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
           {/* Title Container */}
@@ -87,71 +76,44 @@ export default function InternList() {
             </div>
           </div>
           <div className="flex flex-row-reverse mt-4 mb-2">
-            <div className="flex flex-row-reverse bg-white mt-0 mb-4 ml-auto ">
+            <div className="flex flex-row-reverse bg-white mr-5 mt-0 mb-4 ml-auto ">
               {/* search */}
-              <form className="flex items-center h-9">
-                <div className="relative w-full h-full">
-                  <div className="flex absolute h-full inset-y-0 left-0 items-center pl-3 pointer-events-none">
+              <form>
+                <label
+                  htmlFor="default-search"
+                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                >
+                  Search
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-                      className="w-5 h-5 text-white-500 dark:text-white-400"
-                      fill="white"
-                      viewBox="0 0 20 20"
+                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        fillRule="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clipRule="evenodd"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       ></path>
                     </svg>
                   </div>
                   <input
-                    type="text"
-                    id="simple-search"
-                    className="h-full w-52 rounded-r-lg  border-none bg-[#0B3768] px-10 text-white  placeholder:italic placeholder:text-white placeholder:text-sm"
+                    type="search"
+                    id="default-search"
+                    class="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search..."
-                    required
+                    onChange={(e) => {
+                      setSearchedVal(e.target.value);
+                    }}
                   />
                 </div>
-                <button
-                  type="submit"
-                  clasclassNames="w-8 px-2 rounded border-none h-full bg-blue-100  ml-1 mr-2 hover:bg-[#0B3768]/75 "
-                  onClick="alert('Search button clicked!')"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="black"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWEidth="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    ></path>
-                  </svg>
-                  <span className="sr-only">Search</span>
-                </button>
               </form>
-              <div className="">
-                <select
-                  name="filter"
-                  className="rounded-l-lg h-9 border-r-transparent w-30 border-[#0B3768] border-r-white bg-[#0B3768] text-white text-sm font-bold "
-                  required
-                >
-                  <option value="" disabled selected>
-                    Categories{" "}
-                  </option>
-                  <option value="Date">Name</option>
-                  <option value="Date">Date</option>
-                  <option value="Department">Department</option>
-                  <option value="Position">Position</option>
-                  <option value="Status">Status</option>
-                </select>
-              </div>
             </div>
             <div className="flex flex-row gap-6 ml-9 h-8 border-b-2 text-lg border-black ">
               <button
@@ -170,73 +132,76 @@ export default function InternList() {
           )}
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
-            <table className="items-center w-full border-collapse bg-white">
-              {/* Table Head */}
-              <thead>
-                <tr>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Full Name
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Start Date
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    End Date
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Duration In Weeks
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Department
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Position
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Status
-                  </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Action
-                  </th>
-                </tr>
-              </thead>
+            {data.length === 0 ? (
+              <div
+                className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
+                  p-4 flex items-center"
+              >
+                The Interns list is empty at the moment!
+                <div className="text-blue-600/75 pl-1">
+                  <Link href="/applicants/list"> Add a new intern</Link>
+                </div>
+              </div>
+            ) : (
+              <table className="items-center w-full border-collapse bg-white">
+                {/* Table Head */}
+                <thead>
+                  <tr>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Full Name
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Start Date
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      End Date
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Duration In Weeks
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Department
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Position
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Status
+                    </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
 
-              {/* Table Body */}
-              <tbody className="divide-y">
-                {data
-                  .filter((intern) => {
-                    return search.toLowerCase() === ""
-                      ? intern
-                      : intern.name
-                          .toLowerCase()
-                          .includes(search.toLowerCase());
-                  })
-                  .map((intern) => (
-                    <tr key={intern.id}>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                {/* Table Body */}
+                <tbody className="divide-y">
+                  {filteredData.map((student) => (
+                    <tr key={student.intern.id}>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                         <span className="ml-3 font-bold">
-                          {intern.student.firstName} {intern.student.lastName}
+                          {student.firstName} {student.lastName}{" "}
                         </span>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.startDate}
+                        {student.intern.startDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.endDate}
+                        {student.intern.endDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.durationInWeeks}
+                        {student.intern.durationInWeeks}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.department}
+                        {student.intern.department}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {intern.position}
+                        {student.intern.position}
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         Ongoing
@@ -289,7 +254,7 @@ export default function InternList() {
 
                               {eiModal && (
                                 <EndInternshipModal
-                                  intern={intern}
+                                  intern={student.intern}
                                   setEiModal={setEiModal}
                                 />
                               )}
@@ -301,8 +266,9 @@ export default function InternList() {
                       </Popup>
                     </tr>
                   ))}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

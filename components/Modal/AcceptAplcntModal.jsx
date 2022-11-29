@@ -58,12 +58,12 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
       endDate: event.target.endDate.value,
       department: departments[event.target.department.value].department,
       position: event.target.position.value,
-      documents: [
-        { name: "Intern Development Plan", status: "Not Submitted" },
-        { name: "learning Agreement After", status: "Not Submitted" },
-        { name: "Accommodation Letter", status: "Not Submitted" },
-        { name: "Confidentiality Agrement", status: "Not Submitted" },
-      ],
+      documents: {
+        "Intern Development Plan": "Not Submitted",
+        "learning Agreement After": "Not Submitted",
+        "Accommodation Letter": "Not Submitted",
+        "Confidentiality Agrement": "Not Submitted",
+      },
       student: stdId,
       token: token,
     };

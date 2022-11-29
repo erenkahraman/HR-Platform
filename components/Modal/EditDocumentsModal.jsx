@@ -6,12 +6,13 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
-import { Button } from "@material-tailwind/react";
 import { useEffect } from "react";
-import LoadingState from "../Utils/LoadingState";
 import { DocumentReview } from "../DocumentReview";
 import { useMemo } from "react";
 import { useState } from "react";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Box from "@mui/material/Box";
+import { Button } from "@mui/material";
 
 const EditDocumentsModal = ({
   openDialog,
@@ -19,6 +20,7 @@ const EditDocumentsModal = ({
   student,
   index,
   students,
+  type,
 }) => {
   const docs = [
     "Curriculum Vitae",
@@ -27,8 +29,7 @@ const EditDocumentsModal = ({
     "Learning Agreement",
     "Acceptance Letter",
   ];
-  const [open, setOpen] = useState();
-
+  const [loading, setLoading] = useState();
   const {
     control,
     register,
@@ -46,26 +47,44 @@ const EditDocumentsModal = ({
   }, [student]);
 
   const updateDocuments = async (data) => {
-    setOpen(true);
-    try {
-      await fetch(`/api/applicant/${data.applicant._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ documents: data.applicant.documents }),
-      });
-      students[index] = data;
-    } catch (error) {
-      console.error(error);
+    setLoading(true);
+    switch (type) {
+      case "applicant":
+        try {
+          await fetch(`/api/applicant/${data.applicant._id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify({ documents: data.applicant.documents }),
+          });
+          students[index] = data;
+        } catch (error) {
+          console.error(error);
+        }
+        break;
+      case "intern":
+        try {
+          await fetch(`/api/intern/${data.intern._id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify({ documents: data.intern.documents }),
+          });
+          students[index] = data;
+        } catch (error) {
+          console.error(error);
+        }
+        break;
     }
-    setOpen(false);
     setOpenDialog(false);
   };
+
   return (
     <div>
-      <LoadingState open={open} />
       <Dialog
         open={openDialog}
         className="fixed  w-3/4 h-50 ml-64 px-80 p-0 pl-8 mt-32 border-2 border-[#0B3768] rounded-xl shadow-lg shadow-[#0B3768]"
@@ -77,8 +96,8 @@ const EditDocumentsModal = ({
           <div className="flex p-4">
             <div className="flex flex-col w-full gap-4">
               <div className="flex gap-6 justify-start">
-                {docs.map((doc) => (
-                  <DocumentReview register={register} title={doc} />
+                {Object.keys(student[type].documents).map((doc) => (
+                  <DocumentReview register={register} title={doc} type={type} />
                 ))}
               </div>
             </div>
@@ -87,21 +106,22 @@ const EditDocumentsModal = ({
         <div className="flex flex-row ml-6">
           <DialogFooter>
             <Button
-              variant="text"
-              color="red"
               className="mr-4 ml-auto px-6 text-red-400 bg-white hover:bg-red-400 hover:text-white border-red-400 rounded-xl border-2"
               onClick={(e) => setOpenDialog(false)}
+              variant="outlined"
             >
-              <span>Cancel</span>
+              Cancel
             </Button>
-            <Button
-              variant="gradient"
-              color="green"
+            <LoadingButton
               className="px-9 text-green-400 bg-white hover:bg-green-400 hover:text-white border-green-400 rounded-xl border-2"
+              color="success"
+              loading={loading}
               onClick={handleSubmit(updateDocuments)}
+              loadingIndicator="Loading…"
+              variant="outlined"
             >
-              <span>Edit</span>
-            </Button>
+              Submit
+            </LoadingButton>
           </DialogFooter>
         </div>
       </Dialog>

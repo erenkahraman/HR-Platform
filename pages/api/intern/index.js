@@ -6,22 +6,21 @@ import { tokenCheckFunction } from "../auth/tokenCheck";
 
 export default async function handler(req, res) {
   const { method } = req;
-  
-// Token CHECK
-let token = req.query.token
-? req.query.token
-: req.body.token
-? req.body.token
-: "";
-try {
-tokenCheckFunction(token);
-} catch (e) {
-console.error(e);
-res.status(401).json("Unauthorized User");
-}
-// Token CHECK
 
-
+  // Token CHECK
+  /*
+  let token = req.query.token
+    ? req.query.token
+    : req.body.token
+    ? req.body.token
+    : "";
+  try {
+    tokenCheckFunction(token);
+  } catch (e) {
+    console.error(e);
+    res.status(401).json("Unauthorized User");
+  }*/
+  // Token CHECK
 
   const db = await getMongoDb();
   await dbConnect();
@@ -29,19 +28,19 @@ res.status(401).json("Unauthorized User");
   if (method === "GET") {
     try {
       const applicant = await db
-        .collection("interns")
+        .collection("students")
         .aggregate([
+          { $match: { applicationStatus: "Accepted" } },
           {
             $lookup: {
-              from: Student.collection.name,
-              pipeline: [{ $match: { applicationStatus: "Accepted" } }],
-              localField: "student",
+              from: Intern.collection.name,
+              localField: "intern",
               foreignField: "_id",
-              as: "student",
+              as: "intern",
             },
           },
           {
-            $unwind: "$student",
+            $unwind: "$intern",
           },
         ])
         .toArray();

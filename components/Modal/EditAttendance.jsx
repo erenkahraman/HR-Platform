@@ -33,7 +33,7 @@ const EditAttendance = ({ intern, setModel }) => {
             setOpen(true);
             intern.attendance[status].dates.splice(dates.indexOf(date), 1);
             intern.attendance[status].count--;
-            intern.token=token;
+            intern.token = token;
             const JSONintern = JSON.stringify(intern);
             const endpoint = `/api/intern/${intern._id}`;
             const options = {
@@ -75,20 +75,6 @@ const EditAttendance = ({ intern, setModel }) => {
               </div>
 
               <div class="p-6 space-y-6 flex-nowrap ">
-                <div className="flex flex-row ">
-                  <label
-                    htmlFor="startDate"
-                    className="basis-1/2 flex  items-center text-left text-xl font-semibold text-black w-32 "
-                  >
-                    Date:
-                  </label>
-                  <label
-                    htmlFor="startDate"
-                    className="basis-1/2 flex  items-center text-left text-xl font-semibold text-black w-32 "
-                  >
-                    {date}
-                  </label>
-                </div>
                 <div className="flex  flex-row">
                   <label
                     htmlFor="startDate"
@@ -100,10 +86,15 @@ const EditAttendance = ({ intern, setModel }) => {
                     id="country"
                     className="basis-1/2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     onClick={(e) => {
-                      setStatus(e.target.value);
-                      setDates(intern.attendance[e.target.value].dates);
+                      if (e.target.value) {
+                        setStatus(e.target.value);
+                        setDates(intern.attendance[e.target.value].dates);
+                      } else {
+                        setDates([]);
+                      }
                     }}
                   >
+                    <option value="">Select...</option>
                     <option value="present">Present</option>
                     <option value="late">Late</option>
                     <option value="dayOff">Day off</option>

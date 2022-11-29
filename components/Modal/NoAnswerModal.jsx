@@ -18,7 +18,7 @@ const NoAnswerModal = ({ student, setNoAnswerModal }) => {
       },
       body: JSON.stringify({
         applicationStatus: "No Answer",
-        token:token,
+        token: token,
       }),
     };
     await fetch(endpoint, options);

@@ -1,13 +1,13 @@
 import React from "react";
 
-const DocumentReview = ({ title, register }) => {
+const DocumentReview = ({ title, register, type }) => {
   return (
     <div className="flex w-48 flex-col gap-2">
       <label htmlFor="status" className="block text-sm font-semibold">
         {title}
       </label>
       <select
-        {...register(`applicant.documents.${title}`, {
+        {...register(`${type}.documents.${title}`, {
           required: `Please, submit the ${title}`,
         })}
         className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
