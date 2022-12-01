@@ -1,6 +1,5 @@
 import { getMongoDb } from "../../../util/mongodb";
-import Applicant from "../../../models/applicant";
-import Student from "../../../models/student";
+import Intern from "../../../models/intern";
 import { tokenCheckFunction } from "../auth/tokenCheck";
 
 export default async function handler(req, res) {
@@ -27,22 +26,22 @@ export default async function handler(req, res) {
       const applicant = await db
         .collection("students")
         .aggregate([
+          { $match: { applicationStatus: "Accepted" } },
           {
             $lookup: {
-              from: Applicant.collection.name,
-              localField: "applicant",
+              from: Intern.collection.name,
+              localField: "intern",
               foreignField: "_id",
-              as: "applicant",
+              as: "intern",
             },
           },
-
           {
             $project: {
               _id: 1,
               firstName: 1,
               lastName: 1,
               dateOfBirth: 1,
-              "applicant.position": 1,
+              "intern.position": 1,
               month: { $month: "$dateOfBirth" },
               day: { $dayOfMonth: "$dateOfBirth" },
             },

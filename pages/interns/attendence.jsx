@@ -76,7 +76,6 @@ function Attendence() {
               label: "Yes",
               onClick: async () => {
                 setOpen(true);
-                intern.attendance.statusOfTheDay = status;
                 intern.attendance[status].count++;
                 intern.attendance[status].dates.push(date);
                 intern.token = token;

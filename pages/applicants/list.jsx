@@ -15,7 +15,7 @@ import * as React from "react";
 import AcceptAplcntModal from "../../components/Modal/AcceptAplcntModal.jsx";
 import { useState } from "react";
 import NoAnswerModal from "../../components/Modal/NoAnswerModal";
-import Modal2 from "../../components/Modal/Modal2.jsx";
+import RejectModal from "../../components/Modal/RejectModal";
 import { CSVLink, CSVDownload } from "react-csv";
 import axios from "axios";
 import cookie from "js-cookie";
@@ -25,8 +25,7 @@ import useTableSearch from "../../hooks/useTableSearch";
 export default function ApplicantsList({ students }) {
   const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
   const [noAnswerModal, setNoAnswerModal] = useState(false);
-  const [modalOn2, setModalOn2] = useState(false);
-  const [choice2, setChoice2] = useState(false);
+  const [rejectModal, setRejectModal] = useState(false);
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   const [edit, setEdit] = useState(false);
@@ -38,14 +37,6 @@ export default function ApplicantsList({ students }) {
   const { filteredData } = useTableSearch({ data, searchedVal });
 
   const token = cookie.get("token");
-
-  const clicked = () => {
-    setModalOn(true);
-  };
-
-  const clicked2 = () => {
-    setModalOn2(true);
-  };
 
   // set progress bar
   let setProgressBar = (progress) => {
@@ -88,30 +79,6 @@ export default function ApplicantsList({ students }) {
     };
     asyncRequest();
   }, []);
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const asyncRequest = async () => {
-  //     const config = {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     };
-  //     const { data } = await axios.get(
-  //       `/api/applicant`,
-  //       { params: { token: token } },
-  //       config
-  //     );
-  //     setData(data);
-  //     setLoading(false);
-  //   };
-  //   try {
-  //     asyncRequest();
-  //   } catch (e) {
-  //     console.error(e);
-  //     setLoading(false);
-  //   }
-  // }, []);
 
   const headers = [
     { label: "First name", key: "student.firstName" },
@@ -187,15 +154,15 @@ export default function ApplicantsList({ students }) {
               <form>
                 <label
                   htmlFor="default-search"
-                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                  className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                 >
                   Search
                 </label>
-                <div class="relative">
-                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      className="w-5 h-5 text-gray-500 dark:text-gray-400"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -212,7 +179,7 @@ export default function ApplicantsList({ students }) {
                   <input
                     type="search"
                     id="default-search"
-                    class="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search..."
                     onChange={(e) => {
                       setSearchedVal(e.target.value);
@@ -383,18 +350,17 @@ export default function ApplicantsList({ students }) {
 
                             <div>
                               <button
-                                onClick={clicked2}
+                                onClick={(e) => setRejectModal(true)}
                                 type="submit"
                                 className="w-28 inline-flex rounded-b-lg justify-center py-2 px-4  shadow-sm text-sm font-medium boeder-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
                               >
-                                Rejected
+                                Reject
                               </button>
-                              {choice2}
 
-                              {modalOn2 && (
-                                <Modal2
-                                  setModalOn2={setModalOn2}
-                                  setChoice2={setChoice2}
+                              {rejectModal && (
+                                <RejectModal
+                                  student={student}
+                                  setRejectModal={setRejectModal}
                                 />
                               )}
                             </div>

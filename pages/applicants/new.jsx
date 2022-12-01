@@ -2,23 +2,13 @@ import { DocumentReview } from "../../components/DocumentReview";
 import countryList from "react-select-country-list";
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
-import Select from "react-select";
 import Popup from "reactjs-popup";
-import { Cancel, Verified } from "@mui/icons-material";
 import mongoose from "mongoose";
-import {
-  Backdrop,
-  CircularProgress,
-  Alert,
-  Collapse,
-  IconButton,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Button } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TextField } from "@mui/material";
-import moment from "moment/moment";
 import axios from "axios";
 import cookie from "js-cookie";
 import { useForm, Controller } from "react-hook-form";
@@ -26,15 +16,20 @@ import LoadingState from "../../components/Utils/LoadingState";
 
 export default function ApplicantsNew() {
   const router = useRouter();
-  //for adding new department
-  const [department, setDepartment] = useState("");
-  const [newPosition, setNewPosition] = useState("");
-  const [selectedDprtmnt, setSelectedDprtmnt] = useState("");
+
+  //Loading model useState
   const [open, setOpen] = useState(false);
+
   // get dprtmnts from DB
   const [dbDepartment, setDbDepartment] = useState([]);
+
   // get positions from DB when choosing positions
   const [positions, setPositions] = useState([]);
+
+  //Modals state
+  const [addDeprtmntModal, setAddDeprtmntModal] = useState(false);
+  const [addPositionModal, setAddPositionModal] = useState(false);
+
   const token = cookie.get("token");
 
   const {
@@ -68,7 +63,6 @@ export default function ApplicantsNew() {
           config
         );
         setDbDepartment(data);
-        console.log(data);
         setPositions(data[0].positions);
         setOpen(false);
       } catch (e) {
@@ -82,11 +76,7 @@ export default function ApplicantsNew() {
   // get countries list from react-select-country-list
   const countries = useMemo(() => countryList().getLabels(), []);
 
-  // handles changes of new department value
-  const handleChange = (data) => {
-    setDepartment(data.target.value);
-  };
-  const [submitStatus, setSubmitStatus] = useState();
+  // New applicant
   const submitData = async (data) => {
     setOpen(true);
     const applicantId = new mongoose.Types.ObjectId();
@@ -122,47 +112,59 @@ export default function ApplicantsNew() {
     router.push("/applicants/list");
   };
 
-  //Add new department to DB
-  const addDepartment = async () => {
+  const addNewDepartment = async (e) => {
+    e.preventDefault();
     setOpen(true);
-    const options = {
+    const department = e.target.newdepartment.value;
+    await fetch("/api/department", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({ department, token }),
-    };
-    await fetch("/api/department", options);
-    updateDepartment();
-  };
-  const updateDepartment = () => {
-    fetch("/api/department")
-      .then((res) => res.json())
-      .then((data) => {
-        setDbDepartment(data);
-        setPositions(data[0].positions);
-        setOpen(false);
-      });
+    });
+    await updateDepartment();
+    setAddDeprtmntModal(false);
   };
 
-  // ** ADD NEW POSITION
-
-  const addNewPosition = async () => {
-    setOpen(true);
-    if (newPosition) {
-      const options = {
-        method: "PUT",
+  // Refresh Departments/positions in DOM
+  const updateDepartment = async () => {
+    try {
+      const config = {
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify(newPosition, token),
       };
-      await fetch(`/api/department/${selectedDprtmnt._id}`, options);
-      updateDepartment();
-      alert(`Added ${newPosition} to the department list`);
+      const { data } = await axios.get(
+        `/api/department`,
+        { params: { token: token } },
+        config
+      );
+      setDbDepartment(data);
+      setPositions(data[0].positions);
+      setOpen(false);
+    } catch (e) {
+      console.error(e);
+      setOpen(false);
     }
+  };
+
+  const addNewPosition = async (e) => {
+    e.preventDefault();
+    const pos = e.target.newPosition.value;
+    const dprtmntId = e.target.newPosDepartment.value;
+    setOpen(true);
+    await fetch(`/api/department/${dprtmntId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ pos, token }),
+    });
+    await updateDepartment();
+    setAddPositionModal(false);
   };
   return (
     <div>
@@ -575,57 +577,14 @@ export default function ApplicantsNew() {
                       </div>
                       {/* Button new department */}
 
-                      <Popup
-                        contentStyle={{
-                          background: "#0B3768",
-                          borderRadius: "1rem",
-                        }}
-                        trigger={
-                          <div className="flex flex-col gap-2">
-                            <button
-                              type="submit"
-                              className="w-48 mt-7 inline-flex justify-center py-2 px-1 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                            >
-                              Add New Department
-                            </button>
-                          </div>
-                        }
-                        position="bottom"
-                      >
-                        <div className="m-1 p-2 w-64 px-0">
-                          <div>
-                            <h6 className="font-semibold text-xl text-white pt-2 pb-4 pl-3">
-                              Add New Department
-                            </h6>
-                            <div className="flex flex-row mx-2 mt-2 mb-4">
-                              <input
-                                type="text"
-                                className="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                                placeholder="Introduce new department"
-                                onChange={(e) => setDepartment(e.target.value)}
-                              />
-                            </div>
-                          </div>
-
-                          {/* BUTTOM PART */}
-                          <div className="flex p-4 gap-4">
-                            <button
-                              type="submit"
-                              onClick={() => setSubmitStatus("Cancel")}
-                              className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-500 bg-gray-300 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              type="submit"
-                              onClick={() => setSubmitStatus("Save")}
-                              className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                            >
-                              Save
-                            </button>
-                          </div>
-                        </div>
-                      </Popup>
+                      <div className="flex flex-col gap-2">
+                        <Button
+                          className="w-48 mt-7 inline-flex text justify-center py-2 px-1 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          onClick={(e) => setAddDeprtmntModal(true)}
+                        >
+                          Add new department
+                        </Button>
+                      </div>
                     </div>
 
                     {/* Position */}
@@ -658,85 +617,16 @@ export default function ApplicantsNew() {
                           {errors.applicant?.position?.message}
                         </p>
                       </div>
-                      <Popup
-                        contentStyle={{
-                          background: "#0B3768",
-                          borderRadius: "1rem",
-                        }}
-                        trigger={
-                          <div className="flex flex-col gap-2">
-                            <button
-                              type="submit"
-                              className="w-48 mt-7 inline-flex justify-center py-2 px-1 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                            >
-                              Add New Position
-                            </button>
-                          </div>
-                        }
-                        position="bottom"
-                      >
-                        <div className="m-1 p-2 w-64 px-0">
-                          <div>
-                            <h6 className="font-semibold text-xl text-white pt-2 pb-4 pl-3 ml-5">
-                              Add New Position
-                            </h6>
-                            <div className="flex flex-col mx-2 mt-2 mb-2">
-                              {/* <input type="" class="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" placeholder="Introduce new position"  /> */}
-                              <label
-                                htmlFor="checkDepartment"
-                                className=" text-sm font-bold text-white pb-1 ml-2 "
-                              >
-                                Select Department
-                              </label>
-                              <select
-                                id="department"
-                                name="department"
-                                autoComplete="department"
-                                className="flex flex-col w-52 ml-2 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                onClick={(e) =>
-                                  setSelectedDprtmnt(
-                                    dbDepartment[e.target.value]
-                                  )
-                                }
-                              >
-                                {dbDepartment.map((department, i) => (
-                                  <option key={department._id} value={i}>
-                                    {department.department}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                            <div className="flex flex-row mx-2 mt-2 mb-4">
-                              <input
-                                type="text"
-                                className="rounded border-none bg-[#fafbfc] text-black h-10 w-52 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                                placeholder="Introduce new position"
-                                onInput={(e) => setNewPosition(e.target.value)}
-                              />
-                            </div>
-                          </div>
-
-                          {/* BUTTOM PART */}
-                          <div className="flex p-4 gap-4">
-                            <button
-                              type="submit"
-                              value="Cancel"
-                              onClick={() => setSubmitStatus("Cancel")}
-                              className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              type="submit"
-                              value="Save"
-                              onClick={() => setSubmitStatus("Save")}
-                              className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-blue-500 bg-white hover:bg-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                            >
-                              Save
-                            </button>
-                          </div>
-                        </div>
-                      </Popup>
+                      <div className="flex flex-col gap-2">
+                        <Button
+                          className="w-48 mt-7 inline-flex text justify-center py-2 px-1 border border-transparent
+                         shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 
+                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          onClick={(e) => setAddPositionModal(true)}
+                        >
+                          Add new position
+                        </Button>
+                      </div>
                     </div>
 
                     <div className="flex gap-4">
@@ -1025,6 +915,141 @@ export default function ApplicantsNew() {
                   </Alert>
                   </Collapse>*/}
               </form>
+
+              {addDeprtmntModal && (
+                <div
+                  tabindex="-1"
+                  class="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
+                          fixed top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 h-modal md:h-full"
+                >
+                  <div class="relative w-full max-w-md h-full md:h-auto">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                      <button
+                        type="button"
+                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                        onClick={(e) => setAddDeprtmntModal(false)}
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                      </button>
+                      <div class="py-6 px-6 lg:px-8 border border-gray-300">
+                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+                          Add a new department
+                        </h3>
+                        <form class="space-y-6" onSubmit={addNewDepartment}>
+                          <div>
+                            <input
+                              id="newdepartment"
+                              type="text"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                              placeholder="IT / Accounting / HR ..."
+                              required
+                            />
+                          </div>
+                          <button
+                            type="submit"
+                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          >
+                            Add new department
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {addPositionModal && (
+                <div
+                  tabindex="-1"
+                  class="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
+                          fixed top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 h-modal md:h-full"
+                >
+                  <div class="relative w-full max-w-md h-full md:h-auto">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                      <button
+                        type="button"
+                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                        onClick={(e) => setAddPositionModal(false)}
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                      </button>
+                      <div class="py-6 px-6 lg:px-8 border border-gray-300">
+                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+                          Add a new position
+                        </h3>
+                        <form class="space-y-6" onSubmit={addNewPosition}>
+                          <div>
+                            <label
+                              for="email"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              Department
+                            </label>
+                            <select
+                              id="newPosDepartment"
+                              name="department"
+                              autoComplete="department"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                            >
+                              {dbDepartment.map((department) => (
+                                <option
+                                  key={department._id}
+                                  value={department._id}
+                                >
+                                  {department.department}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                              Position
+                            </label>
+                            <input
+                              id="newPosition"
+                              type="text"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                              placeholder="New position.."
+                              required
+                            />
+                          </div>
+                          <button
+                            type="submit"
+                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          >
+                            Add new position
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

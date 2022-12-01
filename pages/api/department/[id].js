@@ -27,7 +27,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const department = await Department.findById(field);
+        const department = await Department.findById(id);
         return res.status(200).json({
           success: true,
           data: department,
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
       if (req.body.type == "ONGOING") {
         try {
           const department = await Department.findByIdAndUpdate(
-            field,
+            id,
             { $addToSet: { onGoingInterns: req.body.onGoingInterns } },
             {
               new: true,
@@ -70,6 +70,26 @@ export default async function handler(req, res) {
               $addToSet: { finishedInterns: req.body.finishedInterns },
               $pull: { onGoingInterns: req.body.finishedInterns },
             },
+            {
+              new: true,
+              runValidators: true,
+            }
+          );
+          return res.status(200).json({
+            success: true,
+            data: department,
+          });
+        } catch (error) {
+          return res.status(500).json({
+            success: false,
+            data: error,
+          });
+        }
+      } else {
+        try {
+          const department = await Department.findByIdAndUpdate(
+            id,
+            { $addToSet: { positions: req.body.pos } },
             {
               new: true,
               runValidators: true,

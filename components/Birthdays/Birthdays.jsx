@@ -49,7 +49,7 @@ const Reminder = ({ color }) => {
                 {student.firstName} {student.lastName}
               </div>
               <div className="text-xs font-light ">
-                {student.applicant.position}
+                {student.intern.position}
               </div>
             </div>
             <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
