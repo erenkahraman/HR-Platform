@@ -13,6 +13,7 @@ import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../../components/Utils/LoadingState.jsx";
 import useTableSearch from "../../hooks/useTableSearch.js";
+import { useRouter } from "next/router";
 
 export default function InternList() {
   // student count modal
@@ -23,7 +24,7 @@ export default function InternList() {
   const [isloading, setLoading] = useState(true);
   const token = cookie.get("token");
   const [searchedVal, setSearchedVal] = useState("");
-
+  const router = useRouter();
   const { filteredData } = useTableSearch({ data, searchedVal });
 
   useEffect(() => {
@@ -49,6 +50,27 @@ export default function InternList() {
     };
     asyncRequest();
   }, []);
+
+  const startInternship = async (intern) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.put(
+      `/api/intern`,
+      { params: { token: token, id: intern._id } },
+      config
+    );
+    if (data === 1) {
+      alert("Status updated Successfully");
+
+      router.reload(window.location.pathname);
+    } else {
+      alert("Status updated Failure");
+    }
+  };
+
   return (
     <section className="relative w-full sm:static">
       <LoadingState open={isloading} />
@@ -204,7 +226,7 @@ export default function InternList() {
                         {student.intern.position}
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        Ongoing
+                        {student.intern.status}
                       </td>
 
                       <Popup
@@ -241,6 +263,14 @@ export default function InternList() {
                                   Edit
                                 </button>
                               </Link>
+                            </div>
+                            <div>
+                              <button
+                                onClick={(e) => startInternship(student)}
+                                className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                              >
+                                Start Internship
+                              </button>
                             </div>
 
                             <div>

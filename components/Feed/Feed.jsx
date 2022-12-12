@@ -4,7 +4,7 @@ import cookie from "js-cookie";
 const Feed = () => {
   const token = cookie.get("token");
   const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
+  const [ , setLoading] = useState(true);
   
   useEffect(() => {
     setLoading(true);
