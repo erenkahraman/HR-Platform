@@ -8,6 +8,8 @@ const FeedSchedule = () => {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   const token = cookie.get("token");
+  const [readMore, setReadMore] = useState();
+
   useEffect(() => {
     setLoading(true);
     const asyncRequest = async () => {
@@ -22,6 +24,7 @@ const FeedSchedule = () => {
           { params: { token: token } },
           config
         );
+        console.log(data)
         setData(data);
         setLoading(false);
       } catch (e) {
@@ -30,15 +33,16 @@ const FeedSchedule = () => {
       }
     };
     asyncRequest();
+    
   }, []);
 
   const read = () => {
-    console.log({data});
+    console.log({ readMore });
     confirmAlert({
-      title: <strong>{data.title}</strong>,
+      title: <strong>{readMore.title}</strong>,
       message: (
         <div className="h-96 overflow-y-scroll ">
-          <p>{data.paragraph}</p>
+          <p>{readMore.paragraph}</p>
         </div>
       ),
       buttons: [
@@ -51,7 +55,11 @@ const FeedSchedule = () => {
 
   return (
     <>
-      {data.map((weeklySchedule) => (
+    <div className="flex m-1 py-2">
+      <div className="box-border flex m-1 py-2 w-2/4 border-solid border-2  "><strong>Morning Shift</strong></div>
+      <div className="box-border flex m-1 py-2 w-2/4 border-solid border-2  "><strong>Afternoon Shift</strong></div>
+    </div>
+      {/* {data.map((weeklySchedule) => (
         <div className="flex m-2 py-4">
           <div className="flex flex-[1] flex-col gap-2 p-2">
             <div className="text-sm font-semibold">{weeklySchedule.date}</div>
@@ -63,16 +71,24 @@ const FeedSchedule = () => {
           <div className="flex flex-[3] flex-col gap-2 p-2">
             <div className="text-sm font-semibold">{weeklySchedule.title}</div>
             <div className="text-xs font-light h-48">
-              <p className="h-48" style={{ overflow: "hidden" }}>{weeklySchedule.paragraph}</p>
+              <p className="h-48" style={{ overflow: "hidden" }}>
+                {weeklySchedule.paragraph}
+              </p>
             </div>
           </div>
-          <button onClick={read} className="flex flex-[1] p-2">
+          <button
+            onClick={ () => {
+               setReadMore(weeklySchedule);
+               read();
+            }}
+            className="flex flex-[1] p-2"
+          >
             <div className="flex h-fit text-sm font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300 ...">
               Read More
             </div>
           </button>
         </div>
-      ))}
+      ))} */}
     </>
   );
 };

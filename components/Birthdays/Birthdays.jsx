@@ -35,7 +35,7 @@ const Reminder = ({ color }) => {
     };
     asyncRequest();
   }, []);
-console.log(data);
+
   if (data.length !== 0) {
     return (
       <div>
