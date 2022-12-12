@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   } = req;
 
   // Token CHECK
-  /*
+  
   let token = req.query.token
     ? req.query.token
     : req.body.token
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   } catch (e) {
     console.error(e);
     res.status(401).json("Unauthorized User");
-  } */
+  } 
   // Token CHECK
 
   switch (method) {

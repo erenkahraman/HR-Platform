@@ -57,7 +57,6 @@ export default async function handler(req, res) {
        
       var data = [];
       for (let i = 0; i < intern.length; i++) {
-        //console.log(intern[i])
         if (intern[i].status === "Waiting Start Date") {
           data.push({
             name:
@@ -76,7 +75,6 @@ export default async function handler(req, res) {
           });
         }
       }
-      //console.log(data);
       res.status(200).json(data);
     } catch (error) {
       res.status(500).json(error);

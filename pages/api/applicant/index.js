@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const { method } = req;
 
   // Token CHECK
-  /*
+  
   let token = req.query.token
     ? req.query.token
     : req.body.token
@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     console.error(e);
     res.status(401).json("Unauthorized User");
   }
-  */
+  
   // Token CHECK
 
   const db = await getMongoDb();
