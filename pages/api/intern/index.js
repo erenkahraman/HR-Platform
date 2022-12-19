@@ -9,7 +9,6 @@ export default async function handler(req, res) {
   const { method } = req;
 
   // Token CHECK
-  /*
   let token = req.query.token
     ? req.query.token
     : req.body.token
@@ -20,7 +19,7 @@ export default async function handler(req, res) {
   } catch (e) {
     console.error(e);
     res.status(401).json("Unauthorized User");
-  }*/
+  }
   // Token CHECK
 
   const db = await getMongoDb();
@@ -65,6 +64,19 @@ export default async function handler(req, res) {
     try {
       const intern = await Intern.create(req.body);
       res.status(201).json(intern);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
+  if (method === "PUT") {
+    try {
+      const intern = await Intern.updateOne(
+        { student: req.body.params.id },
+        {
+          status: "Ongoing",
+        }
+      );
+      res.status(200).json(intern.matchedCount);
     } catch (err) {
       res.status(500).json(err);
     }

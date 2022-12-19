@@ -58,6 +58,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
       endDate: event.target.endDate.value,
       department: departments[event.target.department.value].department,
       position: event.target.position.value,
+      status:"Waiting Start Date",
       documents: {
         "Intern Development Plan": "Not Submitted",
         "learning Agreement After": "Not Submitted",
