@@ -1,13 +1,5 @@
 import { Circle } from "@mui/icons-material";
-import {
-  ArrowRightAlt,
-  AssignmentTurnedInOutlined,
-  CheckCircleOutline,
-  MoreHoriz,
-  WorkOutline,
-} from "@mui/icons-material";
 import { ApplicantDocumentList } from "../../components/ApplicantDocumentList";
-import { DocumentList } from "../../components/DocumentList";
 
 export default function Documents() {
   return (

@@ -310,7 +310,15 @@ export default function ApplicantsList({ students }) {
                                 className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
                                 // onClick={clicked}
                               >
-                                Edit
+                                <Link
+                                  href={{
+                                    pathname: "/applicants/new",
+                                    query: { student: JSON.stringify(student) },
+                                  }}
+                                  as={`/applicants/student/${student.firstName}_${student.lastName}`}
+                                >
+                                  Edit
+                                </Link>
                               </button>
                             </div>
 

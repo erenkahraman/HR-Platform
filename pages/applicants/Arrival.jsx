@@ -243,14 +243,14 @@ export default function ApplicantsList() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.applicant.arrivalTime || "Uknown"}
+                        {student.applicant.arrivalTime || "Not Set"}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         {student.applicant.arrivalCity}
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.applicant.pickUpBy}
+                        {student.applicant.pickUpBy || "Not Set"}
                       </td>
                     </tr>
                   ))}

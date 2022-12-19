@@ -57,6 +57,7 @@ const DocumentList = () => {
           config
         );
         setStudents(data);
+        console.log(data);
         setOpen(false);
       } catch (e) {
         console.error(e);

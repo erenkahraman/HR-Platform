@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const { method } = req;
 
   // Token CHECK
-  /*
+
   let token = req.query.token
     ? req.query.token
     : req.body.token
@@ -20,7 +20,6 @@ export default async function handler(req, res) {
     console.error(e);
     res.status(401).json("Unauthorized User");
   }
-  */
   // Token CHECK
 
   const db = await getMongoDb();
@@ -47,37 +46,37 @@ export default async function handler(req, res) {
             $set: {
               "applicant.applicationDate": {
                 $dateToString: {
-                  format: "%d/%m/%Y",
+                  format: "%m/%d/%Y",
                   date: "$applicant.applicationDate",
                 },
               },
               "applicant.startDate": {
                 $dateToString: {
-                  format: "%d/%m/%Y",
+                  format: "%m/%d/%Y",
                   date: "$applicant.startDate",
                 },
               },
               "applicant.endDate": {
                 $dateToString: {
-                  format: "%d/%m/%Y",
+                  format: "%m/%d/%Y",
                   date: "$applicant.endDate",
                 },
               },
               "applicant.hrInterviewDate": {
                 $dateToString: {
-                  format: "%d/%m/%Y",
+                  format: "%m/%d/%Y",
                   date: "$applicant.hrInterviewDate",
                 },
               },
               "applicant.ceoInterviewDate": {
                 $dateToString: {
-                  format: "%d-%m-%Y",
+                  format: "%m/%d/%Y",
                   date: "$applicant.ceoInterviewDate",
                 },
               },
               dateOfBirth: {
                 $dateToString: {
-                  format: "%d/%m/%Y",
+                  format: "%m/%d/%Y",
                   date: "$dateOfBirth",
                 },
               },
