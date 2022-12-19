@@ -13,12 +13,18 @@ import axios from "axios";
 import cookie from "js-cookie";
 import { useForm, Controller } from "react-hook-form";
 import LoadingState from "../../components/Utils/LoadingState";
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function ApplicantsNew() {
   // get dprtmnts from DB
   const [dbDepartment, setDbDepartment] = useState();
   //Loading model useState
   const [open, setOpen] = useState(false);
+  //update alert
+  const [alertOpen, setAlertOpen] = useState(false);
 
   // get positions from DB when choosing positions
   const [positions, setPositions] = useState();
@@ -222,7 +228,7 @@ export default function ApplicantsNew() {
     } catch (error) {
       console.error(error);
     }
-    router.push("/applicants/list");
+    setAlertOpen(true);
     setOpen(false);
   };
 
@@ -930,6 +936,26 @@ export default function ApplicantsNew() {
                   </div>
                 </div>
 
+                <Collapse in={alertOpen}>
+                  <Alert
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setAlertOpen(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                  >
+                    Student information has been updated{" "}
+                    <strong>Successfully</strong>
+                  </Alert>
+                </Collapse>
                 <div className="flex p-4 gap-4">
                   <button
                     type="submit"

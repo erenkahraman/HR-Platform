@@ -236,11 +236,21 @@ export default function InternList() {
                         <div className="h-48 w-52 ml-5...">
                           <div className="flex flex-col ml-8 ">
                             <div>
-                              <Link href="/applicants/edit">
-                                <button className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]">
+                              <button
+                                type="submit"
+                                className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
+                                // onClick={clicked}
+                              >
+                                <Link
+                                  href={{
+                                    pathname: "/applicants/new",
+                                    query: { student: JSON.stringify(student) },
+                                  }}
+                                  as={`/interns/${student.firstName}_${student.lastName}`}
+                                >
                                   Edit
-                                </button>
-                              </Link>
+                                </Link>
+                              </button>
                             </div>
 
                             <div>

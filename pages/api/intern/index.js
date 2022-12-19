@@ -1,6 +1,7 @@
 import { getMongoDb } from "../../../util/mongodb";
 import Intern from "../../../models/intern";
 import dbConnect from "../../../util/mongodb";
+import Applicant from "../../../models/applicant";
 import Student from "../../../models/student";
 import { tokenCheckFunction } from "../auth/tokenCheck";
 
@@ -40,7 +41,18 @@ export default async function handler(req, res) {
             },
           },
           {
+            $lookup: {
+              from: Applicant.collection.name,
+              localField: "applicant",
+              foreignField: "_id",
+              as: "applicant",
+            },
+          },
+          {
             $unwind: "$intern",
+          },
+          {
+            $unwind: "$applicant",
           },
         ])
         .toArray();
