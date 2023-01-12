@@ -1,8 +1,6 @@
 import { Circle } from "@mui/icons-material";
 import { IntersDocumentList } from "../../components/IntersDocumentList";
 
-
-
 export default function Documents() {
   return (
     <div className="flex flex-col w-full gap-2">

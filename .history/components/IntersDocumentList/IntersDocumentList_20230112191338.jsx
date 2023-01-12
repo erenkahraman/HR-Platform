@@ -1,5 +1,4 @@
 import { CheckCircleOutline, WorkOutline } from "@mui/icons-material";
-import UploadIcon from '@mui/icons-material/Upload';
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Tooltip, Button } from "@material-tailwind/react";
@@ -8,9 +7,6 @@ import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
-import { ArrowRightAlt } from "@mui/icons-material";
-import DownloadingIcon from '@mui/icons-material/Downloading';
-
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
@@ -32,41 +28,13 @@ const DocumentListContent = ({ title, status }) => {
     return result;
   };
 
-
-  // const openFileDialog = () => {
-  //   document.getElementById("file-upload").click();
-  // };
-
-
-  // const handleFileUpload = (e) => {
-  //   const fileUploaded = e.target.files[0];
-  //   console.log(fileUploaded);
-  // };
-
-
   return (
     <div className={Border()}>
-      <div className="text-[12px] ">{title}</div>
-      <div className="d-flex align-items-center">
-      <button
-      // handleFileChange={handleFileUpload}
-      // onClick={openFileDialog}
-      className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
-          <UploadIcon className="mx-2"/>
-          <span className="mx-2 label text-blue-600 hidden">Upload</span>
-        </button>
-        <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
-          <DownloadingIcon className="mx-2"/>
-          <span className="mx-2 label text-blue-600 hidden">Download</span>
-          
-        </button>
-      </div>
+      <div className="text-[10px] ">{title}</div>
+      <CheckCircleOutline className="text-sm" />
     </div>
   );
 };
-
-
-
 
 const DocumentList = () => {
   const [open, setOpen] = useState(false);
@@ -181,15 +149,6 @@ const DocumentList = () => {
               <div className="flex items-center gap-1 text-xs font-light text-gray-500">
                 <p>Starts on {student.intern.startDate}</p>
               </div>
-              <div className="flex cursor-pointer">
-              {/* Bottom Right */}
-              <div className="py-1 px-2 text-xs text-blue-900">
-                View All Documents
-              </div>
-              <ArrowRightAlt />
-              
-            </div>
-              
             </div>
           </div>
         ))

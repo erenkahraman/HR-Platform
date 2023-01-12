@@ -1,6 +1,7 @@
 import { Circle } from "@mui/icons-material";
 import { IntersDocumentList } from "../../components/IntersDocumentList";
-
+import { useAuth } from "../../contexts/AuthContext";
+import { useInterns } from "../../contexts/InternsContext";
 
 
 export default function Documents() {

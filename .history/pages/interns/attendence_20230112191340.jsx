@@ -38,9 +38,6 @@ function Attendence() {
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
 
-
-
-
   useEffect(() => {
     setLoading(true);
     const asyncRequest = async () => {
@@ -64,8 +61,6 @@ function Attendence() {
     };
     asyncRequest();
   }, []);
-
-  
 
   const save = (intern) => {
     setOpenAlert(false);
@@ -91,9 +86,7 @@ function Attendence() {
                   headers: {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
-                    
                   },
-                  
                   body: JSONintern,
                 };
                 await fetch(endpoint, options);
@@ -115,9 +108,6 @@ function Attendence() {
   const clicked = () => {
     setAttendanceEditModel(true);
   };
-
-    
-
 
   const disableStatus = (intern, dt) => {
     if (
@@ -143,13 +133,6 @@ function Attendence() {
     );
   if (!data) return <p>No profile data</p>;
 
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today = yyyy + '-' + mm + '-' + dd;
-    console.log(today);
-
   return (
     <section className="relative w-full">
       <Backdrop
@@ -167,7 +150,6 @@ function Attendence() {
                 <h3 className="font-semibold text-2xl">Intern Attendance</h3>
               </div>
             </div>
-            
             <div className="flex gap-2">
               <Link href="/interns/monthAttendance">
                 <span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
@@ -211,16 +193,6 @@ function Attendence() {
                   />
                 </div>
               </form>
-              <div className="relative"  >
-              <button 
-              onClick={(student) => save(student.intern)}
-              title="Save"
-              className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-              <CheckCircle className="text-m py-1 " 
-              />
-                Save All
-              </button>
-            </div>            
             </div>
           </div>
           <Collapse in={openAlert}>
@@ -321,17 +293,11 @@ function Attendence() {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <input
                           type="date"
-                          value={today} 
-                          onChange={(e) => {
+                          className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          onInput={(e) => {
                             setDate(e.target.value);
-                            console.log(date);
-                          }}
-                          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          onClick={(e) => {
-                            setDate(e.target.value);
-                            console.log(date);
-
-
+                            disableStatus(student.intern, e.target.value);
+                            setStatus("");
                           }}
                         ></input>
                       </td>
