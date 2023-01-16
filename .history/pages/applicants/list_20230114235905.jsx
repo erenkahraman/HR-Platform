@@ -218,7 +218,7 @@ export default function ApplicantsList({ students }) {
                       Full Name
                     </th>
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
-                      HR Interview
+                      Applied On
                     </th>
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                       Department
@@ -226,7 +226,9 @@ export default function ApplicantsList({ students }) {
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                       Position
                     </th>
-                    
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                      Interview Date
+                    </th>
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                       Completion{" "}
                     </th>

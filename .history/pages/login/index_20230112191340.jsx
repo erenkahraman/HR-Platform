@@ -118,7 +118,7 @@ export default function Login() {
             </div>
           </div>
 
-          {/* <div className="flex flex-row items-center sm:ml-6">
+          <div className="flex flex-row items-center sm:ml-6">
             <input
               id="link-checkbox"
               type="checkbox"
@@ -133,7 +133,7 @@ export default function Login() {
               <a className="text-blue-600 hover:underline"> terms and conditions</a>
               .
             </label>
-          </div> */}
+          </div>
 
           {/* Submit Button */}
           <div className="w-full flex flex-col items-center gap-1 sm:w-screen sm:ml-44">

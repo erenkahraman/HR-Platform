@@ -121,8 +121,7 @@ function Attendence() {
       // update attendance data for each intern here
       return intern;
     });
-
-
+  
     setLoading(true);
     const asyncRequest = async () => {
       try {
@@ -146,7 +145,6 @@ function Attendence() {
     asyncRequest();
   };
 
-  
 
   const disableStatus = (intern, dt) => {
     if (

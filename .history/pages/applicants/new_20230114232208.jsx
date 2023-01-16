@@ -220,12 +220,12 @@ export default function ApplicantsNew() {
     setAddPositionModal(false);
   };
 
-  var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today = yyyy + '-' + mm + '-' + dd;
-    console.log(today);
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
+  const today = new Date(day, month, year);
+  const defaulValue = { startDate: today, endDate: today };
 
   
 
@@ -394,7 +394,6 @@ export default function ApplicantsNew() {
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                               value={value || null}
-                              inputFormat="dd/MM/yyyy"
                               onChange={(date) => {
                                 onChange(date?.isValid ? date : null);
                               }}
@@ -537,7 +536,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -568,7 +566,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -603,7 +600,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -730,7 +726,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -764,7 +759,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"  
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}

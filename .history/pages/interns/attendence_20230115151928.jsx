@@ -121,8 +121,7 @@ function Attendence() {
       // update attendance data for each intern here
       return intern;
     });
-
-
+  
     setLoading(true);
     const asyncRequest = async () => {
       try {
@@ -146,7 +145,6 @@ function Attendence() {
     asyncRequest();
   };
 
-  
 
   const disableStatus = (intern, dt) => {
     if (
@@ -242,7 +240,7 @@ function Attendence() {
               </form>
               <div className="relative"  >
               <button 
-              onClick= {saveAll}
+              onClick= {savelAll}
               title="Save"
               className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
               <CheckCircle className="text-m py-1 " 

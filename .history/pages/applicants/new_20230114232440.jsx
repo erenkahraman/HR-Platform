@@ -394,7 +394,6 @@ export default function ApplicantsNew() {
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                               value={value || null}
-                              inputFormat="dd/MM/yyyy"
                               onChange={(date) => {
                                 onChange(date?.isValid ? date : null);
                               }}
@@ -537,7 +536,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -568,7 +566,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -603,7 +600,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -730,7 +726,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -764,7 +759,6 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"  
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -826,7 +820,7 @@ export default function ApplicantsNew() {
                         </label>
                         <input
                           {...register("student.applicant.arrivalTime")}
-                          type="time"
+                          type="date"
                           autoComplete="given-name"
                           className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         />

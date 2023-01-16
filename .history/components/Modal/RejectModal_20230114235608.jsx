@@ -37,9 +37,9 @@ const RejectModal = ({ student, setRejectModal }) => {
             <p className="text-red-500 pl-2 pr-2 text-lg font-bold">reject</p>{" "}
             {student.firstName} {student.lastName} ?
           </div>
-          <div className="">
+          <div className="flex">
             <textarea className="w-full h-32 rounded-md border-2 border-gray-300 p-4" />
-
+            
           </div>
           <div className="flex  flex-row ml-32">
             <button
