@@ -9,7 +9,6 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
- 
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
@@ -22,10 +21,7 @@ const DocumentListContent = ({ title, status }) => {
       ? (statusColor = " bg-red-400 ")
       : status === "Needs Review"
       ? (statusColor = " bg-blue-400 ")
-      : status === "Not Submitted"
-      ? (statusColor = " bg-gray-400 ")
-      : null;
-      
+      : (statusColor = " bg-gray-400 ");
 
     let result =
       "flex flex-col items-center px-2 py-1 w-full gap-1 text-white " +
@@ -34,28 +30,65 @@ const DocumentListContent = ({ title, status }) => {
     return result;
   };
 
-  const [file , setFile] = useState(null);
+  const state = {
+    file: null
+  }
 
-  const handleUpload = (e) => {
-    const file = e.target.files[0];
-    setFile(file);
-    console.log(file);
-  };
+  const handleFile = (e) => {
+    let file = e.target.files[0];
+    this.setState({file: e.target.files[0]})
+  }
 
-  const handleFileUpload = () => {
-    const formData = new FormData();
-    formData.append("file", file);
-    axios
+  handleUpload = (e) => {
+    let formData = new FormData();
+    let file = this.state.file;
     
-      .post("http://localhost:5000/api/applicant/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      });
-  };  
+    formData.append('file', file);
+    formData.append('name', 'some value user types');
+
+    axios({
+      method: 'post',
+      url: 'http://localhost:5000/api/applicant/upload',
+      headers: {
+        'authorization': 'Bearer ' + cookie.get('token'),
+      },
+      data: formData
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+
+
+
+  // const [file, setFile] = useState();
+
+
+  // const handleFile = (e) => {
+  //   const file = e.target.files[0];
+  //   console.log(file);
+  // };
+
+  // const handleFileUpload = () => {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   axios
+
+  //     .post("http://localhost:5000/api/applicant/upload", formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  // };
+
+  
 
   return (
     <div className={Border()}>
@@ -67,21 +100,16 @@ const DocumentListContent = ({ title, status }) => {
         </form> */}
       { <button
       className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-      onClick={handleFileUpload}
+      onClick={handleUpload}
       >
           <UploadIcon className="mx-2"/>
           <span className="mx-2 label text-blue-600 hidden">Upload</span>
         </button> }
-        <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-        onClick={() => {
-        status === "Incorrect" ? alert("Please upload the correct document") : null
-        status === "Needs Review" ? alert("Please upload the correct document") : null
-        status === "Not Submitted" ? alert("Please upload the correct document") : null
-      }}
-      >
-    <DownloadingIcon className="mx-2"/>
-    <span className="mx-2 label text-blue-600 hidden">Download</span>
-</button>
+        <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
+          <DownloadingIcon className="mx-2"/>
+          <span className="mx-2 label text-blue-600 hidden">Download</span>
+          
+        </button>
       </div>
     </div>
   );

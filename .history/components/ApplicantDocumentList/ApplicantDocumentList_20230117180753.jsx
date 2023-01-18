@@ -9,7 +9,6 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
- 
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
@@ -76,7 +75,6 @@ const DocumentListContent = ({ title, status }) => {
         onClick={() => {
         status === "Incorrect" ? alert("Please upload the correct document") : null
         status === "Needs Review" ? alert("Please upload the correct document") : null
-        status === "Not Submitted" ? alert("Please upload the correct document") : null
       }}
       >
     <DownloadingIcon className="mx-2"/>

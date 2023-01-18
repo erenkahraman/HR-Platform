@@ -9,7 +9,6 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
- 
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
@@ -22,10 +21,7 @@ const DocumentListContent = ({ title, status }) => {
       ? (statusColor = " bg-red-400 ")
       : status === "Needs Review"
       ? (statusColor = " bg-blue-400 ")
-      : status === "Not Submitted"
-      ? (statusColor = " bg-gray-400 ")
-      : null;
-      
+      : (statusColor = " bg-gray-400 ");
 
     let result =
       "flex flex-col items-center px-2 py-1 w-full gap-1 text-white " +
@@ -76,7 +72,9 @@ const DocumentListContent = ({ title, status }) => {
         onClick={() => {
         status === "Incorrect" ? alert("Please upload the correct document") : null
         status === "Needs Review" ? alert("Please upload the correct document") : null
-        status === "Not Submitted" ? alert("Please upload the correct document") : null
+        status === "Correct" ? alert("Document is already uploaded") : null
+        status === "Not Uploaded" ? alert("Please upload the document") : null
+        
       }}
       >
     <DownloadingIcon className="mx-2"/>

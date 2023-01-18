@@ -9,7 +9,6 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
- 
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
