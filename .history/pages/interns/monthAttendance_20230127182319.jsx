@@ -2,9 +2,17 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UndoIcon from '@mui/icons-material/Undo';
 import { Link } from 'react-bootstrap-icons';
+import { useState } from 'react';
 
 
 const attendence = () => {
+	const [name , setName] = useState('');
+	const [date , setDate] = useState('');
+	const [status , setStatus] = useState('');
+	
+
+	
+
 	return (
 		<section className="w-full">
 			<div className=" mb-12">
@@ -138,7 +146,7 @@ const attendence = () => {
 							<tbody className="divide-y">
 								<tr>
 									<td className="align-middle border border-solid py-3 pl-2 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap text-left">
-										<div className="font-bold"> Alessio Rocco </div>
+										<div className="font-bold"> {name} </div>
 									</td>
 
 									<td className="align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap text-left">

@@ -2,9 +2,65 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UndoIcon from '@mui/icons-material/Undo';
 import { Link } from 'react-bootstrap-icons';
+import { useState } from 'react';
+import axios from 'axios';
+import { useEffect } from 'react';
+
+
+
 
 
 const attendence = () => {
+	const [file, setFile] = useState(null);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(null);
+	const [success, setSuccess] = useState(null);
+	const [data, setData] = useState(null);
+	const [month, setMonth] = useState(null);
+	const [year, setYear] = useState(null);
+	const [interns , setInterns] = useState(null);
+	
+
+	const intern = {
+		month: month,
+		year: year,
+	};
+	const student = {
+		month: month,
+		year: year,
+	};
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:5000/api/interns')
+			.then((res) => {
+				setInterns(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
+
+	const handleUpload = (e) => {
+		const file = e.target.files[0];
+		setFile(file);
+		console.log(file);
+	};
+
+	const handleFileUpload = () => {
+		const formData = new FormData();
+		formData.append('file', file);
+		axios
+			.post('http://localhost:5000/api/intern/upload', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			})
+			.then((res) => {
+				console.log(res);
+			});
+	};
+
 	return (
 		<section className="w-full">
 			<div className=" mb-12">
@@ -37,7 +93,7 @@ const attendence = () => {
 						<table className="items-center w-full border-collapse bg-white">
 							{/* Table Head */}
 							<thead>
-								<tr>
+								<tr key={student.intern._id}>
 									<th className="align-middle border border-solid py-3 pl-1 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
 										<ArrowDownwardIcon />INTERN / DATE <ArrowForwardIcon />
 									</th>

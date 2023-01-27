@@ -1,7 +1,312 @@
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UndoIcon from '@mui/icons-material/Undo';
+import { useEffect } from 'react';
 import { Link } from 'react-bootstrap-icons';
+
+function prevAttendance(){
+	const [data, setData] = useState([]);
+	const [isloading, setLoading] = useState(true);
+	const [date, setDate] = useState("");
+	const [status, setStatus] = useState("");
+	const [intern, setIntern] = useState();
+	const [open, setOpen] = useState(false);
+	const [openAlert, setOpenAlert] = useState(false);
+	const [openAlertIncludedDate, setOpenAlertIncludedDate] = useState(false);
+	const [editAttendanceModel, setAttendanceEditModel] = useState(false);
+	const [dateIncluded, setDateIncluded] = useState(false);
+	const token = cookie.get("token");
+	const [searchedVal, setSearchedVal] = useState("");
+	
+	const { filteredData } = useTableSearch({ data, searchedVal });
+	
+	
+}
+
+useEffect (() => {
+	setOpen(true);
+	const asyncRequest = async () => {
+		try {
+			const config = {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			};
+			const { data } = await axios.get(
+				`/api/intern/attendance`,
+				{ params: { token: token } },
+				config
+			);
+			setData(data);
+			setLoading(false);
+			setOpen(false);
+		} catch (e) {
+			console.error(e);
+			setLoading(false);
+			setOpen(false);
+		}
+	};
+	asyncRequest();
+}, []);
+
+setOpen(true);
+const asyncRequest = async () => {
+	try {
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+		const { data } = await axios.get(
+			`/api/intern/attendance`,
+			{ params: { token: token } },
+			config
+		);
+		setData(data);
+		setLoading(false);
+		setOpen(false);
+	} catch (e) {
+		console.error(e);
+		setLoading(false);
+		setOpen(false);
+	}
+};
+asyncRequest();
+
+const disableStatus = (status) => {
+	if (status === "Present") {
+		return false;
+	} else {
+		return true;
+	}
+};
+
+const handleEditAttendance = (id, date, status, intern) => {
+	setDate(date);
+	setStatus(status);
+	setIntern(intern);
+	setAttendanceEditModel(true);
+};
+
+const handleEditAttendanceSubmit = async (e) => {
+	e.preventDefault();
+	setOpen(true);
+	try {
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+		const { data } = await axios.put(
+			`/api/intern/attendance`,
+			{ date, status, intern },
+			config
+		);
+		setOpen(false);
+		setAttendanceEditModel(false);
+		setOpenAlert(true);
+	} catch (e) {
+		console.error(e);
+		setOpen(false);
+		setAttendanceEditModel(false);
+	}
+};
+
+const handleDeleteAttendance = async (id) => {
+	setOpen(true);
+	try {
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+		const { data } = await axios.delete(
+			`/api/intern/attendance`,
+			{ params: { id: id } },
+			config
+		);
+		setOpen(false);
+		setOpenAlert(true);
+	} catch (e) {
+		console.error(e);
+		setOpen(false);
+	}
+};
+
+const handleSearch = (e) => {
+	setSearchedVal(e.target.value);
+};
+
+const handleUndo = async () => {
+	setOpen(true);
+	try {
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+		const { data } = await axios.get(
+			`/api/intern/attendance`,
+			{ params: { token: token } },
+			config
+		);
+		setData(data);
+		setLoading(false);
+		setOpen(false);
+	} catch (e) {
+		console.error(e);
+		setLoading(false);
+		setOpen(false);
+	}
+};
+
+const handleDateIncluded = async (date) => {
+	setOpen(true);
+	try {
+		const config = {
+			headers: {
+
+				"Content-Type": "application/json",
+			},
+		};
+		const { data } = await axios.get(
+			`/api/intern/attendance`,
+			{ params: { date: date } },
+			config
+		);
+			
+		if (data.length > 0) {
+			setDateIncluded(true);
+			setOpenAlertIncludedDate(true);
+		} else {
+			setDateIncluded(false);
+			setOpenAlertIncludedDate(false);
+		}	
+		setData(data);
+		setLoading(false);
+		setOpen(false);
+	} catch (e) {
+		console.error(e);
+		setLoading(false);
+		setOpen(false);
+	}
+};
+
+const handleDateIncludedClose = () => {
+	setOpenAlertIncludedDate(false);
+};
+
+return (
+	<>
+		<Dialog
+
+			open={open}
+			TransitionComponent={Transition}
+			keepMounted
+			onClose={handleClose}
+			aria-labelledby="alert-dialog-slide-title"
+			aria-describedby="alert-dialog-slide-description"
+		>
+			<DialogTitle id="alert-dialog-slide-title">
+				{"Loading..."}
+			</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-slide-description">
+					<CircularProgress />
+				</DialogContentText>
+			</DialogContent>
+		</Dialog>
+		<Dialog
+
+			open={openAlert}
+			TransitionComponent={Transition}
+			keepMounted
+			onClose={handleClose}
+			aria-labelledby="alert-dialog-slide-title"
+			aria-describedby="alert-dialog-slide-description"
+		>
+			<DialogTitle id="alert-dialog-slide-title">
+				{"Success"}
+			</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-slide-description">
+					Successfully Updated
+				</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={handleUndo} color="primary">
+					Undo
+				</Button>
+				<Button onClick={handleClose} color="primary">
+					Close
+				</Button>
+			</DialogActions>
+		</Dialog>
+		<Dialog
+
+			open={openAlertIncludedDate}
+			TransitionComponent={Transition}
+			keepMounted
+			onClose={handleDateIncludedClose}
+			aria-labelledby="alert-dialog-slide-title"
+			aria-describedby="alert-dialog-slide-description"
+		>
+			<DialogTitle id="alert-dialog-slide-title">
+				{"Warning"}
+			</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-slide-description">
+					Attendance already included for this date
+				</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={handleDateIncludedClose} color="primary">
+					Close
+				</Button>
+			</DialogActions>
+		</Dialog>
+		<div className="flex flex-wrap">
+			<div className="w-full mb-12 px-4">
+				<CustomTabs
+
+					title="Attendance:"
+					headerColor="blueGray"
+					tabs={[
+						{
+							tabName: "Attendance",
+							tabIcon: CalendarToday,
+							tabContent: (
+								<Attendance
+									data={data}
+									loading={loading}
+									handleDateIncluded={handleDateIncluded}
+									dateIncluded={dateIncluded}
+								/>
+							),
+						},
+						{
+							tabName: "Month Attendance",
+							tabIcon: CalendarToday,
+							tabContent: (
+								<MonthAttendance
+
+									data={data}
+									loading={loading}
+									handleDateIncluded={handleDateIncluded}
+									dateIncluded={dateIncluded}
+								/>
+							),
+						},
+					]}
+				/>
+			</div>
+		</div>
+	</>
+);
+
+
+
+
 
 
 const attendence = () => {

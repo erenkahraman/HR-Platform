@@ -9,6 +9,8 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
+import swal from 'sweetalert2';
+
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
@@ -32,6 +34,7 @@ const DocumentListContent = ({ title, status }) => {
       statusColor;
     return result;
   };
+  
 
   const [file , setFile] = useState(null);
 
@@ -73,9 +76,14 @@ const DocumentListContent = ({ title, status }) => {
         </button> }
         <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
         onClick={() => {
-        status === "Incorrect" ? alert("Please upload the correct document") : null
-        status === "Needs Review" ? alert("Please upload the correct document") : null
-        status === "Not Submitted" ? alert("Please upload the correct document") : null
+        if (status === "Incorrect" || status === "Needs Review" || status === "Not Submitted") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please upload the correct document',
+                footer: '<a href="">Why do I have this issue?</a>'
+            })
+        }
       }}
       >
     <DownloadingIcon className="mx-2"/>

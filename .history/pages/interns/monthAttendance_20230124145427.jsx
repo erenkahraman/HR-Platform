@@ -2,9 +2,76 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UndoIcon from '@mui/icons-material/Undo';
 import { Link } from 'react-bootstrap-icons';
+import {
+	Backdrop,
+	CircularProgress,
+	Alert,
+	Collapse,
+	IconButton,
+  } from "@mui/material";
+  import CloseIcon from "@mui/icons-material/Close";
+  import Link from "next/link";
+  import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+  import { confirmAlert } from "react-confirm-alert";
+  import SaveIcon from "@mui/icons-material/Save";
+  import "react-confirm-alert/src/react-confirm-alert.css";
+  // import { ToastContainer, toast } from 'react-toastify';
+  // import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
+  import { useState, useEffect } from "react";
+  import reactSelect from "react-select";
+  import { CheckCircle } from "@mui/icons-material";
+  import EditAttendance from "../../components/Modal/EditAttendance";
+  import axios from "axios";
+  import cookie from "js-cookie";
+  import useTableSearch from "../../hooks/useTableSearch";
+
+  const MonthAttendance = () => {
+  const [data, setData] = useState([]);
+  const [isloading, setLoading] = useState(true);
+  const [date, setDate] = useState("");
+  const [status, setStatus] = useState("");
+  const [intern, setIntern] = useState();
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [openAlertIncludedDate, setOpenAlertIncludedDate] = useState(false);
+  const [editAttendanceModel, setAttendanceEditModel] = useState(false);
+  const [dateIncluded, setDateIncluded] = useState(false);
+  const token = cookie.get("token");
+
+  const [searchedVal, setSearchedVal] = useState("");
+  const { filteredData } = useTableSearch({ data, searchedVal });
 
 
-const attendence = () => {
+  useEffect(() => {
+	const getInterns = async () => {
+		const res = await axios.get(
+		"https://internship-management-api.vercel.app/api/interns",
+		{
+			headers: {
+			Authorization: token,
+			},
+		}
+		);
+		setIntern(res.data);
+		setLoading(false);
+	};
+	getInterns();
+	  }, []);
+
+	    const handleOpen = () => {
+		setOpen(true);
+		};
+		const handleClose = () => {
+		setOpen(false);
+		};
+
+		const handleOpenAlert = () => {
+		setOpenAlert(true);
+		};
+
+		
+
+
 	return (
 		<section className="w-full">
 			<div className=" mb-12">
@@ -38,8 +105,7 @@ const attendence = () => {
 							{/* Table Head */}
 							<thead>
 								<tr>
-									<th className="align-middle border border-solid py-3 pl-1 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-										<ArrowDownwardIcon />INTERN / DATE <ArrowForwardIcon />
+									<th className="align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
 									</th>
 									<th className="align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
 										1
@@ -273,4 +339,4 @@ const attendence = () => {
 	);
 };
 
-export default attendence;
+export default MonthAttendance;

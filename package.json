@@ -57,6 +57,8 @@
     "reactjs-popup": "^2.0.5",
     "slate-react": "^0.82.1",
     "swagger-ui-react": "^4.15.5",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.7.0",
     "tippy.js": "^6.3.7",
     "validator": "^13.7.0"
   },

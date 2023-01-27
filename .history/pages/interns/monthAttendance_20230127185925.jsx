@@ -2,9 +2,38 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UndoIcon from '@mui/icons-material/Undo';
 import { Link } from 'react-bootstrap-icons';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { axios } from 'axios';
 
 
 const attendence = () => {
+	  const [attendence, setAttendence] = useState([]);
+	  const [loading, setLoading] = useState(true);
+	  const [error, setError] = useState(null);
+	  const [search, setSearch] = useState("");
+	  const [filteredAttendence, setFilteredAttendence] = useState([]);
+	  const [isSearch, setIsSearch] = useState(false);
+	  const [intern , setIntern] = useState(null);
+	  const [file , setFile] = useState(null);
+	 
+	  useEffect(() => {
+			    axios
+				.get("http://localhost:5000/api/intern/attendence")
+				.then((res) => {
+					setAttendence(res.data);
+					setLoading(false);
+				})
+				.catch((err) => {
+					setError(err);
+					setLoading(false);
+				});
+	  		}, []);
+
+
+
+
+
 	return (
 		<section className="w-full">
 			<div className=" mb-12">
@@ -136,9 +165,9 @@ const attendence = () => {
 
 							{/* Table Body */}
 							<tbody className="divide-y">
-								<tr>
+								<tr key>
 									<td className="align-middle border border-solid py-3 pl-2 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap text-left">
-										<div className="font-bold"> Alessio Rocco </div>
+										<div className="font-bold">{intern.name} </div>
 									</td>
 
 									<td className="align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap text-left">

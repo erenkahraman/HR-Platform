@@ -20,7 +20,6 @@ import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
 import useTableSearch from "../../hooks/useTableSearch";
-import InfoIcon from '@mui/icons-material/Info';
 
 function Attendence() {
   //  const notify =() => toast ("Please check if everything before saving!");
@@ -435,7 +434,7 @@ function Attendence() {
                               </button>
                             </div>
                             <button title="Details">
-                              <InfoIcon
+                              <SaveIcon
                                 className="h-6 fill-[#0b3768] hover:fill-[#15803d]"
                                 onClick={(e) =>
                                   setAttendanceEditModel(student.intern._id)

@@ -4,8 +4,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { confirmAlert } from "react-confirm-alert";
 import { Backdrop, CircularProgress } from "@mui/material";
 import cookie from "js-cookie";
-import moment from "moment";
-
 
 const EditAttendance = ({ intern, setModel }) => {
   const [dates, setDates] = useState([]);
@@ -124,9 +122,10 @@ const EditAttendance = ({ intern, setModel }) => {
                     ) : (
                       dates.map((date) => (
                         <li className="flex items-center space-x-3">
-                          <label>{moment(date).format("dd/MM/yyyy")}</label>
+                          <label>{date } </label>{" "}
                           <ClearIcon
                             color="error"
+                            inputFormat="dd/MM/yyyy"
                             fontSize="small"
                             onClick={(e) => {
                               deleteDate(date);

@@ -3,7 +3,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UndoIcon from '@mui/icons-material/Undo';
 import { Link } from 'react-bootstrap-icons';
 
-
 const attendence = () => {
 	return (
 		<section className="w-full">

@@ -2,9 +2,57 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import UndoIcon from '@mui/icons-material/Undo';
 import { Link } from 'react-bootstrap-icons';
+import { useState } from 'react';
+import axios from "axios";
+import cookie from "js-cookie";
 
 
 const attendence = () => {
+	const [data, setData] = useState([]);
+  const [isloading, setLoading] = useState(true);
+  const [date, setDate] = useState("");
+  const [status, setStatus] = useState("");
+  const [intern, setIntern] = useState();
+  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [openAlertIncludedDate, setOpenAlertIncludedDate] = useState(false);
+  const [editAttendanceModel, setAttendanceEditModel] = useState(false);
+  const [dateIncluded, setDateIncluded] = useState(false);
+  const token = cookie.get("token");
+
+  const [searchedVal, setSearchedVal] = useState("");
+  const { filteredData } = useTableSearch({ data, searchedVal });
+
+
+
+
+  useEffect(() => {
+    setLoading(true);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/intern`,
+          { params: { token: token } },
+          config
+        );
+        setData(data);
+        setLoading(false);
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    asyncRequest();
+  }, []);
+	
+
+	
+
 	return (
 		<section className="w-full">
 			<div className=" mb-12">
@@ -138,7 +186,7 @@ const attendence = () => {
 							<tbody className="divide-y">
 								<tr>
 									<td className="align-middle border border-solid py-3 pl-2 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap text-left">
-										<div className="font-bold"> Alessio Rocco </div>
+										<div className="font-bold"> {student.firsName} </div>
 									</td>
 
 									<td className="align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap text-left">
