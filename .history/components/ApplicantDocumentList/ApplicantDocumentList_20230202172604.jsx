@@ -34,7 +34,39 @@ const DocumentListContent = ({ title, status }) => {
     return result;
   };
 
-  
+  const video = ({ src, props}) => {
+  const [isPlaying , setIsPlaying] = useState(false),
+  const [isMuted, setIsMuted] = useState(false);
+  const videoRef = useRef(null);
+
+
+  const playVideo= () => {
+    setIsPlaying(true);
+    videoRef.current.play();
+  }
+
+  const pauseVideo = () => {
+    setIsPlaying(false);
+    videoRef.current.pause();
+  }
+
+  const muteVideo = () => {
+    setIsMuted(true);
+    videoRef.current.muted = true;
+  }
+
+  const unmuteVideo = () => {
+    setIsMuted(false);
+    videoRef.current.muted = false;
+  }
+
+  setIsPlaying = () => {
+    setIsPlaying(true);
+    videoRef.current.play();
+  }
+
+
+
     
 
 
@@ -86,10 +118,9 @@ const DocumentListContent = ({ title, status }) => {
       </button>
       <button
       className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-      onClick={() => { 
-        alert ("Please upload the interview record")
-      }}
-      >
+      onClick={() => {
+        playVideo();
+      }} >
 
       <SlowMotionVideoIcon className="mx-2"/>
       <span className="mx-2 label text-blue-600 hidden">View</span>

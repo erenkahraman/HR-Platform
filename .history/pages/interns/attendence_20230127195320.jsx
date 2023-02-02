@@ -66,7 +66,53 @@ function Attendence() {
     asyncRequest();
   }, []);
 
-  
+  const saveAll = (intern) => {
+    setOpenAlert(false);
+    setOpenAlertIncludedDate(false);
+    setIntern(intern);
+    if (!dateIncluded) {
+      if (status && date) {
+        setOpen(false);
+        confirmAlert({
+          message: "Are you sure you want to save ?",
+          buttons: [
+            {
+              label: "Yes",
+              onClick: async () => {
+                setOpen(true);
+                intern.attendance[status].count++;
+                intern.attendance[status].dates.push(date);
+                intern.token = token;
+                const JSONintern = JSON.stringify(intern);
+                const endpoint = `/api/intern/${intern._id}`;
+                const options = {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    
+                  },
+                  
+                  body: JSONintern,
+                };
+                await fetch(endpoint, options);
+                setOpen(false);
+              },
+            },
+            {
+              label: "No",
+            },
+          ],
+        });
+        setStatus("");
+        setDate("");
+      } else {
+        setOpenAlert(true);
+      }
+    } else setOpenAlertIncludedDate(true);
+  };
+  const clicked = () => {
+    setAttendanceEditModel(true);
 
   const save = (intern) => {
     setOpenAlert(false);
@@ -117,11 +163,11 @@ function Attendence() {
     setAttendanceEditModel(true);
   };
 
-   const saveAll = () => {
-     const updatedInterns = data.map(intern => {
-       // update attendance data for each intern here
-       return intern;
-     });
+  // const saveAll = () => {
+  //   const updatedInterns = data.map(intern => {
+  //     // update attendance data for each intern here
+  //     return intern;
+  //   });
 
 
     setLoading(true);

@@ -117,11 +117,11 @@ function Attendence() {
     setAttendanceEditModel(true);
   };
 
-   const saveAll = () => {
-     const updatedInterns = data.map(intern => {
-       // update attendance data for each intern here
-       return intern;
-     });
+  const saveAll = () => {
+    const updatedInterns = data.map(intern => {
+      // update attendance data for each intern here
+      return intern;
+    });
 
 
     setLoading(true);

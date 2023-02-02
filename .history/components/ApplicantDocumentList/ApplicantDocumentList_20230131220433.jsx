@@ -9,7 +9,7 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
-import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
+
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
@@ -34,30 +34,42 @@ const DocumentListContent = ({ title, status }) => {
     return result;
   };
 
-  
-    
-
 
   const [file, setFile] = useState();
 
-  const handleFile = (e) => {
+  const [HandleFile, setHandleFile] = useState();
+
+  let handleFile = (e) => {
     const file = e.target.files[0];
-    console.log(file);
+    setFile(file);
   };
 
-  const handleFileUpload = () => {
-    const formData = new FormData();
+
+
+
+const handleFileUpload = () => {
+    let file = HandleFile;
+    let title = "test";
+    let formData = new FormData();
+    
     formData.append("file", file);
+    formData.append("title", title);
+
     axios
-      .post("http://localhost:5000/api/applicant/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      url = "http://localhost:5000/api/applicant/upload"
+      method = "POST"
+      data = formData
+      headers = {
+        "Content-Type": "multipart/form-data",
+      }
       .then((res) => {
         console.log(res);
       });
   };
+
+
+
+
 
   return (
     <div className={Border()}>
@@ -67,33 +79,28 @@ const DocumentListContent = ({ title, status }) => {
           <input type="file" onChange={handleFile}/>
           <button onClick={handleFileUpload}>Upload</button>
         </form> */}
-      { <button
-      className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-      onClick={handleFileUpload}
-      >
-          <UploadIcon className="mx-2"/>
-          <span className="mx-2 label text-blue-600 hidden">Upload</span>
-        </button> }
-        <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-        onClick={() => {
-        status === "Incorrect" ? alert("Please upload the correct document") : null
-        status === "Needs Review" ? alert("Please upload the correct document") : null
-        status === "Not Submitted" ? alert("Please upload the correct document") : null
-      }}
+      <input type="file"
+        className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+        onChange={(e) => {
+          handleFile(e)
+        }}
+      />
+      < UploadIcon className="mx-2"/>
+      <span className="mx-2 label text-blue-600 hidden">Upload</span>
+      
+
+        <button 
+        className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+        type = "button"
+        onClick = {() => {
+          handleFileUpload()
+        }  
+
+      }
       >
     <DownloadingIcon className="mx-2"/>
     <span className="mx-2 label text-blue-600 hidden">Download</span>
-      </button>
-      <button
-      className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-      onClick={() => { 
-        alert ("Please upload the interview record")
-      }}
-      >
-
-      <SlowMotionVideoIcon className="mx-2"/>
-      <span className="mx-2 label text-blue-600 hidden">View</span>
-      </button>
+</button>
       </div>
     </div>
   );

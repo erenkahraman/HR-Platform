@@ -117,11 +117,13 @@ function Attendence() {
     setAttendanceEditModel(true);
   };
 
-   const saveAll = () => {
-     const updatedInterns = data.map(intern => {
-       // update attendance data for each intern here
-       return intern;
-     });
+  
+  const saveAll = () => {
+    internData.forEach (intern => {
+      intern.token = token;
+    })
+    const updatedInterns = internData;
+
 
 
     setLoading(true);

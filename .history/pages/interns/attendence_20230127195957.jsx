@@ -66,7 +66,30 @@ function Attendence() {
     asyncRequest();
   }, []);
 
-  
+  const [data, setData] = useState([]); // assume this is your array of intern objects
+
+const handleSaveAll = async () => {
+  setOpen(true); // set your loading state
+  const updatedInterns = data.map(intern => {
+    // update attendance data for each intern here
+    intern.attendance[status].count++;
+    intern.attendance[status].dates.push(date);
+    return intern;
+  });
+
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify(updatedInterns),
+  };
+
+  const response = await fetch("/api/interns", options);
+  const updatedData = await response.json();
+  setData(updatedData); // set your state with the updated data
+  setOpen(false); // set loading state to false
 
   const save = (intern) => {
     setOpenAlert(false);
@@ -117,11 +140,11 @@ function Attendence() {
     setAttendanceEditModel(true);
   };
 
-   const saveAll = () => {
-     const updatedInterns = data.map(intern => {
-       // update attendance data for each intern here
-       return intern;
-     });
+  // const saveAll = () => {
+  //   const updatedInterns = data.map(intern => {
+  //     // update attendance data for each intern here
+  //     return intern;
+  //   });
 
 
     setLoading(true);
@@ -243,7 +266,7 @@ function Attendence() {
               </form>
               <div className="relative"  >
               <button 
-              onClick= {saveAll}
+              onClick= {handleSaveAll}
               title="Save"
               className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
               <CheckCircle className="text-m py-1 " 

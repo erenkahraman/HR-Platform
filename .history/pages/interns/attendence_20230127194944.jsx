@@ -117,11 +117,26 @@ function Attendence() {
     setAttendanceEditModel(true);
   };
 
-   const saveAll = () => {
-     const updatedInterns = data.map(intern => {
-       // update attendance data for each intern here
-       return intern;
-     });
+  const saveAll = async () => {
+    const updatedInterns = data.map(intern => {
+      intern.attendance[status].count++;
+      intern.attendance[status].dates.push(date);
+      intern.token = token;
+      return intern;
+    });
+
+    const JSONupdatedInterns = JSON.stringify(updatedInterns);
+    const endpoint = '/api/intern/';
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSONupdatedInterns,
+    };
+
+    await fetch(endpoint, options);
 
 
     setLoading(true);

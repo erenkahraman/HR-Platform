@@ -253,7 +253,7 @@ export default function ApplicantsList({ students }) {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                       
                       >
-                        {moment(student.applicant.applicantDate).format( "DD/MM/YYYY" )}
+                        {student.applicant.applicationDate}
                         
                       </td>
 

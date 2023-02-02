@@ -34,10 +34,6 @@ const DocumentListContent = ({ title, status }) => {
     return result;
   };
 
-  
-    
-
-
   const [file, setFile] = useState();
 
   const handleFile = (e) => {
@@ -84,16 +80,9 @@ const DocumentListContent = ({ title, status }) => {
     <DownloadingIcon className="mx-2"/>
     <span className="mx-2 label text-blue-600 hidden">Download</span>
       </button>
-      <button
-      className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-      onClick={() => { 
-        alert ("Please upload the interview record")
-      }}
-      >
-
       <SlowMotionVideoIcon className="mx-2"/>
       <span className="mx-2 label text-blue-600 hidden">View</span>
-      </button>
+       
       </div>
     </div>
   );

@@ -87,7 +87,7 @@ const DocumentListContent = ({ title, status }) => {
       <button
       className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
       onClick={() => { 
-        alert ("Please upload the interview record")
+        alert ("Please upload the correct document")
       }}
       >
 
