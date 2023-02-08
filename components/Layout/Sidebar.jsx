@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React from "react";
 
 import CoPresentIcon from "@mui/icons-material/CoPresent";
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { BsArrowLeftShort } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import {
@@ -38,6 +39,12 @@ export default function Sidebar() {
       title: "Profile",
       href: "/Profile/list",
       icon: <GroupOutlined />,
+      isOn: false,
+    },
+    {
+      title: "Email",
+      href: "/email/send-email",
+      icon: <MailOutlineIcon />,
       isOn: false,
     },
     { title: "APPLICANTS", isSeperator: true },
