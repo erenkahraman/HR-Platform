@@ -5,6 +5,7 @@ import React from "react";
 
 import CoPresentIcon from "@mui/icons-material/CoPresent";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import GridViewIcon from '@mui/icons-material/GridView';
 import { BsArrowLeftShort } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
 import {
@@ -80,7 +81,12 @@ export default function Sidebar() {
       icon: <CoPresentIcon />,
       isOn: false,
     },
-
+    {
+      title: "View",
+      href: "/interns/InternViewsAll",
+      icon: <GridViewIcon />,
+      isOn: false,
+    },
     { title: "END INTERNSHIP", isSeperator: true },
     /*{
       title: "List",
