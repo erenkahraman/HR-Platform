@@ -10,6 +10,8 @@ import Modal from "../../components/LiaModal/model3";
 import Link from "next/link";
 import { Tooltip, Button } from "@material-tailwind/react";
 
+import styled from "@material/styled"
+
 export default function ApplicantsList() {
 
 	const [modalOn,setModalOn]=useState(false);
