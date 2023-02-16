@@ -147,7 +147,14 @@ function Attendence() {
      asyncRequest();
    };
 
- 
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+
+    data.forEach((intern) => {
+      disableStatus(intern, e.target.value);
+    });
+  };
+  
 
   const disableStatus = (intern, dt) => {
     if (

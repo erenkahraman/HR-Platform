@@ -41,7 +41,6 @@ function Attendence() {
 
 
 
-
   useEffect(() => {
     setLoading(true);
     const asyncRequest = async () => {
@@ -122,32 +121,89 @@ function Attendence() {
        // update attendance data for each intern here
        return intern;
      });
+
+     const handleClick = () => {  
+      setOpenAlert(false);
+      setOpenAlertIncludedDate(false);
+      setIntern(intern);
+      if (!dateIncluded) {
+        if (status && date) {
+          setOpen(false);
+          confirmAlert({
+            message: "Are you sure you want to save ?",
+            buttons: [
+              {
+                label: "Yes",
+                onClick: async () => {
+                  setOpen(true);
+                  intern.attendance[status].count++;
+                  intern.attendance[status].dates.push(date);
+                  intern.token = token;
+                  const JSONintern = JSON.stringify(intern);
+                  const endpoint = `/api/intern/${intern._id}`;
+                  const options = {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                      "Access-Control-Allow-Origin": "*",
+                      
+                    },
+
+                    body: JSONintern,
+                  };
+                  await fetch(endpoint, options);
+                  setOpen(false);
+                },
+              },
+              {
+                label: "No",
+              },
+            ],
+          });
+          setStatus("");
+          setDate("");
+        } else {
+          setOpenAlert(true);
+        }
+      } else setOpenAlertIncludedDate(true);
+    };
+    const clicked = () => {
+      setAttendanceEditModel(true);
+    };
+
+    const saveAll = () => {
+      const updatedInterns = data.map(intern => {
+        // update attendance data for each intern here
+        return intern;
+      });
+      
      
 
-     setLoading(true);
-     const asyncRequest = async () => {
-       try {
-         const config = {
-           headers: {
-             "Content-Type": "application/json",
-           },
-         };
-         // PUT request to update all interns in the database
-         await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
-         setLoading(false);
-         // Show a success message to the user
-         alert("All changes have been saved!");
-       } catch (e) {
-         console.error(e);
-         setLoading(false);
-         // Show an error message to the user
-         alert("An error occurred while saving the changes. Please try again later.");
-       }
-     };
-     asyncRequest();
-   };
 
- 
+    setLoading(true);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        // PUT request to update all interns in the database
+        await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
+        setLoading(false);
+        // Show a success message to the user
+        alert("All changes have been saved!");
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+        // Show an error message to the user
+        alert("An error occurred while saving the changes. Please try again later.");
+      }
+    };
+    asyncRequest();
+  };
+
+  
 
   const disableStatus = (intern, dt) => {
     if (
@@ -243,7 +299,7 @@ function Attendence() {
               </form>
               <div className="relative"  >
               <button 
-              onClick= {saveAll}
+              onClick={handleClick}
               title="Save"
               className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
               <CheckCircle className="text-m py-1 " 

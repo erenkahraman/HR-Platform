@@ -117,37 +117,59 @@ function Attendence() {
     setAttendanceEditModel(true);
   };
 
-   const saveAll = () => {
-     const updatedInterns = data.map(intern => {
-       // update attendance data for each intern here
-       return intern;
-     });
+  const saveAll = () => {
+    const updatedInterns = data.map(intern => {
+      // update attendance data for each intern here
+      return intern;
+    });
+    
+    setLoading(true);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        // PUT request to update all interns in the database
+        await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
+        setLoading(false);
+        // Show a success message to the user
+        alert("All changes have been saved!");
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+        // Show an error message to the user
+        alert("An error occurred while saving the changes. Please try again later.");
+      }
+    };
+ 
      
 
-     setLoading(true);
-     const asyncRequest = async () => {
-       try {
-         const config = {
-           headers: {
-             "Content-Type": "application/json",
-           },
-         };
-         // PUT request to update all interns in the database
-         await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
-         setLoading(false);
-         // Show a success message to the user
-         alert("All changes have been saved!");
-       } catch (e) {
-         console.error(e);
-         setLoading(false);
-         // Show an error message to the user
-         alert("An error occurred while saving the changes. Please try again later.");
-       }
-     };
-     asyncRequest();
-   };
+    setLoading(true);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        // PUT request to update all interns in the database
+        await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
+        setLoading(false);
+        // Show a success message to the user
+        alert("All changes have been saved!");
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+        // Show an error message to the user
+        alert("An error occurred while saving the changes. Please try again later.");
+      }
+    };
+    asyncRequest();
+  };
 
- 
+  
 
   const disableStatus = (intern, dt) => {
     if (

@@ -41,7 +41,6 @@ function Attendence() {
 
 
 
-
   useEffect(() => {
     setLoading(true);
     const asyncRequest = async () => {
@@ -124,30 +123,31 @@ function Attendence() {
      });
      
 
-     setLoading(true);
-     const asyncRequest = async () => {
-       try {
-         const config = {
-           headers: {
-             "Content-Type": "application/json",
-           },
-         };
-         // PUT request to update all interns in the database
-         await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
-         setLoading(false);
-         // Show a success message to the user
-         alert("All changes have been saved!");
-       } catch (e) {
-         console.error(e);
-         setLoading(false);
-         // Show an error message to the user
-         alert("An error occurred while saving the changes. Please try again later.");
-       }
-     };
-     asyncRequest();
-   };
 
- 
+    setLoading(true);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        // PUT request to update all interns in the database
+        await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
+        setLoading(false);
+        // Show a success message to the user
+        alert("All changes have been saved!");
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+        // Show an error message to the user
+        alert("An error occurred while saving the changes. Please try again later.");
+      }
+    };
+    asyncRequest();
+  };
+
+  
 
   const disableStatus = (intern, dt) => {
     if (
@@ -243,7 +243,7 @@ function Attendence() {
               </form>
               <div className="relative"  >
               <button 
-              onClick= {saveAll}
+              onClick={handleClick}
               title="Save"
               className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
               <CheckCircle className="text-m py-1 " 

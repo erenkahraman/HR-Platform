@@ -20,6 +20,7 @@ import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
 import useTableSearch from "../../hooks/useTableSearch";
+import InfoIcon from '@mui/icons-material/Info';
 
 function Attendence() {
   //  const notify =() => toast ("Please check if everything before saving!");
@@ -121,7 +122,29 @@ function Attendence() {
       // update attendance data for each intern here
       return intern;
     });
-
+    
+    setLoading(true);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        // PUT request to update all interns in the database
+        await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
+        setLoading(false);
+        // Show a success message to the user
+        alert("All changes have been saved!");
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+        // Show an error message to the user
+        alert("An error occurred while saving the changes. Please try again later.");
+      }
+    };
+    asyncRequest();
+     
 
     setLoading(true);
     const asyncRequest = async () => {
@@ -145,31 +168,8 @@ function Attendence() {
     };
     asyncRequest();
   };
-  
-  
-  //   setLoading(true);
-  //   const asyncRequest = async () => {
-  //     try {
-  //       const config = {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       };
-  //       // PUT request to update all interns in the database
-  //       await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
-  //       setLoading(false);
-  //       // Show a success message to the user
-  //       alert("All changes have been saved!");
-  //     } catch (e) {
-  //       console.error(e);
-  //       setLoading(false);
-  //       // Show an error message to the user
-  //       alert("An error occurred while saving the changes. Please try again later.");
-  //     }
-  //   };
-  //   asyncRequest();
-  // };
 
+  
 
   const disableStatus = (intern, dt) => {
     if (
@@ -456,8 +456,8 @@ function Attendence() {
                                 <CheckCircle className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
                               </button>
                             </div>
-                            <button title="Edit">
-                              <SaveIcon
+                            <button title="Details">
+                              <InfoIcon
                                 className="h-6 fill-[#0b3768] hover:fill-[#15803d]"
                                 onClick={(e) =>
                                   setAttendanceEditModel(student.intern._id)

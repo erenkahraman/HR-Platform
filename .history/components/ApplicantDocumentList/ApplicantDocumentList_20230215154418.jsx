@@ -7,6 +7,10 @@ import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
+import DownloadingIcon from '@mui/icons-material/Downloading';
+import UploadIcon from '@mui/icons-material/Upload';
+import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
+import { Modal } from "@material-ui/core";
 
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
@@ -19,7 +23,10 @@ const DocumentListContent = ({ title, status }) => {
       ? (statusColor = " bg-red-400 ")
       : status === "Needs Review"
       ? (statusColor = " bg-blue-400 ")
-      : (statusColor = " bg-gray-400 ");
+      : status === "Not Submitted"
+      ? (statusColor = " bg-gray-400 ")
+      : null;
+      
 
     let result =
       "flex flex-col items-center px-2 py-1 w-full gap-1 text-white " +
@@ -28,10 +35,74 @@ const DocumentListContent = ({ title, status }) => {
     return result;
   };
 
+  
+  const VideoPopup = ({ videoUrl }) => {
+    const [open, setOpen] = useState(false);
+  
+    const handleOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+  };
+
+
+  const [file, setFile] = useState();
+
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+  };
+
+  const handleFileUpload = () => {
+    const formData = new FormData();
+    formData.append("file", file);
+    axios
+      .post("http://localhost:5000/api/applicant/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
   return (
     <div className={Border()}>
-      <div className="text-[10px] ">{title}</div>
-      <CheckCircleOutline className="text-sm" />
+      <div className="text-[12px] ">{title}</div>
+      <div className="d-flex align-items-center">
+        {/* <form className="d-flex align-items-center">
+          <input type="file" onChange={handleFile}/>
+          <button onClick={handleFileUpload}>Upload</button>
+        </form> */}
+      { <button
+      className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+      onClick={handleFileUpload}
+      >
+          <UploadIcon className="mx-2"/>
+          <span className="mx-2 label text-blue-600 hidden">Upload</span>
+        </button> }
+        <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+        onClick={() => {
+        status === "Incorrect" ? alert("Please upload the correct document") : null
+        status === "Needs Review" ? alert("Please upload the correct document") : null
+        status === "Not Submitted" ? alert("Please upload the correct document") : null
+      }}
+      >
+    <DownloadingIcon className="mx-2"/>
+    <span className="mx-2 label text-blue-600 hidden">Download</span>
+      </button>
+      <button
+      className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+      onClick={handleOpen}
+      >
+      <SlowMotionVideoIcon className="mx-2"/>
+      <span className="mx-2 label text-blue-600 hidden">View</span>
+      </button>
+      </div>
     </div>
   );
 };
@@ -139,17 +210,21 @@ const DocumentList = () => {
             {/* Middle */}
             <div className="flex gap-[2px]">
               {Object.keys(students[index].applicant.documents).map((name) => (
+                
                 <DocumentListContent
                   title={name}
                   status={students[index].applicant.documents[name]}
+                  
                 />
               ))}
             </div>
             {/* Bottom */}
             <div className="flex justify-between">
               {/* Bottom Left */}
-              <div className="flex items-center gap-1 text-xs font-light text-gray-500">
+              <div className="flex items-center gap-5 text-xs font-light text-gray-500">
                 <p>Applied on {student.applicant.applicationDate}</p>
+                <p>HR Interview on {student.applicant.applicationDate}</p>
+                <p>CEO Interview on {student.applicant.applicationDate}</p>
               </div>
             </div>
           </div>
