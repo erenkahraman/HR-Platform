@@ -15,5 +15,7 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_SECRET,
     }),
     // Passwordless / email sign in
+    
   ],
+  
 });
