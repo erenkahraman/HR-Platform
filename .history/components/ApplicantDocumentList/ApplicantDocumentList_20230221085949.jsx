@@ -38,8 +38,7 @@ const DocumentListContent = ({ title, status }) => {
   };
 
   const  [showVideo, setShowVideo] = useState(false);
-  //temporary video url for test//
-  const  videoUrl = "https://www.youtube.com/watch?v=fViZbbY6v3o";
+  const  videoUrl = "https://www.youtube.com/watch?v=AdVkWdo78Qg";
 
 
 
@@ -98,7 +97,7 @@ const DocumentListContent = ({ title, status }) => {
       </button>
 
       {showVideo && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent ">
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
           <div className="relative">
             <ReactPlayer url={videoUrl} playing={true} controls={true} width="100%" height="100%" />
             <button
@@ -127,36 +126,12 @@ const DocumentListContent = ({ title, status }) => {
   
 };
 
-
 const DocumentList = () => {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [students, setStudents] = useState([]);
-  const token = cookie.get("token");
-    
-  const addDocument = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const newDocument = {
-      name: "New Document",
-      status: "Not Submitted",
-    };
-    try {
-      const { data } = await axios.post(
-        `/api/applicant`,
-        newDocument,
-        config
-      );
-      setStudents([...students, data]);
-      setOpenDialog(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
+  // const token = cookie.get("token");
+  
 
   useEffect(() => {
     setOpen(true);
@@ -182,10 +157,6 @@ const DocumentList = () => {
     };
     asyncRequest();
   }, []);
-
-
-
-
 
   return (
     <div className="flex flex-col w-full gap-2">

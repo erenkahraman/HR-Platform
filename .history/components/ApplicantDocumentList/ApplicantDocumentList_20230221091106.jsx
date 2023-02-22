@@ -38,8 +38,7 @@ const DocumentListContent = ({ title, status }) => {
   };
 
   const  [showVideo, setShowVideo] = useState(false);
-  //temporary video url for test//
-  const  videoUrl = "https://www.youtube.com/watch?v=fViZbbY6v3o";
+  const  videoUrl = "https://www.youtube.com/watch?v=AdVkWdo78Qg";
 
 
 
@@ -98,7 +97,7 @@ const DocumentListContent = ({ title, status }) => {
       </button>
 
       {showVideo && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent ">
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
           <div className="relative">
             <ReactPlayer url={videoUrl} playing={true} controls={true} width="100%" height="100%" />
             <button
@@ -162,33 +161,23 @@ const DocumentList = () => {
     setOpen(true);
     const asyncRequest = async () => {
       try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const { data } = await axios.get(
-          `/api/applicant`,
-          { params: { token: token } },
-          config
-        );
+        const { data } = await axios.get("/api/applicant");
         setStudents(data);
-        console.log(data);
         setOpen(false);
-      } catch (e) {
+      }
+      catch (e) {
         console.error(e);
-        setOpen(false);
       }
     };
     asyncRequest();
   }, []);
-
-
+  
 
 
 
   return (
     <div className="flex flex-col w-full gap-2">
+       <button onClick={addDocument}>Add Document</button>
       <LoadingState open={open} />
       {students.length == 0 ? (
         <div

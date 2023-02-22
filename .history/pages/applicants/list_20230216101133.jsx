@@ -109,6 +109,7 @@ export default function ApplicantsList({ students }) {
     { label: "Curiculum Vitae", key: "documents.curiculumVitae" },
     { label: "Identification", key: "documents.identification" },
     { label: "Interview Record", key: "documents.interviewRecord" },
+    
     {
       label: "Intern Development Plan",
       key: "documents.internDevelopmentPlan",

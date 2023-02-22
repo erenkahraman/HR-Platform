@@ -38,8 +38,7 @@ const DocumentListContent = ({ title, status }) => {
   };
 
   const  [showVideo, setShowVideo] = useState(false);
-  //temporary video url for test//
-  const  videoUrl = "https://www.youtube.com/watch?v=fViZbbY6v3o";
+  const  videoUrl = "https://www.youtube.com/watch?v=AdVkWdo78Qg";
 
 
 
@@ -129,10 +128,26 @@ const DocumentListContent = ({ title, status }) => {
 
 
 const DocumentList = () => {
-  const [open, setOpen] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [students, setStudents] = useState([]);
-  const token = cookie.get("token");
+  const docs = [
+    "Curriculum Vitae",
+    "Motivation Letter",
+    "Arrival Tickets",
+    "Learning Agreement",
+    "Acceptance Letter",
+    "Interview Record",
+  ];
+  const [loading, setLoading] = useState();
+  const {
+    control,
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: useMemo(() => {
+      return student;
+    }, [student]),
+  });
     
   const addDocument = async () => {
     const config = {
@@ -189,6 +204,7 @@ const DocumentList = () => {
 
   return (
     <div className="flex flex-col w-full gap-2">
+       <button onClick={addDocument}>Add Document</button>
       <LoadingState open={open} />
       {students.length == 0 ? (
         <div

@@ -38,8 +38,7 @@ const DocumentListContent = ({ title, status }) => {
   };
 
   const  [showVideo, setShowVideo] = useState(false);
-  //temporary video url for test//
-  const  videoUrl = "https://www.youtube.com/watch?v=fViZbbY6v3o";
+  const  videoUrl = "https://www.youtube.com/watch?v=AdVkWdo78Qg";
 
 
 
@@ -128,60 +127,53 @@ const DocumentListContent = ({ title, status }) => {
 };
 
 
-const DocumentList = () => {
-  const [open, setOpen] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [students, setStudents] = useState([]);
-  const token = cookie.get("token");
-    
-  const addDocument = async () => {
-    const config = {
+const docs = [
+  "Curriculum Vitae",
+  "Motivation Letter",
+  "Arrival Tickets",
+  "Learning Agreement",
+  "Acceptance Letter",
+  "Interview Record",
+];
+const [loading, setLoading] = useState();
+const {
+  control,
+  register,
+  reset,
+  handleSubmit,
+  formState: { errors },
+} = useForm({
+  defaultValues: useMemo(() => {
+    return student;
+  }, [student]),
+});
+
+useEffect(() => {
+  reset(student);
+}, [student]);
+
+const updateDocuments = async (data) => {
+  setLoading(true);
+  const res = await fetch(
+    `http://localhost:5000/api/applicant/${student._id}`,
+    {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-    };
-    const newDocument = {
-      name: "New Document",
-      status: "Not Submitted",
-    };
-    try {
-      const { data } = await axios.post(
-        `/api/applicant`,
-        newDocument,
-        config
-      );
-      setStudents([...students, data]);
-      setOpenDialog(false);
-    } catch (e) {
-      console.error(e);
+      body: JSON.stringify(data),
     }
-  };
+  );
+  const updatedStudent = await res.json();
+  setLoading(false);
+  if (res.status === 200) {
+    toast.success("Documents updated successfully!");
+    setStudent(updatedStudent);
+  } else {
+    toast.error("Something went wrong!");
+  }
 
 
-  useEffect(() => {
-    setOpen(true);
-    const asyncRequest = async () => {
-      try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const { data } = await axios.get(
-          `/api/applicant`,
-          { params: { token: token } },
-          config
-        );
-        setStudents(data);
-        console.log(data);
-        setOpen(false);
-      } catch (e) {
-        console.error(e);
-        setOpen(false);
-      }
-    };
-    asyncRequest();
-  }, []);
 
 
 
@@ -189,6 +181,7 @@ const DocumentList = () => {
 
   return (
     <div className="flex flex-col w-full gap-2">
+       <button onClick={addDocument}>Add Document</button>
       <LoadingState open={open} />
       {students.length == 0 ? (
         <div

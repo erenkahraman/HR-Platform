@@ -38,8 +38,7 @@ const DocumentListContent = ({ title, status }) => {
   };
 
   const  [showVideo, setShowVideo] = useState(false);
-  //temporary video url for test//
-  const  videoUrl = "https://www.youtube.com/watch?v=fViZbbY6v3o";
+  const  videoUrl = "https://www.youtube.com/watch?v=AdVkWdo78Qg";
 
 
 
@@ -98,7 +97,7 @@ const DocumentListContent = ({ title, status }) => {
       </button>
 
       {showVideo && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent ">
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
           <div className="relative">
             <ReactPlayer url={videoUrl} playing={true} controls={true} width="100%" height="100%" />
             <button
@@ -182,9 +181,6 @@ const DocumentList = () => {
     };
     asyncRequest();
   }, []);
-
-
-
 
 
   return (

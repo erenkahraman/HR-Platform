@@ -28,7 +28,6 @@ const EditDocumentsModal = ({
     "Arrival Tickets",
     "Learning Agreement",
     "Acceptance Letter",
-    "Interview Record",
   ];
   const [loading, setLoading] = useState();
   const {

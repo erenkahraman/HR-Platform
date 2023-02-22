@@ -119,12 +119,13 @@ export default function ApplicantsNew() {
   // get countries list from react-select-country-list
   const countries = useMemo(() => countryList().getLabels(), []);
 
+
   // New applicant
-  const submitData = async (data) => {
+  const onSubmit = async (data) => {
     setOpen(true);
     const student = data.student;
     const applicant = data.student.applicant;
-
+    
     const applicantId = new mongoose.Types.ObjectId();
     const studentId = new mongoose.Types.ObjectId();
     student._id = studentId;
@@ -141,7 +142,6 @@ export default function ApplicantsNew() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
       },
       body: JSONdstudent,
     };
@@ -149,16 +149,63 @@ export default function ApplicantsNew() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
       },
       body: JSONapplicant,
     };
-    console.log(JSONdstudent);
-    console.log(JSONapplicant);
-    await fetch(endpointstudent, optionsStudent);
-    await fetch(endpointapplicant, optionApplicant);
-    router.push("/applicants/list");
+    try {
+      const responseStudent = await fetch(endpointstudent, optionsStudent);
+      const responseApplicant = await fetch(endpointapplicant, optionApplicant);
+      const dataStudent = await responseStudent.json();
+      const dataApplicant = await responseApplicant.json();
+      console.log(dataStudent);
+      console.log(dataApplicant);
+      setOpen(false);
+      setAlertOpen(true);
+    } catch (e) {
+      console.error(e);
+      setOpen(false);
+    }
   };
+  
+  // const submitData = async (data) => {
+  //   setOpen(true);
+  //   const student = data.student;
+  //   const applicant = data.student.applicant;
+
+  //   const applicantId = new mongoose.Types.ObjectId();
+  //   const studentId = new mongoose.Types.ObjectId();
+  //   student._id = studentId;
+  //   student.applicant = applicantId;
+  //   applicant._id = applicantId;
+  //   applicant.student = studentId;
+  //   student.token = token;
+  //   applicant.token = token;
+  //   const JSONdstudent = JSON.stringify(student);
+  //   const JSONapplicant = JSON.stringify(applicant);
+  //   const endpointstudent = "/api/student";
+  //   const endpointapplicant = "/api/applicant";
+  //   const optionsStudent = {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Access-Control-Allow-Origin": "*",
+  //     },
+  //     body: JSONdstudent,
+  //   };
+  //   const optionApplicant = {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Access-Control-Allow-Origin": "*",
+  //     },
+  //     body: JSONapplicant,
+  //   };
+  //   console.log(JSONdstudent);
+  //   console.log(JSONapplicant);
+  //   await fetch(endpointstudent, optionsStudent);
+  //   await fetch(endpointapplicant, optionApplicant);
+  //   router.push("/applicants/list");
+  // };
 
   const addNewDepartment = async (e) => {
     e.preventDefault();

@@ -38,8 +38,7 @@ const DocumentListContent = ({ title, status }) => {
   };
 
   const  [showVideo, setShowVideo] = useState(false);
-  //temporary video url for test//
-  const  videoUrl = "https://www.youtube.com/watch?v=fViZbbY6v3o";
+  const  videoUrl = "https://www.youtube.com/watch?v=AdVkWdo78Qg";
 
 
 
@@ -98,26 +97,26 @@ const DocumentListContent = ({ title, status }) => {
       </button>
 
       {showVideo && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent ">
-          <div className="relative">
-            <ReactPlayer url={videoUrl} playing={true} controls={true} width="100%" height="100%" />
-            <button
-              className="absolute top-0 right-0 p-4 text-gray-100 hover:text-white focus:outline-none"
-              onClick={() => setShowVideo(false)}
-            >
-              <svg className="h-9 w-9 fill-current" viewBox="0 0 24 24">
-                <path
-                  fillRule="evenodd"
-                  d="M14.293 12l4.853-4.853a1 1 0 1 0-1.414-1.414L12.88 10.293a1 1 0 0 0 0 1.414l4.853 4.853a1 1 0 1 0 1.414-1.414L14.293 12z"
-                />
-                <path
-                  fillRule="evenodd"
-                  d="M9.707 12L4.854 16.853a1 1 0 0 0 1.414 1.414L11.12 13.707a1 1 0 0 0 0-1.414L6.268 6.854a1 1 0 0 0-1.414 1.414L9.707 12z"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
+        // <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-75">
+        //   <div className="relative">
+        //     <ReactPlayer url={videoUrl} playing={true} controls={true} width="100%" height="100%" />
+        //     <button
+        //       className="absolute top-0 right-0 p-4 text-gray-100 hover:text-white focus:outline-none"
+        //       onClick={() => setShowVideo(false)}
+        //     >
+        //       <svg className="h-9 w-9 fill-current" viewBox="0 0 24 24">
+        //         <path
+        //           fillRule="evenodd"
+        //           d="M14.293 12l4.853-4.853a1 1 0 1 0-1.414-1.414L12.88 10.293a1 1 0 0 0 0 1.414l4.853 4.853a1 1 0 1 0 1.414-1.414L14.293 12z"
+        //         />
+        //         <path
+        //           fillRule="evenodd"
+        //           d="M9.707 12L4.854 16.853a1 1 0 0 0 1.414 1.414L11.12 13.707a1 1 0 0 0 0-1.414L6.268 6.854a1 1 0 0 0-1.414 1.414L9.707 12z"
+        //         />
+        //       </svg>
+        //     </button>
+        //   </div>
+        // </div>
       )}
 
       
@@ -127,36 +126,12 @@ const DocumentListContent = ({ title, status }) => {
   
 };
 
-
 const DocumentList = () => {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [students, setStudents] = useState([]);
   const token = cookie.get("token");
-    
-  const addDocument = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const newDocument = {
-      name: "New Document",
-      status: "Not Submitted",
-    };
-    try {
-      const { data } = await axios.post(
-        `/api/applicant`,
-        newDocument,
-        config
-      );
-      setStudents([...students, data]);
-      setOpenDialog(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
+  
 
   useEffect(() => {
     setOpen(true);
@@ -182,10 +157,6 @@ const DocumentList = () => {
     };
     asyncRequest();
   }, []);
-
-
-
-
 
   return (
     <div className="flex flex-col w-full gap-2">

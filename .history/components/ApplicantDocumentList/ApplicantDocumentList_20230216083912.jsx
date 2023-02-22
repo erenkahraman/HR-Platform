@@ -29,7 +29,6 @@ const DocumentListContent = ({ title, status }) => {
       : null;
       
 
-
     let result =
       "flex flex-col items-center px-2 py-1 w-full gap-1 text-white " +
       isRounded +
@@ -38,9 +37,10 @@ const DocumentListContent = ({ title, status }) => {
   };
 
   const  [showVideo, setShowVideo] = useState(false);
-  //temporary video url for test//
-  const  videoUrl = "https://www.youtube.com/watch?v=fViZbbY6v3o";
+  const  videoUrl = "https://www.youtube.com/watch?v=AdVkWdo78Qg";
 
+
+    
 
 
   const [file, setFile] = useState();
@@ -90,73 +90,26 @@ const DocumentListContent = ({ title, status }) => {
     <span className="mx-2 label text-blue-600 hidden">Download</span>
       </button>
       <button
-        className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-        onClick={() => setShowVideo(true)}
+      className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+      onClick={() => { 
+        setShowVideo(!showVideo);
+        
+      }}
       >
-        <SlowMotionVideoIcon className="mx-2"/>
-        {/* <span className="mx-2 label text-blue-600">View</span> */}
+
+      <SlowMotionVideoIcon className="mx-2"/>
+      <span className="mx-2 label text-blue-600 hidden">View</span>
       </button>
-
-      {showVideo && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent ">
-          <div className="relative">
-            <ReactPlayer url={videoUrl} playing={true} controls={true} width="100%" height="100%" />
-            <button
-              className="absolute top-0 right-0 p-4 text-gray-100 hover:text-white focus:outline-none"
-              onClick={() => setShowVideo(false)}
-            >
-              <svg className="h-9 w-9 fill-current" viewBox="0 0 24 24">
-                <path
-                  fillRule="evenodd"
-                  d="M14.293 12l4.853-4.853a1 1 0 1 0-1.414-1.414L12.88 10.293a1 1 0 0 0 0 1.414l4.853 4.853a1 1 0 1 0 1.414-1.414L14.293 12z"
-                />
-                <path
-                  fillRule="evenodd"
-                  d="M9.707 12L4.854 16.853a1 1 0 0 0 1.414 1.414L11.12 13.707a1 1 0 0 0 0-1.414L6.268 6.854a1 1 0 0 0-1.414 1.414L9.707 12z"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      )}
-
-      
       </div>
     </div>
   );
-  
 };
-
 
 const DocumentList = () => {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [students, setStudents] = useState([]);
   const token = cookie.get("token");
-    
-  const addDocument = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const newDocument = {
-      name: "New Document",
-      status: "Not Submitted",
-    };
-    try {
-      const { data } = await axios.post(
-        `/api/applicant`,
-        newDocument,
-        config
-      );
-      setStudents([...students, data]);
-      setOpenDialog(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
 
   useEffect(() => {
     setOpen(true);
@@ -182,10 +135,6 @@ const DocumentList = () => {
     };
     asyncRequest();
   }, []);
-
-
-
-
 
   return (
     <div className="flex flex-col w-full gap-2">
@@ -263,8 +212,6 @@ const DocumentList = () => {
                 <DocumentListContent
                   title={name}
                   status={students[index].applicant.documents[name]}
-                  videoUrl={students[index].applicant.videoUrl}
-                  
                   
                 />
               ))}
@@ -274,8 +221,8 @@ const DocumentList = () => {
               {/* Bottom Left */}
               <div className="flex items-center gap-5 text-xs font-light text-gray-500">
                 <p>Applied on {student.applicant.applicationDate}</p>
-                <p>HR Interview on {student.applicant.hrInterviewDate}</p>
-                <p>CEO Interview on {student.applicant.ceoInterviewDate}</p>
+                <p>HR Interview on {student.applicant.applicationDate}</p>
+                <p>CEO Interview on {student.applicant.applicationDate}</p>
               </div>
             </div>
           </div>

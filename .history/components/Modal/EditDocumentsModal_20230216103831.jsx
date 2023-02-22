@@ -26,7 +26,7 @@ const EditDocumentsModal = ({
     "Curriculum Vitae",
     "Motivation Letter",
     "Arrival Tickets",
-    "Learning Agreement",
+    // "Learning Agreement",
     "Acceptance Letter",
     "Interview Record",
   ];

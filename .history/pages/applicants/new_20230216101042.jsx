@@ -63,7 +63,9 @@ export default function ApplicantsNew() {
     { title: "Arrival Tickets", status: "Needs Review" },
     { title: "Learning Agreement", status: "Needs Review" },
     { title: "Acceptance Letter", status: "Needs Review" },
-    { title: "Interview Record", status: "Needs Review" },
+    { title: "HR Interview", status: "Needs Review" },
+    { title: "Technical Interview", status: "Needs Review" },
+    { title: "CEO Interview", status: "Needs Review"}
   ];
 
   const docs = [
@@ -72,6 +74,9 @@ export default function ApplicantsNew() {
     "Arrival Tickets",
     "Learning Agreement",
     "Acceptance Letter",
+    "HR Interview",
+    "Technical Interview",
+    "CEO Interview",
     "Interview Record"
    
   ];
