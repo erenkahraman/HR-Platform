@@ -12,6 +12,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
 import Popup from 'reactjs-popup';
 import { UiFileInputButton } from "./UiFileInputButton";
+
 const DocumentListContent = ({ title, status }) => {
   const Border = () => {
     let isRounded;
@@ -20,13 +21,13 @@ const DocumentListContent = ({ title, status }) => {
     status === "Correct"
       ? (statusColor = " bg-green-400 ")
       : status === "Incorrect"
-      ? (statusColor = " bg-red-400 ")
-      : status === "Needs Review"
-      ? (statusColor = " bg-blue-400 ")
-      : status === "Not Submitted"
-      ? (statusColor = " bg-gray-400 ")
-      : null;
-      
+        ? (statusColor = " bg-red-400 ")
+        : status === "Needs Review"
+          ? (statusColor = " bg-blue-400 ")
+          : status === "Not Submitted"
+            ? (statusColor = " bg-gray-400 ")
+            : null;
+
 
     let result =
       "flex flex-col items-center px-2 py-1 w-full gap-1 text-white " +
@@ -60,43 +61,43 @@ const DocumentListContent = ({ title, status }) => {
     <div className={Border()}>
       <div className="text-[12px] ">{title}</div>
       <div className="d-flex align-items-center ">
-        
-          {//<input type="file" onChange={handleFile}/>
-          }
-            <UiFileInputButton
-              label="Upload Single File"
-              uploadFileName="theFile"
-              onChange={onChange}
-            />
-            
-            { /*<button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl">
+
+        {//<input type="file" onChange={handleFile}/>
+        }
+        <UiFileInputButton
+          label="Upload Single File"
+          uploadFileName="theFile"
+          onChange={onChange}
+        />
+
+        { /*<button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl">
               <UploadIcon className="mx-2"/>
               <span className="mx-2 label text-blue-600 hidden">Upload</span>
             </button>
           */
         }
-         
-            <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-              onClick={() => {
-              status === "Incorrect" ? alert("Please upload the correct document") : null
-              status === "Needs Review" ? alert("Please upload the correct document") : null
-              status === "Not Submitted" ? alert("Please upload the correct document") : null
-            }}
-        >
-      
-  <DownloadingIcon className="mx-2"/>
-  <span className="mx-2 label text-blue-600 hidden">Download</span>
-    </button>
-      <button
-      className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-      onClick={() => { 
-        alert ("Please upload the interview record")
-      }}
-      >
 
-      <SlowMotionVideoIcon className="mx-2"/>
-      <span className="mx-2 label text-blue-600 hidden">View</span>
-      </button>
+        <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+          onClick={() => {
+            status === "Incorrect" ? alert("Please upload the correct document") : null
+            status === "Needs Review" ? alert("Please upload the correct document") : null
+            status === "Not Submitted" ? alert("Please upload the correct document") : null
+          }}
+        >
+
+          <DownloadingIcon className="mx-2" />
+          <span className="mx-2 label text-blue-600 hidden">Download</span>
+        </button>
+        <button
+          className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+          onClick={() => {
+            alert("Please upload the interview record")
+          }}
+        >
+
+          <SlowMotionVideoIcon className="mx-2" />
+          <span className="mx-2 label text-blue-600 hidden">View</span>
+        </button>
       </div>
     </div>
   );
@@ -205,11 +206,11 @@ const DocumentList = () => {
             {/* Middle */}
             <div className="flex gap-[2px]">
               {Object.keys(students[index].applicant.documents).map((name) => (
-                
+
                 <DocumentListContent
                   title={name}
                   status={students[index].applicant.documents[name]}
-                  
+
                 />
               ))}
             </div>
