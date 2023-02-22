@@ -25,11 +25,11 @@ const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
-
+ 
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
     event.preventDefault();
-
+    
     const whatsNew = {
       title: event.target.title.value,
       postedBy: event.target.postedBy.value,

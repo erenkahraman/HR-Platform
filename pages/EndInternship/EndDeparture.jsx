@@ -10,6 +10,8 @@ import Modal from "../../components/LiaModal/model3";
 import Link from "next/link";
 import { Tooltip, Button } from "@material-tailwind/react";
 
+import styled from "@material/styled"
+
 export default function ApplicantsList() {
 
 	const [modalOn,setModalOn]=useState(false);
@@ -132,76 +134,76 @@ export default function ApplicantsList() {
                 </tr>
               </thead>
 
-							{/* Table Body */}
-							<tbody  className="divide-y">
-								<tr>
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
-										<span className="font-bold"> Alena Mango </span>
-									</td>
+				{/* Table Body */}
+				<tbody  className="divide-y">
+					<tr>
+						<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center">
+							<span className="font-bold"> Alena Mango </span>
+						</td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    02/09/2022
-                  </td>
+						<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+							02/09/2022
+						</td>
 
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                    12:00
-                  </td>
+						<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+							12:00
+						</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex flex-col gap-1">
-											<div>Sibari</div>
-										</div>
-									</td>
+						<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+							<div className="flex flex-col gap-1">
+								<div>Sibari</div>
+							</div>
+						</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-										<div className="flex items-center gap-2">
-											Francesco Di Marco
-										</div>
-									</td>
+						<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+							<div className="flex items-center gap-2">
+								Francesco Di Marco
+							</div>
+						</td>
 
-									<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
-										{/* ICONS AND BUTTONS */}
-										<div className="flex flex-row">
-										<Tooltip className="bg-transparent text-black mt-2"
-                                         content="Delete"
-                                         animate={{
-                                         mount: { scale: 1, y: 0 },
-                                         unmount: { scale: 0, y: 25 },
-                                        }}>
-                                        <Button  variant="gradient" className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 " onClick={cancel}><MdDeleteOutline /></Button>
-                                        </Tooltip>
+						<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-m whitespace-nowrap p-4 text-left">
+							{/* ICONS AND BUTTONS */}
+							<div className="flex flex-row">
+							<Tooltip className="bg-transparent text-black mt-2"
+								content="Delete"
+								animate={{
+								mount: { scale: 1, y: 0 },
+								unmount: { scale: 0, y: 25 },
+							}}>
+							<Button  variant="gradient" className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 " onClick={cancel}><MdDeleteOutline /></Button>
+							</Tooltip>
 
-											
-										<Tooltip className="bg-transparent text-black mt-2"
-                                          content="Edit"
-                                          animate={{
-                                          mount: { scale: 1, y: 0 },
-                                          unmount: { scale: 0, y: 25 },
-                                        }}>
-                                        <Button  variant="gradient" className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 " onClick={clicked}><AiOutlineEdit /></Button>
-                                        </Tooltip>
-										{modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} />}
+								
+							<Tooltip className="bg-transparent text-black mt-2"
+								content="Edit"
+								animate={{
+								mount: { scale: 1, y: 0 },
+								unmount: { scale: 0, y: 25 },
+							}}>
+							<Button  variant="gradient" className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 " onClick={clicked}><AiOutlineEdit /></Button>
+							</Tooltip>
+							{modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} />}
 
-										<Tooltip className="bg-transparent text-black mt-2"
-                                           content="Edit Profile"
-                                           animate={{
-                                           mount: { scale: 1, y: 0 },
-                                           unmount: { scale: 0, y: 25 },
-                                        }}>
-                                        <Button  variant="gradient" className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 ">
-									    <Link href="/applicants/edit">
-									    <RiAccountCircleLine />
-                                        </Link>
-										</Button>
-                                      </Tooltip>	
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
+							<Tooltip className="bg-transparent text-black mt-2"
+								content="Edit Profile"
+								animate={{
+								mount: { scale: 1, y: 0 },
+								unmount: { scale: 0, y: 25 },
+							}}>
+							<Button  variant="gradient" className="text-gray-700 text-lg scale-100 hover:scale-125 cursor-pointer py-1 p-0 mr-2 ">
+							<Link href="/applicants/edit">
+							<RiAccountCircleLine />
+							</Link>
+							</Button>
+							</Tooltip>	
+							</div>
+						</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-		</section>
+		</div>
+	</div>
+</section>
 	);
 }
