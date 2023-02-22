@@ -2,13 +2,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import React from "react";
-
 import CoPresentIcon from "@mui/icons-material/CoPresent";
-import { BsArrowLeftShort } from "react-icons/bs";
-import { MdOutlineCancel } from "react-icons/md";
 import {
   CalendarMonthOutlined,
-  CoPresent,
   DashboardOutlined,
   FlightLandOutlined,
   FlightTakeoffOutlined,

@@ -13,16 +13,15 @@ import { Reminder } from "../../components/Reminder";
 import Feed from "../../components/Feed/Feed";
 import FeedSchedule from "../../components/Feed/FeedSchedule";
 import Upcoming from "../../components/Upcoming/Upcoming";
-import { UpcomingViewAll } from "../../components/UpmcomingViewAll";
 import Popup from "reactjs-popup";
-import news from "./news";
 import { useRouter } from "next/router";
-import { Link } from "@mui/material";
 import { Birthdays } from "../../components/Birthdays";
 import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
-export default function Dashboard() {
+import Reports from "./reports";
+
+const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
@@ -131,7 +130,7 @@ export default function Dashboard() {
           <div className="m-2 p-4">
             <form onSubmit={handleSubmitWhatsNew}>
               <div>
-                <h6 className="font-semibold text-xl text-white pt-2 pb-4">
+                <h6 className="font-semibold text-md text-white pt-2 pb-4">
                   New Post
                 </h6>
                 <div className="flex flex-row mx-2 mt-2 mb-4">
@@ -212,7 +211,7 @@ export default function Dashboard() {
           <div className="m-2 p-4">
             <form onSubmit={handleSubmitReminder}>
               <div>
-                <h6 className="font-semibold text-xl text-white pt-2 pb-4">
+                <h6 className="font-semibold text-md text-white pt-2 pb-4">
                   New Remainder
                 </h6>
                 <div className="flex flex-row mx-2 mt-2 mb-4">
@@ -289,7 +288,7 @@ export default function Dashboard() {
           {/* NEW POST */}
           <div className="m-2 p-4">
             <div>
-              <h6 className="font-semibold text-xl text-white pt-2 pb-4">
+              <h6 className="font-semibold text-md text-white pt-2 pb-4">
                 Send a notifcation
               </h6>
               <div className="flex flex-row mx-2 mt-2 mb-4">
@@ -344,12 +343,12 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom */}
-      <div className="flex flex-[3] p-3 gap-3">
+      <div className="flex flex-[3] py-3 gap-3">
         {/* Left */}
         <div className="left-container flex flex-[1.5] flex-col gap-2">
           <div className="flex flex-[1.5] flex-col gap-2">
             <div className="flex items-center justify-between">
-              <div className="text-xl font-semibold">What&apos;s New</div>
+              <div className="text-md font-semibold">What&apos;s New</div>
               <a
                 href="../WhatsNewViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
@@ -367,25 +366,7 @@ export default function Dashboard() {
             </div>
             {/* Weekly Schedule */}
           </div>
-          <div className="flex flex-[1.5] flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <div className="text-xl font-semibold">Weekly Schedule</div>
-              <a
-                href="./weeklySchedule"
-                className="viewAll flex items-center justify-center text-[#2F80ED]"
-              >
-                <div>View All</div>
-                <div>
-                  {" "}
-                  <ArrowForward className="text-md" />
-                </div>
-              </a>
-            </div>
-            {/* Weekly Schedule Content */}
-            <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-              <FeedSchedule />
-            </div>
-          </div>
+          <Reports />
         </div>
 
         {/* Right */}
@@ -394,7 +375,7 @@ export default function Dashboard() {
           <div className="flex flex-col gap-2">
             {/* Daily Reminder Title*/}
             <div className="flex items-center justify-between">
-              <div className="text-xl font-semibold">Daily Reminder</div>
+              <div className="text-md font-semibold">Daily Reminder</div>
               <a
                 href="../reminderViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
@@ -417,7 +398,7 @@ export default function Dashboard() {
           <div className="flex flex-col gap-2">
             {/* Bottom Right Side - Title */}
             <div className="flex items-center justify-between">
-              <div className="text-xl font-semibold">
+              <div className="text-md font-semibold">
                 Upcoming Arrival and Departure
               </div>
               <a
@@ -442,7 +423,7 @@ export default function Dashboard() {
           <div className="flex flex-col gap-2">
             {/* Daily Reminder Title*/}
             <div className="flex items-center justify-between">
-              <div className="text-xl font-semibold">
+              <div className="text-md font-semibold">
                 This Month's Birthdays 🥳🍰🎉
               </div>
               {/*
@@ -464,8 +445,28 @@ export default function Dashboard() {
               <Birthdays />
             </div>
           </div>
+          <div className="flex flex-[1.5] flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="text-md font-semibold">Weekly Schedule</div>
+              <a
+                href="./weeklySchedule"
+                className="viewAll flex items-center justify-center text-[#2F80ED]"
+              >
+                <div>View All</div>
+                <div>
+                  {" "}
+                  <ArrowForward className="text-md" />
+                </div>
+              </a>
+            </div>
+            {/* Weekly Schedule Content */}
+            <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+              <FeedSchedule />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+export default Dashboard;

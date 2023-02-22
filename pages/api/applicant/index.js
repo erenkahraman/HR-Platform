@@ -1,6 +1,5 @@
 import { getMongoDb } from "../../../util/mongodb";
 import Applicant from "../../../models/applicant";
-import Student from "../../../models/student";
 import dbConnect from "../../../util/mongodb";
 import { tokenCheckFunction } from "../auth/tokenCheck";
 
