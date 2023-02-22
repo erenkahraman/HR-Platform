@@ -35,6 +35,12 @@ const DocumentListContent = ({ title, status }) => {
     return result;
   };
 
+  const  [showVideo, setShowVideo] = useState(false);
+  //temporary video url for test//
+  const  videoUrl = "https://www.youtube.com/watch?v=fViZbbY6v3o";
+
+
+
   const [file, setFile] = useState();
 
   const handleFile = (e) => {
@@ -63,38 +69,18 @@ const DocumentListContent = ({ title, status }) => {
         
           {//<input type="file" onChange={handleFile}/>
           }
-            {/* <UiFileInputButton
+            <UiFileInputButton
               label="Upload Single File"
               uploadFileName="theFile"
               onChange={onChange}
-            /> */}
+            />
             
-            {/* { <button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl"
-            onChange={onChange}
-            uploadFileName="theFile"
-            label = "Upload Single File"
-            >
+            { /*<button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl">
               <UploadIcon className="mx-2"/>
               <span className="mx-2 label text-blue-600 hidden">Upload</span>
             </button>
-            } */}
-            <Popup trigger={
-            <button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl relative">
-              <UploadIcon className="mx-2"/>
-              <span className="mx-2 label text-blue-600 hidden">Upload</span>
-            </button>} position="top center">
-              <div className="px-2 py-1 bg-white rounded-lg shadow-lg">
-                <UiFileInputButton
-                  label={<span className="text-blue-600 hover:text-blue-800 cursor-pointer">Choose File</span>}
-                  uploadFileName="theFile"
-                  onChange={onChange}
-                />
-              </div>
-            </Popup>
-
-
-        
-        
+          */
+        }
          
             <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
               onClick={() => {
@@ -120,13 +106,39 @@ const DocumentListContent = ({ title, status }) => {
       </div>
     </div>
   );
+  
 };
+
 
 const DocumentList = () => {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [students, setStudents] = useState([]);
   const token = cookie.get("token");
+    
+  const addDocument = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const newDocument = {
+      name: "New Document",
+      status: "Not Submitted",
+    };
+    try {
+      const { data } = await axios.post(
+        `/api/applicant`,
+        newDocument,
+        config
+      );
+      setStudents([...students, data]);
+      setOpenDialog(false);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
 
   useEffect(() => {
     setOpen(true);
@@ -152,6 +164,10 @@ const DocumentList = () => {
     };
     asyncRequest();
   }, []);
+
+
+
+
 
   return (
     <div className="flex flex-col w-full gap-2">
@@ -229,6 +245,8 @@ const DocumentList = () => {
                 <DocumentListContent
                   title={name}
                   status={students[index].applicant.documents[name]}
+                  videoUrl={students[index].applicant.videoUrl}
+                  
                   
                 />
               ))}
@@ -238,8 +256,8 @@ const DocumentList = () => {
               {/* Bottom Left */}
               <div className="flex items-center gap-5 text-xs font-light text-gray-500">
                 <p>Applied on {student.applicant.applicationDate}</p>
-                <p>HR Interview on {student.applicant.hrInterviewDate}</p>
-                <p>CEO Interview on {student.applicant.ceoInterviewDate}</p>
+                <p>HR Interview on {student.applicant.applicationDate}</p>
+                <p>CEO Interview on {student.applicant.applicationDate}</p>
               </div>
             </div>
           </div>

@@ -239,7 +239,8 @@ const DocumentList = () => {
               <div className="flex items-center gap-5 text-xs font-light text-gray-500">
                 <p>Applied on {student.applicant.applicationDate}</p>
                 <p>HR Interview on {student.applicant.hrInterviewDate}</p>
-                <p>CEO Interview on {student.applicant.ceoInterviewDate}</p>
+                <p>CEO Interview on {student.applicant.
+ceoInterviewDate}</p>
               </div>
             </div>
           </div>

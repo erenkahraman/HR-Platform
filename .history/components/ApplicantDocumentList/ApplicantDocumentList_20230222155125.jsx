@@ -78,8 +78,7 @@ const DocumentListContent = ({ title, status }) => {
               <span className="mx-2 label text-blue-600 hidden">Upload</span>
             </button>
             } */}
-            <Popup trigger={
-            <button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl relative">
+            <Popup trigger={<button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl relative">
               <UploadIcon className="mx-2"/>
               <span className="mx-2 label text-blue-600 hidden">Upload</span>
             </button>} position="top center">
@@ -238,8 +237,8 @@ const DocumentList = () => {
               {/* Bottom Left */}
               <div className="flex items-center gap-5 text-xs font-light text-gray-500">
                 <p>Applied on {student.applicant.applicationDate}</p>
-                <p>HR Interview on {student.applicant.hrInterviewDate}</p>
-                <p>CEO Interview on {student.applicant.ceoInterviewDate}</p>
+                <p>HR Interview on {student.applicant.applicationDate}</p>
+                <p>CEO Interview on {student.applicant.applicationDate}</p>
               </div>
             </div>
           </div>

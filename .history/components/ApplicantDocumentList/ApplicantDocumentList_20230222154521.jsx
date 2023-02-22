@@ -69,30 +69,15 @@ const DocumentListContent = ({ title, status }) => {
               onChange={onChange}
             /> */}
             
-            {/* { <button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl"
-            onChange={onChange}
+            { <button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl"
+            onChange = {onChange}
             uploadFileName="theFile"
             label = "Upload Single File"
             >
               <UploadIcon className="mx-2"/>
               <span className="mx-2 label text-blue-600 hidden">Upload</span>
             </button>
-            } */}
-            <Popup trigger={
-            <button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl relative">
-              <UploadIcon className="mx-2"/>
-              <span className="mx-2 label text-blue-600 hidden">Upload</span>
-            </button>} position="top center">
-              <div className="px-2 py-1 bg-white rounded-lg shadow-lg">
-                <UiFileInputButton
-                  label={<span className="text-blue-600 hover:text-blue-800 cursor-pointer">Choose File</span>}
-                  uploadFileName="theFile"
-                  onChange={onChange}
-                />
-              </div>
-            </Popup>
-
-
+            }
         
         
          
@@ -238,8 +223,8 @@ const DocumentList = () => {
               {/* Bottom Left */}
               <div className="flex items-center gap-5 text-xs font-light text-gray-500">
                 <p>Applied on {student.applicant.applicationDate}</p>
-                <p>HR Interview on {student.applicant.hrInterviewDate}</p>
-                <p>CEO Interview on {student.applicant.ceoInterviewDate}</p>
+                <p>HR Interview on {student.applicant.applicationDate}</p>
+                <p>CEO Interview on {student.applicant.applicationDate}</p>
               </div>
             </div>
           </div>
