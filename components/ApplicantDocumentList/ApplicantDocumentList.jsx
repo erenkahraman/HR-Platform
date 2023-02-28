@@ -9,11 +9,7 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
-import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
 import Popup from 'reactjs-popup';
-
-import { saveAs } from "file-saver";
-
 
 const DocumentListContent = ({ type, status,student }) => {
   const [fullpath,setFullPath] = useState();
@@ -76,6 +72,7 @@ const DocumentListContent = ({ type, status,student }) => {
     body.append("student", studentName);
     body.append("type", type);
 
+
     const dt = await axios.post("/api/download",body);
     console.log(dt.data)
     if (dt.data.error){
@@ -125,7 +122,7 @@ const DocumentListContent = ({ type, status,student }) => {
      
         </div>
         <div className="flex flex-row pt-16">
-         
+
           <div className="pl-24">
             
           <button
@@ -152,6 +149,7 @@ const DocumentListContent = ({ type, status,student }) => {
       
     }
          
+
       <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
         onClick={downloadServer}
         >

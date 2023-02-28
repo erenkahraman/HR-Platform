@@ -14,7 +14,7 @@ const ApplicantSchema = new mongoose.Schema({
   arrivalCity: { type: String },
   pickUpBy: { type: String },
   progress: { type: String, required: true, maxlength: 30 },
-  department: { type: String, required: true, maxlength: 80 },
+  department: { type: String, required: true, maxlength: 30 },
   position: { type: String, required: true, maxlength: 30 },
   hrInterviewDate: { type: Date, required: true, maxlength: 30 },
   ceoInterviewDate: { type: Date, required: true, maxlength: 30 },

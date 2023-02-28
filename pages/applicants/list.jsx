@@ -1,26 +1,18 @@
-import {
-  Add,
-  Circle,
-  MoreHoriz,
-  SystemUpdateAlt,
-  HowToReg,
-} from "@mui/icons-material";
+import { Add, Circle, SystemUpdateAlt } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
-import { CircularProgress, Backdrop } from "@mui/material";
 import Link from "next/link";
-import { useEffect } from "react";
-import { server } from "../../next.config";
+import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import * as React from "react";
 import AcceptAplcntModal from "../../components/Modal/AcceptAplcntModal.jsx";
-import { useState } from "react";
 import NoAnswerModal from "../../components/Modal/NoAnswerModal";
 import RejectModal from "../../components/Modal/RejectModal";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../../components/Utils/LoadingState";
 import useTableSearch from "../../hooks/useTableSearch";
+import { listHeaders } from "./headers.js";
 
 export default function ApplicantsList({ students }) {
   const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
@@ -80,42 +72,10 @@ export default function ApplicantsList({ students }) {
     asyncRequest();
   }, []);
 
-  const headers = [
-    { label: "First name", key: "student.firstName" },
-    { label: "Last name", key: "student.lastName" },
-    { label: "Nationality", key: "student.nationality" },
-    { label: "Departing Country", key: "student.departingCountry" },
-    { label: "Date of birth", key: "student.dateOfBirth" },
-    { label: "Email", key: "student.email" },
-    { label: "Department", key: "department" },
-    { label: "Phone Number", key: "student.phoneNumber" },
-    { label: "Sex", key: "student.sex" },
-    { label: "University", key: "student.university" },
-    { label: "Application Date", key: "applicationDate" },
-    { label: "Arrival Date", key: "arrivalDate" },
-    { label: "Departure Date", key: "departureDate" },
-    { label: "Hr Interview Date", key: "hrInterviewDate" },
-    { label: "Interview Notes", key: "interviewNotes" },
-    { label: "Position", key: "position" },
-    { label: "Progress", key: "progress" },
-    { label: "Rejection Reasons", key: "rejectionReasons" },
-    { label: "Acceptance Letter", key: "documents.acceptanceLetter" },
-    { label: "Accommodation Letter", key: "documents.accommodationLetter" },
-    { label: "Arrival Tickets", key: "documents.arrivalTickets" },
-    { label: "Confidentiality Letter", key: "documents.confidentialityLetter" },
-    { label: "Curiculum Vitae", key: "documents.curiculumVitae" },
-    { label: "Identification", key: "documents.identification" },
-    {
-      label: "Intern Development Plan",
-      key: "documents.internDevelopmentPlan",
-    },
-    { label: "Learning Agreement", key: "documents.learningAgreement" },
-  ];
-
   const csvReport = {
     separator: "  ",
     data: data,
-    headers: headers,
+    listHeaders: listHeaders,
     filename: "Extramus Applicant List",
   };
 
