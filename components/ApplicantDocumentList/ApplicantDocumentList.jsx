@@ -72,6 +72,7 @@ const DocumentListContent = ({ type, status,student }) => {
     body.append("student", studentName);
     body.append("type", type);
 
+
     const dt = await axios.post("/api/download",body);
     console.log(dt.data)
     if (dt.data.error){
@@ -121,7 +122,7 @@ const DocumentListContent = ({ type, status,student }) => {
      
         </div>
         <div className="flex flex-row pt-16">
-         
+
           <div className="pl-24">
             
           <button
@@ -148,6 +149,7 @@ const DocumentListContent = ({ type, status,student }) => {
       
     }
          
+
       <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
         onClick={downloadServer}
         >
