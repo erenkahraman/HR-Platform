@@ -108,7 +108,7 @@ export default function ApplicantsList({ students }) {
     { label: "Confidentiality Letter", key: "documents.confidentialityLetter" },
     { label: "Curiculum Vitae", key: "documents.curiculumVitae" },
     { label: "Identification", key: "documents.identification" },
-    { label: "Interview Record", key: "documents.interviewRecord" },
+    { label: "Interview Record", key: "documents.InterviewRecord" },
 
     {
       label: "Intern Development Plan",

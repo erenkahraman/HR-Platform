@@ -200,7 +200,7 @@ const DocumentList = () => {
               {Object.keys(students[index].intern.documents).map((name) => (
                 <DocumentListContent
                   title={name}
-                  //  {name === 'Interview Record' && <SlowMotionVideoIcon />}
+                  // {name === 'Interview Record' && <SlowMotionVideoIcon />}
                   status={students[index].intern.documents[name]}
                 />
               ))}

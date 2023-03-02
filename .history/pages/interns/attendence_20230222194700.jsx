@@ -57,8 +57,6 @@ function Attendence() {
           config
         );
         setData(data);
-        console.log("data is -->") 
-        console.log(data)
         setLoading(false);
       } catch (e) {
         console.error(e);
@@ -148,23 +146,6 @@ function Attendence() {
      };
      asyncRequest();
    };
-
-   const checkForAttendanceChanges = () => {
-      const interns = data;
-      const changedInterns = [];
-      interns.forEach(intern => {
-        const dayOffCount = intern.attendance.dayOff.dates ? intern.attendance.dayOff.dates.length : 0;
-        const coveredDayCount = intern.attendance.coveredDay ? intern.attendance.coveredDay.dates.length : 0;
-       if (dayOff !== coveredDay)
-          changedInterns.push(intern);
-      });
-      if (changedInterns.length > 0) {
-       alert ("Covered Days and Day Offs are not equal for some interns. Please check before saving!");
-      }
-    };
-
-
-
 
  
 
@@ -469,7 +450,6 @@ function Attendence() {
                                 onClick={(e) =>
                                   setAttendanceEditModel(student.intern._id)
                                 }
-                                
                               />
                               {editAttendanceModel === student.intern._id && (
                                 <EditAttendance

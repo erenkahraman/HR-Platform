@@ -198,14 +198,12 @@ const DocumentList = () => {
             {/* Middle */}
             <div className="flex gap-[2px]">
               {Object.keys(students[index].intern.documents).map((name) => (
-                <DocumentListContent
-                  title={name}
-                  //  {name === 'Interview Record' && <SlowMotionVideoIcon />}
-                  status={students[index].intern.documents[name]}
-                />
-              ))}
-
-            </div>
+                <div key={name} className="flex gap-[8px] items-center">
+                  {name === 'Interview Record' && <SlowMotionVideoIcon />}
+                  <DocumentListContent title={name} status={students[index].intern.documents[name]} />
+                </div>
+  ))}
+</div>
             {/* Bottom */}
             <div className="flex justify-between">
               {/* Bottom Left */}

@@ -15,11 +15,6 @@ const InternSchema = new mongoose.Schema({
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
   status: { type: String },
   attendance: {
-    coveredDay: {
-      count: { type: Number, default: 0 },
-      dates: Array,
-    },
-    
     present: {
       count: { type: Number, default: 0 },
       dates: Array,
@@ -52,7 +47,6 @@ const InternSchema = new mongoose.Schema({
     pickBy: String,
   },
   documents: { type: Map, of: String },
-
 });
 
 export default mongoose.models.Intern || mongoose.model("Intern", InternSchema);

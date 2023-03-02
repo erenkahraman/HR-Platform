@@ -57,8 +57,6 @@ function Attendence() {
           config
         );
         setData(data);
-        console.log("data is -->") 
-        console.log(data)
         setLoading(false);
       } catch (e) {
         console.error(e);
@@ -148,23 +146,6 @@ function Attendence() {
      };
      asyncRequest();
    };
-
-   const checkForAttendanceChanges = () => {
-      const interns = data;
-      const changedInterns = [];
-      interns.forEach(intern => {
-        const dayOffCount = intern.attendance.dayOff.dates ? intern.attendance.dayOff.dates.length : 0;
-        const coveredDayCount = intern.attendance.coveredDay ? intern.attendance.coveredDay.dates.length : 0;
-       if (dayOff !== coveredDay)
-          changedInterns.push(intern);
-      });
-      if (changedInterns.length > 0) {
-       alert ("Covered Days and Day Offs are not equal for some interns. Please check before saving!");
-      }
-    };
-
-
-
 
  
 
@@ -335,10 +316,10 @@ function Attendence() {
                     LATE
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Covered Day
+                    DAY OFF
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    DAY OFF
+                    Covered Day
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     EXCUSED LEAVE
@@ -399,7 +380,6 @@ function Attendence() {
                           <option value="present">Present</option>
                           <option value="late">Late</option>
                           <option value="dayOff">Day off</option>
-                          <option value="coveredDay">Covered Day</option>
                           <option value="excusedLeave">Excused leave</option>
                           <option value="sick">Sick</option>
                           <option value="unexcusedleave">
@@ -416,11 +396,6 @@ function Attendence() {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>{student.intern.attendance.late.count}</div>
-                        </div>
-                      </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.coveredDay.count}</div>
                         </div>
                       </td>
 
@@ -469,7 +444,6 @@ function Attendence() {
                                 onClick={(e) =>
                                   setAttendanceEditModel(student.intern._id)
                                 }
-                                
                               />
                               {editAttendanceModel === student.intern._id && (
                                 <EditAttendance

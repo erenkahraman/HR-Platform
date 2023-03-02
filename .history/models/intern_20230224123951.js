@@ -19,7 +19,6 @@ const InternSchema = new mongoose.Schema({
       count: { type: Number, default: 0 },
       dates: Array,
     },
-    
     present: {
       count: { type: Number, default: 0 },
       dates: Array,
