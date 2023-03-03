@@ -22,6 +22,10 @@ const ApplicantSchema = new mongoose.Schema({
   rejectionReasons: { type: String },
   documents: { type: Map, of: String },
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
+  interview: {
+    hrInterviewDone: { type: Boolean },
+    ceoInterviewDone: { type: Boolean },
+  },
 });
 
 export default mongoose.models.Applicant ||
