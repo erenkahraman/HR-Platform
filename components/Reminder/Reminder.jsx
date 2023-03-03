@@ -54,5 +54,4 @@ const Reminder = ({ color }) => {
     </div>
   );
 };
-
 export default Reminder;

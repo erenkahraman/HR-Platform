@@ -9,10 +9,13 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
-import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
 import Popup from 'reactjs-popup';
-import { UiFileInputButton } from "./UiFileInputButton";
-const DocumentListContent = ({ title, status }) => {
+
+const DocumentListContent = ({ type, status,student }) => {
+  const [fullpath,setFullPath] = useState();
+
+ 
+
   const Border = () => {
     let isRounded;
     let statusColor;
@@ -36,88 +39,130 @@ const DocumentListContent = ({ title, status }) => {
   };
 
   const [file, setFile] = useState();
+  
+  const uploadToClient = (event) => {
+    console.log(student.firstName.trim()+'_'+student.lastName);
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
 
-  const handleFile = (e) => {
-    const file = e.target.files[0];
-    setFile(file);
-    console.log(file);
+      setFile(i);
+ 
+    }
   };
 
-  const onChange = async (formData) => {
-    const config = {
-      headers: { 'content-type': 'multipart/form-data' },
-      onUploadProgress: (event) => {
-        console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
-      },
-    };
+  const uploadToServer = async (event) => {        
+    const body = new FormData();
+   
+    body.append("file", file); 
+    body.append("type", type);
+    body.append("student", student.firstName.trim()+'_'+student.lastName);
+    //alert(file.name + ' is successfully uploaded');  
+   
+    //alert("The "+ type + " " + files.file.originalFilename + " has uploaded successfully !");
+   const response = await axios.post("/api/upload",body);
+   
+   console.log(response.data);
+  };
 
-    const response = await axios.post('/api/applicant/upload', formData, config);
+  const downloadServer = async () => {
+    /*const { size, elapsed, percentage, download,
+            cancel, error, isInProgress } = useDownloader();*/
+    const studentName = student.firstName.trim()+'_'+student.lastName;
+   
+    const body = new FormData();
+    
+    body.append("student", studentName);
+    body.append("type", type);
 
-    console.log('response', response.data);
+
+    const dt = await axios.post("/api/download",body);
+    console.log(dt.data)
+    if (dt.data.error){
+      alert(' Could not find the uploaded file ! Try to upload before downloading');
+    } else {
+      setFullPath("/uploads/students/Eren_KAHRAMAN/"+dt.data.file);
+      const hiddenTag = document.querySelector("#hiddenTag");
+      hiddenTag.href="/uploads/students/Eren_KAHRAMAN/"+dt.data.file;
+      hiddenTag.click();
+    }
+    /*status === "Incorrect" ? alert("Please upload the correct document") : null
+    status === "Needs Review" ? alert("Please upload the correct document") : null
+    status === "Not Submitted" ? alert("Please upload the correct document") : null*/
+
   };
 
   return (
     <div className={Border()}>
-      <div className="text-[12px] ">{title}</div>
+      
+      <div className="text-[12px] ">{type}</div>
+      
       <div className="d-flex align-items-center ">
-        
-          {//<input type="file" onChange={handleFile}/>
-          }
-            {/* <UiFileInputButton
-              label="Upload Single File"
-              uploadFileName="theFile"
-              onChange={onChange}
-            /> */}
+
+        <Popup
+        contentStyle={{ background: "white", borderRadius: "0.25rem" }}
+        trigger={
+          <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
+            <UploadIcon className="mx-2"/>
+            <span className="mx-2 label text-blue-600 hidden">Upload</span>
+          </button>
+        }
+        >
+    {close => (
+      <div className="m-2 p-4 border border-cyan-600">
+      <form >
+        <div >
+          <h6 className="font-semibold text-xl  pt-2 pb-4">
+            Upload File
+          </h6>
+      
+        </div>
+
+        {/* INFORMATION BOX */}
+
+        <div className="flex flex-col">
+          <input type="file" name="files" onChange={uploadToClient} />
+     
+        </div>
+        <div className="flex flex-row pt-16">
+
+          <div className="pl-24">
             
-            {/* { <button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl"
-            onChange={onChange}
-            uploadFileName="theFile"
-            label = "Upload Single File"
-            >
-              <UploadIcon className="mx-2"/>
-              <span className="mx-2 label text-blue-600 hidden">Upload</span>
-            </button>
-            } */}
-            <Popup trigger={
-            <button className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl relative">
-              <UploadIcon className="mx-2"/>
-              <span className="mx-2 label text-blue-600 hidden">Upload</span>
-            </button>} position="top center">
-              <div className="px-2 py-1 bg-white rounded-lg shadow-lg">
-                <UiFileInputButton
-                  label={<span className="text-blue-600 hover:text-blue-800 cursor-pointer">Choose File</span>}
-                  uploadFileName="theFile"
-                  onChange={onChange}
-                />
-              </div>
-            </Popup>
+          <button
+          className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+          type="submit"
+          onClick={uploadToServer}
+        >
+         <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+      Upload
+  </span>
+        </button>
+          </div>
+        </div>
+       
+      </form>
+    </div>
+    )}
+  </Popup>
+            
+        { /**<button onClick={() => {location.href="http://localhost:3000/uploadForm"}} className="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl">
+          <UploadIcon className="mx-2"/>
+          <span className="mx-2 label text-blue-600 hidden">Upload</span>
+        </button>*/
+      
+    }
 
 
-        
-        
-         
-            <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-              onClick={() => {
-              status === "Incorrect" ? alert("Please upload the correct document") : null
-              status === "Needs Review" ? alert("Please upload the correct document") : null
-              status === "Not Submitted" ? alert("Please upload the correct document") : null
-            }}
+      <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+        onClick={downloadServer}
         >
       
   <DownloadingIcon className="mx-2"/>
   <span className="mx-2 label text-blue-600 hidden">Download</span>
     </button>
-      <button
-      className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-      onClick={() => { 
-        alert ("Please upload the interview record")
-      }}
-      >
-
-      <SlowMotionVideoIcon className="mx-2"/>
-      <span className="mx-2 label text-blue-600 hidden">View</span>
-      </button>
+      <a id="hiddenTag" style={{display:'none'}} href={fullpath} download> </a>
+      
       </div>
+     
     </div>
   );
 };
@@ -168,7 +213,7 @@ const DocumentList = () => {
         </div>
       ) : (
         students.map((student, index) => (
-          <div className="flex flex-col w-full py-2 px-6 gap-2 bg-white border rounded-md">
+          <div className="flex flex-col w-full py-2 px-6 gap-2 bg-white border border-green-500 rounded-md">
             {/* Top */}
             <div className="flex justify-between">
               {/* Top Left */}
@@ -227,8 +272,11 @@ const DocumentList = () => {
               {Object.keys(students[index].applicant.documents).map((name) => (
                 
                 <DocumentListContent
-                  title={name}
+                  type={name}
                   status={students[index].applicant.documents[name]}
+
+                  student={student}
+
                 />
               ))}
             </div>

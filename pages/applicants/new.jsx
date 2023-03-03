@@ -17,6 +17,9 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
+import Autocomplete from '@mui/material/Autocomplete';
+
+
 
 export default function ApplicantsNew() {
   // get dprtmnts from DB
@@ -38,7 +41,6 @@ export default function ApplicantsNew() {
     { student: JSON.parse(router.query.student || null) } || null
   );
 
-
   const {
     control,
     register,
@@ -50,8 +52,6 @@ export default function ApplicantsNew() {
       return student;
     }, [student]),
   });
-
- 
 
   const { query } = router;
 
@@ -75,6 +75,8 @@ export default function ApplicantsNew() {
     "Interview Record"
    
   ];
+
+  
 
   // Get departments from DB
   useEffect(() => {
@@ -122,41 +124,45 @@ export default function ApplicantsNew() {
   // New applicant
   const submitData = async (data) => {
     setOpen(true);
-    const student = data.student;
-    const applicant = data.student.applicant;
+    const idSave = document.querySelector("#Save");
+    if(idSave){
 
-    const applicantId = new mongoose.Types.ObjectId();
-    const studentId = new mongoose.Types.ObjectId();
-    student._id = studentId;
-    student.applicant = applicantId;
-    applicant._id = applicantId;
-    applicant.student = studentId;
-    student.token = token;
-    applicant.token = token;
-    const JSONdstudent = JSON.stringify(student);
-    const JSONapplicant = JSON.stringify(applicant);
-    const endpointstudent = "/api/student";
-    const endpointapplicant = "/api/applicant";
-    const optionsStudent = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSONdstudent,
-    };
-    const optionApplicant = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSONapplicant,
-    };
-    console.log(JSONdstudent);
-    console.log(JSONapplicant);
-    await fetch(endpointstudent, optionsStudent);
-    await fetch(endpointapplicant, optionApplicant);
+      const student = data.student;
+      const applicant = data.student.applicant;
+
+      const applicantId = new mongoose.Types.ObjectId();
+      const studentId = new mongoose.Types.ObjectId();
+      student._id = studentId;
+      student.applicant = applicantId;
+      applicant._id = applicantId;
+      applicant.student = studentId;
+      student.token = token;
+      applicant.token = token;
+      const JSONdstudent = JSON.stringify(student);
+      const JSONapplicant = JSON.stringify(applicant);
+      const endpointstudent = "/api/student";
+      const endpointapplicant = "/api/applicant";
+      const optionsStudent = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSONdstudent,
+      };
+      const optionApplicant = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSONapplicant,
+      };
+      console.log(JSONdstudent);
+      console.log(JSONapplicant);
+      await fetch(endpointstudent, optionsStudent);
+      await fetch(endpointapplicant, optionApplicant);
+    }
     router.push("/applicants/list");
   };
 
@@ -441,8 +447,9 @@ export default function ApplicantsNew() {
                         {...register("student.email", {
                           required: "Please, enter the email",
                         })}
-                        type="text"
+                        type="email"
                         autoComplete="email"
+                        placeholder="example@gmail.com"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       <p className="text-sm font-thin text-red-600">
@@ -457,7 +464,7 @@ export default function ApplicantsNew() {
                         {...register("student.phoneNumber", {
                           required: "Please, enter the phone number",
                         })}
-                        type="text"
+                        type="tel"
                         autoComplete="phone"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
@@ -471,6 +478,7 @@ export default function ApplicantsNew() {
                       <label htmlFor="university" className="block text-sm">
                         University
                       </label>
+                      
                       <input
                         {...register("student.university", {
                           required: "Please, enter the university",
@@ -482,7 +490,9 @@ export default function ApplicantsNew() {
                       <p className="text-sm font-thin text-red-600">
                         {errors.student?.university?.message}
                       </p>
+
                     </div> */}
+
 
                     {/* Departing Country */}
                     <div className="flex flex-col gap-2">
@@ -997,8 +1007,9 @@ export default function ApplicantsNew() {
                   </button>
                   {student.student ? (
                     <button
+                      id="UpdateStudent"
                       type="button"
-                      value="Save"
+                      value="Update"
                       className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       onClick={handleSubmit(updateStudent)}
                     >
@@ -1006,6 +1017,7 @@ export default function ApplicantsNew() {
                     </button>
                   ) : (
                     <button
+                      id="Save"
                       type="submit"
                       value="Save"
                       className="w-24 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

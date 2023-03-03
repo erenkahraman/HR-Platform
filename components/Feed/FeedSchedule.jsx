@@ -24,7 +24,7 @@ const FeedSchedule = () => {
           { params: { token: token } },
           config
         );
-        console.log(data)
+        console.log(data);
         setData(data);
         setLoading(false);
       } catch (e) {
@@ -33,7 +33,6 @@ const FeedSchedule = () => {
       }
     };
     asyncRequest();
-    
   }, []);
 
   const read = () => {
@@ -55,10 +54,14 @@ const FeedSchedule = () => {
 
   return (
     <>
-    <div className="flex m-1 py-2">
-      <div className="box-border flex m-1 py-2 w-2/4 border-solid border-2  "><strong>Morning Shift</strong></div>
-      <div className="box-border flex m-1 py-2 w-2/4 border-solid border-2  "><strong>Afternoon Shift</strong></div>
-    </div>
+      <div className="flex m-1 py-2">
+        <div className="box-border flex m-1 py-2 w-2/4 border-solid border-2  ">
+          <strong>Morning Shift</strong>
+        </div>
+        <div className="box-border flex m-1 py-2 w-2/4 border-solid border-2  ">
+          <strong>Afternoon Shift</strong>
+        </div>
+      </div>
       {/* {data.map((weeklySchedule) => (
         <div className="flex m-2 py-4">
           <div className="flex flex-[1] flex-col gap-2 p-2">
@@ -92,5 +95,4 @@ const FeedSchedule = () => {
     </>
   );
 };
-
 export default FeedSchedule;

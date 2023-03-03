@@ -1,26 +1,18 @@
-import {
-  Add,
-  Circle,
-  MoreHoriz,
-  SystemUpdateAlt,
-  HowToReg,
-} from "@mui/icons-material";
+import { Add, Circle, SystemUpdateAlt } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
-import { CircularProgress, Backdrop } from "@mui/material";
 import Link from "next/link";
-import { useEffect } from "react";
-import { server } from "../../next.config";
+import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import * as React from "react";
 import AcceptAplcntModal from "../../components/Modal/AcceptAplcntModal.jsx";
-import { useState } from "react";
 import NoAnswerModal from "../../components/Modal/NoAnswerModal";
 import RejectModal from "../../components/Modal/RejectModal";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../../components/Utils/LoadingState";
 import useTableSearch from "../../hooks/useTableSearch";
+
 import moment, { Moment } from "moment/moment.js";
 
 export default function ApplicantsList({ students }) {
@@ -83,6 +75,7 @@ export default function ApplicantsList({ students }) {
     asyncRequest();
   }, []);
 
+
   const headers = [
     { label: "First name", key: "student.firstName" },
     { label: "Last name", key: "student.lastName" },
@@ -120,7 +113,7 @@ export default function ApplicantsList({ students }) {
   const csvReport = {
     separator: "  ",
     data: data,
-    headers: headers,
+    listHeaders: listHeaders,
     filename: "Extramus Applicant List",
   };
 
@@ -291,10 +284,10 @@ export default function ApplicantsList({ students }) {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        <div className="flex items-center gap-2">
-                          <Circle className="h-3 w-3 text-yellow-500" />
-                          On Progress
-                        </div>
+                      <span class="inline-flex items-center bg-orange-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                <span class="w-2 h-2 mr-1 bg-orange-500 rounded-full"></span>
+                On progress
+            </span>
                       </td>
 
                       <Popup

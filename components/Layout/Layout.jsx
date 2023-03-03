@@ -1,7 +1,6 @@
-import { Topbar, Sidebar } from ".";
+import { Sidebar } from ".";
 const { default: Head } = require("next/head");
 import { useState } from "react";
-import { BsArrowLeftShort } from "react-icons/bs";
 import { HiOutlineMenu } from "react-icons/hi";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +15,7 @@ import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const Layout = ({ children }) => {
+export default function Layout({ children }) {
   const cookies = parseCookies();
   const router = useRouter();
   const { data: session } = useSession();
@@ -92,7 +91,9 @@ const Layout = ({ children }) => {
               </Popup>
               <p className="text-2xl"> │ </p>
               <Link href="/#">
-                <p className="cursor-pointer ">{userState && userState.email}</p>
+                <p className="cursor-pointer ">
+                  {userState && userState.email}
+                </p>
               </Link>
 
               <Popup
@@ -131,6 +132,4 @@ const Layout = ({ children }) => {
       </main>
     </>
   );
-};
-
-export default Layout;
+}
