@@ -12,7 +12,8 @@ import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../../components/Utils/LoadingState";
 import useTableSearch from "../../hooks/useTableSearch";
-import { listHeaders } from "./headers.js";
+
+import moment, { Moment } from "moment/moment.js";
 
 export default function ApplicantsList({ students }) {
   const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
@@ -29,6 +30,8 @@ export default function ApplicantsList({ students }) {
   const { filteredData } = useTableSearch({ data, searchedVal });
 
   const token = cookie.get("token");
+
+  
 
   // set progress bar
   let setProgressBar = (progress) => {
@@ -71,6 +74,41 @@ export default function ApplicantsList({ students }) {
     };
     asyncRequest();
   }, []);
+
+
+  const headers = [
+    { label: "First name", key: "student.firstName" },
+    { label: "Last name", key: "student.lastName" },
+    { label: "Nationality", key: "student.nationality" },
+    { label: "Departing Country", key: "student.departingCountry" },
+    { label: "Date of birth", key: "student.dateOfBirth" },
+    { label: "Email", key: "student.email" },
+    { label: "Department", key: "department" },
+    { label: "Phone Number", key: "student.phoneNumber" },
+    { label: "Sex", key: "student.sex" },
+    { label: "University", key: "student.university" },
+    { label: "Application Date", key: "applicationDate" },
+    { label: "Arrival Date", key: "arrivalDate" },
+    { label: "Departure Date", key: "departureDate" },
+    { label: "Hr Interview Date", key: "hrInterviewDate" },
+    { label: "Interview Notes", key: "interviewNotes" },
+    { label: "Position", key: "position" },
+    { label: "Progress", key: "progress" },
+    { label: "Rejection Reasons", key: "rejectionReasons" },
+    { label: "Acceptance Letter", key: "documents.acceptanceLetter" },
+    { label: "Accommodation Letter", key: "documents.accommodationLetter" },
+    { label: "Arrival Tickets", key: "documents.arrivalTickets" },
+    { label: "Confidentiality Letter", key: "documents.confidentialityLetter" },
+    { label: "Curiculum Vitae", key: "documents.curiculumVitae" },
+    { label: "Identification", key: "documents.identification" },
+    { label: "Interview Record", key: "documents.interviewRecord" },
+
+    {
+      label: "Intern Development Plan",
+      key: "documents.internDevelopmentPlan",
+    },
+    { label: "Learning Agreement", key: "documents.learningAgreement" },
+  ];
 
   const csvReport = {
     separator: "  ",
@@ -176,7 +214,7 @@ export default function ApplicantsList({ students }) {
                       Full Name
                     </th>
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
-                      Applied On
+                      HR Interview
                     </th>
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                       Department
@@ -184,6 +222,7 @@ export default function ApplicantsList({ students }) {
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                       Position
                     </th>
+                    
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                       Completion{" "}
                     </th>
@@ -206,8 +245,11 @@ export default function ApplicantsList({ students }) {
                         </span>
                       </td>
 
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.applicant.applicationDate}
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                      
+                      >
+                        {moment(student.applicant.applicantDate).format( "DD/MM/YYYY" )}
+                        
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">

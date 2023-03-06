@@ -40,7 +40,7 @@ export default function ApplicantsNew() {
   const [student, setStudent] = useState(
     { student: JSON.parse(router.query.student || null) } || null
   );
-  
+
   const {
     control,
     register,
@@ -52,13 +52,19 @@ export default function ApplicantsNew() {
       return student;
     }, [student]),
   });
- 
-  
-  
-    
+
   const { query } = router;
 
   const token = cookie.get("token");
+
+  const defaultDoc = [
+    { title: "Curriculum Vitae", status: "Needs Review" },
+    { title: "Motivation Letter", status: "Needs Review" },
+    { title: "Arrival Tickets", status: "Needs Review" },
+    { title: "Learning Agreement", status: "Needs Review" },
+    { title: "Acceptance Letter", status: "Needs Review" },
+    { title: "Interview Record", status: "Needs Review" },
+  ];
 
   const docs = [
     "Curriculum Vitae",
@@ -66,6 +72,8 @@ export default function ApplicantsNew() {
     "Arrival Tickets",
     "Learning Agreement",
     "Acceptance Letter",
+    "Interview Record"
+   
   ];
 
   
@@ -213,6 +221,15 @@ export default function ApplicantsNew() {
     await updateDepartment();
     setAddPositionModal(false);
   };
+
+  var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + mm + '-' + dd;
+    console.log(today);
+
+  
 
   const updateStudent = async (data) => {
     setOpen(true);
@@ -379,6 +396,7 @@ export default function ApplicantsNew() {
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                               value={value || null}
+                              inputFormat="dd/MM/yyyy"
                               onChange={(date) => {
                                 onChange(date?.isValid ? date : null);
                               }}
@@ -456,7 +474,7 @@ export default function ApplicantsNew() {
                     </div>
 
                     {/* University */}
-                    <div className="flex flex-col gap-2">
+                    {/* <div className="flex flex-col gap-2">
                       <label htmlFor="university" className="block text-sm">
                         University
                       </label>
@@ -472,10 +490,9 @@ export default function ApplicantsNew() {
                       <p className="text-sm font-thin text-red-600">
                         {errors.student?.university?.message}
                       </p>
-                       
-                   
 
-                    </div>
+                    </div> */}
+
 
                     {/* Departing Country */}
                     <div className="flex flex-col gap-2">
@@ -526,6 +543,7 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
+                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -556,6 +574,7 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
+                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -590,6 +609,7 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
+                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -716,6 +736,7 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
+                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -749,6 +770,7 @@ export default function ApplicantsNew() {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
                                 value={value || null}
+                                inputFormat="dd/MM/yyyy"  
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -905,17 +927,19 @@ export default function ApplicantsNew() {
                         </div>*/}
 
                 <div className="flex p-4">
-                  <div className="flex flex-col w-full gap-4">
+                  <div className="flex flex-col  w-full gap-4">
                     <div className="block text-sm font-semibold">
                       Application Documents
                     </div>
-                    <div className="flex gap-6 justify-start">
+                    <div className="grid grid-cols-4 gap-2">
                       {docs.map((docs, i) => (
-                        <DocumentReview
-                          register={register}
-                          title={docs}
-                          type="student.applicant"
-                        />
+                        <div className="grid-row-start-1 grid-row-end-3">
+                          <DocumentReview
+                            register={register}
+                            title={docs}
+                            type="student.applicant"
+                          />
+                        </div>
                       ))}
                     </div>
                     {/**

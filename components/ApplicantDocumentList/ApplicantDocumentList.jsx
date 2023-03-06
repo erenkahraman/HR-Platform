@@ -97,7 +97,7 @@ const DocumentListContent = ({ type, status,student }) => {
       <div className="text-[12px] ">{type}</div>
       
       <div className="d-flex align-items-center ">
-      
+
         <Popup
         contentStyle={{ background: "white", borderRadius: "0.25rem" }}
         trigger={
@@ -150,7 +150,7 @@ const DocumentListContent = ({ type, status,student }) => {
         </button>*/
       
     }
-         
+
 
       <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
         onClick={downloadServer}
@@ -274,9 +274,9 @@ const DocumentList = () => {
                 <DocumentListContent
                   type={name}
                   status={students[index].applicant.documents[name]}
+
                   student={student}
-            
-                  
+
                 />
               ))}
             </div>
@@ -285,8 +285,8 @@ const DocumentList = () => {
               {/* Bottom Left */}
               <div className="flex items-center gap-5 text-xs font-light text-gray-500">
                 <p>Applied on {student.applicant.applicationDate}</p>
-                <p>HR Interview on {student.applicant.applicationDate}</p>
-                <p>CEO Interview on {student.applicant.applicationDate}</p>
+                <p>HR Interview on {student.applicant.hrInterviewDate}</p>
+                <p>CEO Interview on {student.applicant.ceoInterviewDate}</p>
               </div>
             </div>
           </div>
