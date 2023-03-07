@@ -10,6 +10,8 @@ import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import Popup from 'reactjs-popup';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
+import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
+
 
 const DocumentListContent = ({ type, status,student }) => {
   const [fullpath,setFullPath] = useState();
@@ -41,8 +43,8 @@ const DocumentListContent = ({ type, status,student }) => {
     body.append("typeStudent","inters");
     body.append("student", student.firstName.trim()+'_'+student.lastName);
     //alert(file.name + ' is successfully uploaded');  
-   
-    //alert("The "+ type + " " + files.file.originalFilename + " has uploaded successfully !");
+   //console.log("body : " + body)
+    //  alert("The "+ type + " " + file.name + " has uploaded successfully !");
    const response = await axios.post("/api/upload",body);
    
    console.log(response.data);
@@ -51,7 +53,7 @@ const DocumentListContent = ({ type, status,student }) => {
   const [file, setFile] = useState();
     
   const uploadToClient = (event) => {
-    console.log(student.firstName.trim()+'_'+student.lastName);
+    //console.log(student.firstName.trim()+'_'+student.lastName);
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
   
@@ -81,11 +83,9 @@ const DocumentListContent = ({ type, status,student }) => {
       hiddenTag.href="/uploads/inters/"+studentName+"/"+dt.data.file;
       hiddenTag.click();
     }
-    /*status === "Incorrect" ? alert("Please upload the correct document") : null
-    status === "Needs Review" ? alert("Please upload the correct document") : null
-    status === "Not Submitted" ? alert("Please upload the correct document") : null*/
   
   };
+  
 
   return (
     <div className={Border()}>
@@ -119,7 +119,7 @@ const DocumentListContent = ({ type, status,student }) => {
      
         </div>
         <div className="flex flex-row pt-16">
-
+ 
           <div className="pl-24">
             
           <button
@@ -147,8 +147,13 @@ const DocumentListContent = ({ type, status,student }) => {
   <span className="mx-2 label text-blue-600 hidden">Download</span>
     </button>
       <a id="hiddenTag" style={{display:'none'}} href={fullpath} download> </a>
+    
+      
     </div>
+    
     </div>
+    
+    
   );
 };
 

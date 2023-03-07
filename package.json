@@ -70,7 +70,8 @@
     "slate-react": "^0.82.1",
     "swagger-ui-react": "^4.15.5",
     "tippy.js": "^6.3.7",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "video-react": "^0.16.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",
