@@ -16,20 +16,24 @@ import Upcoming from "../../components/Upcoming/Upcoming";
 import Popup from "reactjs-popup";
 import { useRouter } from "next/router";
 import { Birthdays } from "../../components/Birthdays";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
 import Reports from "./reports";
 
+import axios from "axios";
+
 const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [interviewStatistics, setInterviewStatistics] = useState([])
+
   const token = cookie?.get("token");
- 
+
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
     event.preventDefault();
-    
+
     const whatsNew = {
       title: event.target.title.value,
       postedBy: event.target.postedBy.value,
@@ -77,6 +81,78 @@ const Dashboard = () => {
     await fetch(endpointReminder, Reminder);
     router.reload();
   };
+
+  useEffect(() => {
+    console.log("use effect for dashboard")
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        console.log("lets just make an api call to the api/applicant/statistics")
+        const { data } = await axios.get(
+          `/api/applicant/statistics`,
+          { params: { token: token } },
+          config
+        );
+        console.log("did we receive the data in front-end")
+        console.log("lets see the length of array to make sure it is correct")
+        console.log(data.length)
+
+        console.log("lets start to prepare the manipulated data")
+
+        const initialMonthStatus = {
+          hrInterviewDoneTotal: 0,
+          hrInterviewNotDoneTotal: 0,
+          ceoInterviewDoneTotal: 0,
+          ceoInterviewNotDoneTotal: 0
+        }
+
+        // prepare statistics for each month in a year
+        let interviewStatisticsByMonth = Array(12).fill(initialMonthStatus)
+
+        const interviewStatuses = data
+        console.log("at the beginning:")
+        interviewStatuses.forEach((eachInterview) => {
+
+          const hrInterviewDate = new Date(eachInterview.hrInterviewDate)
+          const hrInterviewMonthIndex = hrInterviewDate.getMonth()
+
+          if (eachInterview.interviewStatuses === undefined) {
+            console.log("you wanna return or what")
+            return
+          }
+          console.log("only interview that is available now is")
+          console.log(eachInterview)
+
+          const currentMonthHrStatistics = Object.assign({}, interviewStatisticsByMonth[hrInterviewMonthIndex])
+
+          currentMonthHrStatistics.hrInterviewDoneTotal += Number(eachInterview.interviewStatuses.isHrInterviewDone)
+          currentMonthHrStatistics.hrInterviewNotDoneTotal += Number(!eachInterview.interviewStatuses.isHrInterviewDone)
+
+          const ceoInterviewDate = new Date(eachInterview.ceoInterviewDate)
+          const ceoInterviewMonthIndex = ceoInterviewDate.getMonth()
+
+          const currentMonthCeoStatistics = Object.assign({}, interviewStatisticsByMonth[ceoInterviewMonthIndex])
+
+          currentMonthCeoStatistics.ceoInterviewDoneTotal += Number(eachInterview.interviewStatuses.isCeoInterviewDone)
+          currentMonthCeoStatistics.ceoInterviewNotDoneTotal += Number(!eachInterview.interviewStatuses.isCeoInterviewDone)
+
+          interviewStatisticsByMonth[hrInterviewMonthIndex] = currentMonthHrStatistics
+          interviewStatisticsByMonth[ceoInterviewMonthIndex] = currentMonthCeoStatistics
+
+        })
+        setInterviewStatistics(interviewStatisticsByMonth)
+        console.log(interviewStatisticsByMonth)
+
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    asyncRequest();
+  }, []);
 
   return (
     <div className="flex flex-col w-full">
