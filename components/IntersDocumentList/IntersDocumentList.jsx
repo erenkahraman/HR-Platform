@@ -1,4 +1,5 @@
 import { CheckCircleOutline, WorkOutline } from "@mui/icons-material";
+import UploadIcon from '@mui/icons-material/Upload';
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Tooltip, Button } from "@material-tailwind/react";
@@ -266,13 +267,24 @@ const DocumentList = () => {
                   student={student}
                 />
               ))}
+
             </div>
             {/* Bottom */}
             <div className="flex justify-between">
               {/* Bottom Left */}
-              <div className="flex items-center gap-1 text-xs font-light text-gray-500">
+              <div className="flex items-center gap-5 text-xs font-light text-gray-500">
                 <p>Starts on {student.intern.startDate}</p>
+                <p>Finishing on {student.intern.endDate}</p>
               </div>
+              <div className="flex cursor-pointer">
+              {/* Bottom Right */}
+              <div className="py-1 px-2 text-xs text-blue-900">
+                View All Documents
+              </div>
+              <ArrowRightAlt />
+              
+            </div>
+              
             </div>
           </div>
         ))
