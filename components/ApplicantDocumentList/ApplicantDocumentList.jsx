@@ -55,6 +55,7 @@ const DocumentListContent = ({ type, status,student }) => {
    
     body.append("file", file); 
     body.append("type", type);
+    body.append("typeStudent","applicants");
     body.append("student", student.firstName.trim()+'_'+student.lastName);
     //alert(file.name + ' is successfully uploaded');  
    
@@ -73,16 +74,17 @@ const DocumentListContent = ({ type, status,student }) => {
     
     body.append("student", studentName);
     body.append("type", type);
-
+    body.append("typeStudent","applicants");
 
     const dt = await axios.post("/api/download",body);
-    console.log(dt.data)
+   //console.log(dt.data)
     if (dt.data.error){
       alert(' Could not find the uploaded file ! Try to upload before downloading');
     } else {
-      setFullPath("/uploads/students/Eren_KAHRAMAN/"+dt.data.file);
+      setFullPath("/uploads/applicants/"+studentName+"/"+dt.data.file);
       const hiddenTag = document.querySelector("#hiddenTag");
-      hiddenTag.href="/uploads/students/Eren_KAHRAMAN/"+dt.data.file;
+      console.log("/uploads/applicants/"+studentName+"/"+dt.data.file)
+      hiddenTag.href="/uploads/applicants/"+studentName+"/"+dt.data.file;
       hiddenTag.click();
     }
     /*status === "Incorrect" ? alert("Please upload the correct document") : null

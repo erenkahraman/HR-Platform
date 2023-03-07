@@ -8,12 +8,15 @@ import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
-import { ArrowRightAlt } from "@mui/icons-material";
+import Popup from 'reactjs-popup';
 import DownloadingIcon from '@mui/icons-material/Downloading';
+import UploadIcon from '@mui/icons-material/Upload';
 import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
 
 
-const DocumentListContent = ({ title, status }) => {
+const DocumentListContent = ({ type, status,student }) => {
+  const [fullpath,setFullPath] = useState();
+
   const Border = () => {
     let isRounded;
     let statusColor;
@@ -33,68 +36,127 @@ const DocumentListContent = ({ title, status }) => {
     return result;
   };
 
-
+  const uploadToServer = async (event) => {        
+    const body = new FormData();
+   
+    body.append("file", file); 
+    body.append("type", type.replace(" ",""));
+    body.append("typeStudent","inters");
+    body.append("student", student.firstName.trim()+'_'+student.lastName);
+    //alert(file.name + ' is successfully uploaded');  
+   //console.log("body : " + body)
+    //  alert("The "+ type + " " + file.name + " has uploaded successfully !");
+   const response = await axios.post("/api/upload",body);
+   
+   console.log(response.data);
+  };
+  
   const [file, setFile] = useState();
-
-
-  const handleFile = (e) => {
-    const file = e.target.files[0];
-    console.log(file);
+    
+  const uploadToClient = (event) => {
+    //console.log(student.firstName.trim()+'_'+student.lastName);
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+  
+      setFile(i);
+  
+    }
   };
-
-  const handleFileUpload = () => {
-    const formData = new FormData();
-    formData.append("file", file);
-    axios
-
-      .post("http://localhost:5000/api/applicant/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      });
+  
+  const downloadServer = async () => {
+    /*const { size, elapsed, percentage, download,
+            cancel, error, isInProgress } = useDownloader();*/
+    const studentName = student.firstName.trim()+'_'+student.lastName;
+   
+    const body = new FormData();
+    
+    body.append("student", studentName);
+    body.append("type", type.replace(" ",""));
+    body.append("typeStudent","inters");
+  
+    const dt = await axios.post("/api/download",body);
+    console.log(dt.data)
+    if (dt.data.error){
+      alert(' Could not find the uploaded file ! Try to upload before downloading');
+    } else {
+      setFullPath("/uploads/inters/"+studentName+"/"+dt.data.file);
+      const hiddenTag = document.querySelector("#hiddenTag");
+      hiddenTag.href="/uploads/inters/"+studentName+"/"+dt.data.file;
+      hiddenTag.click();
+    }
+  
   };
-  const onChange = async (formData) => {
-    const config = {
-      headers: { 'content-type': 'multipart/form-data' },
-      onUploadProgress: (event) => {
-        console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
-      },
-    };
-
-    const response = await axios.post('/api/applicant/upload', formData, config);
-
-    console.log('response', response.data);
-  };
+  
 
   return (
     <div className={Border()}>
-      <div className="text-[12px] ">{title}</div>
-      <div className="d-flex align-items-center">
-      <label htmlFor="file-upload" class="bg-transparent scale-100 border-blue-600 hover:scale-125 p-0 cursor-pointer text-xl relative">
-  <UploadIcon className="mx-2"/>
-</label>
-<input id="file-upload" type="file" onChange={onChange} className="hidden" />
+      <div className="text-[10px] ">{type}</div>
+      {//<CheckCircleOutline className="text-sm" />
+      }
+      <div className="d-flex align-items-center ">
+      <Popup
+        contentStyle={{ background: "white", borderRadius: "0.25rem" }}
+        trigger={
+          <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
+            <UploadIcon className="mx-2"/>
+            <span className="mx-2 label text-blue-600 hidden">Upload</span>
+          </button>
+        }
+        >
+    {close => (
+      <div className="m-2 p-4 border border-cyan-600">
+      <form >
+        <div >
+          <h6 className="font-semibold text-xl  pt-2 pb-4">
+            Upload File
+          </h6>
+      
+        </div>
 
-        <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-        onClick={() => {
-        status === "Incorrect" ? alert("Please upload the correct document") : null
-        status === "Needs Review" ? alert("Please upload the correct document") : null
-        status === "Not Submitted" ? alert("Please upload the correct document") : null
-      }}
-      >
-          <DownloadingIcon className="mx-2"/>
-          <span className="mx-2 label text-blue-600 hidden">Download</span>
-          
+        {/* INFORMATION BOX */}
+
+        <div className="flex flex-col">
+          <input type="file" name="files" onChange={uploadToClient} />
+     
+        </div>
+        <div className="flex flex-row pt-16">
+ 
+          <div className="pl-24">
+            
+          <button
+          className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+          type="submit"
+          onClick={uploadToServer}
+        >
+         <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+      Upload
+  </span>
         </button>
-      </div>
+          </div>
+        </div>
+       
+      </form>
     </div>
+    
+    )}
+  </Popup>
+  <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+        onClick={downloadServer}
+        >
+      
+  <DownloadingIcon className="mx-2"/>
+  <span className="mx-2 label text-blue-600 hidden">Download</span>
+    </button>
+      <a id="hiddenTag" style={{display:'none'}} href={fullpath} download> </a>
+    
+      
+    </div>
+    
+    </div>
+    
+    
   );
 };
-
-
 
 
 const DocumentList = () => {
@@ -130,6 +192,7 @@ const DocumentList = () => {
   return (
     <div className="flex flex-col w-full gap-2">
       <LoadingState open={open} />
+     
       {students.length == 0 ? (
         <div
           className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
@@ -199,9 +262,9 @@ const DocumentList = () => {
             <div className="flex gap-[2px]">
               {Object.keys(students[index].intern.documents).map((name) => (
                 <DocumentListContent
-                  title={name}
-                  //  {name === 'Interview Record' && <SlowMotionVideoIcon />}
+                  type={name}
                   status={students[index].intern.documents[name]}
+                  student={student}
                 />
               ))}
 
