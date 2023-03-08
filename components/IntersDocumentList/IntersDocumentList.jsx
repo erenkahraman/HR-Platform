@@ -10,8 +10,7 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import Popup from 'reactjs-popup';
 import DownloadingIcon from '@mui/icons-material/Downloading';
-import UploadIcon from '@mui/icons-material/Upload';
-import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
+import ArrowRightAlt  from '@mui/icons-material/ArrowRightAlt';
 
 
 const DocumentListContent = ({ type, status,student }) => {
@@ -55,10 +54,11 @@ const DocumentListContent = ({ type, status,student }) => {
     
   const uploadToClient = (event) => {
     //console.log(student.firstName.trim()+'_'+student.lastName);
+    console.log(event.target.files[0])
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
-  
       setFile(i);
+      console.log(file)
   
     }
   };
