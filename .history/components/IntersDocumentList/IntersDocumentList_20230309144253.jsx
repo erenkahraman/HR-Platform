@@ -91,11 +91,10 @@ const DocumentListContent = ({ type, status,student }) => {
   return (
     <div className={Border()}>
       <div className="text-[10px] ">{type}</div>
-      {//<CheckCircleOutline className="text-sm" />
-      }
+      
       <div className="d-flex align-items-center ">
       <Popup
-        contentStyle={{ background: "white", borderRadius: "0.25rem" }}
+        contentStyle={{ background: "black", borderRadius: "0.25rem" }}
         trigger={
           <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
             <UploadIcon className="mx-2"/>

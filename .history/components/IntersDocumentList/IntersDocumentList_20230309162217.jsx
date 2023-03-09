@@ -86,6 +86,51 @@ const DocumentListContent = ({ type, status,student }) => {
     }
   
   };
+
+  const [showVideo, setShowVideo] = useState(false);
+  const [showDownload, setShowDownload] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
+
+  const respoonse = async () => {
+    const body = new FormData();
+    body.append("student", student.firstName.trim()+'_'+student.lastName);
+    body.append("type", type.replace(" ",""));
+    body.append("typeStudent","inters");
+    const dt = await axios.post("/api/download",body);
+    console.log(dt.data)
+    if (dt.data.error){
+      alert(' Could not find the uploaded file ! Try to upload before downloading');
+    } else {
+      setFullPath("/uploads/inters/"+student.firstName.trim()+'_'+student.lastName+"/"+dt.data.file);
+      setShowVideo(true);
+    }
+  }
+
+  {showVideo && (
+    <div>
+      <ReactPlayer
+        url={`/uploads/inters/${studentName}/${dt.data.file}`}
+        controls
+      />
+      <button onClick={() => setShowVideo(false)}>Close</button>
+    </div>
+  )}
+
+  const response = async () => {
+    const body = new FormData();
+    body.append("student", student.firstName.trim()+'_'+student.lastName);
+    body.append("type", type.replace(" ",""));
+    body.append("typeStudent","inters");
+    const dt = await axios.post("/api/download",body);
+    console.log(dt.data)
+    if (dt.data.error){
+      alert(' Could not find the uploaded file ! Try to upload before downloading');
+    } else {
+      setFullPath("/uploads/inters/"+student.firstName.trim()+'_'+student.lastName+"/"+dt.data.file);
+      setShowVideo(true);
+    }
+  }
+
   
 
   return (

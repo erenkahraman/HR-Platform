@@ -91,66 +91,109 @@ const DocumentListContent = ({ type, status,student }) => {
   return (
     <div className={Border()}>
       <div className="text-[10px] ">{type}</div>
-      {//<CheckCircleOutline className="text-sm" />
-      }
+      
       <div className="d-flex align-items-center ">
-      <Popup
-        contentStyle={{ background: "white", borderRadius: "0.25rem" }}
-        trigger={
-          <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
-            <UploadIcon className="mx-2"/>
-            <span className="mx-2 label text-blue-600 hidden">Upload</span>
-          </button>
-        }
-        >
+  <Popup
+    contentStyle={{ background: "white", borderRadius: "0.25rem" }}
+    trigger={
+      <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
+        <UploadIcon className="mx-2"/>
+        <span className="mx-2 label text-blue-600 hidden">Upload</span>
+      </button>
+    }
+  >
     {close => (
       <div className="m-2 p-4 border border-cyan-600">
-      <form >
-        <div >
-          <h6 className="font-semibold text-xl  pt-2 pb-4">
-            Upload File
-          </h6>
-      
-        </div>
-
-        {/* INFORMATION BOX */}
-
-        <div className="flex flex-col">
-          <input type="file" name="files" onChange={uploadToClient} />
-     
-        </div>
-        <div className="flex flex-row pt-16">
- 
-          <div className="pl-24">
-            
-          <button
-          className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
-          type="submit"
-          onClick={uploadToServer}
-        >
-         <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-      Upload
-  </span>
-        </button>
+        <form >
+          <div>
+            <h6 className="font-semibold text-xl pt-2 pb-4">
+              Upload File
+            </h6>
           </div>
-        </div>
-       
-      </form>
-    </div>
-    
+
+          {/* INFORMATION BOX */}
+
+          <div className="flex flex-col">
+            <input type="file" name="files" onChange={uploadToClient} />
+          </div>
+          
+          <div className="flex flex-row pt-16">
+            <div className="pl-24">
+              <button
+                className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+                type="submit"
+                onClick={uploadToServer}
+              >
+                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  Upload
+                </span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     )}
   </Popup>
+  
+  {status === "not uploaded" ? (
+          isInterviewRecord ? (
+            <>
+              <label className="inline-block mr-2">
+                <input
+                  type="file"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+                <span className="btn btn-secondary">Upload</span>
+              </label>
+              <Popup
+                contentStyle={{ background: "white", borderRadius: "0.25rem" }}
+                trigger={
+                  <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl">
+                    <SlowMotionVideoIcon className="mx-2" />
+                    <span className="mx-2 label text-blue-600 hidden">
+                      Video
+                    </span>
+                  </button>
+                }
+              >
+                {close => (
+                  <div className="m-2 p-4 border border-cyan-600">
+                    <h6 className="font-semibold text-xl pt-2 pb-4">
+                      Interview Record
+                    </h6>
+                    <p>Insert your video content here.</p>
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                      onClick={close}
+                    >
+                      Close
+                    </button>
+                  </div>
+                )}
+              </Popup>
+            </>
+          ) : (
+            <span className="btn btn-secondary cursor-not-allowed opacity-50">
+              Upload
+            </span>
+          )
+        ) : (
+          <span className="btn btn-primary cursor-not-allowed opacity-50">
+            Uploaded
+          </span>
+        )}
+
+  
   <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-        onClick={downloadServer}
-        >
-      
-  <DownloadingIcon className="mx-2"/>
-  <span className="mx-2 label text-blue-600 hidden">Download</span>
-    </button>
-      <a id="hiddenTag" style={{display:'none'}} href={fullpath} download> </a>
-    
-      
-    </div>
+    onClick={downloadServer}
+  >
+    <DownloadingIcon className="mx-2"/>
+    <span className="mx-2 label text-blue-600 hidden">Download</span>
+  </button>
+  
+  <a id="hiddenTag" style={{display:'none'}} href={fullpath} download> </a>
+</div>
     
     </div>
     

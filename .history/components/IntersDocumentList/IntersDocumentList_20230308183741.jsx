@@ -10,7 +10,7 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import Popup from 'reactjs-popup';
 import DownloadingIcon from '@mui/icons-material/Downloading';
-import { ArrowRightAlt } from "@mui/icons-material";
+import UploadIcon from '@mui/icons-material/Upload';
 import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
 
 

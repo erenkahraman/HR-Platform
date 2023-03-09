@@ -419,11 +419,11 @@ function Attendence() {
                           <div>{student.intern.attendance.late.count}</div>
                         </div>
                       </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                      {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>{student.intern.attendance.coveredDay.count}</div>
                         </div>
-                      </td>
+                      </td> */}
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">

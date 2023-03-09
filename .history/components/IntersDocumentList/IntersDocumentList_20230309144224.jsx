@@ -91,7 +91,7 @@ const DocumentListContent = ({ type, status,student }) => {
   return (
     <div className={Border()}>
       <div className="text-[10px] ">{type}</div>
-      {//<CheckCircleOutline className="text-sm" />
+      {<CheckCircleOutline className="text-sm" />
       }
       <div className="d-flex align-items-center ">
       <Popup
