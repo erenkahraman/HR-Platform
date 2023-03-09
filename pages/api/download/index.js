@@ -14,7 +14,7 @@ export default async (req, res) => {
         form.parse(req, (err, fields, files) => {
             if (err) return reject(err)
             //console.log("typeS : " +"./public/uploads/"+fields.typeStudent+"/"+fields.student)
-            const directoryPath = `./public/uploads/${fields.typeStudent}/${fields.student}`;
+            const directoryPath = `./public/uploads/`;
             
             //passsing directoryPath and callback function
             fs.readdir(directoryPath, function (err, files) {

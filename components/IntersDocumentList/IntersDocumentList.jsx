@@ -1,6 +1,6 @@
 import { CheckCircleOutline, WorkOutline } from "@mui/icons-material";
 import UploadIcon from '@mui/icons-material/Upload';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Tooltip, Button } from "@material-tailwind/react";
 import { MdOutlineModeEditOutline } from "react-icons/md";
@@ -10,8 +10,8 @@ import LoadingState from "../Utils/LoadingState";
 import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import Popup from 'reactjs-popup';
 import DownloadingIcon from '@mui/icons-material/Downloading';
-import { ArrowRightAlt } from "@mui/icons-material";
-import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
+import ArrowRightAlt  from '@mui/icons-material/ArrowRightAlt';
+import base64 from 'react-native-base64';
 
 
 const DocumentListContent = ({ type, status,student }) => {
@@ -35,11 +35,12 @@ const DocumentListContent = ({ type, status,student }) => {
       statusColor;
     return result;
   };
+  const [fileName, setfileName] = useState(null);
 
   const uploadToServer = async (event) => {        
     const body = new FormData();
-   
-    body.append("file", file); 
+    
+    body.append("fileName", file.name); 
     body.append("type", type.replace(" ",""));
     body.append("typeStudent","inters");
     body.append("student", student.firstName.trim()+'_'+student.lastName);
@@ -55,14 +56,16 @@ const DocumentListContent = ({ type, status,student }) => {
     
   const uploadToClient = (event) => {
     //console.log(student.firstName.trim()+'_'+student.lastName);
+    //console.log(event.target.files[0])
     if (event.target.files && event.target.files[0]) {
-      const i = event.target.files[0];
-  
-      setFile(i);
+      const files = event.target.files[0];
+      setFile(files);
+      
   
     }
   };
   
+
   const downloadServer = async () => {
     /*const { size, elapsed, percentage, download,
             cancel, error, isInProgress } = useDownloader();*/
@@ -87,13 +90,35 @@ const DocumentListContent = ({ type, status,student }) => {
   
   };
   
+ 
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+ 
+    const studentName = student.firstName.trim()+'_'+student.lastName;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append("type", type.replace(" ",""));
+  
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
 
+    const data = await response.json();
+    console.log(data);
+  };
+  
+    //console.log(encodedFile)
   return (
     <div className={Border()}>
       <div className="text-[10px] ">{type}</div>
       {//<CheckCircleOutline className="text-sm" />
       }
       <div className="d-flex align-items-center ">
+      
+      <div>
+      
+    </div>
       <Popup
         contentStyle={{ background: "white", borderRadius: "0.25rem" }}
         trigger={
@@ -113,20 +138,22 @@ const DocumentListContent = ({ type, status,student }) => {
       
         </div>
 
-        {/* INFORMATION BOX */}
+        {/* INFORMATION BOX  */}
 
         <div className="flex flex-col">
-          <input type="file" name="files" onChange={uploadToClient} />
-     
+        {
+          //<input type="file" name="files" onChange={uploadToClient} />
+        }
+            <input type="file" onChange={uploadToClient} />
         </div>
         <div className="flex flex-row pt-16">
- 
+          
           <div className="pl-24">
             
           <button
           className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
           type="submit"
-          onClick={uploadToServer}
+          onClick={handleFormSubmit}
         >
          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
       Upload
@@ -139,7 +166,7 @@ const DocumentListContent = ({ type, status,student }) => {
     </div>
     
     )}
-  </Popup>
+    </Popup>
   <button className="bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
         onClick={downloadServer}
         >
