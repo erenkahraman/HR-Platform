@@ -42,7 +42,7 @@ const Feed = () => {
               <div>{whatsNew.postedBy}</div>
             </div>
           </div>
-          <div className="flex flex-[3] flex-col gap-2 p-2">
+          <div className="flex flex-1 flex-col gap-2 p-2">
             <div className="text-sm font-semibold">{whatsNew.title}</div>
             <div className="text-xs font-light">{whatsNew.title}</div>
           </div>

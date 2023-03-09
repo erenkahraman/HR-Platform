@@ -10,12 +10,12 @@ import { useSession, signOut } from "next-auth/react";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import { useTheme } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import MenuIcon from "@mui/icons-material/Menu";
-import IconButton from "@mui/material/IconButton";
 
-export default function Topbar() {
+export default function Topbar({ isOpen, handler }) {
   const cookies = parseCookies();
   const router = useRouter();
   const { data: session } = useSession();
@@ -40,10 +40,7 @@ export default function Topbar() {
       router.push("/login");
     }
   };
-  const [isOpen, setisOpen] = useState(true);
-  const handleDrawerOpen = () => {
-    setisOpen(!isOpen);
-  };
+
   const theme = useTheme();
   return (
     <div className="flex sticky top-0 z-50 ">
@@ -58,7 +55,7 @@ export default function Topbar() {
               color: "#fff",
               marginRight: 10,
             }}
-            onClick={handleDrawerOpen}
+            onClick={handler}
           >
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
@@ -69,7 +66,7 @@ export default function Topbar() {
         ) : (
           <IconButton
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={handler}
             edge="start"
             sx={{
               color: "#fff",
@@ -80,6 +77,7 @@ export default function Topbar() {
             {theme.direction === "rtl" ? <ChevronLefIcon /> : <MenuIcon />}
           </IconButton>
         )}
+
         <Link href="/dashboard">
           <div className="flex items-center ml-5 hover:cursor-pointer  sm:hidden  ">
             <Image

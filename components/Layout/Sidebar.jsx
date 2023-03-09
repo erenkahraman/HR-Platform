@@ -1,13 +1,17 @@
-import { useRouter } from "next/router";
-import React from "react";
-import CoPresentIcon from "@mui/icons-material/CoPresent";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import React, { useState } from "react";
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
 import ListIcon from "@mui/icons-material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import CoPresentIcon from "@mui/icons-material/CoPresent";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import {
   CalendarMonthOutlined,
   DashboardOutlined,
@@ -102,9 +106,48 @@ const Menus = [
   },
 ];
 
-export default function Sidebar({ open }) {
-  const router = useRouter();
+const drawerWidth = 240;
 
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: "hidden",
+});
+
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create("width", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: "hidden",
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
+  }),
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
+
+export default function MiniDrawer({ isOpen }) {
+  const theme = useTheme();
   const sideBarListItem = () => {
     let result = "px-6 hover:text-[#2F80ED] hover:bg-sky-100";
 
@@ -118,58 +161,63 @@ export default function Sidebar({ open }) {
   };
 
   return (
-    <List className="fixed">
-      {Menus.map((menu, index) => (
-        <ListItem key={index} disablePadding sx={{ display: "flex" }}>
-          {menu.isSeperator === undefined ? (
-            <ListItemButton
-              sx={{
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-              href={menu.href}
-              className={
-                menu.isOn === false
-                  ? sideBarListItem()
-                  : sideBarListItem() + " text-[#2F80ED] bg-sky-50"
-              }
-            >
-              {open ? (
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {menu.icon}
-                </ListItemIcon>
-              ) : (
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: "#3a87ee",
-                  }}
-                >
-                  {menu.icon}
-                </ListItemIcon>
-              )}
+    <Box component="div" className="fixed text-[#4F4F4F] bg-gradient-to-r to-sky-50 from-purple-50" open={isOpen}>
+      <Divider />
+      <List>
+        {Menus.map((menu, index) => (
+          <ListItem key={index} disablePadding sx={{ display: "flex" }}>
+            {menu.isSeperator === undefined ? (
+              <ListItemButton
+                sx={{
+                  justifyContent: isOpen ? "initial" : "center",
+                  px: 2.5,
+                }}
+                href={menu.href}
+                className={
+                  menu.isOn === false
+                    ? sideBarListItem()
+                    : sideBarListItem() + " text-[#2F80ED] bg-sky-50"
+                }
+              >
+                {/*If the menu open button is toggled, the menu colapses and
+                   shows different styled icons*/}
+                {isOpen ? (
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: isOpen ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {menu.icon}
+                  </ListItemIcon>
+                ) : (
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: isOpen ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "#3a87ee",
+                    }}
+                  >
+                    {menu.icon}
+                  </ListItemIcon>
+                )}
+                <ListItemText
+                  primary={menu.title}
+                  sx={{ opacity: isOpen ? 1 : 0, my: 0.1 }}
+                />
+              </ListItemButton>
+            ) : (
               <ListItemText
+                className={sideBarListSeperator()}
                 primary={menu.title}
-                sx={{ opacity: open ? 1 : 0, my: 0.1 }}
+                sx={{ opacity: isOpen ? 1 : 0 }}
               />
-            </ListItemButton>
-          ) : (
-            <ListItemText
-              className={sideBarListSeperator()}
-              primary={menu.title}
-              sx={{ opacity: open ? 1 : 0 }}
-            />
-          )}
-        </ListItem>
-      ))}
-    </List>
+            )}
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   );
 }

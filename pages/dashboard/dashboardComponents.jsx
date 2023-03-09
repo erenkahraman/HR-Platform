@@ -2,6 +2,7 @@
 
 import Popup from "reactjs-popup";
 import { ArrowForward, Verified } from "@mui/icons-material";
+import { Button } from "@mui/material";
 
 //Button used in tigger for Popup
 export const ButtonTrigger = ({
@@ -13,17 +14,15 @@ export const ButtonTrigger = ({
 }) => {
   //seeting props for the Button
   return (
-    <button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
-      <div
-        className={`buttonImage text-[${txtColor}] bg-${bgColor}-100 flex items-center justify-center h-12 w-12 rounded-full`}
-      >
-        {btnIcon}
-      </div>
-      <div className="buttonText mb-1">
-        {btnText}
-        <p className="text-xs">{btnDescription}</p>
-      </div>
-    </button>
+    <Button
+      className="flex-1 bg-white p-4 items-center justify-start"
+      startIcon={btnIcon}
+      variant="outlined"
+      sx={{ color: { txtColor }, backgroundColor: { bgColor } }}
+    >
+      <p className="buttonText mb-1">{btnText}</p>
+      <p className="text-xs">{btnDescription}</p>
+    </Button>
   );
 };
 
