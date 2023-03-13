@@ -92,10 +92,12 @@ export default async function handler(req, res) {
     }
   }
   if (method === "POST") {
+    //console.log(req.body)
     try {
       const student = await Student.create(req.body);
       res.status(201).json(student);
     } catch (err) {
+      console.log(err)
       res.status(500).json(err);
     }
   }

@@ -17,9 +17,6 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
-import Autocomplete from '@mui/material/Autocomplete';
-
-
 
 export default function ApplicantsNew() {
   // get dprtmnts from DB
@@ -393,12 +390,15 @@ export default function ApplicantsNew() {
                           required: "Please, enter a birth date",
                         }}
                         render={({ field: { onChange, value } }) => (
+                          
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
+                              disableMaskedInput
                               value={value || null}
-                              inputFormat="dd/MM/yyyy"
+                              inputFormat="DD/MM/YYYY"
                               onChange={(date) => {
                                 onChange(date?.isValid ? date : null);
+                                console.log(date)
                               }}
                               renderInput={(params) => (
                                 <TextField {...params} />
@@ -474,7 +474,7 @@ export default function ApplicantsNew() {
                     </div>
 
                     {/* University */}
-                    {/* <div className="flex flex-col gap-2">
+                    { <div className="flex flex-col gap-2">
                       <label htmlFor="university" className="block text-sm">
                         University
                       </label>
@@ -491,7 +491,7 @@ export default function ApplicantsNew() {
                         {errors.student?.university?.message}
                       </p>
 
-                    </div> */}
+                    </div> }
 
 
                     {/* Departing Country */}
@@ -542,8 +542,9 @@ export default function ApplicantsNew() {
                           render={({ field: { onChange, value } }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
+                              disableMaskedInput
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
+                                inputFormat="DD/MM/YYYY"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -573,8 +574,9 @@ export default function ApplicantsNew() {
                           render={({ field: { onChange, value } }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
+                              disableMaskedInput
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
+                                inputFormat="DD/MM/YYYY"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -608,8 +610,9 @@ export default function ApplicantsNew() {
                           render={({ field: { onChange, value } }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
+                              disableMaskedInput
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
+                                inputFormat="DD/MM/YYYY"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -735,8 +738,9 @@ export default function ApplicantsNew() {
                           render={({ field: { onChange, value } }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
+                              disableMaskedInput
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"
+                                inputFormat="DD/MM/YYYY"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -769,8 +773,9 @@ export default function ApplicantsNew() {
                           render={({ field: { onChange, value } }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
+                              disableMaskedInput
                                 value={value || null}
-                                inputFormat="dd/MM/yyyy"  
+                                inputFormat="DD/MM/YYYY"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
