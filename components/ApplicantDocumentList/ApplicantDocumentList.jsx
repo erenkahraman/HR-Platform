@@ -13,9 +13,9 @@ import Popup from 'reactjs-popup';
 
 const DocumentListContent = ({ type, status,student }) => {
   const [fullpath,setFullPath] = useState();
-
- 
-
+  const [file, setFile] = useState();
+  const [mess, setMess] = useState("");
+  
   const Border = () => {
     let isRounded;
     let statusColor;
@@ -38,78 +38,59 @@ const DocumentListContent = ({ type, status,student }) => {
     return result;
   };
 
-  const [file, setFile] = useState();
-  
   const uploadToClient = (event) => {
-    console.log(student.firstName.trim()+'_'+student.lastName);
     if (event.target.files && event.target.files[0]) {
-      const i = event.target.files[0];
-
-      setFile(i);
- 
+      const files = event.target.files[0];
+      setFile(files);
     }
   };
-
-  const uploadToServer = async (event) => {        
-    const body = new FormData();
-   
-    body.append("file", file); 
-    body.append("type", type);
-    body.append("typeStudent","applicants");
-    body.append("student", student.firstName.trim()+'_'+student.lastName);
-    //alert(file.name + ' is successfully uploaded');  
-   
-    //alert("The "+ type + " " + files.file.originalFilename + " has uploaded successfully !");
-   const response = await axios.post("/api/upload",body);
-   
-   console.log(response.data);
-  };
+  
 
   const downloadServer = async () => {
-    /*const { size, elapsed, percentage, download,
-            cancel, error, isInProgress } = useDownloader();*/
-    const studentName = student.firstName.trim()+'_'+student.lastName;
-   
-    const body = new FormData();
     
+    const studentName = student.firstName.trim()+'_'+student.lastName;
+    const body = new FormData();
+
+    const words = type.split(' ');
+    const trimmedStr = words.join('');
+
     body.append("student", studentName);
-    body.append("type", type);
-    body.append("typeStudent","applicants");
-
+    body.append("type", trimmedStr);
+    
     const dt = await axios.post("/api/download",body);
-   //console.log(dt.data)
-    if (dt.data.error){
-      alert(' Could not find the uploaded file ! Try to upload before downloading');
-    } else {
-      setFullPath("/uploads/applicants/"+studentName+"/"+dt.data.file);
-      const hiddenTag = document.querySelector("#hiddenTag");
-      console.log("/uploads/applicants/"+studentName+"/"+dt.data.file)
-      hiddenTag.href="/uploads/applicants/"+studentName+"/"+dt.data.file;
-      hiddenTag.click();
-    }
-    /*status === "Incorrect" ? alert("Please upload the correct document") : null
-    status === "Needs Review" ? alert("Please upload the correct document") : null
-    status === "Not Submitted" ? alert("Please upload the correct document") : null*/
+    console.log(dt.data)
+    
+    setFullPath("/uploads/"+dt.data.file);
 
+    const hiddenTag = document.querySelector("#hiddenTag");
+    console.log("/uploads/"+dt.data.file)
+    hiddenTag.href="/uploads/"+dt.data.file;
+    hiddenTag.click();
+  
   };
-
+  
+ 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
  
     const studentName = student.firstName.trim()+'_'+student.lastName;
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append("type", type.replace(" ",""));
+   
+    const words = type.split(' ');
+    const trimmedStr = words.join('');
+    if(!file){
+      alert('Chose a file !');
+      return;
+    }
+    const newfile = new File([file],studentName + ' ' +trimmedStr + ' '+ file.name,{type: file.type});
+  
+    formData.append('file', newfile);
   
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
     });
-
-    const data = await response.json();
-    console.log(data);
   };
-  
   return (
     <div className={Border()}>
       
@@ -133,7 +114,7 @@ const DocumentListContent = ({ type, status,student }) => {
           <h6 className="font-semibold text-xl  pt-2 pb-4">
             Upload File
           </h6>
-      
+          
         </div>
 
         {/* INFORMATION BOX */}
@@ -155,6 +136,7 @@ const DocumentListContent = ({ type, status,student }) => {
       Upload
   </span>
         </button>
+        <p color="green">{mess}</p>
           </div>
         </div>
        

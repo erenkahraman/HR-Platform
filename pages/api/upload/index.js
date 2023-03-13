@@ -11,16 +11,15 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-
 export default function handler(req, res) {
   
   upload.single('file')(req, res, function (err) {
     if (err) {
       console.log(err);
-      return res.status(500).json({ error: 'Error uploading file' });
+      res.status(500).json({ error: 'Error uploading file' });
     }
    
-    return res.status(200).json({ message: 'File uploaded successfully' });
+     res.status(200).json({ message: 'File uploaded successfully' });
   });
 }
 export const config = {
