@@ -11,12 +11,13 @@ import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import Popup from 'reactjs-popup';
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import ArrowRightAlt  from '@mui/icons-material/ArrowRightAlt';
-import base64 from 'react-native-base64';
+import { saveAs } from 'file-saver';
 
 
 const DocumentListContent = ({ type, status,student }) => {
   const [fullpath,setFullPath] = useState();
-
+  const [file, setFile] = useState();
+  const [mess, setMess] = useState("");
   const Border = () => {
     let isRounded;
     let statusColor;
@@ -35,58 +36,39 @@ const DocumentListContent = ({ type, status,student }) => {
       statusColor;
     return result;
   };
-  const [fileName, setfileName] = useState(null);
 
-  const uploadToServer = async (event) => {        
-    const body = new FormData();
-    
-    body.append("fileName", file.name); 
-    body.append("type", type.replace(" ",""));
-    body.append("typeStudent","inters");
-    body.append("student", student.firstName.trim()+'_'+student.lastName);
-    //alert(file.name + ' is successfully uploaded');  
-   //console.log("body : " + body)
-    //  alert("The "+ type + " " + file.name + " has uploaded successfully !");
-   const response = await axios.post("/api/upload",body);
-   
-   console.log(response.data);
-  };
-  
-  const [file, setFile] = useState();
-    
+ /**
+  * 
+  * @param {*} event 
+  */
   const uploadToClient = (event) => {
-    //console.log(student.firstName.trim()+'_'+student.lastName);
-    //console.log(event.target.files[0])
     if (event.target.files && event.target.files[0]) {
       const files = event.target.files[0];
       setFile(files);
-      
-  
     }
   };
   
 
   const downloadServer = async () => {
-    /*const { size, elapsed, percentage, download,
-            cancel, error, isInProgress } = useDownloader();*/
-    const studentName = student.firstName.trim()+'_'+student.lastName;
-   
-    const body = new FormData();
     
+    const studentName = student.firstName.trim()+'_'+student.lastName;
+    const body = new FormData();
+
+    const words = type.split(' ');
+    const trimmedStr = words.join('');
+
     body.append("student", studentName);
-    body.append("type", type.replace(" ",""));
-    body.append("typeStudent","inters");
-  
+    body.append("type", trimmedStr);
+    
     const dt = await axios.post("/api/download",body);
     console.log(dt.data)
-    if (dt.data.error){
-      alert(' Could not find the uploaded file ! Try to upload before downloading');
-    } else {
-      setFullPath("/uploads/inters/"+studentName+"/"+dt.data.file);
-      const hiddenTag = document.querySelector("#hiddenTag");
-      hiddenTag.href="/uploads/inters/"+studentName+"/"+dt.data.file;
-      hiddenTag.click();
-    }
+    
+    setFullPath("/uploads/"+dt.data.file);
+
+    const hiddenTag = document.querySelector("#hiddenTag");
+    console.log("/uploads/"+dt.data.file)
+    hiddenTag.href="/uploads/"+dt.data.file;
+    hiddenTag.click();
   
   };
   
@@ -96,24 +78,27 @@ const DocumentListContent = ({ type, status,student }) => {
  
     const studentName = student.firstName.trim()+'_'+student.lastName;
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append("type", type.replace(" ",""));
+   
+    const words = type.split(' ');
+    const trimmedStr = words.join('');
+    if(!file){ 
+      alert('Chose a file !');
+      return;
+    }
+    const newfile = new File([file],studentName + ' ' +trimmedStr + ' '+ file.name,{type: file.type});
   
+    formData.append('file', newfile);
+    setMess("File has uploaded");
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
     });
-
-    const data = await response.json();
-    console.log(data);
+    
   };
   
-    //console.log(encodedFile)
   return (
     <div className={Border()}>
       <div className="text-[10px] ">{type}</div>
-      {//<CheckCircleOutline className="text-sm" />
-      }
       <div className="d-flex align-items-center ">
       
       <div>
@@ -159,6 +144,7 @@ const DocumentListContent = ({ type, status,student }) => {
       Upload
   </span>
         </button>
+        <p color="green">{mess}</p>
           </div>
         </div>
        
