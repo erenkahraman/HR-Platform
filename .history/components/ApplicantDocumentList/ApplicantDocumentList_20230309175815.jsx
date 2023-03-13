@@ -93,23 +93,6 @@ const DocumentListContent = ({ type, status,student }) => {
 
   };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
- 
-    const studentName = student.firstName.trim()+'_'+student.lastName;
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append("type", type.replace(" ",""));
-  
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const data = await response.json();
-    console.log(data);
-  };
-  
   return (
     <div className={Border()}>
       
