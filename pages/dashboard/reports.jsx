@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import StackedBarChartOutlinedIcon from "@mui/icons-material/StackedBarChartOutlined";
-import { Box, Button, Card, Grid, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Paper,
+  Switch,
+  Typography,
+} from "@mui/material";
 import { CardFooter } from "@material-tailwind/react";
 import IconButton from "@mui/material/IconButton";
 import AppBar from "@mui/material/AppBar";
@@ -38,7 +46,9 @@ const Statistics = {
 export default function ReportsBrief() {
   //state of the ReportsViewDashboard
   const [isActive, setIsActive] = useState(false);
-  const [data, setData] = useState({ data: [] });
+  //state for the view
+  const [barChartDataView, setBarChartDataView] = useState(true);
+  const [currentChartView, setCurrentChartView] = useState("line");
   //Control state of "isActive"
   const toggleIsActive = () => {
     setIsActive(isActive ? false : true);
@@ -49,6 +59,16 @@ export default function ReportsBrief() {
     const Transition = React.forwardRef(function Transition(props, ref) {
       return <Slide direction="up" ref={ref} {...props} />;
     });
+
+    const changeChartView = () => {
+      if (currentChartView === "line") {
+        const newChartView = "bar";
+        setCurrentChartView(newChartView);
+      } else {
+        const newChartView = "line";
+        setCurrentChartView(newChartView);
+      }
+    };
     return (
       <Grid
         open={toggleIsActive}
@@ -56,7 +76,7 @@ export default function ReportsBrief() {
         sx={{ width: "100%" }}
       >
         <AppBar position="static">
-          <Toolbar variant="dense">
+          <Toolbar variant="dense" sx={{ justifyContent: "space-between" }}>
             <IconButton
               edge="start"
               color="inherit"
@@ -65,59 +85,38 @@ export default function ReportsBrief() {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="body2" component="p">
+            <Typography variant="body2" component="div">
               Refresh to load the most recent data
             </Typography>
+            <Grid flex sx={{ flexDirection: "column" }}>
+              <Typography variant="caption" component="div">
+                Line chart view
+                <Switch
+                  size="small"
+                  checked={currentChartView === "line"}
+                  //onClick={() => setBarChartDataView(!barChartDataView)}
+                  onClick={changeChartView}
+                  name="toggleDataView"
+                  color="default"
+                />
+              </Typography>
+              <Typography variant="caption" component="div">
+                Bar chart view
+                <Switch
+                  size="small"
+                  checked={currentChartView === "bar"}
+                  //onClick={() => setBarChartDataView(!barChartDataView)}
+                  onClick={changeChartView}
+                  name="toggleDataView"
+                  color="default"
+                />
+              </Typography>
+            </Grid>
           </Toolbar>
         </AppBar>
-        <Box sx={{ width: "100%" }}>
-          {/* Chart */}
-          <Grid item xs={12} md={12} lg={12}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                height: 280,
-              }}
-            >
-              <CreateChart1 />
-            </Paper>
-          </Grid>
-          <Grid container rowSpacing={3} columnSpacing={2} paddingY={2}>
-            {/* Students and countries */}
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <CreateBarChart />
-              </Paper>
-            </Grid>
-          </Grid>
-        </Box>
+        <CreateChart1 viewBarChart={currentChartView === "bar"} />
       </Grid>
     );
-  };
-  //loading data into the charts if ReportsView is Active
-  useEffect(() => {
-    console.log("isActive is: ", isActive);
-
-    if (isActive) {
-      fetchData();
-    } else {
-      setData({ data: [] });
-    }
-  }, [isActive]);
-
-  const fetchData = async () => {
-    const response = await fetch("https://reqres.in/api/users", {
-      method: "GET",
-      headers: { Accept: "application/json" },
-    });
-
-    const result = await response.json();
-
-    console.log("result is: ", JSON.stringify(result, null, 4));
-
-    setData(result);
   };
 
   return (
