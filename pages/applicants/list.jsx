@@ -1,10 +1,6 @@
-import { Add, Circle, SystemUpdateAlt } from "@mui/icons-material";
-import EditIcon from "@mui/icons-material/Edit";
+import { Add, SystemUpdateAlt } from "@mui/icons-material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import Popup from "reactjs-popup";
-import AcceptAplcntModal from "../../components/Modal/AcceptAplcntModal.jsx";
-import RejectModal from "../../components/Modal/RejectModal";
 import { CSVLink } from "react-csv";
 import axios from "axios";
 import cookie from "js-cookie";
@@ -18,11 +14,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
+import { ApplicantItem } from "../../components/Applicants/ApplicantItem";
 
 export default function ApplicantsList({ students }) {
-  const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
-  const [noAnswerModal, setNoAnswerModal] = useState(false);
-  const [rejectModal, setRejectModal] = useState(false);
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   const [edit, setEdit] = useState(false);
@@ -41,27 +35,9 @@ export default function ApplicantsList({ students }) {
     "Department",
     "Position",
     "Completion",
-    "Status",
+    "Done Status",
     "Action",
   ];
-
-  // set progress bar
-  let setProgressBar = (progress) => {
-    switch (progress) {
-      case "New Candidate":
-        return "20%";
-      case "HR Interview":
-        return "40%";
-      case "CEO Interview":
-        return "60%";
-      case "Completing Documents":
-        return "80%";
-      case "Completed":
-        return "100%";
-      default:
-        return "0%";
-    }
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -86,41 +62,6 @@ export default function ApplicantsList({ students }) {
     };
     asyncRequest();
   }, []);
-
-
-  const headers = [
-    { label: "First name", key: "student.firstName" },
-    { label: "Last name", key: "student.lastName" },
-    { label: "Nationality", key: "student.nationality" },
-    { label: "Departing Country", key: "student.departingCountry" },
-    { label: "Date of birth", key: "student.dateOfBirth" },
-    { label: "Email", key: "student.email" },
-    { label: "Department", key: "department" },
-    { label: "Phone Number", key: "student.phoneNumber" },
-    { label: "Sex", key: "student.sex" },
-    { label: "University", key: "student.university" },
-    { label: "Application Date", key: "applicationDate" },
-    { label: "Arrival Date", key: "arrivalDate" },
-    { label: "Departure Date", key: "departureDate" },
-    { label: "Hr Interview Date", key: "hrInterviewDate" },
-    { label: "Interview Notes", key: "interviewNotes" },
-    { label: "Position", key: "position" },
-    { label: "Progress", key: "progress" },
-    { label: "Rejection Reasons", key: "rejectionReasons" },
-    { label: "Acceptance Letter", key: "documents.acceptanceLetter" },
-    { label: "Accommodation Letter", key: "documents.accommodationLetter" },
-    { label: "Arrival Tickets", key: "documents.arrivalTickets" },
-    { label: "Confidentiality Letter", key: "documents.confidentialityLetter" },
-    { label: "Curiculum Vitae", key: "documents.curiculumVitae" },
-    { label: "Identification", key: "documents.identification" },
-    { label: "Interview Record", key: "documents.interviewRecord" },
-
-    {
-      label: "Intern Development Plan",
-      key: "documents.internDevelopmentPlan",
-    },
-    { label: "Learning Agreement", key: "documents.learningAgreement" },
-  ];
 
   const csvReport = {
     separator: "  ",
@@ -271,97 +212,7 @@ export default function ApplicantsList({ students }) {
                 {/* Table Body */}
                 <TableBody>
                   {filteredData.map((student) => (
-                    <TableRow key={student._id}>
-                      <TableCell align="left">
-                        <span className="font-bold whitespace-nowrap">
-                          {student.firstName} {student.lastName}{" "}
-                        </span>
-                      </TableCell>
-
-                      <TableCell>{student.applicant.applicationDate}</TableCell>
-
-                      <TableCell>{student.applicant.department}</TableCell>
-
-                      <TableCell>{student.applicant.position}</TableCell>
-
-                      <TableCell>
-                        <div className="whitespace-nowrap">
-                          {student.applicant.progress}
-                        </div>
-                        <span className="mr-2">
-                          {setProgressBar(student.applicant.progress)}
-                        </span>
-                        <div className="overflow-hidden h-2 text-xs flex rounded bg-gray-300">
-                          <div
-                            style={{
-                              width: setProgressBar(student.applicant.progress),
-                            }}
-                            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
-                          ></div>
-                        </div>
-                      </TableCell>
-
-                      <TableCell className="border-t-0 text-xs whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          <Circle className="h-3 w-3 text-yellow-500" />
-                          On Progress
-                        </div>
-                      </TableCell>
-
-                      <Popup
-                        contentStyle={{
-                          background: "transparent",
-                          borderRadius: "1rem",
-                        }}
-                        trigger={
-                          <TableCell className="align-middle text-xs whitespace-nowrap">
-                            <Button size="small" type="submit">
-                              <EditIcon />
-                            </Button>
-                          </TableCell>
-                        }
-                        position="bottom"
-                      >
-                        <div className="flex flex-col mr-2 mt-0">
-                          <div className="cursor-pointer py-1">
-                            <Button
-                              size="small"
-                              className="text-sm font-medium border-solid border-white text-white bg-[#0B3768] hover:bg-[#0b37682b] hover:text-[#0B3768]"
-                              type="submit"
-                              onClick={(e) => setAcceptAplcntModal(true)}
-                            >
-                              Accept
-                            </Button>
-
-                            {acceptAplcntModal && (
-                              <AcceptAplcntModal
-                                setAcceptAplcntModal={setAcceptAplcntModal}
-                                stdId={student._id}
-                              />
-                            )}
-                          </div>
-                          <div>
-                            <Button
-                              size="small"
-                              className="text-sm font-medium border-solid border-white text-white bg-[#0B3768]  hover:bg-[#0b37682b] hover:text-[#0B3768]"
-                              type="submit"
-                              onClick={(e) => setRejectModal(true)}
-                            >
-                              Reject
-                            </Button>
-
-                            {rejectModal && (
-                              <RejectModal
-                                student={student}
-                                setRejectModal={setRejectModal}
-                              />
-                            )}
-                          </div>
-                        </div>
-
-                        {/* </div> */}
-                      </Popup>
-                    </TableRow>
+                    <ApplicantItem student={student} />
                   ))}
                 </TableBody>
               </Table>
