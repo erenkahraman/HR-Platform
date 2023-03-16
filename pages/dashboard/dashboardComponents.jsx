@@ -2,7 +2,7 @@
 
 import Popup from "reactjs-popup";
 import { ArrowForward, Verified } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 
 //Button used in tigger for Popup
 export const ButtonTrigger = ({
@@ -14,15 +14,23 @@ export const ButtonTrigger = ({
 }) => {
   //seeting props for the Button
   return (
-    <Button
-      className="flex-1 bg-white p-4 items-center justify-start"
-      startIcon={btnIcon}
-      variant="outlined"
-      sx={{ color: { txtColor }, backgroundColor: { bgColor } }}
+    <Grid
+      className="flex-1 bg-white p-4 justify-start"
+      flex
+      sx={{
+        flexDirection: "column",
+        borderRadius: 2,
+        border: `1px solid ${txtColor}`,
+      }}
     >
-      <p className="buttonText mb-1">{btnText}</p>
-      <p className="text-xs">{btnDescription}</p>
-    </Button>
+      <Button sx={{ color: { txtColor }, backgroundColor: { bgColor } }}>
+        {btnIcon}
+        <Typography className="buttonText mx-6">{btnText}</Typography>
+      </Button>
+      <Typography variant="body2" component="div">
+        {btnDescription}
+      </Typography>
+    </Grid>
   );
 };
 
