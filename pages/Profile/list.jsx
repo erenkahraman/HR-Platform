@@ -29,13 +29,44 @@ const profileListTableHeaders = [
   "Action",
 ];
 
-export default function ApplicantsList() {
+export default function ApplicantsList({status}) {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const token = cookie.get("token");
   const [scModal, setScModal] = useState(false);
   const [type, setType] = useState("");
+  
+  const border = ((status) => {
+    let statusColor;
 
+    status === "Accepted"
+    ? (statusColor = " bg-green-400 ")
+    : status === "Rejected"
+    ? (statusColor = " bg-red-400 ")
+    : status === "On Process"
+    ? (statusColor = " bg-blue-400 ")
+    : status === "Finished"
+    ? (statusColor = " bg-orange-400 ")
+    : null;
+    let result = "w-2 h-2 mr-1 "+ statusColor +" rounded-full";
+
+    return result;
+  });
+  const bgBorder = ((status) => {
+    let statusColor;
+
+    status === "Accepted"
+    ? (statusColor = "green")
+    : status === "Rejected"
+    ? (statusColor = "red")
+    : status === "On Process"
+    ? (statusColor = "blue")
+    : status === "Finished"
+    ? (statusColor = "orange")
+    : null;
+    let result = "inline-flex items-center bg-"+statusColor+"-100 text-"+statusColor+"-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-"+statusColor+"-900 dark:text-"+statusColor+"-300"
+    return result;
+  }) 
   useEffect(() => {
     setOpen(true);
     const asyncRequest = async () => {

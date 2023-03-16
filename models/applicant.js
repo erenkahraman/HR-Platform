@@ -14,7 +14,7 @@ const ApplicantSchema = new mongoose.Schema({
   arrivalCity: { type: String },
   pickUpBy: { type: String },
   progress: { type: String, required: true, maxlength: 30 },
-  department: { type: String, required: true, maxlength: 30 },
+  department: { type: String, required: true, maxlength: 80 },
   position: { type: String, required: true, maxlength: 30 },
   hrInterviewDate: { type: Date, required: true, maxlength: 30 },
   ceoInterviewDate: { type: Date, required: true, maxlength: 30 },
@@ -22,11 +22,15 @@ const ApplicantSchema = new mongoose.Schema({
   rejectionReasons: { type: String },
   documents: { type: Map, of: String },
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
-  interview: {
-    hrInterviewDone: { type: Boolean },
-    ceoInterviewDone: { type: Boolean },
-  },
+  interviewStatuses : {
+    isHrInterviewDone : Boolean,
+    isCeoInterviewDone : Boolean,
+  }
+
+
 });
+
+
 
 export default mongoose.models.Applicant ||
   mongoose.model("Applicant", ApplicantSchema);
