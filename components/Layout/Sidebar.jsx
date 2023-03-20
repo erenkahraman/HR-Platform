@@ -12,7 +12,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import {
   CalendarMonthOutlined,
   DashboardOutlined,
