@@ -1,6 +1,6 @@
 import { Add, SystemUpdateAlt } from "@mui/icons-material";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { CSVLink } from "react-csv";
 import axios from "axios";
 import cookie from "js-cookie";
@@ -17,6 +17,9 @@ import { Box } from "@mui/system";
 import { ApplicantItem } from "../../components/Applicants/ApplicantItem";
 
 export default function ApplicantsList({ students }) {
+
+  const csvLinkElement = useRef();
+
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   const [edit, setEdit] = useState(false);
@@ -70,6 +73,10 @@ export default function ApplicantsList({ students }) {
     filename: "Extramus Applicant List",
   };
 
+  const handleExportJsonDataToCsv = () => {
+
+    csvLinkElement.current.link.click()
+  }
   return (
     <section className="w-full">
       <LoadingState open={isloading} />
@@ -102,16 +109,20 @@ export default function ApplicantsList({ students }) {
                 justifyContent="space-between"
               >
                 <Grid item>
-                  <Button
-                    size="medium"
-                    color="primary"
-                    startIcon={<SystemUpdateAlt className="text-sm" />}
-                    variant="contained"
-                    sx={{ borderRadius: 2 }}
-                    href="#"
-                  >
-                    <CSVLink {...csvReport}>Export to CSV</CSVLink>
-                  </Button>
+                  <div>
+                    <CSVLink ref={csvLinkElement} {...csvReport}></CSVLink>
+                    <Button
+                      size="medium"
+                      color="primary"
+                      startIcon={<SystemUpdateAlt className="text-sm" />}
+                      variant="contained"
+                      sx={{ borderRadius: 2 }}
+                      href="#"
+                      onClick={handleExportJsonDataToCsv}
+                    >
+                      Export to CSV
+                    </Button>
+                  </div>
                 </Grid>
                 <Grid item>
                   <Button
