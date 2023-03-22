@@ -2,13 +2,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import React from "react";
-
+import InsertChartIcon from '@mui/icons-material/InsertChart';
 import CoPresentIcon from "@mui/icons-material/CoPresent";
-import { BsArrowLeftShort } from "react-icons/bs";
-import { MdOutlineCancel } from "react-icons/md";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import {
   CalendarMonthOutlined,
-  CoPresent,
   DashboardOutlined,
   FlightLandOutlined,
   FlightTakeoffOutlined,
@@ -34,6 +32,19 @@ export default function Sidebar() {
       icon: <CalendarMonthOutlined />,
       isOn: false,
     },
+    {
+      title: "Community",
+      href: "/Profile/list",
+      icon: <GroupOutlined />,
+      isOn: false,
+    },
+
+    {
+      title: "Email",
+      href: "/email/send-email",
+      icon: <MailOutlineIcon />,
+      isOn: false,
+    },
     { title: "APPLICANTS", isSeperator: true },
     { title: "List", href: "/applicants/list", icon: <List />, isOn: false },
     {
@@ -47,6 +58,11 @@ export default function Sidebar() {
       href: "/applicants/Arrival",
       icon: <FlightLandOutlined />,
       isOn: false,
+    },
+    {
+      title: "Interview Statistics",
+      href: "/applicants/InterviewStatistics",
+      icon: <CoPresentIcon />,
     },
     { title: "INTERNS", isSeperator: true },
     {
@@ -67,7 +83,12 @@ export default function Sidebar() {
       icon: <CoPresentIcon />,
       isOn: false,
     },
-
+    /*{
+      title: "View",
+      href: "/interns/InternViewsAll",
+      icon: <GridViewIcon />,
+      isOn: false,
+    },*/
     { title: "END INTERNSHIP", isSeperator: true },
     /*{
       title: "List",
@@ -85,12 +106,6 @@ export default function Sidebar() {
       title: "Departure",
       href: "/EndInternship/EndDeparture",
       icon: <FlightTakeoffOutlined />,
-      isOn: false,
-    },
-    {
-      title: "Profile",
-      href: "/Profile/list",
-      icon: <GroupOutlined />,
       isOn: false,
     },
   ];

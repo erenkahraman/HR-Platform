@@ -2,13 +2,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import React from "react";
-
 import CoPresentIcon from "@mui/icons-material/CoPresent";
-import { BsArrowLeftShort } from "react-icons/bs";
-import { MdOutlineCancel } from "react-icons/md";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import {
   CalendarMonthOutlined,
-  CoPresent,
   DashboardOutlined,
   FlightLandOutlined,
   FlightTakeoffOutlined,
@@ -35,9 +32,15 @@ export default function Sidebar() {
       isOn: false,
     },
     {
-      title: "Profile",
+      title: "Community",
       href: "/Profile/list",
       icon: <GroupOutlined />,
+      isOn: false,
+    },
+    {
+      title: "Email",
+      href: "/email/send-email",
+      icon: <MailOutlineIcon />,
       isOn: false,
     },
     { title: "APPLICANTS", isSeperator: true },
@@ -73,7 +76,12 @@ export default function Sidebar() {
       icon: <CoPresentIcon />,
       isOn: false,
     },
-
+    /*{
+      title: "View",
+      href: "/interns/InternViewsAll",
+      icon: <GridViewIcon />,
+      isOn: false,
+    },*/
     { title: "END INTERNSHIP", isSeperator: true },
     /*{
       title: "List",
