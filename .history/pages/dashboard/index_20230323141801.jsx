@@ -25,6 +25,71 @@ const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
+  const [isOpen, setIsOpen] = useState(false);
+  const [morningShift, setMorningShift] = useState([]);
+  const [afternoonShift, setAfternoonShift] = useState([]);
+
+  const handleAddName = (event, shift) => {
+    event.preventDefault();
+    const name = event.target.name.value.trim();
+    if (name) {
+      if (shift === "morning") {
+        setMorningShift([...morningShift, name]);
+      } else {
+        setAfternoonShift([...afternoonShift, name]);
+      }
+      event.target.reset();
+    }
+  };
+
+  const handleOpenPopup = () => {
+    setIsOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsOpen(false);
+  };
+
+
+  //For Modal
+
+    const handleOKClick = () => {
+        setChoice(true)
+        setModalOn(false)
+    }
+    const handleCancelClick = () => {
+        setChoice(false)
+        setModalOn(false)
+    }
+
+    const handleSubmitSchedule = async (event) => {
+        event.preventDefault();
+        const schedule = {
+            title: event.target.title.value,
+            date: event.target.date.value,
+            time: event.target.time.value,
+            description: event.target.description.value,
+            token: token,
+        };
+        const JSONSchedule = JSON.stringify(schedule);
+        console.log(JSONSchedule);
+
+        const endpointSchedule = "/api/schedule";
+        const Schedule = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            body: JSONSchedule,
+        };
+        await fetch(endpointSchedule, Schedule);
+        router.reload();
+    };
+    
+  
+
+    
  
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -282,8 +347,8 @@ const Dashboard = () => {
                 <AnnouncementOutlined />
               </div>
               <div className="buttonText mb-1">
-                Send a notification
-                <p className="text-xs">Send important messages to colleagues</p>
+                Edit Schedule
+                <p className="text-xs">Add/Edit/Remove Schedule</p>
               </div>
             </button>
           }
@@ -291,64 +356,103 @@ const Dashboard = () => {
         >
           {/* NEW POST */}
           <div className="m-2 p-4">
-            <div>
-              <h6 className="font-semibold text-md text-white pt-2 pb-4">
-                Send a notifcation
-              </h6>
-              <div className="flex flex-row mx-2 mt-2 mb-4">
-                <h2 className="font-semibold text-l text-white ">By: </h2>
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                  placeholder="Type your name..."
-                  required
-                />
-              </div>
-            </div>
-
-            {/* INFORMATION BOX */}
-            <div className="flex flex-col">
-              <div className="pb-2 pt-6">
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the subject..."
-                  required
-                />
-              </div>
-              <div>
-                <textarea
-                  className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the information..."
-                  required
-                />
-              </div>
-            </div>
-
-            {/* BUTTOM PART */}
-            <div className="flex flex-row pt-20">
-              <input
-                type="date"
-                className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 "
-              />
-              <div className="pl-20">
-                <button className="pr-2 ">
-                  {" "}
-                  <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />{" "}
-                </button>
-                <button>
-                  {" "}
-                  <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
-                </button>
-              </div>
-            </div>
-          </div>
-        </Popup>
+  <form onSubmit={handleSubmitSchedule}>
+    <div>
+      <h6 className="font-semibold text-md text-white pt-2 pb-4">
+        New Schedule
+      </h6>
+      <div className="flex flex-row mx-2 mt-2 mb-4">
+        <h2 className="font-semibold text-l text-white ">By: </h2>
+        <input
+          id="whoPosted"
+          type="text"
+          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+          placeholder="Type your name..."
+          required
+        />
       </div>
+    </div>
 
-      {/* Bottom */}
-      <div className="flex flex-[3] py-3 gap-3">
-        {/* Left */}
+    {/* MORNING SHIFT */}
+    <div className="flex flex-col">
+      <div className="pb-2 pt-6">
+        <h3 className="font-semibold text-l text-white">Morning Shift</h3>
+      </div>
+      <div className="flex flex-row">
+        <div className="w-2/5">
+          <input
+            id="morning-intern1"
+            type="text"
+            className="rounded border-none bg-[#e0f2fe] text-black h-7 w-full ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+            placeholder="Intern 1..."
+            required
+          />
+        </div>
+        <div className="w-2/5 ml-2">
+          <input
+            id="morning-intern2"
+            type="text"
+            className="rounded border-none bg-[#e0f2fe] text-black h-7 w-full ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+            placeholder="Intern 2..."
+            required
+          />
+        </div>
+      </div>
+      <div className="flex flex-row pt-4">
+        <div className="w-2/5">
+          <input
+            id="morning-time1"
+            type="text"
+            className="rounded border-none bg-[#e0f2fe] text-black h-7 w-full ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+            placeholder="Time Slot 1..."
+            required
+          />
+        </div>
+        <div className="w-2/5 ml-2">
+          <input
+            id="morning-time2"
+            type="text"
+            className="rounded border-none bg-[#e0f2fe] text-black h-7 w-full ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+            placeholder="Time Slot 2..."
+            required
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* AFTERNOON SHIFT */}
+    <div className="flex flex-col pt-8">
+      <div className="pb-2">
+        <h3 className="font-semibold text-l text-white">Afternoon Shift</h3>
+      </div>
+      <div className="flex flex-row">
+        <div className="w-2/5">
+          <input
+            id="afternoon-intern1"
+            type="text"
+            className="rounded border-none bg-[#e0f2fe] text-black h-7 w-full ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+            placeholder="Intern 1..."
+            required
+          />
+        </div>
+        <div className="w-2/5 ml-2">
+          <input
+            id="afternoon-intern2"
+            type="text"
+            className="rounded border-none bg-[#e0f2fe] text-black h-7 w-full ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+            placeholder="Intern 2..."
+            required
+          />
+        </div>
+      </div>
+      <div className="flex flex-row pt-4">
+        <div className="w-2/5">
+          <input
+
+            id="afternoon-time1"
+            type="text"
+            
+
         <div className="left-container flex flex-[1.5] flex-col gap-2">
           <div className="flex flex-[1.5] flex-col gap-2">
             <div className="flex items-center justify-between">

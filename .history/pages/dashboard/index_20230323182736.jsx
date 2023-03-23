@@ -20,11 +20,27 @@ import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
 import Reports from "./reports";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
+
+  
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+  
+    const handleOpen = () => {
+      setOpen(true);
+    };
+  
+
+
+  const [schedule , setSchedule] = useState([ ]);
+  const [isLoading, setLoading] = useState(true);
  
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -51,6 +67,11 @@ const Dashboard = () => {
     await fetch(endpointNew, New);
     router.reload();
   };
+
+  
+  
+
+  
 
   const [students, setStudents] = useState([]);
   
@@ -80,6 +101,8 @@ const Dashboard = () => {
     await fetch(endpointReminder, Reminder);
     router.reload();
   };
+
+  
 
   return (
     <div className="flex flex-col w-full">
@@ -132,66 +155,79 @@ const Dashboard = () => {
         >
           {/* NEW POST */}
           <div className="m-2 p-4">
-            <form onSubmit={handleSubmitWhatsNew}>
-              <div>
-                <h6 className="font-semibold text-md text-white pt-2 pb-4">
-                  New Post
-                </h6>
-                <div className="flex flex-row mx-2 mt-2 mb-4">
-                  <h2 className="font-semibold text-l text-white ">By: </h2>
-                  <input
-                    id="postedBy"
-                    type="text"
-                    className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                    placeholder="Type your name..."
-                    required
-                  />
-                </div>
-              </div>
+  <form onSubmit={handleSubmitSchedule}>
+    <div>
+      <h6 className="font-semibold text-md text-white pt-2 pb-4">
+        Schedule
+      </h6>
+      <div className="flex flex-row mx-2 mt-2 mb-4">
+        <h2 className="font-semibold text-l text-white ">By: </h2>
+        <input
+          id="scheduledBy"
+          type="text"
+          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+          placeholder="Type your name..."
+          required
+        />
+      </div>
+    </div>
 
-              {/* INFORMATION BOX */}
+    {/* DATE AND TIME PICKER */}
 
-              <div className="flex flex-col">
-                <div className="pb-2 pt-6">
-                  <input
-                    id="title"
-                    type="text"
-                    className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                    placeholder="Type the subject..."
-                    required
-                  />
-                </div>
-                <div>
-                  <textarea
-                    id="paragraph"
-                    className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                    placeholder="Type the information..."
-                    required
-                  />
-                </div>
-              </div>
+    <div className="flex flex-col">
+      <div className="pb-2 pt-6">
+        <input
+          id="scheduleDate"
+          type="date"
+          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+          placeholder="Select a date..."
+          required
+        />
+      </div>
+      <div className="pb-2 pt-6">
+        <input
+          id="scheduleTime"
+          type="time"
+          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+          placeholder="Select a time..."
+          required
+        />
+      </div>
+    </div>
 
-              {/* BUTTOM PART */}
-              <div className="flex flex-row pt-20">
-                <input
-                  id="date"
-                  type="date"
-                  className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 "
-                />
-                <div className="pl-20">
-                  {/* <button className="pr-2 ">
-                    {" "}
-                    <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />{" "}
-                  </button> */}
-                  <button type="submit">
-                    {" "}
-                    <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
+    {/* INFORMATION BOX */}
+
+    <div className="flex flex-col">
+      <div className="pb-2 pt-6">
+        <input
+          id="scheduleTitle"
+          type="text"
+          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+          placeholder="Type the subject..."
+          required
+        />
+      </div>
+      <div>
+        <textarea
+          id="scheduleParagraph"
+          className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+          placeholder="Type the information..."
+          required
+        />
+      </div>
+    </div>
+
+    {/* BUTTOM PART */}
+    <div className="flex flex-row pt-20">
+      <button type="submit">
+        {" "}
+        <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
+      </button>
+    </div>
+  </form>
+</div>
         </Popup>
+
 
         {/* Add Reminder Button */}
         <Popup
@@ -273,78 +309,57 @@ const Dashboard = () => {
           </div>
         </Popup>
 
-        {/* Add Notification Button */}
-        <Popup
-          contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
-          trigger={
-            <button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
-              <div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
-                <AnnouncementOutlined />
+
+
+        {/* Schedule */}
+        <Box>
+      <Button onClick={handleOpen}>Open Modal</Button>
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={{ width: 300, bgcolor: "#0B3768", p: 3 }}>
+          <h2 style={{ color: "#fff" }}>Weekly Schedule</h2>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ marginRight: "20px" }}>
+              <p style={{ color: "#fff", fontWeight: "bold", marginBottom: "10px" }}>Morning Shift</p>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                  <h4 style={{ color: "#fff", marginRight: "10px" }}>Name:</h4>
+                  <input type="text " style={{ width: "100px", height: "20px", borderRadius: "5px", border: "none", padding: "5px" }} />
+                </div>
+                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                  <h4 style={{ color: "#fff", marginRight: "10px" }}>Name:</h4> 
+                  <input type="text " style={{ width: "100px", height: "20px", borderRadius: "5px", border: "none", padding: "5px" }} />
+                </div>
+                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                  <h4 style={{ color: "#fff", marginRight: "10px" }}>Name:</h4>
+                  <input type="text " style={{ width: "100px", height: "20px", borderRadius: "5px", border: "none", padding: "5px" }} />
+                </div>
               </div>
-              <div className="buttonText mb-1">
-                Send a notification
-                <p className="text-xs">Send important messages to colleagues</p>
-              </div>
-            </button>
-          }
-          position="bottom"
-        >
-          {/* NEW POST */}
-          <div className="m-2 p-4">
+            </div>
             <div>
-              <h6 className="font-semibold text-md text-white pt-2 pb-4">
-                Send a notifcation
-              </h6>
-              <div className="flex flex-row mx-2 mt-2 mb-4">
-                <h2 className="font-semibold text-l text-white ">By: </h2>
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                  placeholder="Type your name..."
-                  required
-                />
-              </div>
-            </div>
+              <p style={{ color: "#fff", fontWeight: "bold", marginBottom: "10px" }}>Evening Shift</p>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                  <h4 style={{ color: "#fff", marginRight: "10px" }}>Name:</h4>
 
-            {/* INFORMATION BOX */}
-            <div className="flex flex-col">
-              <div className="pb-2 pt-6">
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the subject..."
-                  required
-                />
-              </div>
-              <div>
-                <textarea
-                  className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the information..."
-                  required
-                />
-              </div>
-            </div>
-
-            {/* BUTTOM PART */}
-            <div className="flex flex-row pt-20">
-              <input
-                type="date"
-                className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 "
-              />
-              <div className="pl-20">
-                <button className="pr-2 ">
-                  {" "}
-                  <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />{" "}
-                </button>
-                <button>
-                  {" "}
-                  <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
-                </button>
+                  <input type="text " style={{ width: "100px", height: "20px", borderRadius: "5px", border: "none", padding: "5px" }} />
+                </div>
+                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                  <h4 style={{ color: "#fff", marginRight: "10px" }}>Name:</h4>
+                  <input type="text " style={{ width: "100px", height: "20px", borderRadius: "5px", border: "none", padding: "5px" }} />
+                </div>
+                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                  <h4 style={{ color: "#fff", marginRight: "10px" }}>Name:</h4>
+                  <input type="text " style={{ width: "100px", height: "20px", borderRadius: "5px", border: "none", padding: "5px" }} />
+                </div>
               </div>
             </div>
           </div>
-        </Popup>
-      </div>
+        </Box>
+      </Modal>
+    </Box>
+  </div>
+
+    
 
       {/* Bottom */}
       <div className="flex flex-[3] py-3 gap-3">
@@ -473,4 +488,5 @@ const Dashboard = () => {
     </div>
   );
 };
+
 export default Dashboard;

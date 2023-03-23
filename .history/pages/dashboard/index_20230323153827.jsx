@@ -282,8 +282,8 @@ const Dashboard = () => {
                 <AnnouncementOutlined />
               </div>
               <div className="buttonText mb-1">
-                Send a notification
-                <p className="text-xs">Send important messages to colleagues</p>
+                Add/Edit/Remove Schedule
+                <p className="text-xs">Add/Edit/Remove</p>
               </div>
             </button>
           }

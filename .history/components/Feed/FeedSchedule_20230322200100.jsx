@@ -11,7 +11,7 @@ const FeedSchedule = () => {
 		confirmAlert({
 			title: <strong>Schedule</strong>,
 			message: <div className="h-96 overflow-y-scroll "><p>
-			{/* <br />Morning shift from 8:00 to 13:00: (23) */}
+			<br />Morning shift from 8:00 to 13:00: (23)
 			<br />
 			<br />Human Resources: 4
 			<br />• Katerina Svarcova

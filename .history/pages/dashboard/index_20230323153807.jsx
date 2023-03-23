@@ -25,6 +25,20 @@ const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
+
+  //For Modal
+
+    const handleOKClick = () => {
+        setChoice(true)
+        setModalOn(false)
+    }
+    const handleCancelClick = () => {
+        setChoice(false)
+        setModalOn(false)
+    }
+  
+
+    
  
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -282,8 +296,8 @@ const Dashboard = () => {
                 <AnnouncementOutlined />
               </div>
               <div className="buttonText mb-1">
-                Send a notification
-                <p className="text-xs">Send important messages to colleagues</p>
+                Edit Schedule
+                <p className="text-xs">Add/Edit/Remove Schedule</p>
               </div>
             </button>
           }
@@ -291,39 +305,97 @@ const Dashboard = () => {
         >
           {/* NEW POST */}
           <div className="m-2 p-4">
-            <div>
-              <h6 className="font-semibold text-md text-white pt-2 pb-4">
-                Send a notifcation
-              </h6>
-              <div className="flex flex-row mx-2 mt-2 mb-4">
-                <h2 className="font-semibold text-l text-white ">By: </h2>
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                  placeholder="Type your name..."
-                  required
-                />
-              </div>
-            </div>
+  <div>
+    <h6 className="font-semibold text-md text-white pt-2 pb-4">
+      Edit Schedule
+    </h6>
+    <div className="flex flex-row mx-2 mt-2 mb-4">
+      <h2 className="font-semibold text-l text-white ">By: </h2>
+      <input
+        type="text"
+        className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+        placeholder="Type your name..."
+        required
+        id="name-input"
+      />
+    </div>
+  </div>
 
-            {/* INFORMATION BOX */}
-            <div className="flex flex-col">
-              <div className="pb-2 pt-6">
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the subject..."
-                  required
-                />
-              </div>
-              <div>
-                <textarea
-                  className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the information..."
-                  required
-                />
-              </div>
-            </div>
+  {/* INFORMATION BOX */}
+  <div className="bg-zinc-200 opacity-90 fixed inset-0 z-50">
+    <div className="flex h-screen justify-center items-center ">
+      <div className="flex-col justify-center bg-[#0b3768] py-8 px-10 border-4 border-none rounded-xl ">
+        <div className="flex mb-5">
+          <p className="font-semibold text-2xl text-white">
+            Weekly Schedule
+          </p>
+        </div>
+        <div className="flex flex-row mb-4">
+          <div className="w-1/2">
+            <p className="font-semibold text-md text-white">Morning Shift:</p>
+            <textarea
+              className="rounded border-none text-black h-32 w-full bg-[#e0f2fe] placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+              style={{ resize: "none" }}
+              placeholder="Type the
+              schedule..."
+              required
+              id="morning-input"
+            />
+          </div>
+          <div className="w-1/2 pl-4">
+            <p className="font-semibold text-md text-white">Evening Shift:</p>
+            <textarea
+              className="rounded border-none text-black h-32 w-full bg-[#e0f2fe] placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+              style={{ resize: "none" }}
+              placeholder="Type the
+              schedule..."
+              required
+              id="evening-input"
+            />
+          </div>
+        </div>
+        <div className="flex flex-row mb-4">
+          <div className="w-1/2">
+            <p className="font-semibold text-md text-white">Night Shift:</p>
+            <textarea
+              className="rounded border-none text-black h-32 w-full bg-[#e0f2fe] placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+              style={{ resize: "none" }}
+              placeholder="Type the
+              schedule..."
+              required
+              id="night-input"
+            />
+          </div>
+          <div className="w-1/2 pl-4">
+            <p className="font-semibold text-md text-white">Off Day:</p>
+            <textarea 
+
+              className="rounded border-none text-black h-32 w-full bg-[#e0f2fe] placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+              style={{ resize: "none" }}
+              placeholder="Type the
+              schedule..."
+              required
+              id="offday-input"
+            />
+          </div>
+        </div>
+        <div className="flex flex-row mb-4">
+          <div className="w-1/2">
+            <p className="font-semibold text-md text-white">Holiday:</p>
+            <textarea
+
+              className="rounded border-none text-black h-32 w-full bg-[#e0f2fe] placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+              style={{ resize: "none" }}
+              placeholder="Type the
+              schedule..."
+              required
+              id="holiday-input"
+            />
+          </div>
+          
+        </div>
+        </div>
+        </div>
 
             {/* BUTTOM PART */}
             <div className="flex flex-row pt-20">

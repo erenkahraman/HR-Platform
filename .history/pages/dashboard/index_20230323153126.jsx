@@ -25,6 +25,45 @@ const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
+
+  //For Modal
+
+    const handleOKClick = () => {
+        setChoice(true)
+        setModalOn(false)
+    }
+    const handleCancelClick = () => {
+        setChoice(false)
+        setModalOn(false)
+    }
+
+    const handleSubmitSchedule = async (event) => {
+        event.preventDefault();
+        const schedule = {
+            title: event.target.title.value,
+            date: event.target.date.value,
+            time: event.target.time.value,
+            description: event.target.description.value,
+            token: token,
+        };
+        const JSONSchedule = JSON.stringify(schedule);
+        console.log(JSONSchedule);
+
+        const endpointSchedule = "/api/schedule";
+        const Schedule = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            },
+            body: JSONSchedule,
+        };
+        await fetch(endpointSchedule, Schedule);
+        router.reload();
+    };
+  
+
+    
  
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -275,76 +314,102 @@ const Dashboard = () => {
 
         {/* Add Notification Button */}
         <Popup
-          contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
-          trigger={
-            <button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
-              <div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
-                <AnnouncementOutlined />
-              </div>
-              <div className="buttonText mb-1">
-                Send a notification
-                <p className="text-xs">Send important messages to colleagues</p>
-              </div>
-            </button>
-          }
-          position="bottom"
-        >
-          {/* NEW POST */}
-          <div className="m-2 p-4">
-            <div>
-              <h6 className="font-semibold text-md text-white pt-2 pb-4">
-                Send a notifcation
-              </h6>
-              <div className="flex flex-row mx-2 mt-2 mb-4">
-                <h2 className="font-semibold text-l text-white ">By: </h2>
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                  placeholder="Type your name..."
-                  required
-                />
-              </div>
-            </div>
-
-            {/* INFORMATION BOX */}
-            <div className="flex flex-col">
-              <div className="pb-2 pt-6">
-                <input
-                  type="text"
-                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the subject..."
-                  required
-                />
-              </div>
-              <div>
-                <textarea
-                  className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
-                  placeholder="Type the information..."
-                  required
-                />
-              </div>
-            </div>
-
-            {/* BUTTOM PART */}
-            <div className="flex flex-row pt-20">
-              <input
-                type="date"
-                className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 "
-              />
-              <div className="pl-20">
-                <button className="pr-2 ">
-                  {" "}
-                  <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />{" "}
-                </button>
-                <button>
-                  {" "}
-                  <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
-                </button>
-              </div>
-            </div>
-          </div>
-        </Popup>
+  contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
+  trigger={
+    <button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
+      <div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
+        <AnnouncementOutlined />
       </div>
+      <div className="buttonText mb-1">
+        Edit Schedule
+        <p className="text-xs">Add/Edit/Remove Schedule</p>
+      </div>
+    </button>
+  }
+  position="bottom"
+>
+  {/* NEW POST */}
+  <div className="m-2 p-4">
+    <form onSubmit={handleSubmitSchedule}>
+      <div>
+        <h6 className="font-semibold text-md text-white pt-2 pb-4">
+          New Schedule
+        </h6>
+        <div className="flex flex-row mx-2 mt-2 mb-4">
+          <h2 className="font-semibold text-l text-white ">Intern: </h2>
+          <select id="internName" className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2">
+            <option value="" disabled defaultValue>Select an intern</option> {/* Changed `selected` to `defaultValue` */}
+            <option value="John Smith">John Smith</option>
+            <option value="Jane Doe">Jane Doe</option>
+            <option value="Bob Johnson">Bob Johnson</option>
+            </select> {/* Added closing tag for select element */}
+        </div>
+        <div className="flex flex-row mx-2 mb-4">
+          <h2 className="font-semibold text-l text-white ">By: </h2>
+          <input
+            id="whoPosted"
+            type="text"
+            className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+            placeholder="Type your name..."
+            required
+          />
+        </div>
+      </div>
+
+      {/* INFORMATION BOX */}
+      <div className="flex flex-col">
+        <div className="pb-2 pt-6">
+          <input
+            id="title"
+            type="text"
+            className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+            placeholder="Type the title..."
+            required
+          />
+        </div>
+        <div>
+          <textarea
+            id="category"
+            className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+            placeholder="Type the category..."
+            required
+          />
+        </div>
+      </div>
+
+      {/* BUTTOM PART */}
+      <div className="flex flex-row pt-20">
+        <input
+          id="date"
+          type="date"
+          className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 "
+        />
+        <div className="pl-20">
+          {/* <button className="pr-2 ">
+            {" "}
+            <Cancel className=" fill-[#e0f2fe]
+            hover:fill-[#991b1b]" />{" "}
+          </button> */}
+          <button type="submit">
+            {" "}
+            <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</Popup>
+
+
+
+
+
+
+
+
+        
+          
+        
 
       {/* Bottom */}
       <div className="flex flex-[3] py-3 gap-3">
