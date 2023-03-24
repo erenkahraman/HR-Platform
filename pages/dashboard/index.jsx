@@ -167,7 +167,7 @@ const Dashboard = () => {
             </div>
             {/* Weekly Schedule */}
           </div>
-          <Reports />
+          {/* <Reports /> */}
         </div>
 
         {/* Right */}
