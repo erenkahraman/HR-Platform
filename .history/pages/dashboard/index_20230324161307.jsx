@@ -442,26 +442,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-    {/* Upcoming Interviews */}
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <div className="text-md font-semibold">Upcoming Interviews</div>
-        <a
-          href="../InterviewViewAll"
-          className="flex items-center justify-center text-[#2F80ED]"
-        >
-          <div>View All</div>
-          <div>
-            {" "}
-            <ArrowForward className="text-md" />
-          </div>
-        </a>
-      </div>
-      {/* Upcoming Interviews Content */}
-      <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-        < Interviews />
-      </div>
-    </div>
           {/* Birthday */}
           <div className="flex flex-col gap-2">
             {/* Daily Reminder Title*/}
@@ -482,6 +462,26 @@ const Dashboard = () => {
                 </a>
               
             </div>
+  {/* Upcoming Interviews */}
+  <div className="flex flex-col gap-2">
+    <div className="flex items-center justify-between">
+      <div className="text-md font-semibold">Upcoming Interviews</div>
+      <a
+        href="../InterviewViewAll"
+        className="flex items-center justify-center text-[#2F80ED]"
+      >
+        <div>View All</div>
+        <div>
+          {" "}
+          <ArrowForward className="text-md" />
+        </div>
+      </a>
+    </div>
+    {/* Upcoming Interviews Content */}
+    <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+      < Interviews />
+    </div>
+  </div>
             {/* {Birthday content} */}
 
             

@@ -41,7 +41,5 @@ function Interviews(){
                 </div>
             </div>
         </section>
-    );
+    )
 }
-
-export default Interviews;

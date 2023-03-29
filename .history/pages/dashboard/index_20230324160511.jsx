@@ -19,7 +19,8 @@ import { Birthdays } from "../../components/Birthdays";
 import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
-import Interviews from "./reports";
+import Reports from "./reports";
+import Interview from "../../components/Interview/Interview";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -370,6 +371,26 @@ const Dashboard = () => {
     </div>
   </div>
 
+  {/* Upcoming Interviews */}
+  <div className="flex flex-col gap-2">
+    <div className="flex items-center justify-between">
+      <div className="text-md font-semibold">Upcoming Interviews</div>
+      <a
+        href="../InterviewViewAll"
+        className="flex items-center justify-center text-[#2F80ED]"
+      >
+        <div>View All</div>
+        <div>
+          {" "}
+          <ArrowForward className="text-md" />
+        </div>
+      </a>
+    </div>
+    {/* Upcoming Interviews Content */}
+    <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+      < Reports />
+    </div>
+  </div>
 
   {/* Weekly Schedule */}
   <div className="flex flex-[1.5] flex-col gap-2">
@@ -442,26 +463,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-    {/* Upcoming Interviews */}
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <div className="text-md font-semibold">Upcoming Interviews</div>
-        <a
-          href="../InterviewViewAll"
-          className="flex items-center justify-center text-[#2F80ED]"
-        >
-          <div>View All</div>
-          <div>
-            {" "}
-            <ArrowForward className="text-md" />
-          </div>
-        </a>
-      </div>
-      {/* Upcoming Interviews Content */}
-      <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-        < Interviews />
-      </div>
-    </div>
           {/* Birthday */}
           <div className="flex flex-col gap-2">
             {/* Daily Reminder Title*/}
