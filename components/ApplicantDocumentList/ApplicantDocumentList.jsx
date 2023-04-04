@@ -10,12 +10,14 @@ import EditDocumentsModal from "../Modal/EditDocumentsModal";
 import DownloadingIcon from '@mui/icons-material/Downloading';
 import UploadIcon from '@mui/icons-material/Upload';
 import Popup from 'reactjs-popup';
+import Modal from 'react-modal';
 
 const DocumentListContent = ({ type, status,student }) => {
   const [fullpath,setFullPath] = useState();
   const [file, setFile] = useState();
   const [mess, setMess] = useState("");
-  
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const Border = () => {
     let isRounded;
     let statusColor;
@@ -58,12 +60,10 @@ const DocumentListContent = ({ type, status,student }) => {
     body.append("type", trimmedStr);
     
     const dt = await axios.post("/api/download",body);
-    console.log(dt.data)
-    
+   
     setFullPath("/uploads/"+dt.data.file);
 
     const hiddenTag = document.querySelector("#hiddenTag");
-    console.log("/uploads/"+dt.data.file)
     hiddenTag.href="/uploads/"+dt.data.file;
     hiddenTag.click();
   
@@ -79,13 +79,13 @@ const DocumentListContent = ({ type, status,student }) => {
     const words = type.split(' ');
     const trimmedStr = words.join('');
     if(!file){
-      alert('Chose a file !');
+      alert('Choose a file !');
       return;
     }
     const newfile = new File([file],studentName + ' ' +trimmedStr + ' '+ file.name,{type: file.type});
-  
     formData.append('file', newfile);
-  
+    setMess("File has uploaded");
+
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
@@ -131,6 +131,7 @@ const DocumentListContent = ({ type, status,student }) => {
           className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
           type="submit"
           onClick={handleFormSubmit}
+          
         >
          <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
       Upload
