@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   }, []);
   const router = useRouter();
 
-  
+  const PORT = process.env.PORT || 5000;
 
   /// for Token Check
   useEffect(() => {

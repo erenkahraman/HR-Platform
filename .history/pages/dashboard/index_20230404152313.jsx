@@ -309,7 +309,7 @@ const Dashboard = () => {
                 <input
                   type="text"
                   className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                  placeholder="Type your colleagues name..."
+                  placeholder="Type your name..."
                   required
                 />
               </div>

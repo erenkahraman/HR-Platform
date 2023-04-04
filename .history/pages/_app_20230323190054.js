@@ -15,8 +15,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   }, []);
   const router = useRouter();
 
-  
-
   /// for Token Check
   useEffect(() => {
     const fetchData = async () => {
