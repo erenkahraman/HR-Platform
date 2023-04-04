@@ -164,13 +164,6 @@ function Attendence() {
     };
 
 
-    const present = (intern) => {
-      setIntern(intern);
-      setStatus("present");
-      setOpen(true);
-    };
-
-
 
  
 
