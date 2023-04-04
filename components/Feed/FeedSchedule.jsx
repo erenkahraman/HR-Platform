@@ -1,23 +1,78 @@
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import cookie from "js-cookie";
 
 const FeedSchedule = () => {
 
-  
+	const [weeklySchedule,setWeeklySchedule] = useState([])
+	const [departmentNames,setDepartmentNames] = useState([])
+
+	const token = cookie.get("token");
+	
+	useEffect(() => {
+		const asyncRequest = async () => {
+		  try {
+			const config = {
+			  headers: {
+				"Content-Type": "application/json",
+			  },
+			};
+			const { data } = await axios.get(
+			  `/api/weeklySchedule`,
+			  { params: { token: token } },
+			  config
+			);
+			console.log("this is the front-end part")
+			console.log(data);
+			
+			console.log("if we group them together")
+			const weeklyScheduleGroupedByDepartment = data.reduce((departments, item) => {
+				const department = (departments[item.department] || []);
+				department.push(item);
+				departments[item.department] = department;
+				return departments;
+			  }, {});
+			  console.log(weeklyScheduleGroupedByDepartment)
+			  setWeeklySchedule(weeklyScheduleGroupedByDepartment)
+
+			const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
+			setDepartmentNames(departmentNames)
+			
+		  } catch (e) {
+			console.error(e);
+		}
+		};
+		asyncRequest();
+	  }, []);
 
 	const read = () => {
 		confirmAlert({
 			title: <strong>Schedule</strong>,
 			message: <div className="h-96 overflow-y-scroll "><p>
 			{/* <br />Morning shift from 8:00 to 13:00: (23) */}
-			<br />
+			
+			<div>
+				{departmentNames.map((eachDepartmentName,index) => (
+					<div>
+						<br />
+						<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
+						{weeklySchedule[eachDepartmentName].map((eachIntern) => (
+							<p>{"• " + eachIntern.student.firstName + " " +  eachIntern.student.lastName } </p>
+						))}
+						{/* <span>{index}</span> */}
+					</div>
+				))}
+			</div>
+
+			{/* <br />	
 			<br />Human Resources: 4
 			<br />• Katerina Svarcova
 			<br />• Klara Tlaskalova
 			<br />• Isata Sajor Bah
 			<br />• Andreea Zuralii
+
 			<br />
 			<br />Information Technology: 1
 			0
@@ -30,10 +85,12 @@ const FeedSchedule = () => {
 			<br />• Oladimeji Rahim Aremu
 			<br />• Sinem Turkcu
 			<br />• Murat Orhun
+			
 			<br />
 			<br />User Experience Designer: 2
 			<br />• Chidiebube Chiemela Samuel
 			<br />• Hellen Truong
+
 			<br />
 			<br />Digital Marketing: ​​​​5
 			<br />• Burak Colak
@@ -41,12 +98,15 @@ const FeedSchedule = () => {
 			<br />• Caterinciuc Vadim
 			<br />• Sefa Aydemir
 			<br />• Elif Basak Cobantepesi
+			
 			<br />
 			<br />Copy Writer: 1
 			<br />• Oyku Dilekci
+			
 			<br />
 			<br />Business Lawyer: 1
 			<br />• Sibusiso Dominic Mabaso
+			
 			<br />
 			<br />Afternoon shift from 13:00 to 18:00: (19)
 			<br />
@@ -79,7 +139,8 @@ const FeedSchedule = () => {
 			<br />• Bilge Bahar Saatci
 			<br />
 			<br />Information Technology: 1 (9:00 - 16:00)
-			<br />• Eneada Sulaj
+			<br />• Eneada Sulaj */}
+			
 		</p></div> ,
 			buttons: [
 			  {
@@ -107,11 +168,24 @@ const FeedSchedule = () => {
 			</div>
 			<div className="flex flex-[3] flex-col gap-2 p-2">
 				<div className="text-sm font-semibold">
-					Shedule for this week
+					Schedule for this week
 				</div>
-				<div className="text-xs font-light h-48">
-					<p className="h-48" style={{overflow:"hidden"}}>
-						<br />Morning shift from 8:00 to 13:00: (23)
+
+				<div className="text-xs font-light h-72">
+					<p className="h-72" style={{overflow:"hidden"}}>
+					<div>
+						{departmentNames.map((eachDepartmentName,index) => (
+							<div>
+								<br />
+								<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
+								{weeklySchedule[eachDepartmentName].map((eachIntern) => (
+									<p>{"• " + eachIntern.student.firstName + " " +  eachIntern.student.lastName } </p>
+								))}
+								{/* <span>{index}</span> */}
+							</div>
+						))}
+					</div>
+		{/* 				<br />Morning shift from 8:00 to 13:00: (23)
 						<br />
 						<br />Human Resources: 4
 						<br />• Katerina Svarcova
@@ -178,7 +252,7 @@ const FeedSchedule = () => {
 						<br />• Bilge Bahar Saatci
 						<br />
 						<br />Information Technology: 1 (9:00 - 16:00)
-						<br />• Eneada Sulaj
+						<br />• Eneada Sulaj */}
 					</p>
 				</div>
 			</div>

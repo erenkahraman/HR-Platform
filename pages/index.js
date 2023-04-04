@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { Fragment } from "react";
 import { Feed } from "../components/Feed";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -8,7 +9,7 @@ export default function Home() {
     route.push("/dashboard");
   }, []);
   return (
-    <>
+    <Fragment>
       {/* <h1>Hello world!</h1> */}
       {/* <div className="flex w-full items-center justify-between">
 				<div>Testing</div>
@@ -21,6 +22,6 @@ export default function Home() {
           <Feed />
         </div>
       </Head>
-    </>
+    </Fragment>
   );
 }

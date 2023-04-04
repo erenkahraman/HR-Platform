@@ -6,7 +6,10 @@ import { useEffect } from "react";
 import { app } from "../pages/verifyToken/index";
 import cookie from "js-cookie";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+export default function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
@@ -72,5 +75,3 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     );
   }
 }
-
-export default MyApp;

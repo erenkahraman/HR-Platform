@@ -2,6 +2,7 @@ import { getMongoDb } from "../../../util/mongodb";
 import WeeklySchedule from "../../../models/weeklySchedule";
 import dbConnect from "../../../util/mongodb";
 import { tokenCheckFunction } from "../auth/tokenCheck";
+import Student from "../../../models/student";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -23,10 +24,28 @@ export default async function handler(req, res) {
 
   if (method === "GET") {
     try {
-      const weeklySchedule = await WeeklySchedule.find({});
-      res.status(201).json(weeklySchedule);
-    } catch (err) {
-      res.status(500).json(err);
+      const interns = await db
+        .collection("interns")
+        .aggregate([
+          { $match: {} },
+          {
+            $lookup: {
+              from: Student.collection.name,
+              localField: "student",
+              foreignField: "_id",
+              as: "student",
+            },
+          },
+          {
+            $unwind: "$student",
+          },
+        ])
+        .toArray();
+      console.log("lets see the interns here")
+      console.log(interns)
+      res.status(200).json(interns);
+    } catch (error) {
+      res.status(500).json(error);
     }
   }
   if (method === "POST") {

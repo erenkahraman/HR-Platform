@@ -62,7 +62,7 @@ export default function Sidebar() {
     {
       title: "Statistics",
       href: "/applicants/Statistics",
-      icon:  <InsertChartIcon />,
+      icon: <InsertChartIcon />,
       isOn: false,
     },
     { title: "INTERNS", isSeperator: true },

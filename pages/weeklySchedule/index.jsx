@@ -136,7 +136,7 @@ export default function DashboardView() {
       setLoading(false);
     }
   };
-  const handleSwapSchedule = async (event) => {};
+  const handleSwapSchedule = async (event) => { };
   const handleMatchGroup = async (event) => {
     setLoading(true);
     try {
@@ -175,7 +175,7 @@ export default function DashboardView() {
       setLoading(false);
     }
   };
-  const handleMatchIntern = async (event) => {};
+  const handleMatchIntern = async (event) => { };
 
   return (
     <div className="flex flex-col w-full">

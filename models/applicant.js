@@ -22,6 +22,12 @@ const ApplicantSchema = new mongoose.Schema({
   rejectionReasons: { type: String },
   documents: { type: Map, of: String },
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
+  interviewStatuses : {
+    isHrInterviewDone : Boolean,
+    isCeoInterviewDone : Boolean,
+  }
+
+
 });
 
 
