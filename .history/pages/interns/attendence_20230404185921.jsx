@@ -164,12 +164,6 @@ function Attendence() {
     };
 
 
-    const present = (intern) => {
-      setIntern(intern);
-      setStatus("present");
-      setOpen(true);
-    };
-
 
 
  
@@ -223,7 +217,18 @@ function Attendence() {
                 >
                   Search
                 </label>
-                
+                <div class="relative">
+                  
+                  {/* <input
+                    type="search"
+                    id="default-search"
+                    class="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search..."
+                    onChange={(e) => {
+                      setSearchedVal(e.target.value);
+                    }}
+                  /> */}
+                </div>
               </form>
           {/* Title Container */}
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white">
