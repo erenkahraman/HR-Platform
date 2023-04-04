@@ -69,7 +69,7 @@ export default function ApplicantsList({ students }) {
   const csvReport = {
     separator: "  ",
     data: data,
-    listHeaders: headers,
+    listHeaders: listHeaders,
     filename: "Extramus Applicant List",
   };
 
