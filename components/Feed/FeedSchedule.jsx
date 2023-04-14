@@ -54,14 +54,13 @@ const FeedSchedule = () => {
 			{/* <br />Morning shift from 8:00 to 13:00: (23) */}
 			
 			<div>
-				{departmentNames.map((eachDepartmentName,index) => (
+				{departmentNames.map((eachDepartmentName) => (
 					<div>
 						<br />
 						<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
 						{weeklySchedule[eachDepartmentName].map((eachIntern) => (
 							<p>{"• " + eachIntern.student.firstName + " " +  eachIntern.student.lastName } </p>
 						))}
-						{/* <span>{index}</span> */}
 					</div>
 				))}
 			</div>
@@ -174,14 +173,13 @@ const FeedSchedule = () => {
 				<div className="text-xs font-light h-72">
 					<p className="h-72" style={{overflow:"hidden"}}>
 					<div>
-						{departmentNames.map((eachDepartmentName,index) => (
+						{departmentNames.map((eachDepartmentName) => (
 							<div>
 								<br />
 								<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
 								{weeklySchedule[eachDepartmentName].map((eachIntern) => (
 									<p>{"• " + eachIntern.student.firstName + " " +  eachIntern.student.lastName } </p>
 								))}
-								{/* <span>{index}</span> */}
 							</div>
 						))}
 					</div>
