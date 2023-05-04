@@ -22,11 +22,14 @@ const ApplicantSchema = new mongoose.Schema({
   rejectionReasons: { type: String },
   documents: { type: Map, of: String },
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
-  interviewStatuses : {
-    isHrInterviewDone : Boolean,
-    isCeoInterviewDone : Boolean,
-  }
-
+  /* interviewStatuses : {
+    isHrInterviewDone : { type: Boolean, default : false },
+    isDepartmentInterviewDone : { type: Boolean, default : false },
+    isCeoInterviewDone : { type: Boolean, default : false },
+  } */
+  hrInterviewStatus : {type: Boolean, default : false},
+  departmentInterviewStatus : {type: Boolean, default : false},
+  ceoInterviewStatus : {type: Boolean, default : false}
 
 });
 

@@ -17,11 +17,14 @@ import { Input } from "postcss";
 
 //start: Funtion that renders individual applicant rows
 export const ApplicantItem = ({ student }) => {
-  const [HRchecked, setHRChecked] = useState(false);
-  const [CEOchecked, setCEOChecked] = useState(false);
+
+  const [HRchecked, setHRChecked] = useState(student.applicant.hrInterviewStatus);
+  const [CEOchecked, setCEOChecked] = useState(student.applicant.ceoInterviewStatus);
+  const [departmentManagerChecked, setDepartmentManagerChecked] = useState(student.applicant.departmentInterviewStatus);
   const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
   const [rejectModal, setRejectModal] = useState(false);
   const [isEditIconActive, setIsEditIconActive] = useState(false);
+
 
   // set progress bar
   let setProgressBar = (progress) => {
@@ -41,6 +44,30 @@ export const ApplicantItem = ({ student }) => {
     }
   };
 
+  const handleSaveDoneStatus = async () => {
+
+
+    try {
+      await fetch(`/api/applicant/${student.applicant._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(
+          {
+            hrInterviewStatus: HRchecked,
+            departmentInterviewStatus: departmentManagerChecked,
+            ceoInterviewStatus: CEOchecked
+          }
+        ),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+    setIsEditIconActive(false)
+  }
   const handleClickEdit = () => {
     setIsEditIconActive(!isEditIconActive);
   };
@@ -81,6 +108,7 @@ export const ApplicantItem = ({ student }) => {
               className="mx-2 border-2 focus:ring-0"
               type="checkbox"
               value={HRchecked}
+              checked={HRchecked}
               onChange={(e) => setHRChecked(e.target.checked)}
             />
             HR Interview
@@ -91,9 +119,21 @@ export const ApplicantItem = ({ student }) => {
               className="mx-2 border-2  focus:ring-0"
               type="checkbox"
               value={CEOchecked}
+              checked={CEOchecked}
               onChange={(e) => setCEOChecked(e.target.checked)}
             />
             CEO Interview
+          </Typography>
+
+          <Typography variant="caption" component="div">
+            <input
+              className="mx-2 border-2  focus:ring-0"
+              type="checkbox"
+              value={departmentManagerChecked}
+              checked={departmentManagerChecked}
+              onChange={(e) => setDepartmentManagerChecked(e.target.checked)}
+            />
+            Department Interview
           </Typography>
         </Box>
       </TableCell>
@@ -119,7 +159,8 @@ export const ApplicantItem = ({ student }) => {
                     size="small"
                     className="text-sm font-medium border-solid border-white text-white bg-[#0B3768] hover:bg-[#0b37682b] hover:text-[#0B3768]"
                     type="submit"
-                    onClick={() => setIsEditIconActive(false)}
+                    // onClick={() => setIsEditIconActive(false)}
+                    onClick={handleSaveDoneStatus}
                   >
                     Save
                   </Button>

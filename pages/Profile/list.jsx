@@ -136,7 +136,7 @@ export default function ApplicantsList({ status }) {
                       The student has been Accepted
                     </div>
                     <div className="flex gap-2 items-center">
-                      <Circle className="text-xs text-gray-500" />
+                      <Circle className="text-xs text-red-500" />
                       The student has been Rejected or haven't been answered
                     </div>
                   </div>
