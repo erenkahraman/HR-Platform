@@ -19,31 +19,12 @@ import { Birthdays } from "../../components/Birthdays";
 import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
-import Reports from "./reports";
-
+import Interviews from "./reports";
 
 const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
-
-  //For Modal
-
-    const handleOKClick = () => {
-        setChoice(true)
-        setModalOn(false)
-    }
-    const handleCancelClick = () => {
-        setChoice(false)
-        setModalOn(false)
-    }
-
-
-    
-
-  
-
-    
  
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -70,7 +51,6 @@ const Dashboard = () => {
     await fetch(endpointNew, New);
     router.reload();
   };
-
 
   const [students, setStudents] = useState([]);
   
@@ -100,14 +80,6 @@ const Dashboard = () => {
     await fetch(endpointReminder, Reminder);
     router.reload();
   };
-
-  
-    const [showModal, setShowModal] = useState(false);
-  
-    const handleClose = () => {
-      setShowModal(false);
-    };
-
 
   return (
     <div className="flex flex-col w-full">
@@ -305,242 +277,130 @@ const Dashboard = () => {
         <Popup
           contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
           trigger={
-            <div className="bg-zinc-200 opacity-90 fixed inset-0 z-50">
-    <div className="flex h-screen justify-center items-center ">
-      <div className="flex-col justify-center bg-[#0b3768] py-8 px-10 border-4 border-none rounded-xl ">
-        <div className="flex mb-5">
-          <p className="font-semibold text-2xl text-white">Weekly Schedule</p>
-        </div>
-        <div>
-          <p className="font-semibold text-md text-white mb-2">
-            Morning Shift
-          </p>
-          <div className="flex flex-col">
-            <div className="flex flex-row items-center mb-2">
-              <h4 className="text-white mr-2">Name:</h4>
-              <input
-                type="text"
-                className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                placeholder="Type name..."
-                required
-              />
-            </div>
-            <div className="flex flex-row
-            items-center mb-2">
-              <h4 className="text-white mr-2">Time:</h4>
-              <input
-                type="time"
-                className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                placeholder="Type name..."
-                required
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <p className="font-semibold text-md text-white mb-2">
-            Afternoon Shift
-          </p>
-          <div className="flex flex-col">
-            <div className="flex flex-row items-center mb-2">
-              <h4 className="text-white mr-2">Name:</h4>
-              <input
-
-                type="text"
-                className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                placeholder="Type name..."
-                required
-              />
-            </div>
-            <div className="flex flex-row
-            items-center mb-2">
-              <h4 className="text-white mr-2">Time:</h4>
-              <input
-                type="time"
-                className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                placeholder="Type name..."
-                required
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <p className="font-semibold text-md text-white mb-2">
-            Night Shift
-          </p>
-          <div className="flex flex-col">
-            <div className="flex flex-row items-center mb-2">
-              <h4 className="text-white mr-2">Name:</h4>
-              <input
-
-                type="text"
-                className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                placeholder="Type name..."
-                required
-              />
-            </div>
-            <div className="flex flex-row
-            items-center mb-2">
-              <h4 className="text-white mr-2">Time:</h4>
-              <input
-
-                type="time"
-                className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                placeholder="Type name..."
-                required
-              />
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-row justify-end mt-5">
-          <button className="pr-2 ">
-            {" "}
-            <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />{" "}
-          </button>
-          <button>
-            {" "}
-            <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+            <button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
+              <div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
+                <AnnouncementOutlined />
+              </div>
+              <div className="buttonText mb-1">
+                Send a notification
+                <p className="text-xs">Send important messages to colleagues</p>
+              </div>
+            </button>
           }
-          modal
-          nested
+          position="bottom"
         >
-          {(close) => (
-            <div className="bg-zinc-200 opacity-90 fixed inset-0 z-50">
-              <div className="flex h-screen justify-center items-center ">
-                <div className="flex-col justify-center bg-[#0b3768] py-8 px-10 border-4 border-none rounded-xl ">
-                  <div className="flex mb-5">
-                    <p className="font-semibold text-2xl text-white">
-                      Weekly Schedule
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-md text-white mb-2">
-                      Morning Shift
-                    </p>
-                    <div className="flex flex-col">
-                      <div className="flex flex-row items-center mb-2">
-                        <h4 className="text-white mr-2">Name:</h4>
-                        <input
-
-                          type="text"
-                          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                          placeholder="Type name..."
-                          required
-                        />
-                      </div>
-                      <div className="flex flex-row
-                      items-center mb-2">
-                        <h4 className="text-white mr-2">Time:</h4>  
-                        <input
-                          type="time"
-                          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                          placeholder="Type name..."
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-md text-white mb-2">
-                      Afternoon Shift
-                    </p>
-                    <div className="flex flex-col">
-                      <div className="flex flex-row items-center mb-2">
-                        <h4 className="text-white mr-2">Name:</h4>
-                        <input
-
-                          type="text"
-                          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                          placeholder="Type name..."
-                          required
-                        />
-                      </div>
-                      <div className="flex flex-row
-                      items-center mb-2">
-                        <h4 className="text-white mr-2">Time:</h4>
-                        <input
-                          type="time"
-                          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                          placeholder="Type name..."
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-md text-white mb-2">
-                      Night Shift
-                    </p>
-                    <div className="flex flex-col">
-                      <div className="flex flex-row items-center mb-2">
-                        <h4 className="text-white mr-2">Name:</h4>
-                        <input
-                        
-                          type="text"
-                          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                          placeholder="Type name..."
-                          required
-                        />
-                      </div>
-                      <div className="flex flex-row
-                      items-center mb-2">
-                        <h4 className="text-white mr-2">Time:</h4>
-                        <input
-
-                          type="time"
-                          className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                          placeholder="Type name..."
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-row justify-end mt-5">
-                    <button className="pr-2" onClick={close}>
-                      
-                      <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />
-                    </button>
-                  </div>
-                </div>
+          {/* NEW POST */}
+          <div className="m-2 p-4">
+            <div>
+              <h6 className="font-semibold text-md text-white pt-2 pb-4">
+                Send a notifcation
+              </h6>
+              <div className="flex flex-row mx-2 mt-2 mb-4">
+                <h2 className="font-semibold text-l text-white ">By: </h2>
+                <input
+                  type="text"
+                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+                  placeholder="Type your name..."
+                  required
+                />
+              </div>
+              <div className="flex flex-row mx-2 mt-2 mb-4">
+              <h2 className="font-semibold text-l text-white ">To: </h2>
+                <input
+                  type="text"
+                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+                  placeholder="Type your colleagues name..."
+                  required
+                />
               </div>
             </div>
-          )}
+
+            {/* INFORMATION BOX */}
+            <div className="flex flex-col">
+              <div className="pb-2 pt-6">
+                <input
+                  type="text"
+                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-80 ml-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+                  placeholder="Type the subject..."
+                  required
+                />
+              </div>
+              <div>
+                <textarea
+                  className="rounded border-none bg-[#e0f2fe] text-black h-72 w-80 ml-2 pl-2 placeholder:italic placeholder:text-text-#0B3768 placeholder:text-sm"
+                  placeholder="Type the information..."
+                  required
+                />
+              </div>
+            </div>
+
+            {/* BUTTOM PART */}
+            <div className="flex flex-row pt-20">
+              <input
+                type="date"
+                className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 "
+              />
+              <div className="pl-20">
+                <button className="pr-2 ">
+                  {" "}
+                  <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />{" "}
+                </button>
+                <button>
+                  {" "}
+                  <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
+                </button>
+              </div>
+            </div>
+          </div>
         </Popup>
       </div>
 
-          
       {/* Bottom */}
       <div className="flex flex-[3] py-3 gap-3">
         {/* Left */}
         <div className="left-container flex flex-[1.5] flex-col gap-2">
-          <div className="flex flex-[1.5] flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <div className="text-md font-semibold">What&apos;s New</div>
-              <a
-                href="../WhatsNewViewAll"
-                className="flex items-center justify-center text-[#2F80ED]"
-              >
-                <div>View All </div>
-                <div>
-                  {" "}
-                  <ArrowForward className="text-md" />
-                </div>
-              </a>
-            </div>
-            {/* What's New Content */}
-            <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-              <Feed />
-            </div>
-            {/* Weekly Schedule */}
-          </div>
-          <Reports />
+  <div className="flex flex-[1.5] flex-col gap-2">
+    <div className="flex items-center justify-between">
+      <div className="text-md font-semibold">What&apos;s New</div>
+      <a
+        href="../WhatsNewViewAll"
+        className="flex items-center justify-center text-[#2F80ED]"
+      >
+        <div>View All </div>
+        <div>
+          {" "}
+          <ArrowForward className="text-md" />
         </div>
+      </a>
+    </div>
+    {/* What's New Content */}
+    <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+      <Feed />
+    </div>
+  </div>
 
+
+  {/* Weekly Schedule */}
+  <div className="flex flex-[1.5] flex-col gap-2">
+    <div className="flex items-center justify-between">
+      <div className="text-md font-semibold">Weekly Schedule</div>
+      <a
+        href="./weeklySchedule"
+        className="viewAll flex items-center justify-center text-[#2F80ED]"
+      >
+        <div>View All</div>
+        <div>
+          {" "}
+          <ArrowForward className="text-md" />
+        </div>
+      </a>
+    </div>
+    {/* Weekly Schedule Content */}
+    <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+      <FeedSchedule />
+    </div>
+  </div>
+</div>
         {/* Right */}
         <div className="flex flex-[1] flex-col gap-3">
           {/* Daily Reminder */}
@@ -591,6 +451,28 @@ const Dashboard = () => {
             </div>
           </div>
 
+    {/* Upcoming Interviews */}
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <div className="text-md font-semibold">Upcoming Interviews</div>
+        <a
+          href="../InterviewViewAll"
+          className="flex items-center justify-center text-[#2F80ED]"
+        >
+          <div>View All</div>
+          <div>
+            {" "}
+            <ArrowForward className="text-md" />
+          </div>
+        </a>
+      </div>F
+      {/* Upcoming Interviews Content */}
+{/*       
+      <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+        < Interviews />
+      </div> */}
+      
+    </div>
           {/* Birthday */}
           <div className="flex flex-col gap-2">
             {/* Daily Reminder Title*/}
@@ -598,44 +480,28 @@ const Dashboard = () => {
               <div className="text-md font-semibold">
                 This Month's Birthdays 🥳🍰🎉
               </div>
-              {/*
-                 <a
-                href="./"
-                className="flex items-center justify-center text-[#2F80ED]"
-              >
-                <div>{View All (6)}</div>
-                <div>
-                  {" "}
-                  <ArrowForward className="text-md" />
-                </div>
-              </a>
-        */}
+              
+                <a
+                  href="./BirthdayViewAll"
+                  className="flex items-center justify-center text-[#2F80ED]"
+                >
+                  <div>View All</div>
+                  <div>
+                    {" "}
+                    <ArrowForward className="text-md" />
+                  </div>
+                </a>
+              
             </div>
+            {/* {Birthday content} */}
 
+            
             {/* Birthday Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
               <Birthdays />
             </div>
           </div>
-          <div className="flex flex-[1.5] flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <div className="text-md font-semibold">Weekly Schedule</div>
-              <a
-                href="./weeklySchedule"
-                className="viewAll flex items-center justify-center text-[#2F80ED]"
-              >
-                <div>View All</div>
-                <div>
-                  {" "}
-                  <ArrowForward className="text-md" />
-                </div>
-              </a>
-            </div>
-            {/* Weekly Schedule Content */}
-            <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-              <FeedSchedule />
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>
