@@ -36,9 +36,9 @@ const WhatsNewViewAll = () => {
       {data.map((whatsNew) => (
         <div
           key={whatsNew.id}
-          className="items-center flex-grow w-full border-collapse bg-white"
+          className="items-center  w-full border-collapse bg-white"
         >
-          <div className="flex m-2 py-4">
+          <div className="flex flex-grow m-2 py-4">
             <div className="flex flex-[1] flex-col gap-2 p-2">
               <div className="text-sm font-semibold">{whatsNew.date}</div>
               <div className="text-xs font-light">
@@ -50,7 +50,7 @@ const WhatsNewViewAll = () => {
               <div className="text-sm font-semibold">{whatsNew.title}</div>
               <div className="text-xs font-light">{whatsNew.paragraph}</div>
             </div>
-            <div className="flex  p-2">
+            <div className="flex flex-[1] p-2">
               <div className="flex h-fit text-sm font-semibold underline cursor-pointer">
                 Read More
               </div>
