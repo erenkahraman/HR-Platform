@@ -58,8 +58,6 @@ function Attendence() {
           config
         );
         setData(data);
-        console.log("data is -->") 
-        console.log(data)
         setLoading(false);
       } catch (e) {
         console.error(e);
@@ -95,9 +93,9 @@ function Attendence() {
                   headers: {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
-                    
+
                   },
-                  
+
                   body: JSONintern,
                 };
                 await fetch(endpoint, options);
@@ -120,12 +118,12 @@ function Attendence() {
     setAttendanceEditModel(true);
   };
 
-   const saveAll = () => {
-     const updatedInterns = data.map(intern => {
-       // update attendance data for each intern here
-       return intern;
-     });
-     
+  const saveAll = () => {
+    const updatedInterns = data.map(intern => {
+      // update attendance data for each intern here
+      return intern;
+    });
+
 
      setLoading(true);
      const asyncRequest = async () => {
@@ -142,31 +140,31 @@ function Attendence() {
          alert("All changes have been saved!");
        } catch (e) {
          console.error(e);
-         setLoading(false);
-         // Show an error message to the user
-         alert("An error occurred while saving the changes. Please try again later.");
-       }
-     };
-     asyncRequest();
-   };
-
-   const checkForAttendanceChanges = () => {
-      const interns = data;
-      const changedInterns = [];
-      interns.forEach(intern => {
-        const dayOffCount = intern.attendance.dayOff.dates ? intern.attendance.dayOff.dates.length : 0;
-        const coveredDayCount = intern.attendance.coveredDay ? intern.attendance.coveredDay.dates.length : 0;
-       if (dayOff !== coveredDay)
-          changedInterns.push(intern);
-      });
-      if (changedInterns.length > 0) {
-       alert ("Covered Days and Day Offs are not equal for some interns. Please check before saving!");
+        setLoading(false);
+        // Show an error message to the user
+        alert("An error occurred while saving the changes. Please try again later.");
       }
     };
+    asyncRequest();
+  };
+
+  const checkForAttendanceChanges = () => {
+    const interns = data;
+    const changedInterns = [];
+    interns.forEach(intern => {
+      const dayOffCount = intern.attendance.dayOff.dates ? intern.attendance.dayOff.dates.length : 0;
+      const coveredDayCount = intern.attendance.coveredDay ? intern.attendance.coveredDay.dates.length : 0;
+     if (dayOff !== coveredDay)
+        changedInterns.push(intern);
+    });
+    if (changedInterns.length > 0) {
+     alert ("Covered Days and Day Offs are not equal for some interns. Please check before saving!");
+    }
+  };
 
 
 
- 
+
 
   const disableStatus = (intern, dt) => {
     if (
@@ -175,8 +173,8 @@ function Attendence() {
       intern.attendance.dayOff.dates.includes(dt) ||
       intern.attendance.excusedLeave.dates.includes(dt) ||
       intern.attendance.sick.dates.includes(dt) ||
-      intern.attendance.unexcusedleave.dates.includes(dt)||
-      intern.attendance.coveredDay.dates.includes(dt) 
+      intern.attendance.unexcusedleave.dates.includes(dt) ||
+      intern.attendance.coveredDay.dates.includes(dt)
     )
       setDateIncluded(true);
     else setDateIncluded(false);
@@ -193,12 +191,12 @@ function Attendence() {
     );
   if (!data) return <p>No profile data</p>;
 
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today = yyyy + '-' + mm + '-' + dd;
-    console.log(today);
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  today = yyyy + '-' + mm + '-' + dd;
+  console.log(today);
 
     // function setDefaultStatus() {
     //   const selectElement = document.getElementById("country");
@@ -236,7 +234,7 @@ function Attendence() {
                 <h3 className="font-semibold text-2xl">Intern Attendance</h3>
               </div>
             </div>
-            
+
             <div className="flex gap-2">
               {/* <Link href="/interns/monthAttendance">
                 <span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
@@ -281,15 +279,15 @@ function Attendence() {
                 </div>
               </form>
               <div className="relative"  >
-              <button 
-              onClick= {saveAll}
-              title="Save"
-              className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-              <CheckCircle className="text-m py-1 " 
-              />
-                Save All
-              </button>
-            </div>            
+                <button
+                  onClick={saveAll}
+                  title="Save"
+                  className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
+                  <CheckCircle className="text-m py-1 "
+                  />
+                  Save All
+                </button>
+              </div>
             </div>
           </div>
           <Collapse in={openAlert}>
@@ -393,7 +391,7 @@ function Attendence() {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <input
                           type="date"
-                          value={today} 
+                          value={today}
                           onChange={(e) => {
                             setDate(e.target.value);
                             console.log(date);
@@ -410,7 +408,7 @@ function Attendence() {
                           }}
                         ></input>
                       </td>
-                        
+
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <select
                           id="country"
@@ -491,7 +489,7 @@ function Attendence() {
                                 onClick={(e) =>
                                   setAttendanceEditModel(student.intern._id)
                                 }
-                                
+
                               />
                               {editAttendanceModel === student.intern._id && (
                                 <EditAttendance

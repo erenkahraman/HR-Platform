@@ -25,11 +25,11 @@ const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
- 
+
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
     event.preventDefault();
-    
+
     const whatsNew = {
       title: event.target.title.value,
       postedBy: event.target.postedBy.value,
@@ -53,7 +53,7 @@ const Dashboard = () => {
   };
 
   const [students, setStudents] = useState([]);
-  
+
 
   //For Reminder to add post
   const handleSubmitReminder = async (event) => {
@@ -359,48 +359,48 @@ const Dashboard = () => {
       <div className="flex flex-[3] py-3 gap-3">
         {/* Left */}
         <div className="left-container flex flex-[1.5] flex-col gap-2">
-  <div className="flex flex-[1.5] flex-col gap-2">
-    <div className="flex items-center justify-between">
-      <div className="text-md font-semibold">What&apos;s New</div>
-      <a
-        href="../WhatsNewViewAll"
-        className="flex items-center justify-center text-[#2F80ED]"
-      >
-        <div>View All </div>
-        <div>
-          {" "}
-          <ArrowForward className="text-md" />
-        </div>
-      </a>
-    </div>
-    {/* What's New Content */}
-    <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-      <Feed />
-    </div>
-  </div>
+          <div className="flex flex-[1.5] flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="text-md font-semibold">What&apos;s New</div>
+              <a
+                href="../WhatsNewViewAll"
+                className="flex items-center justify-center text-[#2F80ED]"
+              >
+                <div>View All </div>
+                <div>
+                  {" "}
+                  <ArrowForward className="text-md" />
+                </div>
+              </a>
+            </div>
+            {/* What's New Content */}
+            <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+              <Feed />
+            </div>
+          </div>
 
 
-  {/* Weekly Schedule */}
-  <div className="flex flex-[1.5] flex-col gap-2">
-    <div className="flex items-center justify-between">
-      <div className="text-md font-semibold">Weekly Schedule</div>
-      <a
-        href="./weeklySchedule"
-        className="viewAll flex items-center justify-center text-[#2F80ED]"
-      >
-        <div>View All</div>
-        <div>
-          {" "}
-          <ArrowForward className="text-md" />
+          {/* Weekly Schedule */}
+          <div className="flex flex-[1.5] flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="text-md font-semibold">Weekly Schedule</div>
+              <a
+                href="./weeklySchedule"
+                className="viewAll flex items-center justify-center text-[#2F80ED]"
+              >
+                <div>View All</div>
+                <div>
+                  {" "}
+                  <ArrowForward className="text-md" />
+                </div>
+              </a>
+            </div>
+            {/* Weekly Schedule Content */}
+            <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
+              <FeedSchedule />
+            </div>
+          </div>
         </div>
-      </a>
-    </div>
-    {/* Weekly Schedule Content */}
-    <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-      <FeedSchedule />
-    </div>
-  </div>
-</div>
         {/* Right */}
         <div className="flex flex-[1] flex-col gap-3">
           {/* Daily Reminder */}
@@ -451,28 +451,26 @@ const Dashboard = () => {
             </div>
           </div>
 
-    {/* Upcoming Interviews */}
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <div className="text-md font-semibold">Upcoming Interviews</div>
-        <a
-          href="../InterviewViewAll"
-          className="flex items-center justify-center text-[#2F80ED]"
-        >
-          <div>View All</div>
-          <div>
-            {" "}
-            <ArrowForward className="text-md" />
+          {/* Upcoming Interviews */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="text-md font-semibold">Upcoming Interviews</div>
+              <a
+                href="../InterviewViewAll"
+                className="flex items-center justify-center text-[#2F80ED]"
+              >
+                <div>View All</div>
+                <div>
+                  {" "}
+                  <ArrowForward className="text-md" />
+                </div>
+              </a>
+            </div>
+            {/* Upcoming Interviews Content */}
+            <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2 px-4">
+              < Interviews />
+            </div>
           </div>
-        </a>
-      </div>F
-      {/* Upcoming Interviews Content */}
-{/*       
-      <div className="flex flex-col gap-2 divide-y bg-white rounded-md border-2">
-        < Interviews />
-      </div> */}
-      
-    </div>
           {/* Birthday */}
           <div className="flex flex-col gap-2">
             {/* Daily Reminder Title*/}
@@ -480,28 +478,28 @@ const Dashboard = () => {
               <div className="text-md font-semibold">
                 This Month's Birthdays 🥳🍰🎉
               </div>
-              
-                <a
-                  href="./BirthdayViewAll"
-                  className="flex items-center justify-center text-[#2F80ED]"
-                >
-                  <div>View All</div>
-                  <div>
-                    {" "}
-                    <ArrowForward className="text-md" />
-                  </div>
-                </a>
-              
+
+              <a
+                href="./BirthdayViewAll"
+                className="flex items-center justify-center text-[#2F80ED]"
+              >
+                <div>View All</div>
+                <div>
+                  {" "}
+                  <ArrowForward className="text-md" />
+                </div>
+              </a>
+
             </div>
             {/* {Birthday content} */}
 
-            
+
             {/* Birthday Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
               <Birthdays />
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>

@@ -1,18 +1,17 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styles from '../../styles/Home.module.css'
 import cookie from "js-cookie";
 
 export default function NewEmail() {
 	const user = cookie?.get("user");
-	const [inputs, setInputs] = useState(
-		{
+	const emptyInputs = {
 
-			emailFrom: '',
-			emailTo: '',
-			subject: '',
-			message: ''
-		}
-	);
+		emailFrom: '',
+		emailTo: '',
+		subject: '',
+		message: ''
+	}
+	const [inputs, setInputs] = useState(emptyInputs);
 
 	const [form, setForm] = useState('')
 
@@ -99,6 +98,12 @@ export default function NewEmail() {
 			}
 		}
 	}
+
+	useEffect(() => {
+		if (form.state === "success") {
+			setInputs(emptyInputs)
+		}
+	}, [form.state]);
 
 	return (
 		<div className="flex justify-center" >

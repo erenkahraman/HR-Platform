@@ -1,43 +1,53 @@
 
 import { Interview } from '../../components/Interview';
+import axios from "axios";
+import cookie from "js-cookie";
+import { useEffect, useState } from "react";
 
 function Interviews() {
+
+  const token = cookie.get("token");
+  const [upcomingInterviews, setUpcomingInterviews] = useState([]);
+
+  useEffect(() => {
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/upcomingInterviews`,
+          { params: { token: token } },
+          config
+        );
+        setUpcomingInterviews(data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    asyncRequest();
+  }, []);
+
+
   return (
     <section className="relative w-full">
       <div className="w-full mb-12">
-        <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
-          {/* Title Container */}
-          <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white">
-            <div className="flex flex-wrap items-center">
-              <div className="relative w-full max-w-full flex-grow flex-1 ">
-                <h3 className="font-semibold text-2xl">
-                  This Month's Interviews 📝📋
-                </h3>
+        <div>
+          <div>
+            {upcomingInterviews.map((eachUpcomingInterview) => (
+              <div className="flex w-full">
+                <div className="flex-[1] flex flex-col">
+                  <div className="text-sm font-semibold">{eachUpcomingInterview.firstName + " " + eachUpcomingInterview.lastName} </div>
+                  <div className="text-xs font-light ">{eachUpcomingInterview.applicant.department}</div>
+                </div>
+                <div className="flex-[1] flex items-center justify-center text-xs">{eachUpcomingInterview.applicant.position}</div>
+                <div className="flex-[1] flex items-center justify-center text-xs text-gray-500">
+                  {new Date(eachUpcomingInterview.applicant.hrInterviewDate).toLocaleDateString()}
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div className="block w-full overflow-x-auto my-2">
-            <div className="items-center w-full bg-white">
-              {/* Interview Content */}
-              <div className="py-4">
-                <Interview
-                  color="text-purple-500"
-                  title="Lia Ciobanu"
-                  category="ICT"
-                  time="21 august 2022"
-                />
-              </div>
-
-              <div className="py-4">
-                <Interview
-                  color="text-purple-500"
-                  title="Rimma Cechir"
-                  category="ICT"
-                  time="25 august 2022"
-                />
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
