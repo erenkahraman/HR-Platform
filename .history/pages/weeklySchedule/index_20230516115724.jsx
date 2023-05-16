@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import React from "react";
 import cookie from "js-cookie";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -56,6 +55,10 @@ const WeeklySchedule = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+	
+
+
 
   return (
     <section className="relative w-full min-h-screen bg-gray-100">

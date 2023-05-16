@@ -1,9 +1,8 @@
-import { Button, Menu, MenuItem } from "@mui/material";
 import { useState, useEffect } from "react";
+import Button from "@mui/material/Button";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
 import React from "react";
-import cookie from "js-cookie";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -12,23 +11,12 @@ const WeeklySchedule = () => {
 
   const [weeklySchedule, setWeeklySchedule] = useState([]);
   const [departmentNames, setDepartmentNames] = useState([]);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const token = cookie.get("token");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
 
   useEffect(() => {
     const asyncRequest = async () => {
       try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const { data } = await axios.get(
-          `/api/weeklySchedule`,
-          { params: { token: token } },
-          config
-        );
+        const { data } = await axios.get("/api/weeklySchedule");
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
@@ -50,13 +38,14 @@ const WeeklySchedule = () => {
   }, []);
 
   const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    setSelectedDepartment(event.currentTarget.getAttribute("data-department"));
   };
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    setSelectedDepartment("");
   };
 
+  
   return (
     <section className="relative w-full min-h-screen bg-gray-100">
       <div className="w-full max-w-screen mx-auto">

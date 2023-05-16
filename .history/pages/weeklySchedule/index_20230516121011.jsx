@@ -1,34 +1,18 @@
-import { Button, Menu, MenuItem } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import React from "react";
-import cookie from "js-cookie";
+import { Button } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const WeeklySchedule = () => {
-  const startDate = "08.05.2023";
-  const endDate = "12.05.2023";
-  const dateRange = `${startDate} - ${endDate}`;
-
   const [weeklySchedule, setWeeklySchedule] = useState([]);
   const [departmentNames, setDepartmentNames] = useState([]);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const token = cookie.get("token");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
 
   useEffect(() => {
-    const asyncRequest = async () => {
+    const fetchData = async () => {
       try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const { data } = await axios.get(
-          `/api/weeklySchedule`,
-          { params: { token: token } },
-          config
-        );
+        const response = await axios.get("/api/weeklySchedule");
+        const { data } = response;
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
@@ -39,24 +23,20 @@ const WeeklySchedule = () => {
           {}
         );
         setWeeklySchedule(weeklyScheduleGroupedByDepartment);
-
-        const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
-        setDepartmentNames(departmentNames);
-      } catch (e) {
-        console.error(e);
+        setDepartmentNames(Object.keys(weeklyScheduleGroupedByDepartment));
+      } catch (error) {
+        console.error(error);
       }
     };
-    asyncRequest();
+
+    fetchData();
   }, []);
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleDepartmentClick = (departmentName) => {
+    setSelectedDepartment(departmentName);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
+  
   return (
     <section className="relative w-full min-h-screen bg-gray-100">
       <div className="w-full max-w-screen mx-auto">

@@ -1,73 +1,115 @@
-import { Button, Menu, MenuItem } from "@mui/material";
+import { UploadFileOutlined, Verified } from "@mui/icons-material";
+import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import React from "react";
+import Popup from "reactjs-popup";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useRouter } from "next/router";
 import cookie from "js-cookie";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import axios from "axios";
 
 const WeeklySchedule = () => {
+  // Generate the date range
   const startDate = "08.05.2023";
   const endDate = "12.05.2023";
   const dateRange = `${startDate} - ${endDate}`;
 
-  const [weeklySchedule, setWeeklySchedule] = useState([]);
-  const [departmentNames, setDepartmentNames] = useState([]);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const token = cookie.get("token");
-
-  useEffect(() => {
-    const asyncRequest = async () => {
-      try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const { data } = await axios.get(
-          `/api/weeklySchedule`,
-          { params: { token: token } },
-          config
-        );
-        const weeklyScheduleGroupedByDepartment = data.reduce(
-          (departments, item) => {
-            const department = departments[item.department] || [];
-            department.push(item);
-            departments[item.department] = department;
-            return departments;
-          },
-          {}
-        );
-        setWeeklySchedule(weeklyScheduleGroupedByDepartment);
-
-        const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
-        setDepartmentNames(departmentNames);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    asyncRequest();
-  }, []);
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  const buttonContainerStyle = {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    padding: "0px",
+    gap: "24px",
+    width: "559px",
+    height: "24px",
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const buttonStyle = {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    padding: "4px 12px",
+    gap: "10px",
+    width: "145px",
+    height: "24px",
+    background: "#FFFFFF",
+    borderRadius: "10px",
+    color: "black",
   };
+
+  const moveButtonStyle = {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    padding: "4px 12px",
+    gap: "10px",
+    width: "145px",
+    height: "24px",
+    background: "#FFFFFF",
+    borderRadius: "10px",
+    color: "black",
+  };
+
+  const [weeklySchedule,setWeeklySchedule] = useState([])
+	const [departmentNames,setDepartmentNames] = useState([])
+
+	const token = cookie.get("token");
+	
+	useEffect(() => {
+		const asyncRequest = async () => {
+		  try {
+			const config = {
+			  headers: {
+				"Content-Type": "application/json",
+			  },
+			};
+			const { data } = await axios.get(
+			  `/api/weeklySchedule`,
+			  { params: { token: token } },
+			  config
+			);
+			console.log("this is the front-end part")
+			console.log(data);
+			
+			console.log("if we group them together")
+			const weeklyScheduleGroupedByDepartment = data.reduce((departments, item) => {
+				const department = (departments[item.department] || []);
+				department.push(item);
+				departments[item.department] = department;
+				return departments;
+			  }, {});
+			  console.log(weeklyScheduleGroupedByDepartment)
+			  setWeeklySchedule(weeklyScheduleGroupedByDepartment)
+
+			const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
+			setDepartmentNames(departmentNames)
+			
+		  } catch (e) {
+			console.error(e);
+		}
+		};
+		asyncRequest();
+	  }, []);
+
+	
+
+
 
   return (
     <section className="relative w-full min-h-screen bg-gray-100">
-      <div className="w-full max-w-screen mx-auto">
-        <div className="relative flex flex-col items-center justify-center min-w-0 break-words w-full rounded">
+      <div className="w-full max-w-screen mx-auto"
+     
+      >
+        <div className="relative flex flex-col items-center justify-center min-w-0 break-words w-full rounded ">
+          {/* Title Container */}
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
             <div className="flex items-center">
-              <h1 className="font-roboto font-bold text-4xl text-black text-center w-full">
-                Weekly Schedule
-              </h1>
+              <h1 className="font-roboto font-bold text-4xl text-black text-center w-full"
+             
+              >Weekly Schedule</h1>
             </div>
           </div>
+          {/* End of Title Container */}
+          {/* Date Container */}
           <div
             className="flex flex-col items-center justify-center gap-10 mt-4"
             style={{
@@ -76,6 +118,7 @@ const WeeklySchedule = () => {
               alignItems: "center",
               justifyContent: "center",
               padding: "12px 24px",
+              
               gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
@@ -87,6 +130,7 @@ const WeeklySchedule = () => {
                 width: "100%",
               }}
             >
+              
               <tbody>
                 <tr>
                   <td>{dateRange}</td>
@@ -94,15 +138,16 @@ const WeeklySchedule = () => {
               </tbody>
             </table>
           </div>
-          <div
-            className="flex flex-col items-center justify-center gap-10 mt-4"
+          {/* End of Date Container */}
+          {/* Table */}
+          <div className="flex flex-col items-center justify-center gap-10 mt-4"
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
               padding: "12px 24px",
-              margin: "12px 24px",
+              margin : "12px 24px",
               gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
@@ -115,87 +160,52 @@ const WeeklySchedule = () => {
               }}
             >
               <thead>
-              <tr>
-              <th>INTERNS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {departmentNames.map((eachDepartmentName, index) => (
-              <React.Fragment key={index}>
                 <tr>
-                  <td colSpan="3">
-                    <div>
-                      <Button
-                        aria-controls={`department-menu-${index}`}
-                        aria-haspopup="true"
-                        onClick={handleMenuOpen}
-                        endIcon={<ArrowDropDownIcon />}
-                      >
-                        {eachDepartmentName}
-                      </Button>
-                      <Menu
-                        id={`department-menu-${index}`}
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleMenuClose}
-                      >
-                        {weeklySchedule[eachDepartmentName].map(
-                          (eachIntern, i) => (
-                            <MenuItem key={i}>
-                              {eachIntern.student.firstName +
-                                " " +
-                                eachIntern.student.lastName}
-                            </MenuItem>
-                          )
-                        )}
-                      </Menu>
-                    </div>
-                  </td>
+                  <th>Unassigned Employees</th>  
                 </tr>
-                {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                  <tr key={i}>
-                    <td>
-                      {eachIntern.student.firstName +
-                        " " +
-                        eachIntern.student.lastName}
-                    </td>
-                    <td></td>
-                    <td>
-                      <div className="button-container">
-                        <Button
-                          className="move-button"
-                          style={{
-                            backgroundColor: "white",
-                            color: "black",
-                            borderRadius: "10px",
-                            marginRight: "10px",
-                            padding: "10px 20px",
-                            margin: "2px 40px",
-                          }}
-                        >
-                          Move to Morning
-                        </Button>
-                        <Button
-                          className="move-button"
-                          style={{
-                            backgroundColor: "white",
-                            color: "black",
-                            borderRadius: "10px",
-                            padding: "8px 20px",
-                            margin: "0px 5px",
-                          }}
-                        >
-                          Move to Afternoon
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </React.Fragment>
-            ))}
-          </tbody>
-
-
+              </thead>
+              <tbody>
+              <tr>
+                <td>Eren Kahraman</td>
+               <td></td>
+                <td>
+                  <div className="button-container px-20">
+                    <Button className="move-button " style={{ backgroundColor: 'white', color: 'black', borderRadius: '10px', marginRight: '20px' }}>Move to Morning</Button>
+                    <Button className="move-button " style={{ backgroundColor: 'white', color: 'black', borderRadius: '10px', marginRight: '20px' }}>Move to Afternoon</Button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Soner</td>
+                <td></td>
+                <td>
+                  <div className="button-container px-20">
+                    <Button className="move-button "style={{ backgroundColor: 'white', color: 'black', borderRadius: '10px', marginRight: '20px' }}>Move to Morning</Button>
+                    <Button className="move-button "style={{ backgroundColor: 'white', color: 'black', borderRadius: '10px', marginRight: '20px' }}>Move to Afternoon</Button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Natalia</td>
+                <td></td>
+                <td>
+                  <div className="button-container px-20">
+                    <Button className="move-button" style={{ backgroundColor: 'white', color: 'black', borderRadius: '10px', marginRight: '20px' }}>Move to Morning</Button>
+                    <Button className="move-button " style={{ backgroundColor: 'white', color: 'black', borderRadius: '10px', marginRight: '20px' }}>Move to Afternoon</Button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Furkan</td>
+                <td></td>
+                <td>
+                  <div className="button-container px-20">
+                    <Button className="move-button " style={{ backgroundColor: 'white',color: 'black', borderRadius: '10px', marginRight: '20px' }}>Move to Morning</Button>
+                    <Button className="move-button " style={{ backgroundColor: 'white', color: 'black', borderRadius: '10px', marginRight: '20px' }}>Move to Afternoon</Button>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
             </table>
           </div>
         </div>
