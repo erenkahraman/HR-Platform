@@ -26,8 +26,8 @@ function Attendence() {
   //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState("");
-  const [status, setStatus] = useState("");
+  const [date, setDate] = useState("today");
+  const [status, setStatus] = useState("present");
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -41,6 +41,8 @@ function Attendence() {
 
   const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
   const [updatedInterns, setUpdatedInterns] = useState([])
+  
+  
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -142,8 +144,8 @@ function Attendence() {
             },
           ],
         });
-        setStatus("");
-        setDate("");
+        setStatus("present");
+        setDate("today");
       } else {
         setOpenAlert(true);
       }
@@ -233,6 +235,16 @@ function Attendence() {
   today = yyyy + '-' + mm + '-' + dd;
   console.log(today);
 
+    // function setDefaultStatus() {
+    //   const selectElement = document.getElementById("country");
+    //   selectElement.value = "present";
+    // }
+
+    function setDefaultSituation() {
+      const selectElement = document.getElementById("situation");
+      selectElement.value = "Present";
+    }
+
   return (
     <section className="relative w-full">
       <Backdrop
@@ -243,15 +255,15 @@ function Attendence() {
       </Backdrop>
       <div className="w-full mb-12">
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
-          <form>
-            <label
-              htmlFor="default-search"
-              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-            >
-              Search
-            </label>
-
-          </form>
+        <form>
+                <label
+                  htmlFor="default-search"
+                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                >
+                  Search
+                </label>
+                
+              </form>
           {/* Title Container */}
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white">
             <div className="flex flex-wrap items-center">
@@ -263,7 +275,7 @@ function Attendence() {
             <div className="flex gap-2">
               {/* <Link href="/interns/monthAttendance">
                 <span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-                  <EventAvailableIcon className="text-m py-1" />
+                  <EventAvailableIconf className="text-m py-1" />
                   Month Attendance
                 </span>
               </Link> */}
@@ -420,10 +432,13 @@ function Attendence() {
                           onChange={(e) => {
                             setDate(e.target.value);
                             console.log(date);
+
                           }}
                           className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          
                           onClick={(e) => {
                             setDate(e.target.value);
+                            
                             console.log(date);
 
 
@@ -438,7 +453,6 @@ function Attendence() {
                           // onClick={(e) => setStatus(e.target.value)}
                           onClick={(e) => handleChangeStatus(student, e.target.value)}
                         >
-                          <option value="">-</option>
                           <option value="present">Present</option>
                           <option value="late">Late</option>
                           <option value="dayOff">Day off</option>

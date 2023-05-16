@@ -5,6 +5,8 @@ import { AppDetails } from "./StepForm/AppDetails";
 import { Contact } from "./stepForm/Contact";
 import { Review } from "./stepForm/Review";
 import { Submit } from "./stepForm/Submit";
+// import "./MultiStepForm.css";
+
 
 const defaultData = {
     firstName: "",
