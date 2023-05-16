@@ -70,14 +70,40 @@ export default async function handler(req, res) {
   }
   if (method === "PUT") {
     try {
-      const intern = await Intern.updateOne(
-        { student: req.body.params.id },
+      /* const intern = await Intern.updateOne(
+        // { student: req.body.params.id },
+        { student: req.body.interns[0].id },
         {
           status: "Ongoing",
         }
-      );
-      res.status(200).json(intern.matchedCount);
+      );  */
+
+      
+      
+      await Promise.all(
+        req.body.interns.map(async (eachIntern) => {
+          
+
+          const draftedIntern = req.body.drafted.filter(possibleIntern => {
+            return possibleIntern.id === eachIntern._id
+          })[0]
+
+
+          eachIntern.attendance[draftedIntern.status].count = draftedIntern.count;
+          eachIntern.attendance[draftedIntern.status].dates.push(draftedIntern.date);
+
+          const internPromise = await Intern.findByIdAndUpdate(eachIntern._id, eachIntern);
+          console.log("lets see the promise now")
+          console.log(internPromise)
+         
+        })
+        
+    )
+    
+      res.status(200).json(req.body.interns);
     } catch (err) {
+      console.log("lets see the message")
+      console.log(err)
       res.status(500).json(err);
     }
   }

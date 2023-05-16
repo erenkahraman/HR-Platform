@@ -39,9 +39,45 @@ function Attendence() {
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
 
+  const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
+  const [updatedInterns, setUpdatedInterns] = useState([])
+
+  const handleChangeStatus = (student, newStatus) => {
+
+    const isStatusGiven = newStatus !== ""
+    if (!isStatusGiven) {
+      return;
+    }
+
+    const isDateGiven = date !== ""
+
+    if (!isDateGiven) {
+      return;
+    }
+
+    /* 
+    const isInternUpdatedAlready = updatedInterns.includes(student.intern)
+
+    if (isInternUpdatedAlready) {
+      return
+    }
+    */
+
+    const updatedIntern = student.intern
+
+    const draftedInternUpdate = {
+      id: updatedIntern._id,
+      status: newStatus,
+      count: updatedIntern.attendance[newStatus].count + 1,
+      date: date
+    }
 
 
+    setDraftedInternUpdates([...draftedInternUpdates, draftedInternUpdate])
 
+    setStatus(newStatus)
+    setUpdatedInterns([...updatedInterns, updatedIntern])
+  }
   useEffect(() => {
     setLoading(true);
     const asyncRequest = async () => {
@@ -66,7 +102,7 @@ function Attendence() {
     asyncRequest();
   }, []);
 
-  
+
 
   const save = (intern) => {
     setOpenAlert(false);
@@ -118,27 +154,25 @@ function Attendence() {
   };
 
   const saveAll = () => {
-    const updatedInterns = data.map(intern => {
-      // update attendance data for each intern here
-      return intern;
-    });
 
 
-     setLoading(true);
-     const asyncRequest = async () => {
-       try {
-         const config = {
-           headers: {
-             "Content-Type": "application/json",
-           },
-         };
-         // PUT request to update all interns in the database
-         await axios.put(`/api/intern`, { token: token, interns: updatedInterns }, config);
-         setLoading(false);
-         // Show a success message to the user
-         alert("All changes have been saved!");
-       } catch (e) {
-         console.error(e);
+
+    setLoading(true);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        // PUT request to update all interns in the database
+        await axios.put(`/api/intern`, { token: token, interns: updatedInterns, drafted: draftedInternUpdates }, config);
+        setLoading(false);
+        // Show a success message to the user
+        alert("All changes have been saved!");
+        window.location.reload()
+      } catch (e) {
+        console.error(e);
         setLoading(false);
         // Show an error message to the user
         alert("An error occurred while saving the changes. Please try again later.");
@@ -153,11 +187,11 @@ function Attendence() {
     interns.forEach(intern => {
       const dayOffCount = intern.attendance.dayOff.dates ? intern.attendance.dayOff.dates.length : 0;
       const coveredDayCount = intern.attendance.coveredDay ? intern.attendance.coveredDay.dates.length : 0;
-     if (dayOff !== coveredDay)
+      if (dayOff !== coveredDay)
         changedInterns.push(intern);
     });
     if (changedInterns.length > 0) {
-     alert ("Covered Days and Day Offs are not equal for some interns. Please check before saving!");
+      alert("Covered Days and Day Offs are not equal for some interns. Please check before saving!");
     }
   };
 
@@ -391,7 +425,8 @@ function Attendence() {
                         <select
                           id="country"
                           className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          onClick={(e) => setStatus(e.target.value)}
+                          // onClick={(e) => setStatus(e.target.value)}
+                          onClick={(e) => handleChangeStatus(student, e.target.value)}
                         >
                           <option value="">-</option>
                           <option value="present">Present</option>
