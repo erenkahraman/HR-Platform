@@ -200,6 +200,7 @@ function Attendence() {
 
 
 
+
   const disableStatus = (intern, dt) => {
     if (
       intern.attendance.present.dates.includes(dt) ||
@@ -242,6 +243,15 @@ function Attendence() {
       </Backdrop>
       <div className="w-full mb-12">
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+          <form>
+            <label
+              htmlFor="default-search"
+              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            >
+              Search
+            </label>
+
+          </form>
           {/* Title Container */}
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white">
             <div className="flex flex-wrap items-center">

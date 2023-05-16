@@ -61,12 +61,10 @@ const DocumentListContent = ({ type, status,student }) => {
     body.append("type", trimmedStr);
     
     const dt = await axios.post("/api/download",body);
-    console.log(dt.data)
-    
+ 
     setFullPath("/uploads/"+dt.data.file);
 
     const hiddenTag = document.querySelector("#hiddenTag");
-    console.log("/uploads/"+dt.data.file)
     hiddenTag.href="/uploads/"+dt.data.file;
     hiddenTag.click();
   

@@ -304,6 +304,15 @@ const Dashboard = () => {
                   required
                 />
               </div>
+              <div className="flex flex-row mx-2 mt-2 mb-4">
+              <h2 className="font-semibold text-l text-white ">To: </h2>
+                <input
+                  type="text"
+                  className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
+                  placeholder="Type your colleagues name..."
+                  required
+                />
+              </div>
             </div>
 
             {/* INFORMATION BOX */}
