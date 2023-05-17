@@ -58,7 +58,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
       endDate: event.target.endDate.value,
       department: departments[event.target.department.value].department,
       position: event.target.position.value,
-      status:"Waiting Start Date",
+      status: "Waiting Start Date",
       documents: {
         "Intern Development Plan": "Not Submitted",
         "learning Agreement After": "Not Submitted",
@@ -75,9 +75,8 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
     const JSONintern = JSON.stringify(intern);
     const endpointIntern = "/api/intern";
     const endpointstudent = `/api/student/${stdId}`;
-    const endpointDepartment = `/api/department/${
-      departments[event.target.department.value]._id
-    }`;
+    const endpointDepartment = `/api/department/${departments[event.target.department.value]._id
+      }`;
     const optionsIntern = {
       method: "POST",
       headers: {
@@ -162,7 +161,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
                   id="department"
                   className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   onClick={(e) => {
-                    setPositions(departments[e.target.selectedIndex].positions);
+                    setPositions(departments[e.target.value].positions);
                   }}
                 >
                   {departments.map((department, i) => (
