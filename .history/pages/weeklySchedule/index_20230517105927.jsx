@@ -4,7 +4,6 @@ import axios from "axios";
 import React from "react";
 import cookie from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Sidebar } from "flowbite-react";
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -14,7 +13,6 @@ const WeeklySchedule = () => {
   const [weeklySchedule, setWeeklySchedule] = useState([]);
   const [departmentNames, setDepartmentNames] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   const token = cookie.get("token");
 
@@ -26,11 +24,10 @@ const WeeklySchedule = () => {
             "Content-Type": "application/json",
           },
         };
-        const { data } = await axios.get(
-          `/api/weeklySchedule`,
-          { params: { token: token } },
-          config
-        );
+        const { data } = await axios.get(`/api/weeklySchedule`, {
+          params: { token: token },
+          config,
+        });
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
@@ -41,6 +38,7 @@ const WeeklySchedule = () => {
           {}
         );
         setWeeklySchedule(weeklyScheduleGroupedByDepartment);
+  
         const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         setDepartmentNames(departmentNames);
       } catch (e) {
@@ -49,38 +47,67 @@ const WeeklySchedule = () => {
     };
     asyncRequest();
   }, []);
-
+  
   const handleClickOutside = (event) => {
     if (anchorEl && !anchorEl.contains(event.target)) {
       setAnchorEl(null);
       setSelectedDepartment(null);
     }
   };
-
+  
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [anchorEl]);
-
+  
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  
   const handleMenuClose = () => {
     setAnchorEl(null);
     setSelectedDepartment(null);
   };
-
+  
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  
   const handleDepartmentClick = (department) => {
-    setSelectedDepartment((prevDepartment) =>
-      prevDepartment === department ? null : department
-    );
+    setSelectedDepartment(department);
   };
+  
+  // ...
+  
+  <Button
+    aria-controls={`department-menu-${eachDepartmentName}`}
+    aria-haspopup="true"
+    onClick={() => handleDepartmentClick(eachDepartmentName)}
+    endIcon={<ArrowDropDownIcon />}
+    style={{
+      backgroundColor: eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
+    }}
+  >
+    {eachDepartmentName}
+  </Button>
+  {eachDepartmentName === selectedDepartment && (
+    <Menu
+      id={`department-menu-${eachDepartmentName}`}
+      anchorEl={anchorEl}
+      open={Boolean(anchorEl)}
+      onClose={handleMenuClose}
+    >
+      {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
+        <MenuItem key={i}>
+          {eachIntern.student.firstName + " " + eachIntern.student.lastName}
+        </MenuItem>
+      ))}
+    </Menu>
+  )}
+  
 
   return (
-    <section className="flex-1 min-h-screen bg-gray-100  ">
+    <section className="relative w-full min-h-screen bg-gray-100">
       <div className="w-full max-w-screen mx-auto">
         <div className="relative flex flex-col items-center justify-center min-w-0 break-words w-full rounded">
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">

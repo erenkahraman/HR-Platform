@@ -4,7 +4,6 @@ import axios from "axios";
 import React from "react";
 import cookie from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Sidebar } from "flowbite-react";
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";

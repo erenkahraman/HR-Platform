@@ -4,7 +4,6 @@ import axios from "axios";
 import React from "react";
 import cookie from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Sidebar } from "flowbite-react";
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -14,7 +13,6 @@ const WeeklySchedule = () => {
   const [weeklySchedule, setWeeklySchedule] = useState([]);
   const [departmentNames, setDepartmentNames] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   const token = cookie.get("token");
 
@@ -41,6 +39,7 @@ const WeeklySchedule = () => {
           {}
         );
         setWeeklySchedule(weeklyScheduleGroupedByDepartment);
+
         const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         setDepartmentNames(departmentNames);
       } catch (e) {
@@ -73,14 +72,14 @@ const WeeklySchedule = () => {
     setSelectedDepartment(null);
   };
 
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+
   const handleDepartmentClick = (department) => {
-    setSelectedDepartment((prevDepartment) =>
-      prevDepartment === department ? null : department
-    );
+    setSelectedDepartment(department);
   };
 
   return (
-    <section className="flex-1 min-h-screen bg-gray-100  ">
+    <section className="relative w-full min-h-screen bg-gray-100">
       <div className="w-full max-w-screen mx-auto">
         <div className="relative flex flex-col items-center justify-center min-w-0 break-words w-full rounded">
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
@@ -142,7 +141,7 @@ const WeeklySchedule = () => {
                 </tr>
               </thead>
               <tbody>
-                {departmentNames.map((eachDepartmentName, ) => (
+                {departmentNames.map((eachDepartmentName) => (
                   <React.Fragment key={eachDepartmentName}>
                     <tr>
                       <td colSpan="3">
@@ -150,10 +149,13 @@ const WeeklySchedule = () => {
                           <Button
                             aria-controls={`department-menu-${eachDepartmentName}`}
                             aria-haspopup="true"
-                            onClick={() => handleDepartmentClick(eachDepartmentName)}
+                            onClick={handleMenuOpen}
                             endIcon={<ArrowDropDownIcon />}
                             style={{
-                              backgroundColor: eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
+                              backgroundColor:
+                                eachDepartmentName === selectedDepartment
+                                  ? "#DCEBFC"
+                                  : "",
                             }}
                           >
                             {eachDepartmentName}
@@ -165,11 +167,15 @@ const WeeklySchedule = () => {
                               open={Boolean(anchorEl)}
                               onClose={handleMenuClose}
                             >
-                              {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                                <MenuItem key={i}>
-                                  {eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                                </MenuItem>
-                              ))}
+                              {weeklySchedule[eachDepartmentName].map(
+                                (eachIntern, i) => (
+                                  <MenuItem key={i}>
+                                    {eachIntern.student.firstName +
+                                      " " +
+                                      eachIntern.student.lastName}
+                                  </MenuItem>
+                                )
+                              )}
                             </Menu>
                           )}
                         </div>
@@ -177,43 +183,47 @@ const WeeklySchedule = () => {
                     </tr>
                     {eachDepartmentName === selectedDepartment && (
                       <>
-                        {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                          <tr key={i}>
-                            <td>
-                              {eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                            </td>
-                            <td></td>
-                            <td>
-                              <div className="button-container">
-                                <Button
-                                  className="move-button"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "black",
-                                    borderRadius: "10px",
-                                    marginRight: "10px",
-                                    padding: "10px 20px",
-                                    margin: "2px 40px",
-                                  }}
-                                >
-                                  Move to Morning
-                                </Button>
-                                <Button
-                                  className="move-button"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "black",
-                                    borderRadius: "10px",
-                                    padding: "8px 20px",
-                                    margin: "0px 5px",
-                                  }}
-                                >
-                                  Move to Afternoon
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
+                        {weeklySchedule[eachDepartmentName].map(
+                          (eachIntern, i) => (
+                            <tr key={i}>
+                              <td>
+                                {eachIntern.student.firstName +
+                                  " " +
+                                  eachIntern.student.lastName}
+                              </td>
+                              <td></td>
+                              <td>
+                                <div className="button-container">
+                                  <Button
+                                    className="move-button"
+                                    style={{
+                                      backgroundColor: "white",
+                                      color: "black",
+                                      borderRadius: "10px",
+                                      marginRight: "10px",
+                                      padding: "10px 20px",
+                                      margin: "2px 40px",
+                                    }}
+                                  >
+                                    Move to Morning
+                                  </Button>
+                                  <Button
+                                    className="move-button"
+                                    style={{
+                                      backgroundColor: "white",
+                                      color: "black",
+                                      borderRadius: "10px",
+                                      padding: "8px 20px",
+                                      margin: "0px 5px",
+                                    }}
+                                  >
+                                    Move to Afternoon
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        )}
                       </>
                     )}
                   </React.Fragment>
@@ -222,6 +232,7 @@ const WeeklySchedule = () => {
             </table>
           </div>
         </div>
+
           {/* End of Table */}
           
           {/* Morning Shift People*/}
