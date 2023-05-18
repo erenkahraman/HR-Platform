@@ -5,7 +5,6 @@ import React from "react";
 import cookie from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Sidebar } from "flowbite-react";
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -259,9 +258,36 @@ const WeeklySchedule = () => {
                   <tbody>
                     {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
                       <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
+                        <td>
+                          {eachIntern.student.firstName + " " + eachIntern.student.lastName}
+                        </td>
+                        <td>
+                          <div className="button-container">
+                            <Button
+                              className="move-button"
+                              style={{
+                                backgroundColor: "white",
+                                color: "black",
+                                borderRadius: "10px",
+                                padding: "5px 10px",
+                                marginRight: "5px",
+                              }}
+                            >
+                              Move to Morning
+                            </Button>
+                            <Button
+                              className="move-button"
+                              style={{
+                                backgroundColor: "white",
+                                color: "black",
+                                borderRadius: "10px",
+                                padding: "5px 10px",
+                                marginLeft: "5px",
+                              }}
+                            >
+                              Move to Afternoon
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -305,9 +331,36 @@ const WeeklySchedule = () => {
                   <tbody>
                     {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
                       <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
+                        <td>
+                          {eachIntern.student.firstName + " " + eachIntern.student.lastName}
+                        </td>
+                        <td>
+                          <div className="button-container">
+                            <Button
+                              className="move-button"
+                              style={{
+                                backgroundColor: "white",
+                                color: "black",
+                                borderRadius: "10px",
+                                padding: "5px 10px",
+                                marginRight: "5px",
+                              }}
+                            >
+                              Move to Morning
+                            </Button>
+                            <Button
+                              className="move-button"
+                              style={{
+                                backgroundColor: "white",
+                                color: "black",
+                                borderRadius: "10px",
+                                padding: "5px 10px",
+                                marginLeft: "5px",
+                              }}
+                            >
+                              Move to Afternoon
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}

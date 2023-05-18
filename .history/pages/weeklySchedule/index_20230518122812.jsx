@@ -237,36 +237,49 @@ const WeeklySchedule = () => {
           >
             <h2 className="text-center mb-4">Morning Shift</h2>
             <div className="flex justify-center">
-              {departmentNames.map((eachDepartmentName) => (
-                <table
-                  key={eachDepartmentName}
-                  className="font-roboto w-full max-w-screen mx-auto"
+  {departmentNames.map((eachDepartmentName) => (
+    <div key={eachDepartmentName} className="mr-6">
+      <table
+        className="font-roboto w-full max-w-screen mx-auto"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "12px 24px",
+          gap: "10px",
+          background: "#DCEBFC",
+          borderRadius: "24px",
+        }}
+      >
+        <thead>
+          <tr>
+            <th>{eachDepartmentName}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
+            <tr key={i}>
+              <td className="flex items-center justify-between">
+                <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
+                <Button
+                  className="move-button"
                   style={{
+                    backgroundColor: "white",
+                    color: "black",
+                    borderRadius: "10px",
+                    padding: "5px 10px",
                     display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    padding: "12px 24px",
-                    gap: "10px",
-                    background: "#DCEBFC",
-                    borderRadius: "24px",
+                    alignItems: "center",
                   }}
                 >
-                  <thead>
-                    <tr>
-                      <th>{eachDepartmentName}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                      <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                  <SwapHorizIcon style={{ marginRight: "5px" }} />
+                  Swap
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
               ))}
             </div>
           </div>

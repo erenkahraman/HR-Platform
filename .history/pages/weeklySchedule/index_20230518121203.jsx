@@ -5,7 +5,6 @@ import React from "react";
 import cookie from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Sidebar } from "flowbite-react";
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -225,96 +224,172 @@ const WeeklySchedule = () => {
           </div>
         </div>
           {/* End of Table */}
-         {/* Morning Shift People */}
-         <div
-            className="flex flex-col items-center justify-center gap-6 mt-4"
+          
+          {/* Morning Shift People*/}
+          {/* Morning Shift People*/}
+          <div
+            className="flex flex-row items-center justify-center gap-10 mt-4"
             style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
               margin: "12px 26px",
               padding: "12px 26px",
+              gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
             }}
           >
-            <h2 className="text-center mb-4">Morning Shift</h2>
-            <div className="flex justify-center">
-              {departmentNames.map((eachDepartmentName) => (
-                <table
-                  key={eachDepartmentName}
-                  className="font-roboto w-full max-w-screen mx-auto"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    padding: "12px 24px",
-                    gap: "10px",
-                    background: "#DCEBFC",
-                    borderRadius: "24px",
-                  }}
-                >
-                  <thead>
-                    <tr>
-                      <th>{eachDepartmentName}</th>
+            <table className="font-roboto" style={{ width: "100%" }}>
+              <thead>
+                <tr>
+                  <th>Morning Shift</th>
+                </tr>
+              </thead>
+            </table>
+
+            {departmentNames.map((eachDepartmentName) => (
+              <table
+                className="font-roboto w-full max-w-screen mx-auto"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  padding: "12px 24px",
+                  gap: "10px",
+                  background: "#DCEBFC",
+                  borderRadius: "24px",
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th>{eachDepartmentName}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
+                    <tr key={i}>
+                      <td>
+                        {eachIntern.student.firstName + " " + eachIntern.student.lastName}
+                      </td>
+                      <td></td>
+                      <td>
+                        <div className="button-container">
+                          <Button
+                            className="move-button"
+                            style={{
+                              backgroundColor: "white",
+                              color: "black",
+                              borderRadius: "10px",
+                              padding: "5px 10px",
+                              marginRight: "5px",
+                            }}
+                          >
+                            Move to Morning
+                          </Button>
+                          <Button
+                            className="move-button"
+                            style={{
+                              backgroundColor: "white",
+                              color: "black",
+                              borderRadius: "10px",
+                              padding: "5px 10px",
+                              marginLeft: "5px",
+                            }}
+                          >
+                            Move to Afternoon
+                          </Button>
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                      <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ))}
-            </div>
+                  ))}
+                </tbody>
+              </table>
+            ))}
           </div>
           {/* End of Morning Shift People */}
           {/* Afternoon Shift People*/}
           <div
-            className="flex flex-col items-center justify-center gap-6 mt-4"
+            className="flex flex-row items-center justify-center gap-10 mt-4"
             style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
               margin: "12px 26px",
               padding: "12px 26px",
+              gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
             }}
           >
-            <h2 className="text-center mb-4">Afternoon Shift</h2>
-            <div className="flex justify-center">
-              {departmentNames.map((eachDepartmentName) => (
-                <table
-                  key={eachDepartmentName}
-                  className="font-roboto w-full max-w-screen mx-auto"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    padding: "12px 24px",
-                    gap: "10px",
-                    background: "#DCEBFC",
-                    borderRadius: "24px",
-                  }}
-                >
-                  <thead>
-                    <tr>
-                      <th>{eachDepartmentName}</th>
+            <table className="font-roboto" style={{ width: "100%" }}>
+              <thead>
+                <tr>
+                  <th>Afternoon Shift</th>
+                </tr>
+              </thead>
+            </table>
+
+            {departmentNames.map((eachDepartmentName) => (
+              <table
+                className="font-roboto w-full max-w-screen mx-auto"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  padding: "12px 24px",
+                  gap: "10px",
+                  background: "#DCEBFC",
+                  borderRadius: "24px",
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th>{eachDepartmentName}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
+                    <tr key={i}>
+                      <td>
+                        {eachIntern.student.firstName + " " + eachIntern.student.lastName}
+                      </td>
+                      <td></td>
+                      <td>
+                        <div className="button-container">
+                          <Button
+                            className="move-button"
+                            style={{
+                              backgroundColor: "white",
+                              color: "black",
+                              borderRadius: "10px",
+                              padding: "5px 10px",
+                              marginRight: "5px",
+                            }}
+                          >
+                            Move to Morning
+                          </Button>
+                          <Button
+                            className="move-button"
+                            style={{
+                              backgroundColor: "white",
+                              color: "black",
+                              borderRadius: "10px",
+                              padding: "5px 10px",
+                              marginLeft: "5px",
+                            }}
+                          >
+                            Move to Afternoon
+                          </Button>
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                      <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ))}
-            </div>
+                  ))}
+                </tbody>
+              </table>
+            ))}
           </div>
           {/* End of Afternoon Shift People */}
         </div>

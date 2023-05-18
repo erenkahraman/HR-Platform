@@ -5,7 +5,6 @@ import React from "react";
 import cookie from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Sidebar } from "flowbite-react";
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -81,9 +80,9 @@ const WeeklySchedule = () => {
   };
 
   return (
-    <div className="min-h-screen  ">
-      <div className="container w-full flex-grow  mx-auto">
-        <div className=" flex w-full flex-col   items-center justify-center min-w-0 break-words w-full rounded">
+    <div className="relative w-full  ">
+      <div className="w-full  max-w-screen mx-auto flex-grow">
+        <div className=" flex flex-col  items-center justify-center min-w-0 break-words w-full rounded">
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
             <div className="flex items-center">
               <h1 className="font-roboto font-bold text-4xl text-black text-center w-full">
@@ -129,7 +128,6 @@ const WeeklySchedule = () => {
               gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
-              
             }}
           >
             <table
@@ -225,101 +223,136 @@ const WeeklySchedule = () => {
           </div>
         </div>
           {/* End of Table */}
-         {/* Morning Shift People */}
-         <div
-            className="flex flex-col items-center justify-center gap-6 mt-4"
+          
+          {/* Morning Shift People*/}
+          <div className="flex flex-col items-center justify-center gap-10 mt-4"
             style={{
-              margin: "12px 26px",
-              padding: "12px 26px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "12px 24px",
+              margin : "12px 24px",
+              gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
             }}
           >
-            <h2 className="text-center mb-4">Morning Shift</h2>
-            <div className="flex justify-center">
-              {departmentNames.map((eachDepartmentName) => (
-                <table
-                  key={eachDepartmentName}
-                  className="font-roboto w-full max-w-screen mx-auto"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    padding: "12px 24px",
-                    gap: "10px",
-                    background: "#DCEBFC",
-                    borderRadius: "24px",
-                  }}
-                >
+            <table
+              className="font-roboto"
+              style={{
+                width: "100%",
+              }}
+            >
+              
+                <tbody>
                   <thead>
                     <tr>
-                      <th>{eachDepartmentName}</th>
+                      <th>Morning Shift</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                      <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ))}
-            </div>
+                </tbody>
+              </table>
+
+            <table
+              className="font-roboto w-full max-w-screen mx-auto"
+              style={{
+              display: "flex",
+              flexDirection: "column",
+
+              justifyContent: "center",
+              padding: "12px 24px",
+              gap: "10px",
+              background: "#DCEBFC",
+              borderRadius: "24px",
+              }}
+            >
+              <thead>
+                <tr>
+                  <th>UEX</th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Eren</td>
+                <td>Kahraman</td>
+              </tr>
+              <tr>
+                <td>Soner</td>
+                <td>Backend</td>
+              </tr>
+
+              </tbody>
+            </table>
           </div>
           {/* End of Morning Shift People */}
           {/* Afternoon Shift People*/}
-          <div
-            className="flex flex-col items-center justify-center gap-6 mt-4"
+          <div className="flex flex-col items-center justify-center gap-10 mt-4"
             style={{
-              margin: "12px 26px",
-              padding: "12px 26px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              margin : "12px 24px",
+              padding: "12px 24px",
+              gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
             }}
           >
-            <h2 className="text-center mb-4">Afternoon Shift</h2>
-            <div className="flex justify-center">
-              {departmentNames.map((eachDepartmentName) => (
-                <table
-                  key={eachDepartmentName}
-                  className="font-roboto w-full max-w-screen mx-auto"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    padding: "12px 24px",
-                    gap: "10px",
-                    background: "#DCEBFC",
-                    borderRadius: "24px",
-                  }}
-                >
-                  <thead>
-                    <tr>
-                      <th>{eachDepartmentName}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                      <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ))}
-            </div>
+            <table
+              className="font-roboto"
+              style={{
+                width: "100%",
+              }}
+            >
+              
+              <tbody>
+                <thead>
+                  <tr>
+                    <th>Afternoon Shift</th>
+                  </tr>
+                </thead>
+              </tbody>
+            </table>
+
+            <table
+              className="font-roboto w-full max-w-screen mx-auto"
+              style={{
+              display: "flex",
+              flexDirection: "column",
+
+              justifyContent: "center",
+              padding: "12px 24px",
+              gap: "10px",
+              background: "#DCEBFC",
+              borderRadius: "24px",
+              }}
+            >
+              <thead>
+                <tr>
+                  <th>DIGITAL MARKETING</th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Eren</td>
+                <td>Kahraman</td>
+              </tr>
+              <tr>
+                <td>Soner</td>
+                <td>Backend</td>
+              </tr>
+
+              </tbody>
+            </table>
           </div>
-          {/* End of Afternoon Shift People */}
-        </div>
+
+          
       </div>
+    </div>
   );
-};
+            
+}
 
 export default WeeklySchedule;

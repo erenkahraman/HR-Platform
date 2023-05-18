@@ -261,7 +261,20 @@ const WeeklySchedule = () => {
                       <tr key={i}>
                         <td className="flex items-center justify-between">
                           <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
+                          <Button
+                            className="move-button"
+                            style={{
+                              backgroundColor: "white",
+                              color: "black",
+                              borderRadius: "10px",
+                              padding: "5px 10px",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <SwapHorizIcon style={{ marginRight: "5px" }} />
+                            
+                          </Button>
                         </td>
                       </tr>
                     ))}
@@ -307,7 +320,20 @@ const WeeklySchedule = () => {
                       <tr key={i}>
                         <td className="flex items-center justify-between">
                           <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
+                          <Button
+                            className="move-button"
+                            style={{
+                              backgroundColor: "white",
+                              color: "black",
+                              borderRadius: "10px",
+                              padding: "5px 10px",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <SwapHorizIcon style={{ marginRight: "5px" }} />
+                            Swap
+                          </Button>
                         </td>
                       </tr>
                     ))}

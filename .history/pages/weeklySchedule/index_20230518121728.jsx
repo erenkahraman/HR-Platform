@@ -259,10 +259,10 @@ const WeeklySchedule = () => {
                   <tbody>
                     {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
                       <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
+                        <td>
+                          {eachIntern.student.firstName + " " + eachIntern.student.lastName}
                         </td>
+                        
                       </tr>
                     ))}
                   </tbody>
@@ -305,10 +305,10 @@ const WeeklySchedule = () => {
                   <tbody>
                     {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
                       <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
+                        <td>
+                          {eachIntern.student.firstName + " " + eachIntern.student.lastName}
                         </td>
+                        
                       </tr>
                     ))}
                   </tbody>

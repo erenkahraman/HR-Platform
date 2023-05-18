@@ -5,7 +5,6 @@ import React from "react";
 import cookie from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Sidebar } from "flowbite-react";
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -259,10 +258,10 @@ const WeeklySchedule = () => {
                   <tbody>
                     {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
                       <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
+                        <td>
+                          {eachIntern.student.firstName + " " + eachIntern.student.lastName}
                         </td>
+                        
                       </tr>
                     ))}
                   </tbody>
@@ -305,10 +304,10 @@ const WeeklySchedule = () => {
                   <tbody>
                     {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
                       <tr key={i}>
-                        <td className="flex items-center justify-between">
-                          <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                          <Button><SwapHorizIcon style={{ marginRight: "5px",  }} /> </Button>
+                        <td>
+                          {eachIntern.student.firstName + " " + eachIntern.student.lastName}
                         </td>
+                        
                       </tr>
                     ))}
                   </tbody>
