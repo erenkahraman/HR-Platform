@@ -20,6 +20,8 @@ const WeeklySchedule = () => {
   const [departmentNames, setDepartmentNames] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [morningShiftInterns, setMorningShiftInterns] = useState([])
+  const [afternoonShiftInterns, setAfternoonShiftInterns] = useState([])
 
   const token = cookie.get("token");
 
@@ -134,6 +136,29 @@ const WeeklySchedule = () => {
     setDateRange(weekDateRange)
 
   }
+
+  const handleMoveToMorning = (internToBeMoved) => {
+
+    console.log("we are in handleMoveToMorning func ")
+    console.log(internToBeMoved)
+
+    const updatedAfternoonShiftInterns = afternoonShiftInterns.filter((intern) => intern._id !== internToBeMoved._id)
+    setAfternoonShiftInterns(updatedAfternoonShiftInterns)
+
+    setMorningShiftInterns([...morningShiftInterns, internToBeMoved])
+  }
+
+  const handleMoveToAfternoon = (internToBeMoved) => {
+
+    console.log("we are in handleMoveToAfternoon func ")
+    console.log(internToBeMoved)
+
+    const updatedMorningShiftInterns = morningShiftInterns.filter((intern) => intern._id !== internToBeMoved._id)
+    setMorningShiftInterns(updatedMorningShiftInterns)
+
+    setAfternoonShiftInterns([...afternoonShiftInterns, internToBeMoved])
+  }
+
   return (
     <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
@@ -251,6 +276,7 @@ const WeeklySchedule = () => {
                                     padding: "10px 20px",
                                     margin: "2px 40px",
                                   }}
+                                  onClick={() => handleMoveToMorning(eachIntern)}
                                 >
                                   Move to Morning
                                 </Button>
@@ -263,6 +289,7 @@ const WeeklySchedule = () => {
                                     padding: "8px 20px",
                                     margin: "0px 5px",
                                   }}
+                                  onClick={() => handleMoveToAfternoon(eachIntern)}
                                 >
                                   Move to Afternoon
                                 </Button>
@@ -311,14 +338,17 @@ const WeeklySchedule = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                    <tr key={i}>
-                      <td className="flex items-center justify-between">
-                        <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                        <Button><SwapHorizIcon style={{ marginRight: "5px", }} /> </Button>
-                      </td>
-                    </tr>
-                  ))}
+                  {morningShiftInterns.map((eachIntern, i) => {
+                    return eachIntern.department !== eachDepartmentName ? null :
+                      (
+                        <tr key={i}>
+                          <td className="flex items-center justify-between">
+                            <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
+                            <Button><SwapHorizIcon style={{ marginRight: "5px", }} /> </Button>
+                          </td>
+                        </tr>
+                      )
+                  })}
                 </tbody>
               </table>
             ))}
@@ -357,14 +387,17 @@ const WeeklySchedule = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                    <tr key={i}>
-                      <td className="flex items-center justify-between">
-                        <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                        <Button><SwapHorizIcon style={{ marginRight: "5px", }} /> </Button>
-                      </td>
-                    </tr>
-                  ))}
+                  {afternoonShiftInterns.map((eachIntern, i) => {
+                    return eachIntern.department !== eachDepartmentName ? null :
+                      (
+                        <tr key={i}>
+                          <td className="flex items-center justify-between">
+                            <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
+                            <Button><SwapHorizIcon style={{ marginRight: "5px", }} /> </Button>
+                          </td>
+                        </tr>
+                      )
+                  })}
                 </tbody>
               </table>
             ))}
