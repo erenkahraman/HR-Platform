@@ -4,7 +4,6 @@ import axios from "axios";
 import React from "react";
 import cookie from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Sidebar } from "flowbite-react";
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -80,9 +79,9 @@ const WeeklySchedule = () => {
   };
 
   return (
-    <section className="flex-1 min-h-screen bg-gray-100  ">
+    <section className="absolute inset-0 w-full h-screen bg-gray-100 flex justify-center items-center">
       <div className="w-full max-w-screen mx-auto">
-        <div className="relative flex flex-col items-center justify-center min-w-0 break-words w-full rounded">
+        <div className="relative flex flex-col items-center justify-center min-w-0 break-words w-full rounded-lg bg-white">
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
             <div className="flex items-center">
               <h1 className="font-roboto font-bold text-4xl text-black text-center w-full">

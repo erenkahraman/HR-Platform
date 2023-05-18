@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import React from "react";
 import cookie from "js-cookie";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Sidebar } from "flowbite-react";
 
 const WeeklySchedule = () => {
   const startDate = "08.05.2023";
@@ -14,7 +12,6 @@ const WeeklySchedule = () => {
   const [weeklySchedule, setWeeklySchedule] = useState([]);
   const [departmentNames, setDepartmentNames] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   const token = cookie.get("token");
 
@@ -41,6 +38,7 @@ const WeeklySchedule = () => {
           {}
         );
         setWeeklySchedule(weeklyScheduleGroupedByDepartment);
+
         const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         setDepartmentNames(departmentNames);
       } catch (e) {
@@ -50,46 +48,34 @@ const WeeklySchedule = () => {
     asyncRequest();
   }, []);
 
-  const handleClickOutside = (event) => {
-    if (anchorEl && !anchorEl.contains(event.target)) {
-      setAnchorEl(null);
-      setSelectedDepartment(null);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [anchorEl]);
-
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setSelectedDepartment(null);
   };
 
-  const handleDepartmentClick = (department) => {
-    setSelectedDepartment((prevDepartment) =>
-      prevDepartment === department ? null : department
-    );
-  };
+	
+
+
 
   return (
-    <section className="flex-1 min-h-screen bg-gray-100  ">
-      <div className="w-full max-w-screen mx-auto">
-        <div className="relative flex flex-col items-center justify-center min-w-0 break-words w-full rounded">
+    <section className="relative w-full min-h-screen bg-gray-100">
+      <div className="w-full max-w-screen mx-auto"
+     
+      >
+        <div className="relative flex flex-col items-center justify-center min-w-0 break-words w-full rounded ">
+          {/* Title Container */}
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
             <div className="flex items-center">
-              <h1 className="font-roboto font-bold text-4xl text-black text-center w-full">
-                Weekly Schedule
-              </h1>
+              <h1 className="font-roboto font-bold text-4xl text-black text-center w-full"
+             
+              >Weekly Schedule</h1>
             </div>
           </div>
+          {/* End of Title Container */}
+          {/* Date Container */}
           <div
             className="flex flex-col items-center justify-center gap-10 mt-4"
             style={{
@@ -98,6 +84,7 @@ const WeeklySchedule = () => {
               alignItems: "center",
               justifyContent: "center",
               padding: "12px 24px",
+              
               gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
@@ -109,6 +96,7 @@ const WeeklySchedule = () => {
                 width: "100%",
               }}
             >
+              
               <tbody>
                 <tr>
                   <td>{dateRange}</td>
@@ -116,15 +104,16 @@ const WeeklySchedule = () => {
               </tbody>
             </table>
           </div>
-          <div
-            className="flex flex-col items-center justify-center gap-10 mt-4"
+          {/* End of Date Container */}
+          {/* Table */}
+          <div className="flex flex-col items-center justify-center gap-10 mt-4"
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
               padding: "12px 24px",
-              margin: "12px 24px",
+              margin : "12px 24px",
               gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
@@ -138,87 +127,58 @@ const WeeklySchedule = () => {
             >
               <thead>
                 <tr>
-                  <th>INTERNS</th>
+                  <th>INTERNS</th>  
                 </tr>
               </thead>
               <tbody>
-                {departmentNames.map((eachDepartmentName, ) => (
-                  <React.Fragment key={eachDepartmentName}>
-                    <tr>
-                      <td colSpan="3">
-                        <div>
-                          <Button
-                            aria-controls={`department-menu-${eachDepartmentName}`}
-                            aria-haspopup="true"
-                            onClick={() => handleDepartmentClick(eachDepartmentName)}
-                            endIcon={<ArrowDropDownIcon />}
-                            style={{
-                              backgroundColor: eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
-                            }}
-                          >
-                            {eachDepartmentName}
-                          </Button>
-                          {eachDepartmentName === selectedDepartment && (
-                            <Menu
-                              id={`department-menu-${eachDepartmentName}`}
-                              anchorEl={anchorEl}
-                              open={Boolean(anchorEl)}
-                              onClose={handleMenuClose}
-                            >
-                              {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                                <MenuItem key={i}>
-                                  {eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                                </MenuItem>
-                              ))}
-                            </Menu>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                    {eachDepartmentName === selectedDepartment && (
-                      <>
-                        {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                          <tr key={i}>
-                            <td>
-                              {eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                            </td>
-                            <td></td>
-                            <td>
-                              <div className="button-container">
-                                <Button
-                                  className="move-button"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "black",
-                                    borderRadius: "10px",
-                                    marginRight: "10px",
-                                    padding: "10px 20px",
-                                    margin: "2px 40px",
-                                  }}
-                                >
-                                  Move to Morning
-                                </Button>
-                                <Button
-                                  className="move-button"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "black",
-                                    borderRadius: "10px",
-                                    padding: "8px 20px",
-                                    margin: "0px 5px",
-                                  }}
-                                >
-                                  Move to Afternoon
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </>
-                    )}
-                  </React.Fragment>
-                ))}
-              </tbody>
+  
+  {departmentNames.map((eachDepartmentName, index) => (
+    <React.Fragment key={index}>
+      <tr>
+        <td colSpan="3">
+          <strong>{eachDepartmentName}:</strong>
+        </td>
+      </tr>
+      {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
+        <tr key={i}>
+          <td>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</td>
+          <td></td>
+          <td>
+            <div className="button-container">
+              <Button
+                className="move-button"
+                style={{
+                  backgroundColor: 'white',
+                  color: 'black',
+                  borderRadius: '10px',
+                  marginRight: '10px',
+                  padding: '10px 20px',
+                  margin: '2px 40px',
+                }}
+              >
+                Move to Morning
+              </Button>
+              <Button
+                className="move-button"
+                style={{
+                  backgroundColor: 'white',
+                  color: 'black',
+                  borderRadius: '10px',
+                  padding: '8px 20px',
+                  margin: '0px 5px',
+                }}
+              >
+                Move to Afternoon
+              </Button>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </React.Fragment>
+  ))}
+</tbody>
+
+
             </table>
           </div>
         </div>
@@ -352,7 +312,6 @@ const WeeklySchedule = () => {
       </div>
     </section>
   );
-            
 }
 
 export default WeeklySchedule;

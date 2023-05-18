@@ -1,8 +1,7 @@
 import { Circle } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
-import { confirmAlert } from "react-confirm-alert"; // Import
 
 const Reminder = ({ color }) => {
   const circleColor = () => {
@@ -12,8 +11,6 @@ const Reminder = ({ color }) => {
   const [data, setData] = useState([]);
   const token = cookie.get("token");
   const [isloading, setLoading] = useState(true);
-
-
   useEffect(() => {
     setLoading(true);
     const asyncRequest = async () => {
