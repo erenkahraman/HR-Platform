@@ -7,9 +7,13 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Sidebar } from "flowbite-react";
 
 const WeeklySchedule = () => {
-  const startDate = "08.05.2023";
-  const endDate = "12.05.2023";
-  const dateRange = `${startDate} - ${endDate}`;
+
+  // const startDate = new Date();
+  // const endDate = "12.05.2023";
+  // const dateRange = `${startDate} - ${endDate}`;
+
+  const WEEKDAYS = 5
+  const [dateRange, setDateRange] = useState("")
 
   const [weeklySchedule, setWeeklySchedule] = useState([]);
   const [departmentNames, setDepartmentNames] = useState([]);
@@ -21,6 +25,7 @@ const WeeklySchedule = () => {
   useEffect(() => {
     const asyncRequest = async () => {
       try {
+        handleCurrentWeekDateRange()
         const config = {
           headers: {
             "Content-Type": "application/json",
@@ -79,6 +84,55 @@ const WeeklySchedule = () => {
     );
   };
 
+  const formatDate = (date) => {
+    const yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1;
+    let dd = date.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    const formattedDay = dd + '/' + mm + '/' + yyyy;
+    return formattedDay
+  }
+
+  const addDays = (date, days) => {
+
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+
+  }
+
+  const substractDays = (date, days) => {
+
+    const result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+
+  }
+
+  const handleCurrentWeekDateRange = () => {
+
+    const currentDate = new Date()
+
+    // which is going to return the index of the day
+    // i.e sunday : 0, monday : 1 
+    const todayNameIndex = currentDate.getDay()
+
+    // first day and last day of the week 
+    // stands for monday and friday 
+    // in the week we are in respectively  
+    const firstDayOfTheWeek = substractDays(currentDate, todayNameIndex - 1)
+    const formattedFirstDayOfTheWeek = formatDate(firstDayOfTheWeek)
+
+    const lastDayOfTheWeek = addDays(currentDate, WEEKDAYS - todayNameIndex)
+    const formattedLastDayOfTheWeek = formatDate(lastDayOfTheWeek)
+
+    const weekDateRange = `${formattedFirstDayOfTheWeek} - ${formattedLastDayOfTheWeek}`;
+    setDateRange(weekDateRange)
+
+  }
   return (
     <section className="flex-1 min-h-screen bg-gray-100  ">
       <div className="w-full max-w-screen mx-auto">
@@ -142,7 +196,7 @@ const WeeklySchedule = () => {
                 </tr>
               </thead>
               <tbody>
-                {departmentNames.map((eachDepartmentName, ) => (
+                {departmentNames.map((eachDepartmentName,) => (
                   <React.Fragment key={eachDepartmentName}>
                     <tr>
                       <td colSpan="3">
@@ -222,57 +276,57 @@ const WeeklySchedule = () => {
             </table>
           </div>
         </div>
-          {/* End of Table */}
-          
-          {/* Morning Shift People*/}
-          <div className="flex flex-col items-center justify-center gap-10 mt-4"
+        {/* End of Table */}
+
+        {/* Morning Shift People*/}
+        <div className="flex flex-col items-center justify-center gap-10 mt-4"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "12px 24px",
+            margin: "12px 24px",
+            gap: "10px",
+            background: "#DCEBFC",
+            borderRadius: "24px",
+          }}
+        >
+          <table
+            className="font-roboto"
+            style={{
+              width: "100%",
+            }}
+          >
+
+            <tbody>
+              <thead>
+                <tr>
+                  <th>Morning Shift</th>
+                </tr>
+              </thead>
+            </tbody>
+          </table>
+
+          <table
+            className="font-roboto w-full max-w-screen mx-auto"
             style={{
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
+
               justifyContent: "center",
               padding: "12px 24px",
-              margin : "12px 24px",
               gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
             }}
           >
-            <table
-              className="font-roboto"
-              style={{
-                width: "100%",
-              }}
-            >
-              
-                <tbody>
-                  <thead>
-                    <tr>
-                      <th>Morning Shift</th>
-                    </tr>
-                  </thead>
-                </tbody>
-              </table>
-
-            <table
-              className="font-roboto w-full max-w-screen mx-auto"
-              style={{
-              display: "flex",
-              flexDirection: "column",
-
-              justifyContent: "center",
-              padding: "12px 24px",
-              gap: "10px",
-              background: "#DCEBFC",
-              borderRadius: "24px",
-              }}
-            >
-              <thead>
-                <tr>
-                  <th>UEX</th>
-                </tr>
-              </thead>
-              <tbody>
+            <thead>
+              <tr>
+                <th>UEX</th>
+              </tr>
+            </thead>
+            <tbody>
               <tr>
                 <td>Eren</td>
                 <td>Kahraman</td>
@@ -282,59 +336,59 @@ const WeeklySchedule = () => {
                 <td>Backend</td>
               </tr>
 
-              </tbody>
-            </table>
-          </div>
-          {/* End of Morning Shift People */}
-          {/* Afternoon Shift People*/}
-          <div className="flex flex-col items-center justify-center gap-10 mt-4"
+            </tbody>
+          </table>
+        </div>
+        {/* End of Morning Shift People */}
+        {/* Afternoon Shift People*/}
+        <div className="flex flex-col items-center justify-center gap-10 mt-4"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "12px 24px",
+            padding: "12px 24px",
+            gap: "10px",
+            background: "#DCEBFC",
+            borderRadius: "24px",
+          }}
+        >
+          <table
+            className="font-roboto"
+            style={{
+              width: "100%",
+            }}
+          >
+
+            <tbody>
+              <thead>
+                <tr>
+                  <th>Afternoon Shift</th>
+                </tr>
+              </thead>
+            </tbody>
+          </table>
+
+          <table
+            className="font-roboto w-full max-w-screen mx-auto"
             style={{
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
+
               justifyContent: "center",
-              margin : "12px 24px",
               padding: "12px 24px",
               gap: "10px",
               background: "#DCEBFC",
               borderRadius: "24px",
             }}
           >
-            <table
-              className="font-roboto"
-              style={{
-                width: "100%",
-              }}
-            >
-              
-              <tbody>
-                <thead>
-                  <tr>
-                    <th>Afternoon Shift</th>
-                  </tr>
-                </thead>
-              </tbody>
-            </table>
-
-            <table
-              className="font-roboto w-full max-w-screen mx-auto"
-              style={{
-              display: "flex",
-              flexDirection: "column",
-
-              justifyContent: "center",
-              padding: "12px 24px",
-              gap: "10px",
-              background: "#DCEBFC",
-              borderRadius: "24px",
-              }}
-            >
-              <thead>
-                <tr>
-                  <th>DIGITAL MARKETING</th>
-                </tr>
-              </thead>
-              <tbody>
+            <thead>
+              <tr>
+                <th>DIGITAL MARKETING</th>
+              </tr>
+            </thead>
+            <tbody>
               <tr>
                 <td>Eren</td>
                 <td>Kahraman</td>
@@ -344,15 +398,15 @@ const WeeklySchedule = () => {
                 <td>Backend</td>
               </tr>
 
-              </tbody>
-            </table>
-          </div>
+            </tbody>
+          </table>
+        </div>
 
-          
+
       </div>
     </section>
   );
-            
+
 }
 
 export default WeeklySchedule;
