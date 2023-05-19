@@ -142,6 +142,11 @@ const WeeklySchedule = () => {
     console.log("we are in handleMoveToMorning func ")
     console.log(internToBeMoved)
 
+    const isInternAlreadyInMorningShift = morningShiftInterns.find((intern) => intern._id === internToBeMoved._id)
+    if (isInternAlreadyInMorningShift) {
+      return
+    }
+
     const updatedAfternoonShiftInterns = afternoonShiftInterns.filter((intern) => intern._id !== internToBeMoved._id)
     setAfternoonShiftInterns(updatedAfternoonShiftInterns)
 
@@ -152,6 +157,11 @@ const WeeklySchedule = () => {
 
     console.log("we are in handleMoveToAfternoon func ")
     console.log(internToBeMoved)
+
+    const isInternAlreadyInAfternoonShift = afternoonShiftInterns.find((intern) => intern._id === internToBeMoved._id)
+    if (isInternAlreadyInAfternoonShift) {
+      return
+    }
 
     const updatedMorningShiftInterns = morningShiftInterns.filter((intern) => intern._id !== internToBeMoved._id)
     setMorningShiftInterns(updatedMorningShiftInterns)
