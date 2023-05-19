@@ -139,9 +139,6 @@ const WeeklySchedule = () => {
 
   const handleMoveToMorning = (internToBeMoved) => {
 
-    console.log("we are in handleMoveToMorning func ")
-    console.log(internToBeMoved)
-
     const isInternAlreadyInMorningShift = morningShiftInterns.find((intern) => intern._id === internToBeMoved._id)
     if (isInternAlreadyInMorningShift) {
       return
@@ -155,9 +152,6 @@ const WeeklySchedule = () => {
 
   const handleMoveToAfternoon = (internToBeMoved) => {
 
-    console.log("we are in handleMoveToAfternoon func ")
-    console.log(internToBeMoved)
-
     const isInternAlreadyInAfternoonShift = afternoonShiftInterns.find((intern) => intern._id === internToBeMoved._id)
     if (isInternAlreadyInAfternoonShift) {
       return
@@ -167,6 +161,19 @@ const WeeklySchedule = () => {
     setMorningShiftInterns(updatedMorningShiftInterns)
 
     setAfternoonShiftInterns([...afternoonShiftInterns, internToBeMoved])
+  }
+
+  const swapShift = (internToBeSwapped, shiftTime) => {
+
+    if (shiftTime === "morning") {
+      handleMoveToAfternoon(internToBeSwapped)
+    }
+    else if (shiftTime === "afternoon") {
+      handleMoveToMorning(internToBeSwapped)
+    }
+    else {
+      console.log("there is something wrong i can feel it")
+    }
   }
 
   return (
@@ -354,7 +361,9 @@ const WeeklySchedule = () => {
                         <tr key={i}>
                           <td className="flex items-center justify-between">
                             <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                            <Button><SwapHorizIcon style={{ marginRight: "5px", }} /> </Button>
+                            <Button onClick={() => swapShift(eachIntern, "morning")}>
+                              <SwapHorizIcon style={{ marginRight: "5px", }} />
+                            </Button>
                           </td>
                         </tr>
                       )
@@ -403,7 +412,9 @@ const WeeklySchedule = () => {
                         <tr key={i}>
                           <td className="flex items-center justify-between">
                             <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                            <Button><SwapHorizIcon style={{ marginRight: "5px", }} /> </Button>
+                            <Button onClick={() => swapShift(eachIntern, "afternoon")}>
+                              <SwapHorizIcon style={{ marginRight: "5px", }} />
+                            </Button>
                           </td>
                         </tr>
                       )
