@@ -23,8 +23,7 @@ import useTableSearch from "../../hooks/useTableSearch";
 import InfoIcon from '@mui/icons-material/Info';
 import { CSVLink } from "react-csv";
 import React, { useRef } from 'react';
-import { Button, Grid } from "@mui/material";
-import { Add, SystemUpdateAlt } from "@mui/icons-material";
+import { listHeaders } from "./headers.js";
 
 
 function Attendence() {
@@ -49,20 +48,6 @@ function Attendence() {
   const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
   const [updatedInterns, setUpdatedInterns] = useState([])
 
-
-  const listHeaders = [
-    "Full Name",
-    "Department",
-    "Position",
-    "Present",
-    "Late",
-    "Covered Day",
-    "Day Off",
-    "Excused Leave",
-    "Sick",
-    "Unexcused Leave",
-    "Action",
-  ];
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -135,7 +120,19 @@ function Attendence() {
     csvLinkElement.current.link.click()
   }
 
-
+  const listHeaders = [
+    "Full Name",
+    "Department",
+    "Position",
+    "Present",
+    "Late",
+    "Covered Day",
+    "Day Off",
+    "Excused Leave",
+    "Sick",
+    "Unexcused Leave",
+    "Action",
+  ];
 
 
 
