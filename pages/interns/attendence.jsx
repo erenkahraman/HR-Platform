@@ -42,6 +42,7 @@ function Attendence() {
   const token = cookie.get("token");
 
   const csvLinkElement = useRef();
+  const csvLinkSingleStudent = useRef();
 
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
@@ -49,6 +50,8 @@ function Attendence() {
   const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
   const [updatedInterns, setUpdatedInterns] = useState([])
 
+  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] = useState([])
+  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] = useState([])
 
   const listHeaders = [
     "Full Name",
@@ -132,11 +135,50 @@ function Attendence() {
 
   const handleExportJsonDataToCsv = () => {
 
-    csvLinkElement.current.link.click()
+    let studentsAttendanceInfo = []
+    data.forEach((eachStudent) => {
+
+      const attendanceInfo = getAttendanceInfoOfStudent(eachStudent)
+      studentsAttendanceInfo.push(attendanceInfo)
+    })
+
+    setAllStudentsAttendanceInfo(studentsAttendanceInfo)
+
+    const downloadedCsvFile = setTimeout(function () {
+      csvLinkElement.current.link.click()
+    }, 1000);
   }
 
+  const getAttendanceInfoOfStudent = (student) => {
 
+    const attendanceInfo = {
+      "First Name": student.firstName,
+      "Last Name": student.lastName,
+      "Covered Day": student.intern.attendance.coveredDay.count,
+      "Day Off": student.intern.attendance.dayOff.count,
+      "Excused Leave": student.intern.attendance.excusedLeave.count,
+      "Late": student.intern.attendance.late.count,
+      "Present": student.intern.attendance.present.count,
+      "Sick": student.intern.attendance.sick.count,
+      "Unexcused Leave": student.intern.attendance.unexcusedleave.count,
+    }
+    return attendanceInfo
+  }
+  const handleExportSingleInternAttendanceToCsv = (student) => {
 
+    if (event.target.tagName === "A") {
+      return
+    }
+
+    const attendanceInfo = getAttendanceInfoOfStudent(student)
+
+    setSingleStudentAttendanceInfo([attendanceInfo])
+
+    const downloadedCsvFile = setTimeout(function () {
+      csvLinkSingleStudent.current.link.click()
+    }, 1000);
+
+  }
 
 
   const save = (intern) => {
@@ -306,18 +348,20 @@ function Attendence() {
             </div>
 
             <div className="flex gap-2">
-            <CSVLink ref={csvLinkElement} {...csvReport}></CSVLink>
-                    <Button
-                      size="medium"
-                      color="primary"
-                      startIcon={<SystemUpdateAlt className="text-sm" />}
-                      variant="contained"
-                      sx={{ borderRadius: 2 }}
-                      href="#"
-                      onClick={handleExportJsonDataToCsv}
-                    >
-                      Export to CSV
-                    </Button>
+
+              <Button
+                size="medium"
+                color="primary"
+                startIcon={<SystemUpdateAlt className="text-sm" />}
+                variant="contained"
+                sx={{ borderRadius: 2 }}
+                href="#"
+                onClick={handleExportJsonDataToCsv}
+              >
+                Export to CSV
+              </Button>
+              <CSVLink ref={csvLinkElement} data={allStudentsAttendanceInfo}></CSVLink>
+
               <form>
                 <label
                   htmlFor="default-search"
@@ -573,6 +617,10 @@ function Attendence() {
                                   setModel={setAttendanceEditModel}
                                 />
                               )}
+                            </button>
+                            <button title="Export to CSV" onClick={() => handleExportSingleInternAttendanceToCsv(student)}>
+                              <SystemUpdateAlt className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
+                              <CSVLink ref={csvLinkSingleStudent} data={singleStudentAttendanceInfo}></CSVLink>
                             </button>
                           </div>
                         </div>
