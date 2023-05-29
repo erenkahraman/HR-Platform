@@ -1,11 +1,13 @@
 import { Button, Menu, MenuItem } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import React from "react";
 import cookie from "js-cookie";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Sidebar } from "flowbite-react";
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import { SystemUpdateAlt } from "@mui/icons-material";
+import { CSVLink } from "react-csv";
 
 const WeeklySchedule = () => {
 
@@ -22,8 +24,11 @@ const WeeklySchedule = () => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [morningShiftInterns, setMorningShiftInterns] = useState([])
   const [afternoonShiftInterns, setAfternoonShiftInterns] = useState([])
+  const [assignedShifts, setAssignedShifts] = useState([])
 
   const token = cookie.get("token");
+
+  const csvLinkElement = useRef();
 
   useEffect(() => {
     const asyncRequest = async () => {
@@ -176,15 +181,61 @@ const WeeklySchedule = () => {
     }
   }
 
+  const getAssignedInternInfo = (intern, shiftTime) => {
+
+    const assignedIntern = {
+      "First Name": intern.student.firstName,
+      "Last Name": intern.student.lastName,
+      "Department": intern.department,
+      "Shift": shiftTime
+    }
+    return assignedIntern
+  }
+  const handleExportToCsv = () => {
+
+    let shiftAssignedInterns = []
+
+    morningShiftInterns.forEach((morningIntern) => {
+      const assignedInternInfo = getAssignedInternInfo(morningIntern, "Morning")
+      shiftAssignedInterns.push(assignedInternInfo)
+    })
+
+    afternoonShiftInterns.forEach((afternoonIntern) => {
+      const assignedInternInfo = getAssignedInternInfo(afternoonIntern, "Afternoon")
+      shiftAssignedInterns.push(assignedInternInfo)
+    })
+
+    setAssignedShifts(shiftAssignedInterns)
+
+    const downloadedCsvFile = setTimeout(function () {
+      csvLinkElement.current.link.click()
+    }, 1000);
+
+  }
+
   return (
     <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
         <div className=" flex w-full flex-col   items-center justify-center min-w-0 break-words w-full rounded">
-          <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
+          <div className="flex justify-between gap-4 rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
             <div className="flex items-center">
               <h1 className="font-roboto font-bold text-4xl text-black text-center w-full">
                 Weekly Schedule
               </h1>
+            </div>
+            <div>
+              <CSVLink ref={csvLinkElement} data={assignedShifts} fileName={"assigned-shifts.csv"}></CSVLink>
+              <Button
+                size="medium"
+                color="primary"
+                startIcon={<SystemUpdateAlt className="text-sm" />}
+                variant="contained"
+                sx={{ borderRadius: 2 }}
+                href="#"
+                onClick={handleExportToCsv}
+              >
+                Export to CSV
+              </Button>
             </div>
           </div>
           <div
