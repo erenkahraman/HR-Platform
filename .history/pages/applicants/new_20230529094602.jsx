@@ -64,10 +64,7 @@ export default function ApplicantsNew() {
     { title: "Interview Record", status: "Needs Review" },
   ];
 
-
-  
-
-  
+  const [value , setValue] = useState(defaultDoc);
 
   const docs = [
     "Curriculum Vitae",
@@ -974,7 +971,7 @@ export default function ApplicantsNew() {
                           <DocumentReview
                             register={register}
                             title={docs}
-                            
+                            value = {defaultDocs}
                             type="student.applicant"
                           />
                         </div>

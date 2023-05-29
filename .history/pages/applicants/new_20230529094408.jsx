@@ -55,18 +55,6 @@ export default function ApplicantsNew() {
 
   const token = cookie.get("token");
 
-  const defaultDoc = [
-    { title: "Curriculum Vitae", status: "Needs Review" },
-    { title: "Motivation Letter", status: "Needs Review" },
-    { title: "Arrival Tickets", status: "Needs Review" },
-    { title: "Learning Agreement", status: "Needs Review" },
-    { title: "Acceptance Letter", status: "Needs Review" },
-    { title: "Interview Record", status: "Needs Review" },
-  ];
-
-
-  
-
   
 
   const docs = [
@@ -974,7 +962,7 @@ export default function ApplicantsNew() {
                           <DocumentReview
                             register={register}
                             title={docs}
-                            
+                            value={docs}
                             type="student.applicant"
                           />
                         </div>

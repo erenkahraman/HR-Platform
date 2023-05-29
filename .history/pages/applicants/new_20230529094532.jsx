@@ -64,11 +64,6 @@ export default function ApplicantsNew() {
     { title: "Interview Record", status: "Needs Review" },
   ];
 
-
-  
-
-  
-
   const docs = [
     "Curriculum Vitae",
     "Motivation Letter",
@@ -974,7 +969,7 @@ export default function ApplicantsNew() {
                           <DocumentReview
                             register={register}
                             title={docs}
-                            
+                            value = {defaultDoc}
                             type="student.applicant"
                           />
                         </div>

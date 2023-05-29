@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 
 const DocumentReview = ({ title, register, type }) => {
-  const [defaultValue] = useState("Not Submitted");
+  
 
   return (
     <div className="flex w-48 flex-col gap-2">

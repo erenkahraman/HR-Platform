@@ -29,7 +29,6 @@ export default function ApplicantsNew() {
   // get positions from DB when choosing positions
   const [positions, setPositions] = useState();
 
-
   //Modals state
   const [addDeprtmntModal, setAddDeprtmntModal] = useState(false);
   const [addPositionModal, setAddPositionModal] = useState(false);
@@ -63,11 +62,6 @@ export default function ApplicantsNew() {
     { title: "Acceptance Letter", status: "Needs Review" },
     { title: "Interview Record", status: "Needs Review" },
   ];
-
-
-  
-
-  
 
   const docs = [
     "Curriculum Vitae",
@@ -880,7 +874,6 @@ export default function ApplicantsNew() {
                             required: "Please, enter the currrent progress",
                           })}
                           className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          
                         >
                           <option>New Candidate</option>
                           <option>HR Interview</option>
@@ -974,7 +967,6 @@ export default function ApplicantsNew() {
                           <DocumentReview
                             register={register}
                             title={docs}
-                            
                             type="student.applicant"
                           />
                         </div>

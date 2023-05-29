@@ -29,7 +29,6 @@ export default function ApplicantsNew() {
   // get positions from DB when choosing positions
   const [positions, setPositions] = useState();
 
-
   //Modals state
   const [addDeprtmntModal, setAddDeprtmntModal] = useState(false);
   const [addPositionModal, setAddPositionModal] = useState(false);
@@ -63,11 +62,6 @@ export default function ApplicantsNew() {
     { title: "Acceptance Letter", status: "Needs Review" },
     { title: "Interview Record", status: "Needs Review" },
   ];
-
-
-  
-
-  
 
   const docs = [
     "Curriculum Vitae",
@@ -224,29 +218,6 @@ export default function ApplicantsNew() {
     await updateDepartment();
     setAddPositionModal(false);
   };
-
-  const [interviewNotes, setInterviewNotes] = useState(`1. Can you tell me a little about yourself?
-2. How did you hear about the position?
-3. What do you know about our company?
-4. Why did you apply for this position?
-5. Why should we hire you?
-6. Why are you looking to leave your current company?
-7. What are your greatest professional strengths?
-8. Tell me about a challenge or conflict you've faced at work, and how you dealt with it.
-9. How much money are you looking to earn?
-10. Why do you want to work here?
-11. What is your dream job?
-12. Why did you leave your last job?
-13. What other companies are you interviewing with?
-14. What is your greatest weakness?
-15. What type of work environment do you prefer?
-16. What's a time you disagreed with a decision that was made at work?
-17. Where do you see yourself in 5 years?
-18. Can you explain why you changed career paths?
-19. Tell Me About a Time You Failed.
-20. How would our boss and co-workers describe you?`);
-
-
 
   var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -880,7 +851,6 @@ export default function ApplicantsNew() {
                             required: "Please, enter the currrent progress",
                           })}
                           className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          
                         >
                           <option>New Candidate</option>
                           <option>HR Interview</option>
@@ -906,15 +876,13 @@ export default function ApplicantsNew() {
                       Interview Notes
                     </label>
                     <div className="mt-1">
-                    <textarea
-                      {...register("student.applicant.interviewNotes")}
-                      rows={2}
-                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
-                      value={interviewNotes}
-                      onChange={(e) => setInterviewNotes(e.target.value)}
-                            />
+                      <textarea
+                        {...register("student.applicant.interviewNotes")}
+                        rows={2}
+                        className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                        defaultValue={""}
+                      />
                     </div>
-
                     <p className="mt-2 text-sm text-gray-500">
                       Notes for or during the interview.
                     </p>
@@ -974,7 +942,6 @@ export default function ApplicantsNew() {
                           <DocumentReview
                             register={register}
                             title={docs}
-                            
                             type="student.applicant"
                           />
                         </div>

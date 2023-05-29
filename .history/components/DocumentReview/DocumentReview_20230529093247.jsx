@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 
 const DocumentReview = ({ title, register, type }) => {
-  const [defaultValue] = useState("Not Submitted");
+
+  const [value , setValue] = useState("Not Submitted");
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
 
   return (
     <div className="flex w-48 flex-col gap-2">
@@ -13,7 +19,8 @@ const DocumentReview = ({ title, register, type }) => {
           required: `Please, submit the ${title}`,
         })}
         className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-        defaultValue={defaultValue}
+        
+        value={value}
       >
         <option value="Not Submitted">Not Submitted</option>
         <option value="Needs Review">Needs Review</option>
