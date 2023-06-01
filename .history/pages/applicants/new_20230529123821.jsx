@@ -493,25 +493,16 @@ export default function ApplicantsNew() {
                       <label className="block text-sm">Phone Number</label>
                       <input
                         {...register("student.phoneNumber", {
-                          required: "Please enter the phone number",
-                          pattern: {
-                            value: /^[0-9]+$/,
-                            message: "Please enter a valid phone number",
-                          },
+                          required: "Please, enter the phone number",
                         })}
                         type="tel"
-                        autoComplete="off"
-                        onInput={(e) => {
-                          e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                        }}
+                        autoComplete="phone"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       <p className="text-sm font-thin text-red-600">
                         {errors.student?.phoneNumber?.message}
                       </p>
                     </div>
-
-
 
                     {/* University */}
                     { <div className="flex flex-col gap-2">

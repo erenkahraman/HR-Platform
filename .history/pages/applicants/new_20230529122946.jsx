@@ -493,25 +493,16 @@ export default function ApplicantsNew() {
                       <label className="block text-sm">Phone Number</label>
                       <input
                         {...register("student.phoneNumber", {
-                          required: "Please enter the phone number",
-                          pattern: {
-                            value: /^[0-9]+$/,
-                            message: "Please enter a valid phone number",
-                          },
+                          required: "Please, enter the phone number",
                         })}
                         type="tel"
-                        autoComplete="off"
-                        onInput={(e) => {
-                          e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                        }}
+                        autoComplete="phone"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       <p className="text-sm font-thin text-red-600">
                         {errors.student?.phoneNumber?.message}
                       </p>
                     </div>
-
-
 
                     {/* University */}
                     { <div className="flex flex-col gap-2">
@@ -671,97 +662,93 @@ export default function ApplicantsNew() {
 
                     {/* Department */}
                     <div className="mb-2 font-semibold flex gap-4 pt-3">
-                      Internship Details
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="department" className="block text-sm">
-                          Department
-                        </label>
-                        {dbDepartment && (
-                          <select
-                            {...register("student.applicant.department", {
-                              required: "Please, select a department",
-                            })}
-                            className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                            onChange={(e) => {
-                              setPositions(
-                                dbDepartment[e.target.selectedIndex - 1]
-                                  ?.positions || []
-                              );
-                            }}
-                          >
-                            <option value="">Select...</option>
-                            {dbDepartment.map((department) => (
-                              <option
-                                value={department.department}
-                                key={department._id}
-                                disabled={department.positions.length == 0}
-                              >
-                                {department.department}
-                              </option>
-                            ))}
-                          </select>
-                        )}
+  Internship Details
+</div>
+<div className="flex gap-4">
+  <div className="flex flex-col gap-2">
+    <label htmlFor="department" className="block text-sm">
+      Department
+    </label>
+    {dbDepartment && (
+      <select
+        {...register("student.applicant.department", {
+          required: "Please, select a department",
+        })}
+        className="block w-48 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+        onChange={(e) => {
+          setPositions(
+            dbDepartment[e.target.selectedIndex - 1]?.positions || []
+          );
+        }}
+      >
+        <option value="">Select...</option>
+        {dbDepartment.map((department) => (
+          <option
+            value={department.department}
+            key={department._id}
+            disabled={department.positions.length === 0}
+          >
+            {department.department}
+          </option>
+        ))}
+      </select>
+    )}
+    <p className="text-sm font-thin text-red-600">
+      {errors.student?.applicant?.department?.message}
+    </p>
+  </div>
 
-                        <p className="text-sm font-thin text-red-600">
-                          {errors.student?.applicant?.department?.message}
-                        </p>
-                      </div>
-                      {/* Button new department */}
+  {/* Button new department */}
+  <div className="flex flex-col gap-2">
+    <Button
+      className="mt-7 inline-flex justify-center py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      onClick={(e) => setAddDeprtmntModal(true)}
+    >
+      Add new department
+    </Button>
+  </div>
+</div>
 
-                      <div className="flex flex-col gap-2">
-                        <Button
-                          className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                          onClick={(e) => setAddDeprtmntModal(true)}
-                        >
-                          Add new department
-                        </Button>
-                      </div>
-                    </div>
+{/* Position */}
+<div className="flex gap-4">
+  <div className="flex flex-col gap-2">
+    <label htmlFor="position" className="block text-sm">
+      Position
+    </label>
+    {positions ? (
+      <select
+        {...register("student.applicant.position", {
+          required: "Please, select a position",
+        })}
+        autoComplete="position"
+        id="position"
+        className="block w-48 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+      >
+        <option value="">Select...</option>
+        {positions?.map((position) => (
+          <option value={position} key={position}>
+            {position}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <div className="block w-48 py-2 sm:text-sm font-thin text-red-600">
+        Please select a department
+      </div>
+    )}
+    <p className="text-sm font-thin text-red-600">
+      {errors.student?.applicant?.position?.message}
+    </p>
+  </div>
+  <div className="flex flex-col gap-2">
+    <Button
+      className="mt-7 inline-flex justify-center py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      onClick={(e) => setAddPositionModal(true)}
+    >
+      Add new position
+    </Button>
+  </div>
 
-                    {/* Position */}
-                    <div className="flex gap-4">
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="position" className="block text-sm">
-                          Position
-                        </label>
-                        {positions ? (
-                          <select
-                            {...register("student.applicant.position", {
-                              required: "Please, select a position",
-                            })}
-                            autoComplete="position"
-                            id="position"
-                            className="block w-48 py-2  border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          >
-                            <option value="">Select...</option>
-                            {positions?.map((position) => (
-                              <option value={position} key={position}>
-                                {position}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <div className="block w-48 py-2 sm:text-sm font-thin text-red-600">
-                            Please select a department
-                          </div>
-                        )}
-                        <p className="text-sm font-thin text-red-600">
-                          {errors.student?.applicant?.position?.message}
-                        </p>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <Button
-                          className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                          onClick={(e) => setAddPositionModal(true)}
-                        >
-                          Add new position
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
                       {/* Arrival Date */}
                       <div className="flex flex-[1] flex-col gap-2">
                         <label htmlFor="applied-on" className="block text-sm">

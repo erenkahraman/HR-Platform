@@ -76,8 +76,7 @@ export default function ApplicantsNew() {
     "Arrival Tickets",
     "Learning Agreement",
     "Acceptance Letter",
-    "Interview Record",
-    "Passport"
+    "Interview Record"
    
   ];
 
@@ -493,25 +492,16 @@ export default function ApplicantsNew() {
                       <label className="block text-sm">Phone Number</label>
                       <input
                         {...register("student.phoneNumber", {
-                          required: "Please enter the phone number",
-                          pattern: {
-                            value: /^[0-9]+$/,
-                            message: "Please enter a valid phone number",
-                          },
+                          required: "Please, enter the phone number",
                         })}
                         type="tel"
-                        autoComplete="off"
-                        onInput={(e) => {
-                          e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                        }}
+                        autoComplete="phone"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       <p className="text-sm font-thin text-red-600">
                         {errors.student?.phoneNumber?.message}
                       </p>
                     </div>
-
-
 
                     {/* University */}
                     { <div className="flex flex-col gap-2">
@@ -712,7 +702,7 @@ export default function ApplicantsNew() {
 
                       <div className="flex flex-col gap-2">
                         <Button
-                          className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          className="w-48 mt-7 inline-flex text justify-center py-2 px-1 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                           onClick={(e) => setAddDeprtmntModal(true)}
                         >
                           Add new department
@@ -753,7 +743,9 @@ export default function ApplicantsNew() {
                       </div>
                       <div className="flex flex-col gap-2">
                         <Button
-                          className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          className="w-48 mt-7 inline-flex text justify-center py-2 px-1 border border-transparent
+                         shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 
+                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                           onClick={(e) => setAddPositionModal(true)}
                         >
                           Add new position

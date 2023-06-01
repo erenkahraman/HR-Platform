@@ -499,11 +499,9 @@ export default function ApplicantsNew() {
                             message: "Please enter a valid phone number",
                           },
                         })}
-                        type="tel"
+                        type="number"
+                        inputMode="numeric"
                         autoComplete="off"
-                        onInput={(e) => {
-                          e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                        }}
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       <p className="text-sm font-thin text-red-600">

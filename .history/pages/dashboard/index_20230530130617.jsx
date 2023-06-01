@@ -20,7 +20,7 @@ import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
 import Interviews from "./reports";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Dashboard = () => {
   const router = useRouter();

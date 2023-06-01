@@ -23,7 +23,15 @@ const Upcoming = () => {
           config
         );
         const filteredData = data.filter(intern => new Date(intern.date) >= new Date());
-        filteredData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        filteredData.sort((a, b) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          if (dateA.getMonth() !== dateB.getMonth()) {
+            return dateB.getMonth() - dateA.getMonth();
+          } else {
+            return dateB.getDate() - dateA.getDate();
+          }
+        });
         setData(filteredData);
         setLoading(false);
       } catch (e) {

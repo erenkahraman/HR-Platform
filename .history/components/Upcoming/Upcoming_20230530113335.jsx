@@ -23,7 +23,7 @@ const Upcoming = () => {
           config
         );
         const filteredData = data.filter(intern => new Date(intern.date) >= new Date());
-        filteredData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        filteredData.sort((a, b) => new Date(a.date) - new Date(b.date));
         setData(filteredData);
         setLoading(false);
       } catch (e) {
@@ -55,7 +55,7 @@ const Upcoming = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        data.map((intern, i) => (
+        data.reverse().map((intern, i) => (
           <div key={i} className="flex w-full">
             <div className="flex-[1] flex flex-col">
               <div className="text-sm font-semibold">{intern.name}</div>

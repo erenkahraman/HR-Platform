@@ -1,9 +1,11 @@
+
 import { Interview } from '../../components/Interview';
 import axios from "axios";
 import cookie from "js-cookie";
 import { useEffect, useState } from "react";
 
 function Interviews() {
+
   const token = cookie.get("token");
   const [upcomingInterviews, setUpcomingInterviews] = useState([]);
 
@@ -20,15 +22,14 @@ function Interviews() {
           { params: { token: token } },
           config
         );
-        // Sort the interviews by date in ascending order
-        const sortedInterviews = data.sort((a, b) => new Date(a.applicant.hrInterviewDate) - new Date(b.applicant.hrInterviewDate));
-        setUpcomingInterviews(sortedInterviews);
+        setUpcomingInterviews(data);
       } catch (e) {
         console.error(e);
       }
     };
     asyncRequest();
   }, []);
+
 
   return (
     <section className="relative w-full">
@@ -38,7 +39,7 @@ function Interviews() {
             {upcomingInterviews.map((eachUpcomingInterview) => (
               <div className="flex w-full">
                 <div className="flex-[1] flex flex-col">
-                  <div className="text-sm font-semibold">{eachUpcomingInterview.firstName + " " + eachUpcomingInterview.lastName}</div>
+                  <div className="text-sm font-semibold">{eachUpcomingInterview.firstName + " " + eachUpcomingInterview.lastName} </div>
                   <div className="text-xs font-light ">{eachUpcomingInterview.applicant.department}</div>
                 </div>
                 <div className="flex-[1] flex items-center justify-center text-xs">{eachUpcomingInterview.applicant.position}</div>
