@@ -1,4 +1,4 @@
-import {confirmAlert} from 'react-confirm-alert';
+import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -6,66 +6,72 @@ import cookie from "js-cookie";
 
 const FeedSchedule = () => {
 
-	const [weeklySchedule,setWeeklySchedule] = useState([])
-	const [departmentNames,setDepartmentNames] = useState([])
+	const [weeklySchedule, setWeeklySchedule] = useState([])
+	const [departmentNames, setDepartmentNames] = useState([])
+	const [morningDepartments, setMorningDepartments] = useState([])
+	const [afternoonDepartments, setAfternoonDepartments] = useState([])
 
 	const token = cookie.get("token");
-	
+
 	useEffect(() => {
 		const asyncRequest = async () => {
-		  try {
-			const config = {
-			  headers: {
-				"Content-Type": "application/json",
-			  },
-			};
-			const { data } = await axios.get(
-			  `/api/weeklySchedule`,
-			  { params: { token: token } },
-			  config
-			);
-			console.log("this is the front-end part")
-			console.log(data);
-			
-			console.log("if we group them together")
-			const weeklyScheduleGroupedByDepartment = data.reduce((departments, item) => {
-				const department = (departments[item.department] || []);
-				department.push(item);
-				departments[item.department] = department;
-				return departments;
-			  }, {});
-			  console.log(weeklyScheduleGroupedByDepartment)
-			  setWeeklySchedule(weeklyScheduleGroupedByDepartment)
+			try {
+				const config = {
+					headers: {
+						"Content-Type": "application/json",
+					},
+				};
+				const { data } = await axios.get(
+					`/api/weeklySchedule`,
+					{ params: { token: token } },
+					config
+				);
 
-			const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
-			setDepartmentNames(departmentNames)
-			
-		  } catch (e) {
-			console.error(e);
-		}
+				const weeklyScheduleGroupedByDepartment = data.reduce((departments, item) => {
+					const department = (departments[item.department] || []);
+					department.push(item);
+					departments[item.department] = department;
+					return departments;
+				}, {});
+				setWeeklySchedule(weeklyScheduleGroupedByDepartment)
+
+				const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
+				setDepartmentNames(departmentNames)
+
+				const clonedDepartmentNamesForMorning = departmentNames.slice(0)
+				const clonedDepartmentNamesForAfternoon = departmentNames.slice(0)
+
+				setMorningDepartments(clonedDepartmentNamesForMorning.splice(0, departmentNames.length / 2))
+				setAfternoonDepartments(clonedDepartmentNamesForAfternoon.splice(departmentNames.length / 2))
+
+			} catch (e) {
+				console.error(e);
+			}
 		};
 		asyncRequest();
-	  }, []);
+	}, []);
+
+
 
 	const read = () => {
 		confirmAlert({
 			title: <strong>Schedule</strong>,
 			message: <div className="h-96 overflow-y-scroll "><p>
-			{/* <br />Morning shift from 8:00 to 13:00: (23) */}
-			
-			<div>
-				{departmentNames.map((eachDepartmentName) => (
-					<div>
-						<br />
-						<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-						{weeklySchedule[eachDepartmentName].map((eachIntern) => (
-							<p>{"• " + eachIntern.student.firstName + " " +  eachIntern.student.lastName } </p>
-						))}
-					</div>
-				))}
-			</div>
+				{/* <br />Morning shift from 8:00 to 13:00: (23) */}
 
-			{/* <br />	
+				<div>
+					{departmentNames.map((eachDepartmentName) => (
+						<div>
+							<br />
+							<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
+							{weeklySchedule[eachDepartmentName].map((eachIntern) => (
+								<p>{"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName} </p>
+							))}
+						</div>
+					))}
+				</div>
+
+				{/* <br />	
 			<br />Human Resources: 4
 			<br />• Katerina Svarcova
 			<br />• Klara Tlaskalova
@@ -139,23 +145,23 @@ const FeedSchedule = () => {
 			<br />
 			<br />Information Technology: 1 (9:00 - 16:00)
 			<br />• Eneada Sulaj */}
-			
-		</p></div> ,
+
+			</p></div>,
 			buttons: [
-			  {
-				label: 'OK',
-				onClick: () => alert('Click Yes')
-			  },
-			  {
-				label: 'Cancel',
-				onClick: () => alert('Click No')
-			  }
+				{
+					label: 'OK',
+					onClick: () => alert('Click Yes')
+				},
+				{
+					label: 'Cancel',
+					onClick: () => alert('Click No')
+				}
 			]
-			
-		  });
+
+		});
 	}
 
-  
+
 	return (
 		<div className="flex m-2 py-4">
 			<div className="flex flex-[1] flex-col gap-2 p-2">
@@ -171,18 +177,48 @@ const FeedSchedule = () => {
 				</div>
 
 				<div className="text-xs font-light h-72">
-					<p className="h-72" style={{overflow:"hidden"}}>
-					<div>
-						{departmentNames.map((eachDepartmentName) => (
-							<div>
-								<br />
-								<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-								{weeklySchedule[eachDepartmentName].map((eachIntern) => (
-									<p>{"• " + eachIntern.student.firstName + " " +  eachIntern.student.lastName } </p>
-								))}
+					<p className="h-72" style={{ overflow: "hidden" }}>
+						<div className=''>
+							{/* {departmentNames.map((eachDepartmentName) => (
+								<div>
+									<br />
+									<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
+									{weeklySchedule[eachDepartmentName].map((eachIntern) => (
+										<p>{"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName} </p>
+									))}
+								</div>
+							))} */}
+							<div className="flex justify-center gap-8 my-1">
+								<div>
+									<h3>Morning Shift:</h3>
+									{morningDepartments.map((eachDepartmentName) => (
+										<div>
+											<br />
+											<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
+											{weeklySchedule[eachDepartmentName].map((eachIntern) => (
+												<p>{"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName} </p>
+											))}
+										</div>
+									))}
+
+								</div>
+
+								<div>
+									<h3>Afternoon Shift:</h3>
+
+									{afternoonDepartments.map((eachDepartmentName) => (
+										<div>
+											<br />
+											<br />{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
+											{weeklySchedule[eachDepartmentName].map((eachIntern) => (
+												<p>{"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName} </p>
+											))}
+										</div>
+									))}
+								</div>
 							</div>
-						))}
-					</div>
+
+						</div>
 					</p>
 				</div>
 			</div>
