@@ -21,13 +21,10 @@ import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
 import Interviews from "./reports";
 
-
 const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
-
-  
 
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -56,7 +53,6 @@ const Dashboard = () => {
   };
 
   const [students, setStudents] = useState([]);
-
 
   //For Reminder to add post
   const handleSubmitReminder = async (event) => {
@@ -102,8 +98,7 @@ const Dashboard = () => {
         <div className="dashboardTopRight flex flex-[4] flex-col justify-center gap-4">
           {/* Title */}
           <div className="flex flex-col gap-2">
-            <p className="text-4xl font-semibold">Ciao {students.firstNamew
-            }</p>
+            <p className="text-4xl font-semibold">Ciao {students.firstNamew}</p>
             <p className="text-sm">
               Welcome Back! You have 5{" "}
               <a className="underline" href="./">
@@ -308,7 +303,7 @@ const Dashboard = () => {
                 />
               </div>
               <div className="flex flex-row mx-2 mt-2 mb-4">
-              <h2 className="font-semibold text-l text-white ">To: </h2>
+                <h2 className="font-semibold text-l text-white ">To: </h2>
                 <input
                   type="text"
                   className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
@@ -381,7 +376,6 @@ const Dashboard = () => {
               <Feed />
             </div>
           </div>
-
 
           {/* Weekly Schedule */}
           <div className="flex flex-[1.5] flex-col gap-2">
@@ -471,7 +465,7 @@ const Dashboard = () => {
             </div>
             {/* Upcoming Interviews Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2 px-4">
-              < Interviews />
+              <Interviews />
             </div>
           </div>
           {/* Birthday */}
@@ -492,17 +486,14 @@ const Dashboard = () => {
                   <ArrowForward className="text-md" />
                 </div>
               </a>
-
             </div>
             {/* {Birthday content} */}
-
 
             {/* Birthday Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
               <Birthdays />
             </div>
           </div>
-
         </div>
       </div>
     </div>

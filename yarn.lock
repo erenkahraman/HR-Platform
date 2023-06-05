@@ -884,9 +884,8 @@
     "@mui/utils" "^5.10.3"
     "@types/react-transition-group" "^4.4.5"
     "clsx" "^1.2.1"
-    "prop-types" "^15.7.2"
+    "prop-types" "^15.8.1"
     "react-transition-group" "^4.4.5"
-    "rifm" "^0.12.1"
 
 "@next-auth/mongodb-adapter@^0.0.2-next.298":
   "integrity" "sha512-/H4Zuxsp01z+o02Rvy8dRQD5W6DrJPtBX6LlnjVf4A0IIVbZ5sxU5QJueq1rjaVcdk19SpY7is2aomjwsCHfIw=="
@@ -960,6 +959,11 @@
   "integrity" "sha512-Fpykccxlt9MHrAs/QpPGpI2nOiRxuLA+LiApgA59ibbf24YICZIMWd3SI2YD+q0IAIso0jCGiHhirAIbxK3RyQ=="
   "resolved" "https://registry.npmjs.org/@prisma/engines/-/engines-4.4.0.tgz"
   "version" "4.4.0"
+
+"@remix-run/router@1.6.2":
+  "integrity" "sha512-LzqpSrMK/3JBAVBI9u3NWtOhWNw5AMQfrUFYB0+bDHTSw17z++WJLsPsxAuK+oSddsxk4d7F/JcdDPM1M5YAhA=="
+  "resolved" "https://registry.npmjs.org/@remix-run/router/-/router-1.6.2.tgz"
+  "version" "1.6.2"
 
 "@rushstack/eslint-patch@^1.1.3":
   "integrity" "sha512-LwzQKA4vzIct1zNZzBmRKI9QuNpLgTQMEjsQLf3BXuGYb3QPTP4Yjf6mkdX+X1mYttZ808QpOwAzZjv28kq7DA=="
@@ -4161,7 +4165,7 @@
   dependencies:
     "minimist" "^1.2.6"
 
-"moment@^2.24.0", "moment@^2.29.1", "moment@^2.29.4":
+"moment@^2.24.0", "moment@^2.29.4":
   "integrity" "sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz"
   "version" "2.29.4"
@@ -4975,7 +4979,7 @@
     "lodash.debounce" "^4"
     "prop-types" "^15.8.1"
 
-"react-dom@^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18", "react-dom@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^15.5.x || ^16.x || ^17.x || ^18.x", "react-dom@^16 || ^17 || ^18", "react-dom@^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.12.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^16.8.0", "react-dom@^16.8.0 || ^17 || ^18", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.9.0 || ^17 || ^18", "react-dom@^17 || ^18", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.2 || ^18", "react-dom@^17.0.2 || ^18.0.0", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>= 16.6", "react-dom@>=10.0.0", "react-dom@>=15.0.0", "react-dom@>=16", "react-dom@>=16.6.0", "react-dom@>=16.8 || ^17.0.0 || ^18.0.0", "react-dom@>=16.8.0", "react-dom@>=17", "react-dom@>=17.0.0", "react-dom@18.2.0":
+"react-dom@^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18", "react-dom@^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^15.5.x || ^16.x || ^17.x || ^18.x", "react-dom@^16 || ^17 || ^18", "react-dom@^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.12.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^16.8.0", "react-dom@^16.8.0 || ^17 || ^18", "react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.9.0 || ^17 || ^18", "react-dom@^17 || ^18", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.2 || ^18", "react-dom@^17.0.2 || ^18.0.0", "react-dom@^17.0.2 || ^18.0.0-0", "react-dom@>= 16.6", "react-dom@>=10.0.0", "react-dom@>=15.0.0", "react-dom@>=16", "react-dom@>=16.6.0", "react-dom@>=16.8", "react-dom@>=16.8 || ^17.0.0 || ^18.0.0", "react-dom@>=16.8.0", "react-dom@>=17", "react-dom@>=17.0.0", "react-dom@18.2.0":
   "integrity" "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   "version" "18.2.0"
@@ -5161,6 +5165,21 @@
   "version" "7.1.2"
   dependencies:
     "lodash" "^4.17.21"
+
+"react-router-dom@^6.11.2":
+  "integrity" "sha512-JNbKtAeh1VSJQnH6RvBDNhxNwemRj7KxCzc5jb7zvDSKRnPWIFj9pO+eXqjM69gQJ0r46hSz1x4l9y0651DKWw=="
+  "resolved" "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.11.2.tgz"
+  "version" "6.11.2"
+  dependencies:
+    "@remix-run/router" "1.6.2"
+    "react-router" "6.11.2"
+
+"react-router@6.11.2":
+  "integrity" "sha512-74z9xUSaSX07t3LM+pS6Un0T55ibUE/79CzfZpy5wsPDZaea1F8QkrsiyRnA2YQ7LwE/umaydzXZV80iDCPkMg=="
+  "resolved" "https://registry.npmjs.org/react-router/-/react-router-6.11.2.tgz"
+  "version" "6.11.2"
+  dependencies:
+    "@remix-run/router" "1.6.2"
 
 "react-select-country-list@^2.2.3":
   "integrity" "sha512-eRgXL613dVyJiE99yKDYLvSBKDxvIlhkmvO2DVIjdKVyUQq6kBqoMUV/2zuRIAsbRXgBGmKjeL1dxjf7zTfszg=="
@@ -5454,11 +5473,6 @@
   "integrity" "sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw=="
   "resolved" "https://registry.npmjs.org/reusify/-/reusify-1.0.4.tgz"
   "version" "1.0.4"
-
-"rifm@^0.12.1":
-  "integrity" "sha512-OGA1Bitg/dSJtI/c4dh90svzaUPt228kzFsUkJbtA2c964IqEAwWXeL9ZJi86xWv3j5SMqRvGULl7bA6cK0Bvg=="
-  "resolved" "https://registry.npmjs.org/rifm/-/rifm-0.12.1.tgz"
-  "version" "0.12.1"
 
 "rimraf@^2.6.3":
   "integrity" "sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w=="

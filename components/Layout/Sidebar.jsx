@@ -126,10 +126,10 @@ export default function Sidebar() {
   };
 
   return (
-    <div className=" h-screen sm:h-screen fixed text-gray-400">
+    <div className=" h-screen sm:h-screen  text-gray-400">
       <>
-        <div className="ml-3 w-full sm:h-screen fixed mt-4">
-          <ul className="fixed sm:h-screen text-sm font-light">
+        <div className="ml-3 w-full sm:h-screen  mt-4">
+          <ul className=" sm:h-screen text-sm font-light">
             {Menus.map((menu, index) => (
               <li key={index}>
                 {menu.isSeperator === undefined ? (
