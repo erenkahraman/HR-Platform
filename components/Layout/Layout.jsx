@@ -29,7 +29,7 @@ export default function Layout({children}) {
                         </div>
 
                         {/* Right Side */}
-                        <div className={`${open ? "   ": " px-5"} `}>{children}</div>
+                        <div className={""}>{children}</div>
                     </div>
 
                 </Box>
