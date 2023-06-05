@@ -21,8 +21,8 @@ export default function Layout({children}) {
                     <title>HR Project</title>
                 </Head>
                 {/* Main Container */}
-                <Box component="main" sx={{flexGrow: 1}}>
-                    <div className={`flex flex-col flex-1 lg:flex-row w-full justify-start`}>
+
+                    <div className={`flex flex-col flex-1 lg:flex-row w-full  min-w-0 `}>
                         {/* SideNavbar */}
                         <div className={` ${open? "" : "hidden" }`}>
                             <Sidebar/>
@@ -32,7 +32,7 @@ export default function Layout({children}) {
                         <div className={""}>{children}</div>
                     </div>
 
-                </Box>
+
             </Box>
         </>
     );

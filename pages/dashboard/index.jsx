@@ -81,6 +81,7 @@ const Dashboard = () => {
   };
 
   return (
+
     <div className="flex flex-col w-full">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -114,7 +115,7 @@ const Dashboard = () => {
         <Popup
           contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
           trigger={
-            <button className="justify-center bg-white flex w-full lg:w-[25rem] p-3 rounded-md border-2 items-center lg:justify-start gap-3">
+            <button className="justify-center bg-white flex w-full lg:w-1/3 p-3 rounded-md border-2 items-center lg:justify-start gap-3">
               <div className="buttonImage text-[#2F80ED] bg-sky-100 flex items-center justify-center h-12 w-12 rounded-full">
                 <UploadFileOutlined />
               </div>
@@ -195,7 +196,7 @@ const Dashboard = () => {
         <Popup
           contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
           trigger={
-            <button className=" justify-center bg-white flex w-full lg:w-[25rem] p-3 rounded-md border-2 items-center lg:justify-start gap-3">
+            <button className=" justify-center bg-white flex w-full lg:w-1/3 p-3 rounded-md border-2 items-center lg:justify-start gap-3">
               <div className="buttonImage text-[#2f7e1b] bg-green-100 flex items-center justify-center h-12 w-12 rounded-full">
                 <NotificationAddOutlined />
               </div>
@@ -275,7 +276,7 @@ const Dashboard = () => {
         <Popup
           contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
           trigger={
-            <button className=" justify-center bg-white flex w-full lg:w-[25rem] p-3 rounded-md border-2 items-center lg:justify-start gap-3">
+            <button className=" justify-center bg-white flex w-full lg:w-1/3 p-3 rounded-md border-2 items-center lg:justify-start gap-3">
               <div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
                 <AnnouncementOutlined />
               </div>
@@ -354,7 +355,7 @@ const Dashboard = () => {
       </div>
 
       {/* Bottom */}
-      <div className="flex flex-1 flex-col lg:flex-row     py-3 gap-3">
+      <div className="flex flex-1 shrink w-full flex-col lg:flex-row py-3 gap-3">
         {/* Left */}
         <div className="left-container flex flex-1 flex-col gap-2">
           <div className="flex flex-[1.5] flex-col gap-2">
@@ -496,7 +497,8 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </div>
+
+      </div>
   );
 };
 export default Dashboard;
