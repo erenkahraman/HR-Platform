@@ -354,9 +354,9 @@ const Dashboard = () => {
       </div>
 
       {/* Bottom */}
-      <div className="flex flex-[3] flex-col lg:flex-row   py-3 gap-3">
+      <div className="flex flex-1 flex-col lg:flex-row     py-3 gap-3">
         {/* Left */}
-        <div className="left-container flex flex-[1.5] flex-col gap-2">
+        <div className="left-container flex flex-1 flex-col gap-2">
           <div className="flex flex-[1.5] flex-col gap-2">
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">What&apos;s New</div>

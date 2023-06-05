@@ -22,7 +22,7 @@ export default function Layout({children}) {
                 </Head>
                 {/* Main Container */}
                 <Box component="main" sx={{flexGrow: 1}}>
-                    <div className={`flex flex-col lg:flex-row w-screen justify-center`}>
+                    <div className={`flex flex-col lg:flex-row w-full justify-center `}>
                         {/* SideNavbar */}
                         <div className={` ${open? "" : "hidden" }`}>
                             <Sidebar/>
