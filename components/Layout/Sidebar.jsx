@@ -120,16 +120,16 @@ export default function Sidebar() {
   
 
   const sideBarListSeperator = () => {
-    let result = "flex  items-center px-6 py-2 mt-4 sm:pl-0 text-gray-700";
+    let result = "flex  items-center px-6 py-2 mt-4 sm:pl-0 text-gray-700 hidden lg:block";
 
     return result;
   };
 
   return (
-    <div className=" h-screen sm:h-screen  text-gray-400">
+    <div className="  sm:h-screen  text-gray-400">
       <>
         <div className="ml-3 w-full sm:h-screen  mt-4">
-          <ul className=" sm:h-screen text-sm font-light">
+          <ul className=" sm:h-screen text-sm font-light flex flex-wrap justify-center flex-row lg:inline-block">
             {Menus.map((menu, index) => (
               <li key={index}>
                 {menu.isSeperator === undefined ? (

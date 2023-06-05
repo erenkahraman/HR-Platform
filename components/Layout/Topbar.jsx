@@ -43,7 +43,7 @@ export default function Topbar({ isOpen, handler }) {
 
   const theme = useTheme();
   return (
-    <div className="flex sticky top-0 z-50 ">
+    <div className="flex sticky top-0 z-50 w-full ">
       {/* TopBar */}
       <div className="flex h-16 w-screen bg-[#0B3768] justify-between py-3 px-4 sm:w-screen">
         {/* Extramus Logo White*/}

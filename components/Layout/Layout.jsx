@@ -22,15 +22,14 @@ export default function Layout({children}) {
                 </Head>
                 {/* Main Container */}
                 <Box component="main" sx={{flexGrow: 1}}>
-
-                    <div className={`grid grid-cols-7`}>
+                    <div className={`flex flex-col lg:flex-row w-screen`}>
                         {/* SideNavbar */}
-                        <div className={`col-span-1  ${open? "" : "hidden" }`}>
+                        <div className={` ${open? "" : "hidden" }`}>
                             <Sidebar/>
                         </div>
 
                         {/* Right Side */}
-                        <div className={` ${open ? "col-span-6": "col-span-7 px-5"} `}>{children}</div>
+                        <div className={`${open ? "   ": " px-5"} `}>{children}</div>
                     </div>
 
                 </Box>
