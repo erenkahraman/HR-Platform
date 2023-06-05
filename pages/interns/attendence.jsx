@@ -340,14 +340,14 @@ function Attendence() {
 
           </form>
           {/* Title Container */}
-          <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white">
+          <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white flex-col md:flex-row">
             <div className="flex flex-wrap items-center">
               <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
                 <h3 className="font-semibold text-2xl">Intern Attendance</h3>
               </div>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-col md:flex-row">
 
               <Button
                 size="medium"
@@ -402,7 +402,7 @@ function Attendence() {
                 <button
                   onClick={saveAll}
                   title="Save"
-                  className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
+                  className=" hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
                   <CheckCircle className="text-m py-1 "
                   />
                   Save All
