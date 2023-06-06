@@ -59,7 +59,7 @@ export default function ApplicantsList() {
 	return (
 		<section className="relative w-full">
 			<div className="w-full mb-12">
-				<div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
+				<div className="relative flex flex-col  min-w-0 break-words w-full mb-6 shadow-lg rounded">
 					{/* Title Container */}
 					<div className="flex justify-between rounded-t mb-0 px-4 pt-3 border-0 bg-white">
 						<div className="flex flex-wrap items-center">
@@ -68,37 +68,39 @@ export default function ApplicantsList() {
 							</div>
 						</div>
 					</div>
-					<div className="border-0 bg-white ">
+					<div className="border-0 bg-white">
 						<div >
-							<div className="flex flex-row justify-between font-semibold pl-4 pt-5 pb-10" >
+							<div className="flex flex-col-reverse = useRef(); md:flex-row justify-between font-semibold pl-4 pt-5 pb-10" >
 	
 								{/* Radio check */}
-								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..."  />
-									<label className="text-sm pl-1 ">Terranova da Sibari</label>
-								</div>
-								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
-									<label className="text-sm pl-1 ">Bivo Cantinella</label>
-								</div>
-								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ... " />
-									<label className="text-sm pl-1 ">Sibari</label>
-								</div>
-								<div className="pr-3 pl-1.5 pt-3">
-									<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
-									<label className="text-sm pl-1">Spezzano Albanese Terme</label>
+								<div className={"flex lg:flex-row  flex-col"}>
+									<div className="pr-3 pl-1.5 pt-3">
+										<input type="radio" className="flex-shrink-1 border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..."  />
+										<label className="text-sm pl-1 ">Terranova da Sibari</label>
+									</div>
+									<div className="pr-3 pl-1.5 pt-3">
+										<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
+										<label className="text-sm pl-1 ">Bivo Cantinella</label>
+									</div>
+									<div className="pr-3 pl-1.5 pt-3">
+										<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ... " />
+										<label className="text-sm pl-1 ">Sibari</label>
+									</div>
+									<div className="pr-3 pl-1.5 pt-3">
+										<input type="radio" className="border-none read-only:bg-gray-200 p-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-sky-700 duration-300 ..." />
+										<label className="text-sm pl-1">Spezzano Albanese Terme</label>
+									</div>
 								</div>
 								{/* search */}
-								<form class="flex items-center ">
-									<div class="relative w-full">
-										<div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+								<form class="grid grid-cols-7 ">
+									<div class="relative col-span-6">
+										<div class="flex  absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
 											<svg aria-hidden="true" class="w-5 h-5 text-white-500 dark:text-white-400" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
 										</div>
-										<input type="text" id="simple-search" class="rounded border-none bg-[#0B3768] px-10 text-white h-8 placeholder:italic placeholder:text-white placeholder:text-sm" placeholder="Search..." required />
+										<input type="text" id="simple-search" class=" w-full rounded border-none bg-[#0B3768] px-10 text-white h-8 placeholder:italic placeholder:text-white placeholder:text-sm" placeholder="Search..." required />
 									</div>
 									<button type="submit" class="w-10 px-2 rounded border-none bg-blue-100 h-8 ml-1 mr-2 hover:bg-[#0B3768]/75 ">
-										<svg class="w-5 h-5" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+										<svg class="w-full h-5" fill="none" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
 										<span class="sr-only">Search</span>
 									</button>
 								</form>
