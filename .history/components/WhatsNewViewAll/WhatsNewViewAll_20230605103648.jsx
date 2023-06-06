@@ -66,15 +66,15 @@ const WhatsNewViewAll = () => {
               <div className="text-xs font-light">{whatsNew.paragraph}</div>
             </div>
             <div className="flex flex-[1] items-end p-2">
-              <div className="flex h-fit text-sm font-semibold underline cursor-pointer">
+              {/* <div className="flex h-fit text-sm font-semibold underline cursor-pointer">
                 Read More
-              </div>
-              <div>
-              <button onClick={() => handleDelete(whatsNew.id)} className="ml-2 self-start">
+              </div> */}
+              
+              <button onClick={() => handleDelete(whatsNew.id)} className="ml-2 self-start"
+              >
                 <DeleteIcon />
               </button>
-
-              </div>
+              
             </div>
           </div>
         </div>

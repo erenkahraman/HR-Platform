@@ -38,57 +38,56 @@ const Feed = () => {
     asyncRequest();
   }, []);
 
-  const read = () => {
+  const read = (content) => {
     confirmAlert({
       title: <strong>What's New</strong>,
-      message: 
-        <div className="h-96 overflow-y-scroll ">
-          <p>
-            <br />
-            <br />
-            <div>
-              {data.map((item) => (
-                <div>
-                  <br />
-                  <br />
-                  <div className="text-sm font-semibold">{formatDate(item.date)}</div>
-                  <div className="text-xs font-light">
-                    <div>posted by</div>
-                    <div>{item.postedBy}</div>
-                  </div>
-                  <div className="text-sm font-semibold">{item.title}</div>
-                  <div className="text-xs font-light">{item.content}</div>
-                </div>
-              ))}
-            </div>
-          </p>
-        </div>,
+      message: <div className="h-96 overflow-y-scroll">{content}</div>,
       buttons: [
         {
-          label: "Close",
-          onClick: () => {},
+          label: "OK",
+          onClick: () => alert("Click Yes"),
+        },
+        {
+          label: "Cancel",
+          onClick: () => alert("Click No"),
         },
       ],
     });
   };
-  
-  
-
-  
-
 
   const handleDelete = (id) => {
-    const updatedData = data.map((item) => {
-      if (item.id === id) {
-        return { ...item, content: '' }; // Clear the content of the item
-      }
-      return item;
+    confirmAlert({
+      title: <strong>Delete</strong>,
+      message: <div className="h-96 overflow-y-scroll">Are you sure you want to delete this?</div>,
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            const asyncRequest = async () => {
+              try {
+                const config = {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                };
+                await axios.delete(`/api/whatsNew/${id}`, { params: { token: token } }, config);
+                const { data } = await axios.get(`/api/whatsNew`, { params: { token: token } }, config);
+                setData(data);
+              } catch (e) {
+                console.error(e);
+              }
+            };
+            asyncRequest();
+          },
+        },
+        {
+          label: "No",
+          onClick: () => alert("Click No"),
+        },
+      ],
     });
-    setData(updatedData);
   };
-  
 
-  
   return (
     <div>
       {data.slice(data.length - 3).map((whatsNew) => (

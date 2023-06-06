@@ -38,42 +38,26 @@ const Feed = () => {
     asyncRequest();
   }, []);
 
-  const read = () => {
+  const read = (content) => {
     confirmAlert({
       title: <strong>What's New</strong>,
-      message: 
-        <div className="h-96 overflow-y-scroll ">
-          <p>
-            <br />
-            <br />
-            <div>
-              {data.map((item) => (
-                <div>
-                  <br />
-                  <br />
-                  <div className="text-sm font-semibold">{formatDate(item.date)}</div>
-                  <div className="text-xs font-light">
-                    <div>posted by</div>
-                    <div>{item.postedBy}</div>
-                  </div>
-                  <div className="text-sm font-semibold">{item.title}</div>
-                  <div className="text-xs font-light">{item.content}</div>
-                </div>
-              ))}
-            </div>
-          </p>
-        </div>,
+      message: (
+        <div className="h-96 overflow-y-scroll">
+          <div>{content}</div>
+        </div>
+      ),
       buttons: [
         {
-          label: "Close",
-          onClick: () => {},
+          label: "OK",
+          onClick: () => alert("Click Yes"),
+        },
+        {
+          label: "Cancel",
+          onClick: () => alert("Click No"),
         },
       ],
     });
   };
-  
-  
-
   
 
 

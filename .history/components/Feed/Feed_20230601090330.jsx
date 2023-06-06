@@ -38,57 +38,29 @@ const Feed = () => {
     asyncRequest();
   }, []);
 
-  const read = () => {
+  const read = (content) => {
     confirmAlert({
       title: <strong>What's New</strong>,
-      message: 
-        <div className="h-96 overflow-y-scroll ">
-          <p>
-            <br />
-            <br />
-            <div>
-              {data.map((item) => (
-                <div>
-                  <br />
-                  <br />
-                  <div className="text-sm font-semibold">{formatDate(item.date)}</div>
-                  <div className="text-xs font-light">
-                    <div>posted by</div>
-                    <div>{item.postedBy}</div>
-                  </div>
-                  <div className="text-sm font-semibold">{item.title}</div>
-                  <div className="text-xs font-light">{item.content}</div>
-                </div>
-              ))}
-            </div>
-          </p>
-        </div>,
+      message: <div className="h-96 overflow-y-scroll">{content}</div>,
       buttons: [
         {
-          label: "Close",
-          onClick: () => {},
+          label: "OK",
+          onClick: () => alert("Click Yes"),
+        },
+        {
+          label: "Cancel",
+          onClick: () => alert("Click No"),
         },
       ],
     });
   };
-  
-  
-
-  
-
 
   const handleDelete = (id) => {
-    const updatedData = data.map((item) => {
-      if (item.id === id) {
-        return { ...item, content: '' }; // Clear the content of the item
-      }
-      return item;
-    });
-    setData(updatedData);
+    // Implement the logic to delete the item with the given id
+    // You can make an API call or update the data state directly
+    console.log(`Deleting item with id: ${id}`);
   };
-  
 
-  
   return (
     <div>
       {data.slice(data.length - 3).map((whatsNew) => (
