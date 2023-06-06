@@ -129,7 +129,7 @@ export default function Sidebar() {
     <div className="  sm:h-screen  text-gray-400">
       <>
         <div className=" w-full sm:h-screen  mt-4 lg:px-4">
-          <ul className=" sm:h-screen text-sm font-light flex flex-wrap justify-center flex-row lg:inline-block">
+          <ul className=" sm:h-screen text-sm items-center font-light flex flex-wrap justify-center flex-row lg:inline-block">
             {Menus.map((menu, index) => (
               <li key={index}>
                 {menu.isSeperator === undefined ? (
