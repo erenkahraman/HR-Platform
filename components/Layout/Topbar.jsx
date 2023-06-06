@@ -53,7 +53,7 @@ export default function Topbar({ isOpen, handler }) {
             edge="start"
             sx={{
               color: "#fff",
-              marginRight: 10,
+
             }}
             onClick={handler}
           >
