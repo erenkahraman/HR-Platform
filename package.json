@@ -75,6 +75,7 @@
     "react-use-downloader": "^1.2.2",
     "reactjs-popup": "^2.0.5",
     "recharts": "^2.4.3",
+    "rifm": "^0.12.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
     "slate-react": "^0.82.1",
