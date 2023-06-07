@@ -270,7 +270,7 @@ const DocumentList = () => {
             </div>
 
             {/* Middle */}
-            <div className="flex gap-[2px]">
+            <div className="flex flex-col  lg:flex-row  gap-[2px]">
               {Object.keys(students[index].applicant.documents).map((name) => (
                 
                 <DocumentListContent

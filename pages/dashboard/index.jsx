@@ -21,13 +21,10 @@ import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
 import Interviews from "./reports";
 
-
 const Dashboard = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
-
-  
 
   //For Whats's New to add post
   const handleSubmitWhatsNew = async (event) => {
@@ -57,7 +54,6 @@ const Dashboard = () => {
 
   const [students, setStudents] = useState([]);
 
-
   //For Reminder to add post
   const handleSubmitReminder = async (event) => {
     event.preventDefault();
@@ -85,6 +81,7 @@ const Dashboard = () => {
   };
 
   return (
+
     <div className="flex flex-col w-full">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -102,8 +99,7 @@ const Dashboard = () => {
         <div className="dashboardTopRight flex flex-[4] flex-col justify-center gap-4">
           {/* Title */}
           <div className="flex flex-col gap-2">
-            <p className="text-4xl font-semibold">Ciao {students.firstNamew
-            }</p>
+            <p className="text-4xl font-semibold">Ciao {students.firstNamew}</p>
             <p className="text-sm">
               Welcome Back! You have 5{" "}
               <a className="underline" href="./">
@@ -114,12 +110,12 @@ const Dashboard = () => {
         </div>
       </div>
       {/* Button Container*/}
-      <div className="flex gap-3">
+      <div className="flex flex-col lg:flex-row  gap-3">
         {/* Add Post Button */}
         <Popup
           contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
           trigger={
-            <button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
+            <button className="justify-center bg-white flex w-full lg:w-1/3 p-3 rounded-md border-2 items-center lg:justify-start gap-3">
               <div className="buttonImage text-[#2F80ED] bg-sky-100 flex items-center justify-center h-12 w-12 rounded-full">
                 <UploadFileOutlined />
               </div>
@@ -200,7 +196,7 @@ const Dashboard = () => {
         <Popup
           contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
           trigger={
-            <button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
+            <button className=" justify-center bg-white flex w-full lg:w-1/3 p-3 rounded-md border-2 items-center lg:justify-start gap-3">
               <div className="buttonImage text-[#2f7e1b] bg-green-100 flex items-center justify-center h-12 w-12 rounded-full">
                 <NotificationAddOutlined />
               </div>
@@ -280,7 +276,7 @@ const Dashboard = () => {
         <Popup
           contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
           trigger={
-            <button className="bg-white flex w-[25rem] p-3 rounded-md border-2 items-center justify-start gap-3">
+            <button className=" justify-center bg-white flex w-full lg:w-1/3 p-3 rounded-md border-2 items-center lg:justify-start gap-3">
               <div className="buttonImage text-[#ba1313] bg-red-100 flex items-center justify-center h-12 w-12 rounded-full">
                 <AnnouncementOutlined />
               </div>
@@ -308,7 +304,7 @@ const Dashboard = () => {
                 />
               </div>
               <div className="flex flex-row mx-2 mt-2 mb-4">
-              <h2 className="font-semibold text-l text-white ">To: </h2>
+                <h2 className="font-semibold text-l text-white ">To: </h2>
                 <input
                   type="text"
                   className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
@@ -359,9 +355,9 @@ const Dashboard = () => {
       </div>
 
       {/* Bottom */}
-      <div className="flex flex-[3] py-3 gap-3">
+      <div className="flex flex-1 shrink w-full flex-col lg:flex-row py-3 gap-3">
         {/* Left */}
-        <div className="left-container flex flex-[1.5] flex-col gap-2">
+        <div className="left-container flex flex-1 flex-col gap-2">
           <div className="flex flex-[1.5] flex-col gap-2">
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">What&apos;s New</div>
@@ -381,7 +377,6 @@ const Dashboard = () => {
               <Feed />
             </div>
           </div>
-
 
           {/* Weekly Schedule */}
           <div className="flex flex-[1.5] flex-col gap-2">
@@ -471,7 +466,7 @@ const Dashboard = () => {
             </div>
             {/* Upcoming Interviews Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2 px-4">
-              < Interviews />
+              <Interviews />
             </div>
           </div>
           {/* Birthday */}
@@ -492,20 +487,18 @@ const Dashboard = () => {
                   <ArrowForward className="text-md" />
                 </div>
               </a>
-
             </div>
             {/* {Birthday content} */}
-
 
             {/* Birthday Content */}
             <div className="flex flex-col gap-3 h-fit bg-white rounded-md border-2 py-2">
               <Birthdays />
             </div>
           </div>
-
         </div>
       </div>
-    </div>
+
+      </div>
   );
 };
 export default Dashboard;

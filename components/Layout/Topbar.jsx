@@ -43,7 +43,7 @@ export default function Topbar({ isOpen, handler }) {
 
   const theme = useTheme();
   return (
-    <div className="flex sticky top-0 z-50 ">
+    <div className="flex sticky top-0 z-50 w-full ">
       {/* TopBar */}
       <div className="flex h-16 w-screen bg-[#0B3768] justify-between py-3 px-4 sm:w-screen">
         {/* Extramus Logo White*/}
@@ -53,7 +53,7 @@ export default function Topbar({ isOpen, handler }) {
             edge="start"
             sx={{
               color: "#fff",
-              marginRight: 10,
+
             }}
             onClick={handler}
           >
@@ -92,16 +92,16 @@ export default function Topbar({ isOpen, handler }) {
         {/* Right Side */}
         <div className="flex items-center justify-between text-white gap-3 mr-5">
           <Popup
-            contentStyle={{ borderRadius: "30px", margin: "14px" }}
-            trigger={
-              <button className="cursor-poiner relative scale-100 hover:scale-125">
-                <NotificationsNoneOutlined />
-                <span className="absolute rounded-full bg-red-600 w-[15px] h-[15px] top-[-1px] right-[-1px] flex items-center justify-center text-xs">
+              contentStyle={{ borderRadius: "30px", margin: "14px" }}
+              trigger={
+                <button className="cursor-poiner relative scale-100 hover:scale-125">
+                  <NotificationsNoneOutlined />
+                  <span className="absolute rounded-full bg-red-600 w-[15px] h-[15px] top-[-1px] right-[-1px] flex items-center justify-center text-xs">
                   2
                 </span>
-              </button>
-            }
-            position="bottom center"
+                </button>
+              }
+              position="bottom center"
           >
             <div className="">
               {/* <h2 className="border-4 rounded-xl text-black font-bold text-xl bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-gray-50 text-semibold p-2">Notifications:</h2> */}
@@ -117,13 +117,13 @@ export default function Topbar({ isOpen, handler }) {
           </Link>
 
           <Popup
-            contentStyle={{ marginTop: "10px" }}
-            trigger={
-              <button>
-                <ArrowDropDown className="cursor-pointer text-4xl" />
-              </button>
-            }
-            position="bottom center"
+              contentStyle={{ marginTop: "10px" }}
+              trigger={
+                <button>
+                  <ArrowDropDown className="cursor-pointer text-4xl" />
+                </button>
+              }
+              position="bottom center"
           >
             <div className="bg-[#0b3768] font-semibold rounded-md p-2 text-white transition ease-in-out delay-150 hover:text-[#0b3768] hover:bg-gray-100 hover:font-bold hover:-translate-y-0.5 hover:scale-90 hover: duration-200 ...">
               <button onClick={logoutHandler}>Log Out</button>
