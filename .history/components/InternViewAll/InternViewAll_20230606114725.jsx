@@ -25,6 +25,10 @@ import EditDocumentsModal from "../Modal/EditDocumentsModal";
         : title === "Language Teaching Department"
         ?(statusColor = " bg-orange-400 ")
         : (statusColor = " bg-gray-400 ")
+        ?(statusColor = " bg-gray-400 ")
+        : (statusColor = " bg-gray-400 ");
+        
+        
   
       let result =
         "flex flex-col w-full py-2 px-6 gap-2  border items-center rounded-md " +

@@ -77,15 +77,22 @@ const Feed = () => {
   
 
 
-  const handleDelete = (id) => {
-    const updatedData = data.map((item) => {
-      if (item.id === id) {
-        return { ...item, content: '' }; // Clear the content of the item
-      }
-      return item;
-    });
-    setData(updatedData);
+  const handleDelete = async (id) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      await axios.delete(`/api/whatsNew/${id}`, config);
+      const { data } = await axios.get(`/api/whatsNew`, { params: { token: token } }, config);
+      setData(data);
+    } catch (e) {
+      console.error(e);
+    }
   };
+
+  
   
 
   

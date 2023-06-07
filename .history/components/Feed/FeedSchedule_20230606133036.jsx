@@ -61,14 +61,14 @@ const FeedSchedule = () => {
     confirmAlert({
       title: <strong>Schedule</strong>,
       message: (
-        <div className="h-96 overflow-y-scroll">
+        <div className="">
           <div>
             <h3>Morning shift from 8:00 to 13:00:</h3>
             {morningDepartments.map((eachDepartmentName) => (
               <div key={eachDepartmentName}>
                 <br />
                 <br />
-                <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
+                {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
                 {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
                   <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                     {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
@@ -84,7 +84,7 @@ const FeedSchedule = () => {
               <div key={eachDepartmentName}>
                 <br />
                 <br />
-                <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
+                {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
                 {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
                   <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                     {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
@@ -116,15 +116,15 @@ const FeedSchedule = () => {
       </div>
       <div className="flex flex-[3] flex-col gap-2 p-2">
         <div className="text-sm font-semibold text-center">Schedule for this week</div>
-        <div className="text-xs font-light h-72">
-          <div className="flex justify-center gap-8 my-1">
+        <div className="text-xs font-light ">
+          <div className="flex justify-center gap-4 my-1">
             <div>
               <h3>Morning Shift:</h3>
               {morningDepartments.map((eachDepartmentName) => (
                 <div key={eachDepartmentName}>
                   <br />
                   <br />
-                  <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
+                  {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
                   {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
                     <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                       {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
@@ -142,7 +142,7 @@ const FeedSchedule = () => {
                 <div key={eachDepartmentName}>
                   <br />
                   <br />
-                  <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
+                  {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
                   {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
                     <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                       {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}

@@ -73,7 +73,6 @@ const WhatsNewViewAll = () => {
               <button onClick={() => handleDelete(whatsNew.id)} className="ml-2 self-start">
                 <DeleteIcon />
               </button>
-
               </div>
             </div>
           </div>

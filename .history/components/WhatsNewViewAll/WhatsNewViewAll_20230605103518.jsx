@@ -69,12 +69,9 @@ const WhatsNewViewAll = () => {
               <div className="flex h-fit text-sm font-semibold underline cursor-pointer">
                 Read More
               </div>
-              <div>
               <button onClick={() => handleDelete(whatsNew.id)} className="ml-2 self-start">
                 <DeleteIcon />
               </button>
-
-              </div>
             </div>
           </div>
         </div>

@@ -69,7 +69,7 @@ const FeedSchedule = () => {
                 <br />
                 <br />
                 <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
-                {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
+                {weeklySchedule[eachDepartmentName].map((eachIntern) => (
                   <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                     {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
                   </p>
@@ -85,7 +85,7 @@ const FeedSchedule = () => {
                 <br />
                 <br />
                 <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
-                {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
+                {weeklySchedule[eachDepartmentName].map((eachIntern) => (
                   <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                     {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
                   </p>
@@ -125,7 +125,7 @@ const FeedSchedule = () => {
                   <br />
                   <br />
                   <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
-                  {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
+                  {weeklySchedule[eachDepartmentName].map((eachIntern) => (
                     <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                       {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
                     </p>
@@ -143,7 +143,7 @@ const FeedSchedule = () => {
                   <br />
                   <br />
                   <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
-                  {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
+                  {weeklySchedule[eachDepartmentName].map((eachIntern) => (
                     <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                       {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
                     </p>
