@@ -97,13 +97,13 @@ const Feed = () => {
               <div>{whatsNew.postedBy}</div>
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-2 p-2">
-            <div className="text-sm font-semibold">{whatsNew.title}</div>
-            <div className="text-xs font-light">{whatsNew.title}</div>
+          <div className="flex w-5 flex-1 flex-col gap-2 p-2  ">
+            <div className="text-sm font-semibold  truncate  text-ellipsis">{whatsNew.title}</div>
+            <div className="text-xs font-light  truncate  text-ellipsis">{whatsNew.paragraph}</div>
           </div>
           <div className="flex items-center justify-between p-2">
             <button onClick={() => read(whatsNew)} className="flex items-center p-2">
-              <div className="text-sm font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300">
+              <div className="text-sm truncate  font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300">
                 Read More
              </div>
             </button>
