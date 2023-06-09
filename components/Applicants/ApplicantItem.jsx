@@ -14,6 +14,7 @@ import AcceptAplcntModal from "../../components/Modal/AcceptAplcntModal.jsx";
 import RejectModal from "../../components/Modal/RejectModal";
 import { Box } from "@mui/system";
 import { Input } from "postcss";
+import Link from "next/link";
 
 //start: Funtion that renders individual applicant rows
 export const ApplicantItem = ({ student }) => {
@@ -198,6 +199,16 @@ export const ApplicantItem = ({ student }) => {
                       setRejectModal={setRejectModal}
                     />
                   )}
+                </div>
+                <div className="cursor-pointer py-1">
+                  <Button
+                      size="small"
+                      className="text-sm font-medium border-solid border-white text-white bg-[#0B3768] hover:bg-[#0b37682b] hover:text-[#0B3768]"
+                      type="submit"
+                      onClick={handleSaveDoneStatus}
+                  >
+                    <Link href={""}>Edit</Link>
+                  </Button>
                 </div>
               </div>
             )}
