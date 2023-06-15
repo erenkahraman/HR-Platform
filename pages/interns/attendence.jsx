@@ -46,6 +46,7 @@ function Attendence() {
 
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
+  console.log(filteredData)
 
   const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
   const [updatedInterns, setUpdatedInterns] = useState([])
@@ -322,6 +323,7 @@ function Attendence() {
 
   return (
     <section className="relative w-full">
+
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
@@ -501,6 +503,7 @@ function Attendence() {
                 ) : (
                   filteredData.map((student) => (
                     <tr key={student.intern._id}>
+
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">
                           {" "}
@@ -550,44 +553,46 @@ function Attendence() {
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.present.count}</div>
+                          <div>{student.intern.attendance.present.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.late.count}</div>
+
+                          <div>{student.intern.attendance.late.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.coveredDay.count}</div>
+                          <div>{student.intern.attendance.coveredDay.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.dayOff.count}</div>
+                          <div>{student.intern.attendance.dayOff.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {student.intern.attendance.excusedLeave.count}
+                            {student.intern.attendance.excusedLeave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
                           </div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.sick.count}</div>
+                          <div>{student.intern.attendance.sick.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {student.intern.attendance.unexcusedleave.count}
+                            {student.intern.attendance.unexcusedleave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
                           </div>
                         </div>
                       </td>
