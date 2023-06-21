@@ -38,28 +38,25 @@ const Feed = () => {
     asyncRequest();
   }, []);
 
-  const read = () => {
+  const read = (item) => {
     confirmAlert({
       title: <strong>What's New</strong>,
-      message: 
+      message:
         <div className="h-96 overflow-y-scroll ">
           <p>
-            <br />
-            <br />
+
             <div>
-              {data.map((item) => (
-                <div>
-                  <br />
-                  <br />
-                  <div className="text-sm font-semibold">{formatDate(item.date)}</div>
-                  <div className="text-xs font-light">
-                    <div>posted by</div>
-                    <div>{item.postedBy}</div>
+                  <div className={"flex flex-col"}>
+                    <div className={"flex flex-row justify-between mb-10"}>
+                      <div className="text-sm font-semibold">{formatDate(item.date)}</div>
+                      <div className="text-xs font-light flex flex-col">
+                        <div>posted by</div>
+                        <div className={"text-end"}>{item.postedBy}</div>
+                      </div>
+                    </div>
+                    <div className="text-sm font-semibold">{item.title}</div>
+                    <div className="text-xs font-light">{item.paragraph}</div>
                   </div>
-                  <div className="text-sm font-semibold">{item.title}</div>
-                  <div className="text-xs font-light">{item.content}</div>
-                </div>
-              ))}
             </div>
           </p>
         </div>,
@@ -71,10 +68,10 @@ const Feed = () => {
       ],
     });
   };
-  
-  
 
-  
+
+
+
 
 
   const handleDelete = (id) => {
@@ -86,9 +83,9 @@ const Feed = () => {
     });
     setData(updatedData);
   };
-  
 
-  
+
+
   return (
     <div>
       {data.slice(data.length - 3).map((whatsNew) => (
@@ -100,13 +97,13 @@ const Feed = () => {
               <div>{whatsNew.postedBy}</div>
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-2 p-2">
-            <div className="text-sm font-semibold">{whatsNew.title}</div>
-            <div className="text-xs font-light">{whatsNew.title}</div>
+          <div className="flex w-5 flex-1 flex-col gap-2 p-2  ">
+            <div className="text-sm font-semibold  truncate  text-ellipsis">{whatsNew.title}</div>
+            <div className="text-xs font-light  truncate  text-ellipsis">{whatsNew.paragraph}</div>
           </div>
           <div className="flex items-center justify-between p-2">
-            <button onClick={() => read(whatsNew.content)} className="flex items-center p-2">
-              <div className="text-sm font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300">
+            <button onClick={() => read(whatsNew)} className="flex items-center p-2">
+              <div className="text-sm truncate  font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300">
                 Read More
              </div>
             </button>
