@@ -22,7 +22,8 @@ function Interviews() {
         );
         // Sort the interviews by date in ascending order
         const sortedInterviews = data.sort((a, b) => new Date(a.applicant.hrInterviewDate) - new Date(b.applicant.hrInterviewDate));
-        setUpcomingInterviews(sortedInterviews.slice(0, 5)); // Limit the interviews to 5
+        setUpcomingInterviews(sortedInterviews);
+        setData(filteredData.slice(0, 5));
       } catch (e) {
         console.error(e);
       }

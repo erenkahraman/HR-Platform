@@ -127,7 +127,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="fixed  sm:h-screen  text-gray-400">
+    <div className="  sm:h-screen  text-gray-400">
       <>
         <div className=" w-full sm:h-screen  mt-4 lg:px-4">
           <ul className=" sm:h-screen text-sm items-center font-light flex flex-wrap justify-center flex-row lg:inline-block">

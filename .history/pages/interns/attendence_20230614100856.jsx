@@ -203,7 +203,6 @@ function Attendence() {
   }
 
 
-
   const save = (intern) => {
     setOpenAlert(false);
     setOpenAlertIncludedDate(false);

@@ -127,16 +127,16 @@ const FeedSchedule = () => {
                   <br />
                   <br />
                   {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                  {/* {weeklySchedule[eachDepartmentName].map((eachIntern) => (
+                  {weeklySchedule[eachDepartmentName].map((eachIntern) => (
                     <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                       {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
                     </p>
-                  ))} */}
+                  ))}
                 </div>
               ))}
             </div>
             <div>
-              <h3>Afternoon Shift:	</h3>
+              <h3>Afternoon Shift:</h3>
               {afternoonDepartments.map((eachDepartmentName) => (
                 <div key={eachDepartmentName}>
                   <br />

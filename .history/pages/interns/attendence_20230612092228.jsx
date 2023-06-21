@@ -44,7 +44,6 @@ function Attendence() {
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
   
-  
 
 
   const csvLinkElement = useRef();
@@ -201,7 +200,6 @@ function Attendence() {
     }, 1000);
 
   }
-
 
 
   const save = (intern) => {

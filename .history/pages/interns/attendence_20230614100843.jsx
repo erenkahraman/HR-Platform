@@ -43,7 +43,13 @@ function Attendence() {
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [tableData, setTableData] = useState([]);
+
   
+
+
   
 
 
@@ -75,6 +81,16 @@ function Attendence() {
     "Unexcused Leave",
     "Action",
   ];
+
+  const handleCurrentMonthDateRange = () => {
+    const startDate = new Date(currentYear, currentMonth, 1);
+    const endDate = new Date(currentYear, currentMonth + 1, 0);
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const monthDateRange = `${formattedStartDate} - ${formattedEndDate}`;
+    setDateRange(monthDateRange);
+  };
+  
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -126,6 +142,7 @@ function Attendence() {
           config
         );
         setData(data);
+        setTableData(data);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -154,6 +171,16 @@ function Attendence() {
     listHeaders: listHeaders,
     filename: "Extramus Attendance List",
   };
+
+  const refreshTable = () => {
+    const refreshedData = tableData.map(row => {
+      const updatedRow = { ...row };
+      updatedRow.number = 0; // Assuming "number" is the key for the field you want to set to 0
+      return updatedRow;
+    });
+    setTableData(refreshedData);
+  };
+
 
   const handleExportJsonDataToCsv = () => {
 
@@ -201,7 +228,6 @@ function Attendence() {
     }, 1000);
 
   }
-
 
 
   const save = (intern) => {
@@ -384,7 +410,15 @@ function Attendence() {
                 Export to CSV
               </Button>
               <CSVLink ref={csvLinkElement} data={allStudentsAttendanceInfo}></CSVLink>
-
+              <Button
+              size="medium"
+              color="primary"
+              variant="contained"
+              sx={{ borderRadius: 2 }}
+              onClick={refreshTable}
+              >
+                Refresh
+              </Button>
               <form>
                 <label
                   htmlFor="default-search"

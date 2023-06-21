@@ -43,9 +43,9 @@ function Attendence() {
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   
-  
-
 
   const csvLinkElement = useRef();
   const csvLinkSingleStudent = useRef();
@@ -75,6 +75,23 @@ function Attendence() {
     "Unexcused Leave",
     "Action",
   ];
+
+  const handleCurrentMonthDateRange = () => {
+    const startDate = new Date(currentYear, currentMonth, 1);
+    const endDate = new Date(currentYear, currentMonth + 1, 0);
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const monthDateRange = `${formattedStartDate} - ${formattedEndDate}`;
+    setDateRange(monthDateRange);
+  };
+
+  const formatDate = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+  
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -115,6 +132,7 @@ function Attendence() {
     setLoading(true);
     const asyncRequest = async () => {
       try {
+        
         const config = {
           headers: {
             "Content-Type": "application/json",
@@ -201,7 +219,6 @@ function Attendence() {
     }, 1000);
 
   }
-
 
 
   const save = (intern) => {

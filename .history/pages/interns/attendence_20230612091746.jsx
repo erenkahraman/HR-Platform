@@ -41,11 +41,10 @@ function Attendence() {
   const [editAttendanceModel, setAttendanceEditModel] = useState(false);
   const [dateIncluded, setDateIncluded] = useState(false);
   const token = cookie.get("token");
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
-  
-  
-
 
   const csvLinkElement = useRef();
   const csvLinkSingleStudent = useRef();
@@ -201,7 +200,6 @@ function Attendence() {
     }, 1000);
 
   }
-
 
 
   const save = (intern) => {
@@ -366,7 +364,7 @@ function Attendence() {
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white flex-col md:flex-row">
             <div className="flex flex-wrap items-center">
               <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-                <h3 className="font-semibold text-2xl">Intern Attendance ({dateRange})</h3>
+                <h3 className="font-semibold text-2xl">Intern Attendance</h3>
               </div>
             </div>
 

@@ -324,7 +324,6 @@ const WeeklySchedule = () => {
                         </div>
                       </td>
                     </tr>
-                    
                     {eachDepartmentName === selectedDepartment && (
                       <>
                         {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (

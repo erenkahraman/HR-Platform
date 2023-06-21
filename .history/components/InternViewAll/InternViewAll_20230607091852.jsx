@@ -24,10 +24,6 @@ import EditDocumentsModal from "../Modal/EditDocumentsModal";
         ?(statusColor = " bg-cyan-400 ")
         : title === "Language Teaching Department"
         ?(statusColor = " bg-orange-400 ")
-        : title === "Business Law"
-        ?(statusColor = " bg-purple-400 ")
-        : title === "Administration"
-        ?(statusColor = " bg-pink-400 ")
         : (statusColor = " bg-gray-400 ")
   
       let result =

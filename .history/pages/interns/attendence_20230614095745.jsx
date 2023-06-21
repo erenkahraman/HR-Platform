@@ -26,6 +26,7 @@ import React, { useRef } from 'react';
 import { Button, Grid } from "@mui/material";
 import { Add, SystemUpdateAlt } from "@mui/icons-material";
 import { format, startOfMonth, endOfMonth } from "date-fns";
+import { ArrowBack, ArrowForward, Today } from "@mui/icons-material";
 
 
 function Attendence() {
@@ -43,9 +44,9 @@ function Attendence() {
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   
-  
-
 
   const csvLinkElement = useRef();
   const csvLinkSingleStudent = useRef();
@@ -75,6 +76,47 @@ function Attendence() {
     "Unexcused Leave",
     "Action",
   ];
+
+  const handleCurrentMonthDateRange = () => {
+    const startDate = new Date(currentYear, currentMonth, 1);
+    const endDate = new Date(currentYear, currentMonth + 1, 0);
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const monthDateRange = `${formattedStartDate} - ${formattedEndDate}`;
+    setDateRange(monthDateRange);
+  };
+
+  const formatDate = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const handlePreviousMonth = () => {
+    const previousMonth = currentMonth - 1;
+    setCurrentMonth(previousMonth);
+    if (previousMonth < 0) {
+      setCurrentMonth(11);
+      setCurrentYear(currentYear - 1);
+    }
+  };
+
+  const handleNextMonth = () => {
+    const nextMonth = currentMonth + 1;
+    setCurrentMonth(nextMonth);
+    if (nextMonth > 11) {
+      setCurrentMonth(0);
+      setCurrentYear(currentYear + 1);
+    }
+  };
+
+  const handleCurrentMonth = () => {
+    setCurrentMonth(new Date().getMonth());
+    setCurrentYear(new Date().getFullYear());
+  };
+
+  
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -115,6 +157,7 @@ function Attendence() {
     setLoading(true);
     const asyncRequest = async () => {
       try {
+        
         const config = {
           headers: {
             "Content-Type": "application/json",
@@ -201,7 +244,6 @@ function Attendence() {
     }, 1000);
 
   }
-
 
 
   const save = (intern) => {
@@ -364,11 +406,23 @@ function Attendence() {
           </form>
           {/* Title Container */}
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white flex-col md:flex-row">
-            <div className="flex flex-wrap items-center">
-              <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-                <h3 className="font-semibold text-2xl">Intern Attendance ({dateRange})</h3>
-              </div>
-            </div>
+  <div className="flex flex-wrap items-center">
+    <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+      <h3 className="font-semibold text-2xl">Intern Attendance ({dateRange})</h3>
+    </div>
+    <div className="flex items-center space-x-2">
+      <IconButton onClick={handlePreviousMonth}>
+        <ArrowBack />
+      </IconButton>
+      <IconButton onClick={handleNextMonth}>
+        <ArrowForward />
+      </IconButton>
+
+      <IconButton onClick={handleCurrentMonth}>
+        <Today />
+      </IconButton>
+    </div>
+  </div>
 
             <div className="flex gap-2 flex-col md:flex-row">
 

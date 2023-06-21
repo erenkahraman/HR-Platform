@@ -68,14 +68,15 @@ const FeedSchedule = () => {
               <div key={eachDepartmentName}>
                 <br />
                 <br />
-                {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                {weeklySchedule[eachDepartmentName].map((eachIntern) => (
+                <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
+                {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
                   <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                     {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
                   </p>
                 ))}
               </div>
             ))}
+            {morningDepartments.length > 3 && <p>... and more</p>}
           </div>
           <div>
             <h3>Afternoon shift from 13:00 to 18:00:</h3>
@@ -83,27 +84,24 @@ const FeedSchedule = () => {
               <div key={eachDepartmentName}>
                 <br />
                 <br />
-                {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                {weeklySchedule[eachDepartmentName].map((eachIntern) => (
+                <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
+                {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
                   <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                     {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
                   </p>
                 ))}
               </div>
             ))}
+            {afternoonDepartments.length > 3 && <p>... and more</p>}
           </div>
         </div>
       ),
       buttons: [
         {
-          label: 'OK',
-          onClick: () => alert('Click Yes')
+          label: "No",
+          onClick: () => alert("Click No"),
         },
-        {
-          label: 'Cancel',
-          onClick: () => alert('Click No')
-        }
-      ]
+      ],
     });
   };
 
@@ -117,7 +115,7 @@ const FeedSchedule = () => {
         </div>
       </div>
       <div className="flex flex-[3] flex-col gap-2 p-2">
-        <div className="text-sm font-semibold">Schedule for this week</div>
+        <div className="text-sm font-semibold text-center">Schedule for this week</div>
         <div className="text-xs font-light h-72">
           <div className="flex justify-center gap-8 my-1">
             <div>
@@ -126,23 +124,33 @@ const FeedSchedule = () => {
                 <div key={eachDepartmentName}>
                   <br />
                   <br />
-                  {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                  {/* {weeklySchedule[eachDepartmentName].map((eachIntern) => (
+                  <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
+                  {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
                     <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
                       {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
                     </p>
-                  ))} */}
+                  ))}
+                  {weeklySchedule[eachDepartmentName].length > 3 && (
+                    <p>... and more</p>
+                  )}
                 </div>
               ))}
             </div>
             <div>
-              <h3>Afternoon Shift:	</h3>
+              <h3>Afternoon Shift:</h3>
               {afternoonDepartments.map((eachDepartmentName) => (
                 <div key={eachDepartmentName}>
                   <br />
                   <br />
-                  {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                  
+                  <p>{eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length} people</p>
+                  {weeklySchedule[eachDepartmentName].slice(0, 3).map((eachIntern) => (
+                    <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
+                      {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
+                    </p>
+                  ))}
+                  {weeklySchedule[eachDepartmentName].length > 3 && (
+                    <p>... and more</p>
+                  )}
                 </div>
               ))}
             </div>

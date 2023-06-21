@@ -43,9 +43,9 @@ function Attendence() {
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   
-  
-
 
   const csvLinkElement = useRef();
   const csvLinkSingleStudent = useRef();
@@ -75,6 +75,48 @@ function Attendence() {
     "Unexcused Leave",
     "Action",
   ];
+
+  const handleCurrentMonthDateRange = () => {
+    const startDate = new Date(currentYear, currentMonth, 1);
+    const endDate = new Date(currentYear, currentMonth + 1, 0);
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const monthDateRange = `${formattedStartDate} - ${formattedEndDate}`;
+    setDateRange(monthDateRange);
+  };
+
+  const formatDate = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const handlePreviousMonth = () => {
+    const previousMonth = currentMonth - 1;
+    setCurrentMonth(previousMonth);
+    if (previousMonth < 0) {
+      setCurrentMonth(11);
+      setCurrentYear(currentYear - 1);
+    }
+  };
+
+  const handleNextMonth = () => {
+    const nextMonth = currentMonth + 1;
+    setCurrentMonth(nextMonth);
+    if (nextMonth > 11) {
+      setCurrentMonth(0);
+      setCurrentYear(currentYear + 1);
+    }
+  };
+
+  const handleCurrentMonth = () => {
+    setCurrentMonth(new Date().getMonth());
+    setCurrentYear(new Date().getFullYear());
+  };
+
+  
+  
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -115,6 +157,7 @@ function Attendence() {
     setLoading(true);
     const asyncRequest = async () => {
       try {
+        
         const config = {
           headers: {
             "Content-Type": "application/json",
@@ -201,7 +244,6 @@ function Attendence() {
     }, 1000);
 
   }
-
 
 
   const save = (intern) => {
