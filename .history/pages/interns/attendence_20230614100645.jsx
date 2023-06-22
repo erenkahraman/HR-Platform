@@ -29,12 +29,10 @@ import { format, startOfMonth, endOfMonth } from "date-fns";
 
 
 function Attendence() {
-  var today = new Date();
-
   //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState(today.toISOString().split('T')[0])
+  const [date, setDate] = useState("today");
   const [status, setStatus] = useState("present");
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
@@ -45,7 +43,13 @@ function Attendence() {
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [tableData, setTableData] = useState([]);
+
   
+
+
   
 
 
@@ -57,7 +61,6 @@ function Attendence() {
 
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
-  console.log(filteredData)
 
   const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
   const [updatedInterns, setUpdatedInterns] = useState([])
@@ -78,6 +81,16 @@ function Attendence() {
     "Unexcused Leave",
     "Action",
   ];
+
+  const handleCurrentMonthDateRange = () => {
+    const startDate = new Date(currentYear, currentMonth, 1);
+    const endDate = new Date(currentYear, currentMonth + 1, 0);
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const monthDateRange = `${formattedStartDate} - ${formattedEndDate}`;
+    setDateRange(monthDateRange);
+  };
+  
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -129,6 +142,7 @@ function Attendence() {
           config
         );
         setData(data);
+        setTableData(data);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -157,6 +171,21 @@ function Attendence() {
     listHeaders: listHeaders,
     filename: "Extramus Attendance List",
   };
+
+  const refreshTable = () => {
+    const refreshedData = tableData.map((row) => ({
+      ...row,
+      present: 0,
+      late: 0,
+      coveredDay: 0,
+      dayOff: 0,
+      excusedLeave: 0,
+      sick: 0,
+      unexcusedLeave: 0,
+    }));
+    setTableData(refreshedData);
+  };
+
 
   const handleExportJsonDataToCsv = () => {
 
@@ -206,7 +235,6 @@ function Attendence() {
   }
 
 
-
   const save = (intern) => {
     setOpenAlert(false);
     setOpenAlertIncludedDate(false);
@@ -246,7 +274,7 @@ function Attendence() {
           ],
         });
         setStatus("present");
-        setDate(today);
+        setDate("today");
       } else {
         setOpenAlert(true);
       }
@@ -329,7 +357,7 @@ function Attendence() {
     );
   if (!data) return <p>No profile data</p>;
 
-
+  var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   var yyyy = today.getFullYear();
@@ -348,7 +376,6 @@ function Attendence() {
 
   return (
     <section className="relative w-full">
-
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
@@ -388,7 +415,14 @@ function Attendence() {
                 Export to CSV
               </Button>
               <CSVLink ref={csvLinkElement} data={allStudentsAttendanceInfo}></CSVLink>
-
+              <Button
+              size="medium"
+              variant="contained"
+              sx={{ borderRadius: 2 }}
+              onClick={refreshTable}
+              >
+                Refresh
+              </Button>
               <form>
                 <label
                   htmlFor="default-search"
@@ -528,7 +562,6 @@ function Attendence() {
                 ) : (
                   filteredData.map((student) => (
                     <tr key={student.intern._id}>
-
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">
                           {" "}
@@ -539,8 +572,7 @@ function Attendence() {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <input
                           type="date"
-                          defaultValue={date}
-                          value={date}
+                          value={today}
                           onChange={(e) => {
                             setDate(e.target.value);
                             console.log(date);
@@ -579,46 +611,44 @@ function Attendence() {
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.present.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{student.intern.attendance.present.count}</div>
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-
-                          <div>{student.intern.attendance.late.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
-
+                          <div>{student.intern.attendance.late.count}</div>
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.coveredDay.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{student.intern.attendance.coveredDay.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.dayOff.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{student.intern.attendance.dayOff.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {student.intern.attendance.excusedLeave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
+                            {student.intern.attendance.excusedLeave.count}
                           </div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.sick.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{student.intern.attendance.sick.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {student.intern.attendance.unexcusedleave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
+                            {student.intern.attendance.unexcusedleave.count}
                           </div>
                         </div>
                       </td>

@@ -113,8 +113,7 @@ export default function Sidebar() {
 
   const sideBarListItem = () => {
     let result =
-      "flex  w-full sm:w-32 items-center px-1 sm:pl-0 py-2 gap-2 hover:text-[#2F80ED] hover:bg-sky-50";
-      
+      "flex items-center px-1 py-2 mt-4 sm:pl-0 text-gray-700 hidden lg:block";
   
     return result;
   };
@@ -127,7 +126,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="fixed  sm:h-screen  text-gray-400">
+    <div className="  sm:h-screen  text-gray-400">
       <>
         <div className=" w-full sm:h-screen  mt-4 lg:px-4">
           <ul className=" sm:h-screen text-sm items-center font-light flex flex-wrap justify-center flex-row lg:inline-block">

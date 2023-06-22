@@ -28,6 +28,7 @@ import EditDocumentsModal from "../Modal/EditDocumentsModal";
         ?(statusColor = " bg-purple-400 ")
         : title === "Administration"
         ?(statusColor = " bg-pink-400 ")
+        
         : (statusColor = " bg-gray-400 ")
   
       let result =

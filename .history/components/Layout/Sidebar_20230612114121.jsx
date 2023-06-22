@@ -127,33 +127,31 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="fixed  sm:h-screen  text-gray-400">
-      <>
-        <div className=" w-full sm:h-screen  mt-4 lg:px-4">
-          <ul className=" sm:h-screen text-sm items-center font-light flex flex-wrap justify-center flex-row lg:inline-block">
-            {Menus.map((menu, index) => (
-              <li key={index}>
-                {menu.isSeperator === undefined ? (
-                  <Link href={menu.href}>
-                    <a
-                      className={
-                        menu.isOn === false
-                          ? sideBarListItem()
-                          : sideBarListItem() + " text-[#2F80ED] bg-sky-50"
-                      }
-                    >
-                      {menu.icon}
-                      <p>{menu.title}</p>
-                    </a>
-                  </Link>
-                ) : (
-                  <a className={sideBarListSeperator()}>{menu.title}</a>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </>
+    <div className="fixed top-0 left-0 h-screen bg-white border-r border-gray-200 z-10" style={{ width: "96px" }}>
+      <div className="mt-4 lg:px-4">
+        <ul className="text-sm items-center font-light flex flex-wrap justify-center flex-row lg:inline-block">
+          {Menus.map((menu, index) => (
+            <li key={index}>
+              {menu.isSeperator === undefined ? (
+                <Link href={menu.href}>
+                  <a
+                    className={
+                      menu.isOn === false
+                        ? sideBarListItem()
+                        : sideBarListItem() + " text-[#2F80ED] bg-sky-50"
+                    }
+                  >
+                    {menu.icon}
+                    <p>{menu.title}</p>
+                  </a>
+                </Link>
+              ) : (
+                <a className={sideBarListSeperator()}>{menu.title}</a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

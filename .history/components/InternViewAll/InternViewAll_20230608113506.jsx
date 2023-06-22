@@ -12,23 +12,23 @@ import EditDocumentsModal from "../Modal/EditDocumentsModal";
     const Border = (title) => {
       let statusColor;
   
-      title === "Human Resource Management"
-        ? (statusColor = " bg-green-400 ")
-        : title === "Project Management"
-        ? (statusColor = " bg-red-400 ")
-        : title === "Business and Data Analyst"
-        ? (statusColor = " bg-blue-400 ")
-        : title === "Marketing"
-        ?(statusColor = " bg-yellow-400 ")
-        : title === "Information Technology"
-        ?(statusColor = " bg-cyan-400 ")
-        : title === "Language Teaching Department"
-        ?(statusColor = " bg-orange-400 ")
-        : title === "Business Law"
-        ?(statusColor = " bg-purple-400 ")
-        : title === "Administration"
-        ?(statusColor = " bg-pink-400 ")
-        : (statusColor = " bg-gray-400 ")
+      // title === "Human Resource Management"
+      //   ? (statusColor = " bg-green-400 ")
+      //   : title === "Project Management"
+      //   ? (statusColor = " bg-red-400 ")
+      //   : title === "Business and Data Analyst"
+      //   ? (statusColor = " bg-blue-400 ")
+      //   : title === "Marketing"
+      //   ?(statusColor = " bg-yellow-400 ")
+      //   : title === "Information Technology"
+      //   ?(statusColor = " bg-cyan-400 ")
+      //   : title === "Language Teaching Department"
+      //   ?(statusColor = " bg-orange-400 ")
+      //   : title === "Business Law"
+      //   ?(statusColor = " bg-purple-400 ")
+      //   : title === "Administration"
+      //   ?(statusColor = " bg-pink-400 ")
+      //   : (statusColor = " bg-gray-400 ")
   
       let result =
         "flex flex-col w-full py-2 px-6 gap-2  border items-center rounded-md " +
