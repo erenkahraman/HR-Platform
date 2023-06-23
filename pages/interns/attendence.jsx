@@ -29,10 +29,12 @@ import { format, startOfMonth, endOfMonth } from "date-fns";
 
 
 function Attendence() {
+  var today = new Date();
+
   //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState("today");
+  const [date, setDate] = useState(today.toISOString().split('T')[0])
   const [status, setStatus] = useState("present");
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
@@ -244,7 +246,7 @@ function Attendence() {
           ],
         });
         setStatus("present");
-        setDate("today");
+        setDate(today);
       } else {
         setOpenAlert(true);
       }
@@ -327,7 +329,7 @@ function Attendence() {
     );
   if (!data) return <p>No profile data</p>;
 
-  var today = new Date();
+
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   var yyyy = today.getFullYear();
@@ -537,7 +539,8 @@ function Attendence() {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <input
                           type="date"
-                          value={today}
+                          defaultValue={date}
+                          value={date}
                           onChange={(e) => {
                             setDate(e.target.value);
                             console.log(date);
