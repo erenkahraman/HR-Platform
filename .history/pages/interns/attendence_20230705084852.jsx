@@ -22,12 +22,19 @@ import cookie from "js-cookie";
 import useTableSearch from "../../hooks/useTableSearch";
 import InfoIcon from '@mui/icons-material/Info';
 import { CSVLink } from "react-csv";
+import React, { useRef } from 'react';
+import { Button, Grid } from "@mui/material";
+import { Add, SystemUpdateAlt } from "@mui/icons-material";
+import { format, startOfMonth, endOfMonth } from "date-fns";
+
 
 function Attendence() {
+  var today = new Date();
+
   //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState("today");
+  const [date, setDate] = useState(today.toISOString().split('T')[0])
   const [status, setStatus] = useState("present");
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
@@ -36,15 +43,41 @@ function Attendence() {
   const [editAttendanceModel, setAttendanceEditModel] = useState(false);
   const [dateIncluded, setDateIncluded] = useState(false);
   const token = cookie.get("token");
+  const [dateRange, setDateRange] = useState("");
+  const currentDate = new Date();
+  
+  
+
 
   const csvLinkElement = useRef();
+  const csvLinkSingleStudent = useRef();
+
+
+    
 
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
+  console.log(filteredData)
 
   const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
   const [updatedInterns, setUpdatedInterns] = useState([])
 
+  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] = useState([])
+  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] = useState([])
+
+  const listHeaders = [
+    "Full Name",
+    "Department",
+    "Position",
+    "Present",
+    "Late",
+    "Covered Day",
+    "Day Off",
+    "Excused Leave",
+    "Sick",
+    "Unexcused Leave",
+    "Action",
+  ];
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -91,19 +124,32 @@ function Attendence() {
           },
         };
         const { data } = await axios.get(
-          `/api/intern`,
+          "/api/intern",
           { params: { token: token } },
           config
         );
         setData(data);
         setLoading(false);
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        console.error(error);
         setLoading(false);
       }
     };
     asyncRequest();
   }, []);
+
+  useEffect(() => {
+    const handleCurrentMonthDateRange = () => {
+      const firstDayOfMonth = startOfMonth(currentDate);
+      const lastDayOfMonth = endOfMonth(currentDate);
+      const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
+      const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
+      const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
+      setDateRange(monthDateRange);
+    };
+
+    handleCurrentMonthDateRange();
+  }, [currentDate]);
 
   const csvReport = {
     separator: "  ",
@@ -114,8 +160,53 @@ function Attendence() {
 
   const handleExportJsonDataToCsv = () => {
 
-    csvLinkElement.current.link.click()
+    let studentsAttendanceInfo = []
+    data.forEach((eachStudent) => {
+
+      const attendanceInfo = getAttendanceInfoOfStudent(eachStudent)
+      studentsAttendanceInfo.push(attendanceInfo)
+    })
+
+    setAllStudentsAttendanceInfo(studentsAttendanceInfo)
+
+    const downloadedCsvFile = setTimeout(function () {
+      csvLinkElement.current.link.click()
+    }, 1000);
   }
+
+
+  const getAttendanceInfoOfStudent = (student) => {
+
+    const attendanceInfo = {
+      "First Name": student.firstName,
+      "Last Name": student.lastName,
+      "Covered Day": student.intern.attendance.coveredDay.count,
+      "Day Off": student.intern.attendance.dayOff.count,
+      "Excused Leave": student.intern.attendance.excusedLeave.count,
+      "Late": student.intern.attendance.late.count,
+      "Present": student.intern.attendance.present.count,
+      "Sick": student.intern.attendance.sick.count,
+      "Unexcused Leave": student.intern.attendance.unexcusedleave.count,
+    }
+    return attendanceInfo
+  }
+  const handleExportSingleInternAttendanceToCsv = (student) => {
+
+    if (event.target.tagName === "A") {
+      return
+    }
+
+    const attendanceInfo = getAttendanceInfoOfStudent(student)
+
+    setSingleStudentAttendanceInfo([attendanceInfo])
+
+    const downloadedCsvFile = setTimeout(function () {
+      csvLinkSingleStudent.current.link.click()
+    }, 1000);
+
+  }
+
+
 
   const save = (intern) => {
     setOpenAlert(false);
@@ -156,7 +247,7 @@ function Attendence() {
           ],
         });
         setStatus("present");
-        setDate("today");
+        setDate(today);
       } else {
         setOpenAlert(true);
       }
@@ -239,7 +330,7 @@ function Attendence() {
     );
   if (!data) return <p>No profile data</p>;
 
-  var today = new Date();
+
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   var yyyy = today.getFullYear();
@@ -258,6 +349,7 @@ function Attendence() {
 
   return (
     <section className="relative w-full">
+
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
@@ -276,20 +368,28 @@ function Attendence() {
 
           </form>
           {/* Title Container */}
-          <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white">
+          <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white flex-col md:flex-row">
             <div className="flex flex-wrap items-center">
               <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-                <h3 className="font-semibold text-2xl">Intern Attendance</h3>
+                <h3 className="font-semibold text-2xl">Intern Attendance ({dateRange})</h3>
               </div>
             </div>
 
-            <div className="flex gap-2">
-              {/* <Link href="/interns/monthAttendance">
-                <span className="hover:bg-green-400 group flex items-center rounded-md bg-green-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-                  <EventAvailableIconf className="text-m py-1" />
-                  Month Attendance
-                </span>
-              </Link> */}
+            <div className="flex gap-2 flex-col md:flex-row">
+
+              <Button
+                size="medium"
+                color="primary"
+                startIcon={<SystemUpdateAlt className="text-sm" />}
+                variant="contained"
+                sx={{ borderRadius: 2 }}
+                href="#"
+                onClick={handleExportJsonDataToCsv}
+              >
+                Export to CSV
+              </Button>
+              <CSVLink ref={csvLinkElement} data={allStudentsAttendanceInfo}></CSVLink>
+
               <form>
                 <label
                   htmlFor="default-search"
@@ -330,7 +430,7 @@ function Attendence() {
                 <button
                   onClick={saveAll}
                   title="Save"
-                  className="hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
+                  className=" hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
                   <CheckCircle className="text-m py-1 "
                   />
                   Save All
@@ -429,6 +529,7 @@ function Attendence() {
                 ) : (
                   filteredData.map((student) => (
                     <tr key={student.intern._id}>
+
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">
                           {" "}
@@ -439,7 +540,8 @@ function Attendence() {
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <input
                           type="date"
-                          value={today}
+                          defaultValue={date}
+                          value={date}
                           onChange={(e) => {
                             setDate(e.target.value);
                             console.log(date);
@@ -478,44 +580,46 @@ function Attendence() {
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.present.count}</div>
+                          <div>{student.intern.attendance.present.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.late.count}</div>
+
+                          <div>{student.intern.attendance.late.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.coveredDay.count}</div>
+                          <div>{student.intern.attendance.coveredDay.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.dayOff.count}</div>
+                          <div>{student.intern.attendance.dayOff.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {student.intern.attendance.excusedLeave.count}
+                            {student.intern.attendance.excusedLeave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
                           </div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.sick.count}</div>
+                          <div>{student.intern.attendance.sick.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {student.intern.attendance.unexcusedleave.count}
+                            {student.intern.attendance.unexcusedleave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
                           </div>
                         </div>
                       </td>
@@ -545,6 +649,10 @@ function Attendence() {
                                   setModel={setAttendanceEditModel}
                                 />
                               )}
+                            </button>
+                            <button title="Export to CSV" onClick={() => handleExportSingleInternAttendanceToCsv(student)}>
+                              <SystemUpdateAlt className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
+                              <CSVLink ref={csvLinkSingleStudent} data={singleStudentAttendanceInfo}></CSVLink>
                             </button>
                           </div>
                         </div>

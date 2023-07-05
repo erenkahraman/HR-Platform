@@ -174,6 +174,7 @@ function Attendence() {
     }, 1000);
   }
 
+
   const getAttendanceInfoOfStudent = (student) => {
 
     const attendanceInfo = {
