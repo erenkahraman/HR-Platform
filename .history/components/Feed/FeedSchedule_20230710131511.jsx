@@ -91,7 +91,7 @@ const FeedSchedule = () => {
   };
 
   return (
-    <div className="flex flex-wrap m-2 py-4">
+    <div className="flex-wrap m-2 py-4">
       <div className="flex flex-[1] flex-col gap-2 p-2">
         <div className="text-sm font-semibold">10 August 2022</div>
         <div className="text-xs font-light">
