@@ -4,23 +4,22 @@ const weeklyScheduleSchema = mongoose.Schema({
   Group: { type: String, required: true },
   Interns: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }],
   Schedule: {
-    monday: { type: String, 
-              enum:['Morning', 'Afternoon'],
-              required: true},
-    tuesday: { type: String, 
+    monday:  { shift: { type: String,
       enum:['Morning', 'Afternoon'],
-      required: true},
-    wednesday: { type: String, 
+      required: true} },
+    tuesday:  { shift: { type: String,
       enum:['Morning', 'Afternoon'],
-      required: true},
-    thursday: { type: String, 
+      required: true} },
+    wednesday:  { shift: { type: String,
       enum:['Morning', 'Afternoon'],
-      required: true},
-    friday: { type: String, 
+      required: true} },
+    thursday:  { shift: { type: String,
       enum:['Morning', 'Afternoon'],
-      required: true},
-  },
-});
+      required: true} },
+    friday: { shift: { type: String,
+      enum:['Morning', 'Afternoon'],
+      required: true} } },
+  });
 
 export default mongoose.models.WeeklySchedule ||
   mongoose.model("WeeklySchedule", weeklyScheduleSchema);
