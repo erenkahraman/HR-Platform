@@ -1,5 +1,6 @@
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+// import countInternsInDepartments from 'pages/weeklySchedule/index.jsx';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import cookie from "js-cookie";

@@ -142,7 +142,7 @@ const WeeklySchedule = () => {
 
   }
 
-  const handleMoveToMorning = (internToBeMoved) => {
+  const handleMoveToMorning = (internToBeMoved, internIndex) => {
 
     const isInternAlreadyInMorningShift = morningShiftInterns.find((intern) => intern._id === internToBeMoved._id)
     if (isInternAlreadyInMorningShift) {
@@ -153,9 +153,13 @@ const WeeklySchedule = () => {
     setAfternoonShiftInterns(updatedAfternoonShiftInterns)
 
     setMorningShiftInterns([...morningShiftInterns, internToBeMoved])
+
+    const updatedWeeklySchedule ={ ...weeklySchedule};
+    updatedWeeklySchedule[selectedDepartment].splice(internIndex,1);
+    setWeeklySchedule(updatedWeeklySchedule)
   }
 
-  const handleMoveToAfternoon = (internToBeMoved) => {
+  const handleMoveToAfternoon = (internToBeMoved, internIndex) => {
 
     const isInternAlreadyInAfternoonShift = afternoonShiftInterns.find((intern) => intern._id === internToBeMoved._id)
     if (isInternAlreadyInAfternoonShift) {
@@ -166,6 +170,11 @@ const WeeklySchedule = () => {
     setMorningShiftInterns(updatedMorningShiftInterns)
 
     setAfternoonShiftInterns([...afternoonShiftInterns, internToBeMoved])
+
+    const updatedWeeklySchedule ={ ...weeklySchedule};
+    updatedWeeklySchedule[selectedDepartment].splice(internIndex,1);
+    setWeeklySchedule(updatedWeeklySchedule)
+
   }
 
   const swapShift = (internToBeSwapped, shiftTime) => {
@@ -180,6 +189,23 @@ const WeeklySchedule = () => {
       console.log("there is something wrong i can feel it")
     }
   }
+
+//function to count the number of interns in each department
+  const countInternsInDepartments = (interns) => {
+    const departmentCounts = {};
+  
+    interns.forEach((eachIntern) => {
+      const departmentName = eachIntern.department;
+      if (departmentCounts[departmentName]) {
+        departmentCounts[departmentName]++;
+      } else {
+        departmentCounts[departmentName] = 1;
+      }
+    });
+  
+    return departmentCounts;
+  };
+  
 
   const getAssignedInternInfo = (intern, shiftTime) => {
 
@@ -345,7 +371,7 @@ const WeeklySchedule = () => {
                                     padding: "10px 20px",
                                     margin: "2px 40px",
                                   }}
-                                  onClick={() => handleMoveToMorning(eachIntern)}
+                                  onClick={() => handleMoveToMorning(eachIntern, i)}
                                 >
                                   Move to Morning
                                 </Button>
@@ -358,7 +384,7 @@ const WeeklySchedule = () => {
                                     padding: "8px 20px",
                                     margin: "0px 5px",
                                   }}
-                                  onClick={() => handleMoveToAfternoon(eachIntern)}
+                                  onClick={() => handleMoveToAfternoon(eachIntern, i)}
                                 >
                                   Move to Afternoon
                                 </Button>
@@ -385,7 +411,7 @@ const WeeklySchedule = () => {
             borderRadius: "24px",
           }}
         >
-          <h2 className="text-center mb-4">Morning Shift</h2>
+          <h2 className="text-center mb-4"><b>Morning Shift</b></h2>
           <div className="flex justify-center">
             {departmentNames.map((eachDepartmentName) => (
               <table
@@ -403,7 +429,7 @@ const WeeklySchedule = () => {
               >
                 <thead>
                   <tr>
-                    <th>{eachDepartmentName}</th>
+                  <th>{eachDepartmentName} ({countInternsInDepartments(morningShiftInterns)[eachDepartmentName] || 0})</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -436,7 +462,7 @@ const WeeklySchedule = () => {
             borderRadius: "24px",
           }}
         >
-          <h2 className="text-center mb-4">Afternoon Shift</h2>
+          <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
           <div className="flex justify-center">
             {departmentNames.map((eachDepartmentName) => (
               <table
@@ -454,7 +480,7 @@ const WeeklySchedule = () => {
               >
                 <thead>
                   <tr>
-                    <th>{eachDepartmentName}</th>
+                  <th>{eachDepartmentName} ({countInternsInDepartments(afternoonShiftInterns)[eachDepartmentName] || 0})</th>
                   </tr>
                 </thead>
                 <tbody>

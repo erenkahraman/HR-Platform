@@ -69,9 +69,7 @@ export default async function handler(req, res) {
             Group: req.body.params.scheduleGroup.Group,
             Schedule: {
               monday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.monday.startTime,
-                endTime: req.body.params.scheduleGroup.Schedule.monday.endTime,
+                
               },
               tuesday: {
                 startTime:
