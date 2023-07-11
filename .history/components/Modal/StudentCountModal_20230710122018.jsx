@@ -23,9 +23,9 @@ const departmanColor = (department) => {
     case "UEX Designing":
       return "text-cyan-400";
     case "Administration":
-      return "text-yellow-900";
+      return "text-red-400";
     case "Business Lawyer ":
-      return "text-orange-100";
+      return "text-white-400";
     default:
       return "";
   }

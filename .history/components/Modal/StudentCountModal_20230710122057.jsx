@@ -25,7 +25,7 @@ const departmanColor = (department) => {
     case "Administration":
       return "text-yellow-900";
     case "Business Lawyer ":
-      return "text-orange-100";
+      return "text-brown-400";
     default:
       return "";
   }

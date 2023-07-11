@@ -20,12 +20,6 @@ const departmanColor = (department) => {
       return "text-purple-400";
     case "Language Teaching":
       return "text-yellow-400";
-    case "UEX Designing":
-      return "text-cyan-400";
-    case "Administration":
-      return "text-yellow-900";
-    case "Business Lawyer ":
-      return "text-orange-100";
     default:
       return "";
   }

@@ -8,7 +8,7 @@ import cookie from "js-cookie";
 
 const departmanColor = (department) => {
   switch (department) {
-    case "Information Technologies":
+    case "The Information And Communications Technology":
       return "text-blue-400";
     case "Human Resources":
       return "text-green-400";
@@ -20,12 +20,6 @@ const departmanColor = (department) => {
       return "text-purple-400";
     case "Language Teaching":
       return "text-yellow-400";
-    case "UEX Designing":
-      return "text-cyan-400";
-    case "Administration":
-      return "text-yellow-900";
-    case "Business Lawyer ":
-      return "text-orange-100";
     default:
       return "";
   }
@@ -80,8 +74,8 @@ const StudentCountModal = ({ setScModal, type }) => {
             <MdOutlineCancel />
           </button>
           <div className="flex flex-row gap-16 text-5xl  bg-white  mb-8 ml-4 mr-4">
-            {departments.map((department) => (
-              <div className="flex flex-row ml-5">
+            {departments.map((department, index) => (
+              <div className="flex flex-row ml-5" key= {department.id || index }>
                 <div className="text-red-400 ">
                   <BsPeopleFill
                     className={`text-2xl ${departmanColor(

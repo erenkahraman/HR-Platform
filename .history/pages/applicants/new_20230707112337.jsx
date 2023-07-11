@@ -99,7 +99,7 @@ export default function ApplicantsNew() {
           config
         );
         setDbDepartment(data);
-        const dprtmnt = student.student.applicant.department;
+        const dprtmnt = student.student.intern.applicant.department;
 
         if (dprtmnt) {
           console.log("hooo");
@@ -260,19 +260,9 @@ export default function ApplicantsNew() {
   
 
   const updateStudent = async (data) => {
-    debugger;
     setOpen(true);
     const student = data.student;
     const applicant = data.student.applicant;
-    const intern = data.student.intern;
-
-    intern.department = applicant.department;
-    intern.position = applicant.position;
-    intern.startDate = applicant.startDate;
-    intern.endDate = applicant.endDate;
-
-
-    intern.token = token;
     student.token = token;
     applicant.token = token;
     try {
@@ -283,14 +273,6 @@ export default function ApplicantsNew() {
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify(student),
-      });
-      await fetch(`/api/intern/${intern._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify(intern),
       });
       await fetch(`/api/applicant/${applicant._id}`, {
         method: "PUT",
@@ -305,11 +287,7 @@ export default function ApplicantsNew() {
     }
     setAlertOpen(true);
     setOpen(false);
-    router.push("/interns/InternsList");
   };
-  
-  
-  
 
   return (
     <div>

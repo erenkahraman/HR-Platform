@@ -85,9 +85,9 @@ export default function InternList() {
                   <h3 className="font-semibold text-2xl">Interns List</h3>
                 </div>
               </div>
-              {/* <button className="mr-16 text-sm text-blue-300 hover:text-blue-500  ">
+              <button className="mr-16 text-sm text-blue-300 hover:text-blue-500  ">
                 View All
-              </button> */}
+              </button>
             </div>
             <div className="flex gap-2">
               <Link href="/import-list">
@@ -200,7 +200,7 @@ export default function InternList() {
                 {/* Table Body */}
                 <tbody className="divide-y">
                   {filteredData.map((student) => (
-                    <tr key={student.intern}>
+                    <tr key={student.intern.id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                         <span className="ml-3 font-bold">
                           {student.firstName} {student.lastName}{" "}

@@ -91,7 +91,7 @@ const FeedSchedule = () => {
   };
 
   return (
-    <div className="flex flex-wrap m-2 py-4">
+    <div className="flex m-2 py-4">
       <div className="flex flex-[1] flex-col gap-2 p-2">
         <div className="text-sm font-semibold">10 August 2022</div>
         <div className="text-xs font-light">
@@ -99,28 +99,32 @@ const FeedSchedule = () => {
           <div>Antonio Gallo</div>
         </div>
       </div>
-      <div className="flex flex-[3] flex-wrap flex-col gap-2 p-2">
-        <div className="text-sm text-center font-semibold">Schedule for this week</div>
+      <div className="flex flex-[3] flex-col gap-2 p-2">
+        <div className="text-sm font-semibold">Schedule for this week</div>
         <div className="text-xs font-light h-72">
-          <div className="flex-wrap justify-center flex gap-8 my-1">
+          <div className="flex justify-center gap-8 my-1">
             <div>
               <h3>Morning Shift:</h3>
-              {departmentNames.map((eachDepartmentName) => (
-                <div key={eachDepartmentName}>
-                  <br />
-                  <br />
-                  {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                </div>
+              {departmentNames.map((eachDepartmentName, index) => (
+                index % 2 === 0 && (
+                  <div key={eachDepartmentName}>
+                    <br />
+                    <br />
+                    {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
+                  </div>
+                )
               ))}
             </div>
             <div>
               <h3>Afternoon Shift:</h3>
-              {departmentNames.map((eachDepartmentName) => (
-                <div key={eachDepartmentName}>
-                  <br />
-                  <br />
-                  {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                </div>
+              {departmentNames.map((eachDepartmentName, index) => (
+                index % 2 !== 0 && (
+                  <div key={eachDepartmentName}>
+                    <br />
+                    <br />
+                    {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
+                  </div>
+                )
               ))}
             </div>
           </div>

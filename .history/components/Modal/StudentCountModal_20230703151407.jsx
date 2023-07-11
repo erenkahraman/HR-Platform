@@ -8,7 +8,7 @@ import cookie from "js-cookie";
 
 const departmanColor = (department) => {
   switch (department) {
-    case "Information Technologies":
+    case "The Information And Communications Technology":
       return "text-blue-400";
     case "Human Resources":
       return "text-green-400";
@@ -20,12 +20,6 @@ const departmanColor = (department) => {
       return "text-purple-400";
     case "Language Teaching":
       return "text-yellow-400";
-    case "UEX Designing":
-      return "text-cyan-400";
-    case "Administration":
-      return "text-yellow-900";
-    case "Business Lawyer ":
-      return "text-orange-100";
     default:
       return "";
   }

@@ -9,15 +9,16 @@ function Interviews() {
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
-        const response = await axios.get("/api/upcomingInterviews", {
+        const config = {
           headers: {
             "Content-Type": "application/json",
           },
           params: {
             token: token,
           },
-        });
+        };
 
+        const response = await axios.get("/api/upcomingInterviews", config);
         const interviews = response.data;
 
         // Sort the interviews by date in ascending order
@@ -41,8 +42,8 @@ function Interviews() {
   return (
     <section className="relative w-full">
       <div className="w-full mb-12">
-        {upcomingInterviews.length > 0 ? (
-          upcomingInterviews.map((interview) => (
+        <div>
+          {upcomingInterviews.map((interview) => (
             <div className="flex w-full" key={interview.id}>
               <div className="flex-1 flex flex-col">
                 <div className="text-sm font-semibold">
@@ -55,10 +56,8 @@ function Interviews() {
                 {new Date(interview.applicant.hrInterviewDate).toLocaleDateString()}
               </div>
             </div>
-          ))
-        ) : (
-          <div>No upcoming interviews</div>
-        )}
+          ))}
+        </div>
       </div>
     </section>
   );

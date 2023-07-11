@@ -85,9 +85,9 @@ export default function InternList() {
                   <h3 className="font-semibold text-2xl">Interns List</h3>
                 </div>
               </div>
-              {/* <button className="mr-16 text-sm text-blue-300 hover:text-blue-500  ">
+              <button className="mr-16 text-sm text-blue-300 hover:text-blue-500  ">
                 View All
-              </button> */}
+              </button>
             </div>
             <div className="flex gap-2">
               <Link href="/import-list">
