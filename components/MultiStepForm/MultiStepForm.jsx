@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm, useStep } from "react-hooks-helper";
-import { PersonalDetails } from "./StepForm/PersonalDetails";
-import { AppDetails } from "./StepForm/AppDetails";
+import { PersonalDetails } from "./stepForm/PersonalDetails";
+import { AppDetails } from "./stepForm/AppDetails";
 import { Contact } from "./stepForm/Contact";
 import { Review } from "./stepForm/Review";
 import { Submit } from "./stepForm/Submit";
