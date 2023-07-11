@@ -21,10 +21,10 @@ const Modal = ({ setModalOn, setChoice }) => {
                         <p className="font-semibold text-2xl text-white">The new scheduele for this week</p>
                      </div>
                      <div>
-                     <textarea class="rounded border-none text-black h-96 w-96 bg-[#e0f2fe] placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" style={{resize:"none"}} placeholder="Type the information..." required />
+                     <textarea className="rounded border-none text-black h-96 w-96 bg-[#e0f2fe] placeholder:italic placeholder:text-#0B3768 placeholder:text-sm" style={{resize:"none"}} placeholder="Type the information..." required />
                      </div>
                      
-                     <input type='date' class="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 mt-2 " />
+                     <input type='date' className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 mt-2 " />
                     
                     <div className="flex justify-end ">
                         <button onClick={handleOKClick} className="rounded mt-4 p-2 text-white hover:bg-[#15803d]">Save</button>

@@ -19,7 +19,7 @@ function news() {
                     <div className="block w-full overflow-x-auto my-2">
                         <div className="items-center w-full bg-white p-4">
                             {/* Daily Reminder Content */}
-                            <div classname="py-2">
+                            <div className="py-2">
                                 <Reminder
                                     color="text-red-500"
                                     title="HR Meeting"
@@ -28,7 +28,7 @@ function news() {
                                 />
                             </div>
 
-                            <div classname="py-2">
+                            <div className="py-2">
                                 <Reminder
                                     color="text-yellow-500"
                                     title="HR Interview: Wilson"
@@ -37,7 +37,7 @@ function news() {
                                 />
                             </div>
 
-                            <div classname="py-2">
+                            <div className="py-2">
                                 <Reminder
                                     color="text-yellow-500"
                                     title="Documents Update: Samara"
@@ -46,7 +46,7 @@ function news() {
                                 />
                             </div>
 
-                            <div classname="py-2">
+                            <div className="py-2">
                                 <Reminder
                                     color="text-green-500"
                                     title="Update Calendar and Applicant Details"
@@ -55,7 +55,7 @@ function news() {
                                 />
                             </div>
 
-                            <div classname="py-2">
+                            <div className="py-2">
                                 <Reminder
                                     color="text-green-500"
                                     title="Check Applicant Documents"

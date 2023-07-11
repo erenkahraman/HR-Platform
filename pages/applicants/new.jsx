@@ -1100,19 +1100,19 @@ export default function ApplicantsNew() {
               {addDeprtmntModal && (
                 <div
                   tabindex="-1"
-                  class="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
+                  className="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
                           fixed top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 h-modal md:h-full"
                 >
-                  <div class="relative w-full max-w-md h-full md:h-auto">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                  <div className="relative w-full max-w-md h-full md:h-auto">
+                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                       <button
                         type="button"
-                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                        className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
                         onClick={(e) => setAddDeprtmntModal(false)}
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5"
+                          className="w-5 h-5"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -1123,25 +1123,25 @@ export default function ApplicantsNew() {
                             clip-rule="evenodd"
                           ></path>
                         </svg>
-                        <span class="sr-only">Close modal</span>
+                        <span className="sr-only">Close modal</span>
                       </button>
-                      <div class="py-6 px-6 lg:px-8 border border-gray-300">
-                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+                      <div className="py-6 px-6 lg:px-8 border border-gray-300">
+                        <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                           Add a new department
                         </h3>
-                        <form class="space-y-6" onSubmit={addNewDepartment}>
+                        <form className="space-y-6" onSubmit={addNewDepartment}>
                           <div>
                             <input
                               id="newdepartment"
                               type="text"
-                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                               placeholder="IT / Accounting / HR ..."
                               required
                             />
                           </div>
                           <button
                             type="submit"
-                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                           >
                             Add new department
                           </button>
@@ -1154,19 +1154,19 @@ export default function ApplicantsNew() {
               {addPositionModal && (
                 <div
                   tabindex="-1"
-                  class="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
+                  className="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
                           fixed top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 h-modal md:h-full"
                 >
-                  <div class="relative w-full max-w-md h-full md:h-auto">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                  <div className="relative w-full max-w-md h-full md:h-auto">
+                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                       <button
                         type="button"
-                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                        className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
                         onClick={(e) => setAddPositionModal(false)}
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5"
+                          className="w-5 h-5"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -1177,17 +1177,17 @@ export default function ApplicantsNew() {
                             clip-rule="evenodd"
                           ></path>
                         </svg>
-                        <span class="sr-only">Close modal</span>
+                        <span className="sr-only">Close modal</span>
                       </button>
-                      <div class="py-6 px-6 lg:px-8 border border-gray-300">
-                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+                      <div className="py-6 px-6 lg:px-8 border border-gray-300">
+                        <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                           Add a new position
                         </h3>
-                        <form class="space-y-6" onSubmit={addNewPosition}>
+                        <form className="space-y-6" onSubmit={addNewPosition}>
                           <div>
                             <label
                               for="email"
-                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                               Department
                             </label>
@@ -1195,7 +1195,7 @@ export default function ApplicantsNew() {
                               id="newPosDepartment"
                               name="department"
                               autoComplete="department"
-                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                             >
                               {dbDepartment.map((department) => (
                                 <option
@@ -1208,20 +1208,20 @@ export default function ApplicantsNew() {
                             </select>
                           </div>
                           <div>
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                               Position
                             </label>
                             <input
                               id="newPosition"
                               type="text"
-                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                               placeholder="New position.."
                               required
                             />
                           </div>
                           <button
                             type="submit"
-                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                           >
                             Add new position
                           </button>
