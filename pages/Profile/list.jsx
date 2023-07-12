@@ -137,13 +137,13 @@ export default function ApplicantsList({ status }) {
                     </div>
                     <div className="flex gap-2 items-center">
                       <Circle className="text-xs text-red-500" />
-                      The student has been Rejected or haven't been answered
+                      The student has been Rejected or havent been answered
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
                     <div className="flex gap-2 items-center">
                       <Circle className="text-xs text-blue-500" />
-                      The student's application is beeing processed
+                      The students application is beeing processed
                     </div>
                     <div className="flex gap-2 items-center">
                       <Circle className="text-xs text-yellow-400" />
@@ -232,9 +232,9 @@ export default function ApplicantsList({ status }) {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                         ></path>
                       </svg>
@@ -287,7 +287,7 @@ export default function ApplicantsList({ status }) {
                 <TableBody className="divide-y">
                   {filteredData.map((student) => (
                     <TableRow>
-                      <TableCell align="left">
+                      <TableCell align="left" key={student.id}>
                         <span className="font-bold whitespace-nowrap">
                           {" "}
                           <Circle className={`text-xs text-${getStatusCircleColor(student.applicationStatus)}-500`} />

@@ -478,7 +478,7 @@ export default function ApplicantsNew() {
                       >
                         <option value="">Select...</option>
                         {countries.map((country) => (
-                          <option>{country}</option>
+                          <option key={index}>{country}</option>
                         ))}
                       </select>
                       <p className="text-sm font-thin text-red-600">
@@ -573,7 +573,7 @@ export default function ApplicantsNew() {
                       >
                         <option value="">Select...</option>
                         {countries.map((country) => (
-                          <option>{country}</option>
+                          <option key={index}>{country}</option>
                         ))}
                       </select>
                       <p className="text-sm font-thin text-red-600">
@@ -1001,7 +1001,7 @@ export default function ApplicantsNew() {
                     </div>
                     <div className="grid grid-cols-4 gap-2">
                       {docs.map((docs, i) => (
-                        <div className="grid-row-start-1 grid-row-end-3">
+                        <div className="grid-row-start-1 grid-row-end-3" key={i}>
                           <DocumentReview
                             register={register}
                             title={docs}
@@ -1099,7 +1099,7 @@ export default function ApplicantsNew() {
 
               {addDeprtmntModal && (
                 <div
-                  tabindex="-1"
+                  tabIndex="-1"
                   className="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
                           fixed top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 h-modal md:h-full"
                 >
@@ -1118,9 +1118,9 @@ export default function ApplicantsNew() {
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           ></path>
                         </svg>
                         <span className="sr-only">Close modal</span>
@@ -1153,7 +1153,7 @@ export default function ApplicantsNew() {
               )}
               {addPositionModal && (
                 <div
-                  tabindex="-1"
+                  tabIndex="-1"
                   className="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
                           fixed top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 h-modal md:h-full"
                 >
@@ -1172,9 +1172,9 @@ export default function ApplicantsNew() {
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           ></path>
                         </svg>
                         <span className="sr-only">Close modal</span>
@@ -1186,7 +1186,7 @@ export default function ApplicantsNew() {
                         <form className="space-y-6" onSubmit={addNewPosition}>
                           <div>
                             <label
-                              for="email"
+                              htmlFor="email"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                               Department

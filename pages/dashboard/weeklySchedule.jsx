@@ -1,7 +1,7 @@
 import FeedSchedule from "../../components/Feed/FeedSchedule"
 import AddIcon from '@mui/icons-material/Add';
 import Modal from "../../components/LiaModal/model";
-import {useState} from "react";
+import React, { useState } from "react";
 
 function weeklySchedule() {
   
@@ -34,7 +34,6 @@ function weeklySchedule() {
             </div>
 
           
-           
 
             {modalOn && < Modal setModalOn={setModalOn} setChoice={setChoice} />}
           

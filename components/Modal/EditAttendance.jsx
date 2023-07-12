@@ -124,7 +124,7 @@ const EditAttendance = ({ intern, setModel }) => {
                       </label>
                     ) : (
                       dates.map((date) => (
-                        <li className="flex items-center space-x-3">
+                        <li className="flex items-center space-x-3" key={index}>
                           <label>{moment(date).format("dd/MM/yyyy")}</label>
                           <ClearIcon
                             color="error"
