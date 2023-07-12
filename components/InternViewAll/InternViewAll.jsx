@@ -109,7 +109,7 @@ const InternView = () => {
           <div  className={Border(dep.department)}>
               {/* Top  */}
 
-            <tr>
+            <tr key={index}>
               <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center"> 
                 {dep.department}
               </th>
@@ -143,7 +143,7 @@ const InternView = () => {
                         return std.applicant.department === dep.department ? std.lastName : ""
                     }).map((std) => (
 
-                      <tr>
+                      <tr key={index}>
                         <td>{std.firstName} {std.lastName}</td>
                         <td>{std.intern.position}</td>
                         <td>{std.intern.startDate}</td>

@@ -98,7 +98,7 @@ const EditDocumentsModal = ({
             <div className="flex flex-col w-full gap-4">
               <div className="flex gap-6 justify-start">
                 {Object.keys(student[type].documents).map((doc) => (
-                  <DocumentReview register={register} title={doc} type={type} />
+                  <DocumentReview key={doc} register={register} title={doc} type={type} />
                 ))}
               </div>
             </div>

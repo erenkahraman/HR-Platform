@@ -216,7 +216,7 @@ const DocumentList = () => {
         </div>
       ) : (
         students.map((student, index) => (
-          <div className="flex flex-col w-full py-2 px-6 gap-2 bg-white border rounded-md">
+          <div key={index} className="flex flex-col w-full py-2 px-6 gap-2 bg-white border rounded-md">
             {/* Top */}
             <div className="flex justify-between">
               {/* Top Left */}
@@ -273,6 +273,7 @@ const DocumentList = () => {
             <div className="flex flex-col md:flex-row gap-[2px]">
               {Object.keys(students[index].intern.documents).map((name) => (
                 <DocumentListContent
+                  key={i}
                   type={name}
                   status={students[index].intern.documents[name]}
                   student={student}
