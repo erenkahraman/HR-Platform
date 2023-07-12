@@ -135,7 +135,7 @@ export default function Sidebar() {
               <li key={index}>
                 {menu.isSeperator === undefined ? (
                   <Link href={menu.href}>
-                    <a
+                    <div
                       className={
                         menu.isOn === false
                           ? sideBarListItem()
@@ -144,7 +144,7 @@ export default function Sidebar() {
                     >
                       {menu.icon}
                       <p>{menu.title}</p>
-                    </a>
+                    </div>
                   </Link>
                 ) : (
                   <a className={sideBarListSeperator()}>{menu.title}</a>
