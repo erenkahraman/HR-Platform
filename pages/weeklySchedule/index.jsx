@@ -96,6 +96,8 @@ const WeeklySchedule = () => {
     const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
       (intern) => intern._id !== internToBeMoved._id
     );
+    const updatedWeeklySchedule ={ ...weeklySchedule};
+    updatedWeeklySchedule[selectedDepartment].splice(internIndex,1);
     setAfternoonShiftInterns(updatedAfternoonShiftInterns);
 
     try {
@@ -138,6 +140,8 @@ const WeeklySchedule = () => {
     const updatedMorningShiftInterns = morningShiftInterns.filter(
       (intern) => intern._id !== internToBeMoved._id
     );
+    const updatedWeeklySchedule ={ ...weeklySchedule};
+    updatedWeeklySchedule[selectedDepartment].splice(internIndex,1);
     setMorningShiftInterns(updatedMorningShiftInterns);
 
     try {
