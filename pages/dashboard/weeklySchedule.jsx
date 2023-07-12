@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Modal from "../../components/LiaModal/model";
 import React, { useState } from "react";
 
-function weeklySchedule() {
+function WeeklySchedule() {
   
   const [modalOn,setModalOn]=useState(false);
   const [choice,setChoice]=useState(false);
@@ -55,6 +55,6 @@ function weeklySchedule() {
   );
 };
 
-export default weeklySchedule;
+export default WeeklySchedule;
 
 

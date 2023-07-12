@@ -286,7 +286,7 @@ export default function ApplicantsList({ status }) {
                 {/* Table Body */}
                 <TableBody className="divide-y">
                   {filteredData.map((student) => (
-                    <TableRow>
+                    <TableRow key={student.id}>
                       <TableCell align="left" key={student.id}>
                         <span className="font-bold whitespace-nowrap">
                           {" "}

@@ -223,7 +223,7 @@ export default function ApplicantsList({ students }) {
                 {/* Table Body */}
                 <TableBody>
                   {filteredData.map((student) => (
-                    <ApplicantItem student={student} />
+                    <ApplicantItem key={student.id} student={student} />
                   ))}
                 </TableBody>
               </Table>

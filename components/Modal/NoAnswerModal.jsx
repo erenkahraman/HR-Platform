@@ -27,14 +27,14 @@ const NoAnswerModal = ({ student, setNoAnswerModal }) => {
     setOpen(false);
   };
   return (
-    <div className="   bg-zinc-200 opacity-90 fixed inset-0 z-50   ">
+    <div className="bg-zinc-200 opacity-90 fixed inset-0 z-50">
       <LoadingState open={open} />
-      <div className="flex h-screen justify-center items-center  ">
-        <div className="flex-col justify-center  bg-[#0B3768] py-12 px-24 border-4  rounded-xl ">
+      <div className="flex h-screen justify-center items-center">
+        <div className="flex-col justify-center  bg-[#0B3768] py-12 px-24 border-4  rounded-xl">
           <div className="flex  text-lg  text-white ml-0  mb-8 py-0 px-0">
             Are you sure you want to change the status of {student.firstName}{" "}
             {student.lastName} to
-            <p className="text-red-500 text-lg font-bold">"No Answer"? </p>
+            <p className="text-red-500 text-lg font-bold">No Answer? </p>
           </div>
 
           <div className="flex  flex-row ml-32">
