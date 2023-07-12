@@ -85,20 +85,20 @@ const WeeklySchedule = () => {
     const weekDateRange = `${formattedFirstDayOfTheWeek} - ${formattedLastDayOfTheWeek}`;
     setDateRange(weekDateRange);
   }
-
   const handleMoveToMorning = async (internToBeMoved, internIndex) => {
-    const updatedMorningShiftInterns = [
-      ...morningShiftInterns,
-      internToBeMoved,
-    ];
+    const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
     setMorningShiftInterns(updatedMorningShiftInterns);
-
+  
     const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
       (intern) => intern._id !== internToBeMoved._id
     );
-    const updatedWeeklySchedule ={ ...weeklySchedule};
-    updatedWeeklySchedule[selectedDepartment].splice(internIndex,1);
     setAfternoonShiftInterns(updatedAfternoonShiftInterns);
+  
+    const updatedWeeklySchedule = { ...weeklySchedule };
+    updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
+      (intern) => intern._id !== internToBeMoved._id
+    );
+    setWeeklySchedule(updatedWeeklySchedule);
 
     try {
       await axios.put(`/api/weeklySchedule`, {
@@ -136,14 +136,16 @@ const WeeklySchedule = () => {
       internToBeMoved,
     ];
     setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-
     const updatedMorningShiftInterns = morningShiftInterns.filter(
       (intern) => intern._id !== internToBeMoved._id
     );
-    const updatedWeeklySchedule ={ ...weeklySchedule};
-    updatedWeeklySchedule[selectedDepartment].splice(internIndex,1);
     setMorningShiftInterns(updatedMorningShiftInterns);
 
+    const updatedWeeklySchedule = { ...weeklySchedule };
+    updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
+      (intern) => intern._id !== internToBeMoved._id
+    );
+    setWeeklySchedule(updatedWeeklySchedule);
     try {
       await axios.put(`/api/weeklySchedule`, {
         params: {
