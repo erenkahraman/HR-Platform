@@ -106,7 +106,7 @@ const InternView = () => {
        ) : (
         department.map((dep, index) => 
         (
-          <div  className={Border(dep.department)}>
+          <div key={index} className={Border(dep.department)}>
               {/* Top  */}
 
             <tr key={index}>
