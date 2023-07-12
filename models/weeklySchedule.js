@@ -10,6 +10,7 @@ const weeklyScheduleSchema = mongoose.Schema({
     thursday: { shift: { type: String } },
     friday: { shift: { type: String } },
   },
+  
 });
 
 export default mongoose.models.WeeklySchedule ||
