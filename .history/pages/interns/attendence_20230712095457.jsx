@@ -11,6 +11,8 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { confirmAlert } from "react-confirm-alert";
 import SaveIcon from "@mui/icons-material/Save";
 import "react-confirm-alert/src/react-confirm-alert.css";
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
 import { useState, useEffect } from "react";
 import reactSelect from "react-select";
 import { CheckCircle } from "@mui/icons-material";
@@ -18,27 +20,24 @@ import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
 import useTableSearch from "../../hooks/useTableSearch";
-import InfoIcon from "@mui/icons-material/Info";
+import InfoIcon from '@mui/icons-material/Info';
 import { CSVLink } from "react-csv";
-import React, { useRef } from "react";
+import React, { useRef } from 'react';
 import { Button, Grid } from "@mui/material";
 import { Add, SystemUpdateAlt } from "@mui/icons-material";
 import { format, startOfMonth, endOfMonth } from "date-fns";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
-import DialogContentText from "@mui/material/DialogContentText";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import DialogContentText from '@mui/material/DialogContentText';
+
 
 function Attendence() {
   var today = new Date();
 
+  //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState(today.toISOString().split("T")[0]);
+  const [date, setDate] = useState(today.toISOString().split('T')[0])
   const [status, setStatus] = useState("present");
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
@@ -49,28 +48,35 @@ function Attendence() {
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
-  const [openDialog, setOpenDialog] = useState(false);
+  
+  
+
 
   const csvLinkElement = useRef();
   const csvLinkSingleStudent = useRef();
 
+
+    
+
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
-  console.log(filteredData);
+  console.log(filteredData)
 
-  const [draftedInternUpdates, setDraftedInternUpdates] = useState([]);
-  const [updatedInterns, setUpdatedInterns] = useState([]);
+  const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
+  const [updatedInterns, setUpdatedInterns] = useState([])
 
-  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] =
-    useState([]);
-  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] =
-    useState([]);
+  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] = useState([])
+  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] = useState([])
 
   const [showAlert, setShowAlert] = useState(false);
   const [cancelRefresh, setCancelRefresh] = useState(false);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isRefreshing, setRefreshing] = useState(false);
+
+  
+
+
 
   const listHeaders = [
     "Full Name",
@@ -86,11 +92,38 @@ function Attendence() {
     "Action",
   ];
 
+
   const handleRefreshTable = () => {
-    setShowConfirmation(true);
-  };
+    confirmAlert({
+      title: 'Confirm Refresh',
+      message: "Are you sure you want to refresh the table?",
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {
+            setShowConfirmation(true);
+          } 
+        },
+        {
+          label: 'No',
+          onClick: () => {
+            setCancelRefresh(true);
+          }
+        }
+      ]
+    });
+        
+
+
+
+
+
+
+  
 
   const handleConfirmRefresh = () => {
+    setRefreshing(true);
+  
     const refreshedData = data.map((student) => ({
       ...student,
       intern: {
@@ -127,12 +160,8 @@ function Attendence() {
         },
       },
     }));
-
-    localStorage.setItem("data", JSON.stringify(refreshedData));
+  
     setData(refreshedData);
-    setDraftedInternUpdates(refreshedData);
-    setUpdatedInterns(refreshedData);
-    setShowConfirmation(false);
   };
 
   const handleCancelRefresh = () => {
@@ -454,39 +483,38 @@ function Attendence() {
             <div className="flex gap-2 flex-col md:flex-row">
 
             <Button
-            size="medium"
-            color="primary"
-            startIcon={<RefreshIcon className="text-sm" />}
-            variant="contained"
-            sx={{ borderRadius: 2 }}
-            href="#"
-            onClick={handleRefreshTable}
-          >
-            Refresh Table
-          </Button>
+        size="medium"
+        color="primary"
+        startIcon={<RefreshIcon className="text-sm" />}
+        variant="contained"
+        sx={{ borderRadius: 2 }}
+        onClick={handleRefreshTable}
+      >
+        Refresh Table
+      </Button>
 
       {/* Confirmation Dialog */}
-            <Dialog
-              open={showConfirmation}
-              onClose={handleCancelRefresh}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">Confirm Refresh</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Are you sure you want to refresh the table? This action cannot be undone.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCancelRefresh} color="primary">
-                  No
-                </Button>
-                <Button onClick={handleConfirmRefresh} color="primary" autoFocus>
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
+      <Dialog
+        open={showConfirmation}
+        onClose={handleCancelRefresh}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm Refresh</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to refresh the table? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelRefresh} color="primary">
+            No
+          </Button>
+          <Button onClick={handleConfirmRefresh} color="primary" autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
 
               
 
@@ -785,6 +813,6 @@ function Attendence() {
       </div>
     </section>
   );
-}
+}}
 
 export default Attendence;

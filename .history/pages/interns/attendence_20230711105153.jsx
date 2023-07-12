@@ -11,6 +11,8 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { confirmAlert } from "react-confirm-alert";
 import SaveIcon from "@mui/icons-material/Save";
 import "react-confirm-alert/src/react-confirm-alert.css";
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
 import { useState, useEffect } from "react";
 import reactSelect from "react-select";
 import { CheckCircle } from "@mui/icons-material";
@@ -18,27 +20,22 @@ import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
 import useTableSearch from "../../hooks/useTableSearch";
-import InfoIcon from "@mui/icons-material/Info";
+import InfoIcon from '@mui/icons-material/Info';
 import { CSVLink } from "react-csv";
-import React, { useRef } from "react";
+import React, { useRef } from 'react';
 import { Button, Grid } from "@mui/material";
 import { Add, SystemUpdateAlt } from "@mui/icons-material";
 import { format, startOfMonth, endOfMonth } from "date-fns";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
-import DialogContentText from "@mui/material/DialogContentText";
+import RefreshIcon from '@mui/icons-material/Refresh';
+
 
 function Attendence() {
   var today = new Date();
 
+  //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState(today.toISOString().split("T")[0]);
+  const [date, setDate] = useState(today.toISOString().split('T')[0])
   const [status, setStatus] = useState("present");
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
@@ -49,28 +46,25 @@ function Attendence() {
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
-  const [openDialog, setOpenDialog] = useState(false);
+  
+  
+
 
   const csvLinkElement = useRef();
   const csvLinkSingleStudent = useRef();
 
+
+    
+
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
-  console.log(filteredData);
+  console.log(filteredData)
 
-  const [draftedInternUpdates, setDraftedInternUpdates] = useState([]);
-  const [updatedInterns, setUpdatedInterns] = useState([]);
+  const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
+  const [updatedInterns, setUpdatedInterns] = useState([])
 
-  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] =
-    useState([]);
-  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] =
-    useState([]);
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [cancelRefresh, setCancelRefresh] = useState(false);
-
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isRefreshing, setRefreshing] = useState(false);
+  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] = useState([])
+  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] = useState([])
 
   const listHeaders = [
     "Full Name",
@@ -85,75 +79,6 @@ function Attendence() {
     "Unexcused Leave",
     "Action",
   ];
-
-  const handleRefreshTable = () => {
-    setShowConfirmation(true);
-  };
-
-  const handleConfirmRefresh = () => {
-    const refreshedData = data.map((student) => ({
-      ...student,
-      intern: {
-        ...student.intern,
-        attendance: {
-          present: {
-            count: 0,
-            dates: [],
-          },
-          late: {
-            count: 0,
-            dates: [],
-          },
-          coveredDay: {
-            count: 0,
-            dates: [],
-          },
-          dayOff: {
-            count: 0,
-            dates: [],
-          },
-          excusedLeave: {
-            count: 0,
-            dates: [],
-          },
-          sick: {
-            count: 0,
-            dates: [],
-          },
-          unexcusedleave: {
-            count: 0,
-            dates: [],
-          },
-        },
-      },
-    }));
-
-    localStorage.setItem("data", JSON.stringify(refreshedData));
-    setData(refreshedData);
-    setDraftedInternUpdates(refreshedData);
-    setUpdatedInterns(refreshedData);
-    setShowConfirmation(false);
-  };
-
-  const handleCancelRefresh = () => {
-    setShowConfirmation(false);
-  };
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get('/api/intern');
-      setData(data);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  };
-
-  
-  
-
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -454,39 +379,16 @@ function Attendence() {
             <div className="flex gap-2 flex-col md:flex-row">
 
             <Button
-            size="medium"
-            color="primary"
-            startIcon={<RefreshIcon className="text-sm" />}
-            variant="contained"
-            sx={{ borderRadius: 2 }}
-            href="#"
-            onClick={handleRefreshTable}
-          >
-            Refresh Table
-          </Button>
-
-      {/* Confirmation Dialog */}
-            <Dialog
-              open={showConfirmation}
-              onClose={handleCancelRefresh}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">Confirm Refresh</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Are you sure you want to refresh the table? This action cannot be undone.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCancelRefresh} color="primary">
-                  No
-                </Button>
-                <Button onClick={handleConfirmRefresh} color="primary" autoFocus>
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
+                size="medium"
+                color="primary"
+                startIcon= {<RefreshIcon className="text-sm" />}
+                variant="contained"
+                sx={{ borderRadius: 2 }}
+                href="#"
+                onClick={handleExportJsonDataToCsv}
+              >
+                Refresh the page
+              </Button>
 
               
 
@@ -540,18 +442,14 @@ function Attendence() {
                 </div>
               </form>
               <div className="relative"  >
-                
-                <Button
-                size="medium"
-                color="primary"
-                startIcon= {<CheckCircle className="text-sm" />}
-                variant="contained"
-                sx={{ borderRadius: 2 }}
-                href="#"
-                onClick={saveAll}
-              >
-                Save All
-              </Button>
+                <button
+                  onClick={saveAll}
+                  title="Save"
+                  className=" group flex items-center rounded-md bg-blue-500 hover:bg-blue-400 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
+                  <CheckCircle className="text-m py-1 "
+                  />
+                  Save All
+                </button>
                 
               </div>
             </div>

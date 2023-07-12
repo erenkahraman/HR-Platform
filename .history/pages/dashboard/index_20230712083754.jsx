@@ -384,7 +384,7 @@ const Dashboard = () => {
               <div className="text-md font-semibold">Weekly Schedule</div>
               <a
                 href="./weeklySchedule"
-                className="viewAll flex items-center justify-center text-[#2F80ED]"
+                className="viewAll  items-center justify-center text-[#2F80ED]"
               >
                 <div>View All</div>
                 <div>

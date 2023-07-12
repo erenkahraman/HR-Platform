@@ -101,8 +101,8 @@ const FeedSchedule = () => {
       </div>
       <div className="flex flex-[3]  flex-col  ">
         <div className="text-sm text-center font-semibold">Schedule for this week</div>
-        <div className="text-xs font-light h-74">
-          <div className="flex flex-wrap justify-center flex gap-8 my-1">
+        <div className="text-xs font-light h-72">
+          <div className="flex-wrap justify-center flex gap-8 my-1">
             <div>
               <h3>Morning Shift:</h3>
               {departmentNames.map((eachDepartmentName) => (

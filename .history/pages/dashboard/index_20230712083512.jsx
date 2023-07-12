@@ -379,7 +379,7 @@ const Dashboard = () => {
           </div>
 
           {/* Weekly Schedule */}
-          <div className="flex flex-[1.5] flex-col gap-2 ">
+          <div className=" flex-[1.5] flex-col gap-2">
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">Weekly Schedule</div>
               <a

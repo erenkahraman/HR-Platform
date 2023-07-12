@@ -11,6 +11,8 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { confirmAlert } from "react-confirm-alert";
 import SaveIcon from "@mui/icons-material/Save";
 import "react-confirm-alert/src/react-confirm-alert.css";
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
 import { useState, useEffect } from "react";
 import reactSelect from "react-select";
 import { CheckCircle } from "@mui/icons-material";
@@ -18,27 +20,22 @@ import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
 import useTableSearch from "../../hooks/useTableSearch";
-import InfoIcon from "@mui/icons-material/Info";
+import InfoIcon from '@mui/icons-material/Info';
 import { CSVLink } from "react-csv";
-import React, { useRef } from "react";
+import React, { useRef } from 'react';
 import { Button, Grid } from "@mui/material";
 import { Add, SystemUpdateAlt } from "@mui/icons-material";
 import { format, startOfMonth, endOfMonth } from "date-fns";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
-import DialogContentText from "@mui/material/DialogContentText";
+import RefreshIcon from '@mui/icons-material/Refresh';
+
 
 function Attendence() {
   var today = new Date();
 
+  //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState(today.toISOString().split("T")[0]);
+  const [date, setDate] = useState(today.toISOString().split('T')[0])
   const [status, setStatus] = useState("present");
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
@@ -49,28 +46,16 @@ function Attendence() {
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
   const currentDate = new Date();
-  const [openDialog, setOpenDialog] = useState(false);
-
   const csvLinkElement = useRef();
   const csvLinkSingleStudent = useRef();
-
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
-  console.log(filteredData);
-
-  const [draftedInternUpdates, setDraftedInternUpdates] = useState([]);
-  const [updatedInterns, setUpdatedInterns] = useState([]);
-
-  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] =
-    useState([]);
-  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] =
-    useState([]);
-
+  console.log(filteredData)
+  const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
+  const [updatedInterns, setUpdatedInterns] = useState([])
+  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] = useState([])
+  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] = useState([])
   const [showAlert, setShowAlert] = useState(false);
-  const [cancelRefresh, setCancelRefresh] = useState(false);
-
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isRefreshing, setRefreshing] = useState(false);
 
   const listHeaders = [
     "Full Name",
@@ -87,10 +72,9 @@ function Attendence() {
   ];
 
   const handleRefreshTable = () => {
-    setShowConfirmation(true);
-  };
+    setShowAlert(true);
+    alert("Don't forget to export to CSV before you refresh!");
 
-  const handleConfirmRefresh = () => {
     const refreshedData = data.map((student) => ({
       ...student,
       intern: {
@@ -128,15 +112,11 @@ function Attendence() {
       },
     }));
 
-    localStorage.setItem("data", JSON.stringify(refreshedData));
     setData(refreshedData);
-    setDraftedInternUpdates(refreshedData);
-    setUpdatedInterns(refreshedData);
-    setShowConfirmation(false);
   };
 
   const handleCancelRefresh = () => {
-    setShowConfirmation(false);
+    setShowAlert(false);
   };
 
   const fetchData = async () => {
@@ -151,45 +131,6 @@ function Attendence() {
     }
   };
 
-  
-  
-
-
-  const handleChangeStatus = (student, newStatus) => {
-
-
-    const isDateGiven = date !== ""
-
-    if (!isDateGiven) {
-      return;
-    }
-
-    const updatedIntern = student.intern
-
-    const draftedInternUpdate = {
-      id: updatedIntern._id,
-      status: newStatus,
-      count: updatedIntern.attendance[newStatus].count + 1,
-      date: date
-    }
-
-    let isStatusChanged = false
-    const newDraftedInternUpdates = draftedInternUpdates.map((eachDraftedIntern) => {
-      isStatusChanged = eachDraftedIntern._id === draftedInternUpdate.id
-      if (isStatusChanged) return draftedInternUpdate
-      else return eachDraftedIntern
-    })
-
-
-    if (isStatusChanged) {
-      setDraftedInternUpdates(newDraftedInternUpdates)
-    } else {
-      setDraftedInternUpdates([...draftedInternUpdates, updatedIntern])
-      setUpdatedInterns([...updatedInterns, updatedIntern])
-    }
-
-    setStatus(newStatus)
-  }
   useEffect(() => {
     setLoading(true);
     const asyncRequest = async () => {
@@ -235,10 +176,8 @@ function Attendence() {
   };
 
   const handleExportJsonDataToCsv = () => {
-
     let studentsAttendanceInfo = []
     data.forEach((eachStudent) => {
-
       const attendanceInfo = getAttendanceInfoOfStudent(eachStudent)
       studentsAttendanceInfo.push(attendanceInfo)
     })
@@ -250,9 +189,7 @@ function Attendence() {
     }, 1000);
   }
 
-
   const getAttendanceInfoOfStudent = (student) => {
-
     const attendanceInfo = {
       "First Name": student.firstName,
       "Last Name": student.lastName,
@@ -266,23 +203,19 @@ function Attendence() {
     }
     return attendanceInfo
   }
-  const handleExportSingleInternAttendanceToCsv = (student) => {
 
+  const handleExportSingleInternAttendanceToCsv = (student) => {
     if (event.target.tagName === "A") {
       return
     }
 
     const attendanceInfo = getAttendanceInfoOfStudent(student)
-
     setSingleStudentAttendanceInfo([attendanceInfo])
 
     const downloadedCsvFile = setTimeout(function () {
       csvLinkSingleStudent.current.link.click()
     }, 1000);
-
   }
-
-
 
   const save = (intern) => {
     setOpenAlert(false);
@@ -292,7 +225,7 @@ function Attendence() {
       if (status && date) {
         setOpen(false);
         confirmAlert({
-          message: "Are you sure you want to save ?",
+          message: "Are you sure you want to save?",
           buttons: [
             {
               label: "Yes",
@@ -308,9 +241,7 @@ function Attendence() {
                   headers: {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
-
                   },
-
                   body: JSONintern,
                 };
                 await fetch(endpoint, options);
@@ -329,14 +260,12 @@ function Attendence() {
       }
     } else setOpenAlertIncludedDate(true);
   };
+
   const clicked = () => {
     setAttendanceEditModel(true);
   };
 
   const saveAll = () => {
-
-
-
     setLoading(true);
     const asyncRequest = async () => {
       try {
@@ -350,7 +279,7 @@ function Attendence() {
         setLoading(false);
         // Show a success message to the user
         alert("All changes have been saved!");
-        window.location.reload()
+        window.location.reload();
       } catch (e) {
         console.error(e);
         setLoading(false);
@@ -374,12 +303,6 @@ function Attendence() {
       alert("Covered Days and Day Offs are not equal for some interns. Please check before saving!");
     }
   };
-
-
-
-
-
-
 
   const disableStatus = (intern, dt) => {
     if (
@@ -406,7 +329,6 @@ function Attendence() {
     );
   if (!data) return <p>No profile data</p>;
 
-
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   var yyyy = today.getFullYear();
@@ -425,7 +347,6 @@ function Attendence() {
 
   return (
     <section className="relative w-full">
-
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
@@ -441,54 +362,29 @@ function Attendence() {
             >
               Search
             </label>
-
           </form>
           {/* Title Container */}
           <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white flex-col md:flex-row">
             <div className="flex flex-wrap items-center">
               <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-                <h3 className="font-semibold text-2xl">Intern Attendance ({dateRange})</h3>
+                <h3 className="font-semibold text-2xl">
+                  Intern Attendance ({dateRange})
+                </h3>
               </div>
             </div>
 
             <div className="flex gap-2 flex-col md:flex-row">
-
-            <Button
-            size="medium"
-            color="primary"
-            startIcon={<RefreshIcon className="text-sm" />}
-            variant="contained"
-            sx={{ borderRadius: 2 }}
-            href="#"
-            onClick={handleRefreshTable}
-          >
-            Refresh Table
-          </Button>
-
-      {/* Confirmation Dialog */}
-            <Dialog
-              open={showConfirmation}
-              onClose={handleCancelRefresh}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">Confirm Refresh</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Are you sure you want to refresh the table? This action cannot be undone.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCancelRefresh} color="primary">
-                  No
-                </Button>
-                <Button onClick={handleConfirmRefresh} color="primary" autoFocus>
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
-
-              
+              <Button
+                size="medium"
+                color="primary"
+                startIcon={<RefreshIcon className="text-sm" />}
+                variant="contained"
+                sx={{ borderRadius: 2 }}
+                href="#"
+                onClick={handleRefreshTable}
+              >
+                Refresh the table
+              </Button>
 
               <Button
                 size="medium"
@@ -501,7 +397,10 @@ function Attendence() {
               >
                 Export to CSV
               </Button>
-              <CSVLink ref={csvLinkElement} data={allStudentsAttendanceInfo}></CSVLink>
+              <CSVLink
+                ref={csvLinkElement}
+                data={allStudentsAttendanceInfo}
+              ></CSVLink>
 
               <form>
                 <label
@@ -539,20 +438,18 @@ function Attendence() {
                   />
                 </div>
               </form>
-              <div className="relative"  >
-                
+              <div className="relative">
                 <Button
-                size="medium"
-                color="primary"
-                startIcon= {<CheckCircle className="text-sm" />}
-                variant="contained"
-                sx={{ borderRadius: 2 }}
-                href="#"
-                onClick={saveAll}
-              >
-                Save All
-              </Button>
-                
+                  size="medium"
+                  color="primary"
+                  startIcon={<CheckCircle className="text-sm" />}
+                  variant="contained"
+                  sx={{ borderRadius: 2 }}
+                  href="#"
+                  onClick={saveAll}
+                >
+                  Save All
+                </Button>
               </div>
             </div>
           </div>
@@ -573,7 +470,7 @@ function Attendence() {
               }
               sx={{ mb: 2 }}
             >
-              Choose Date/Status for the student !
+              Choose Date/Status for the student!
             </Alert>
           </Collapse>
           <Collapse in={openAlertIncludedDate}>
@@ -593,9 +490,27 @@ function Attendence() {
               }
               sx={{ mb: 2 }}
             >
-              Status already set for the select date !
+              Status already set for this date!
             </Alert>
           </Collapse>
+          {showAlert && (
+            <Alert
+              severity="warning"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={handleCancelRefresh}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              sx={{ mb: 2 }}
+            >
+              Don't forget to export to CSV before you refresh!
+            </Alert>
+          )}
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
             <table className="items-center w-full border-collapse bg-white">
