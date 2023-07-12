@@ -33,7 +33,6 @@ export const AppDetails = ({ formData, setForm, navigation }) => {
             )}
           />
             </LocalizationProvider>*/}
-       
         </FormControl>
     </Container>
   );
