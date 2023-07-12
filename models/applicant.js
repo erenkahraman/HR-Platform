@@ -30,7 +30,6 @@ const ApplicantSchema = new mongoose.Schema({
   hrInterviewStatus : {type: Boolean, default : false},
   departmentInterviewStatus : {type: Boolean, default : false},
   ceoInterviewStatus : {type: Boolean, default : false}
-
 });
 
 
