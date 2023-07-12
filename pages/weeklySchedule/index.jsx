@@ -10,58 +10,17 @@ import { SystemUpdateAlt } from "@mui/icons-material";
 import { CSVLink } from "react-csv";
 
 const WeeklySchedule = () => {
-
-  // const startDate = new Date();
-  // const endDate = "12.05.2023";
-  // const dateRange = `${startDate} - ${endDate}`;
-
-  const WEEKDAYS = 5
-  const [dateRange, setDateRange] = useState("")
-
-  const [weeklySchedule, setWeeklySchedule] = useState([]);
+  const WEEKDAYS = 5;
+  const [dateRange, setDateRange] = useState("");
+  const [weeklySchedule, setWeeklySchedule] = useState({});
   const [departmentNames, setDepartmentNames] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [morningShiftInterns, setMorningShiftInterns] = useState([])
-  const [afternoonShiftInterns, setAfternoonShiftInterns] = useState([])
-  const [assignedShifts, setAssignedShifts] = useState([])
-
+  const [morningShiftInterns, setMorningShiftInterns] = useState([]);
+  const [afternoonShiftInterns, setAfternoonShiftInterns] = useState([]);
+  const [assignedShifts, setAssignedShifts] = useState([]);
   const token = cookie.get("token");
-
   const csvLinkElement = useRef();
-
-  useEffect(() => {
-    const asyncRequest = async () => {
-      try {
-        handleCurrentWeekDateRange()
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const { data } = await axios.get(
-          `/api/weeklySchedule`,
-          { params: { token: token } },
-          config
-        );
-        const weeklyScheduleGroupedByDepartment = data.reduce(
-          (departments, item) => {
-            const department = departments[item.department] || [];
-            department.push(item);
-            departments[item.department] = department;
-            return departments;
-          },
-          {}
-        );
-        setWeeklySchedule(weeklyScheduleGroupedByDepartment);
-        const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
-        setDepartmentNames(departmentNames);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    asyncRequest();
-  }, []);
 
   const handleClickOutside = (event) => {
     if (anchorEl && !anchorEl.contains(event.target)) {
@@ -105,95 +64,163 @@ const WeeklySchedule = () => {
   }
 
   const addDays = (date, days) => {
-
     const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
-
   }
 
   const substractDays = (date, days) => {
-
     const result = new Date(date);
     result.setDate(result.getDate() - days);
     return result;
-
   }
 
   const handleCurrentWeekDateRange = () => {
-
-    const currentDate = new Date()
-
-    // which is going to return the index of the day
-    // i.e sunday : 0, monday : 1 
-    const todayNameIndex = currentDate.getDay()
-
-    // first day and last day of the week 
-    // stands for monday and friday 
-    // in the week we are in respectively  
-    const firstDayOfTheWeek = substractDays(currentDate, todayNameIndex - 1)
-    const formattedFirstDayOfTheWeek = formatDate(firstDayOfTheWeek)
-
-    const lastDayOfTheWeek = addDays(currentDate, WEEKDAYS - todayNameIndex)
-    const formattedLastDayOfTheWeek = formatDate(lastDayOfTheWeek)
-
+    const currentDate = new Date();
+    const todayNameIndex = currentDate.getDay();
+    const firstDayOfTheWeek = substractDays(currentDate, todayNameIndex - 1);
+    const formattedFirstDayOfTheWeek = formatDate(firstDayOfTheWeek);
+    const lastDayOfTheWeek = addDays(currentDate, WEEKDAYS - todayNameIndex);
+    const formattedLastDayOfTheWeek = formatDate(lastDayOfTheWeek);
     const weekDateRange = `${formattedFirstDayOfTheWeek} - ${formattedLastDayOfTheWeek}`;
-    setDateRange(weekDateRange)
-
+    setDateRange(weekDateRange);
   }
 
-  const handleMoveToMorning = (internToBeMoved, internIndex) => {
+  const handleMoveToMorning = async (internToBeMoved, internIndex) => {
+    const updatedMorningShiftInterns = [
+      ...morningShiftInterns,
+      internToBeMoved,
+    ];
+    setMorningShiftInterns(updatedMorningShiftInterns);
 
-    const isInternAlreadyInMorningShift = morningShiftInterns.find((intern) => intern._id === internToBeMoved._id)
-    if (isInternAlreadyInMorningShift) {
-      return
+    const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
+      (intern) => intern._id !== internToBeMoved._id
+    );
+    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
+
+    try {
+      await axios.put(`/api/weeklySchedule`, {
+        params: {
+          scheduleGroup: {
+            Group: selectedDepartment,
+            Schedule: {
+              monday: {
+                shift: "",
+              },
+              tuesday: {
+                shift: "",
+              },
+              wednesday: {
+                shift: "",
+              },
+              thursday: {
+                shift: "",
+              },
+              friday: {
+                shift: "",
+              },
+            },
+          },
+        },
+      });
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    const updatedAfternoonShiftInterns = afternoonShiftInterns.filter((intern) => intern._id !== internToBeMoved._id)
-    setAfternoonShiftInterns(updatedAfternoonShiftInterns)
+  const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
+    const updatedAfternoonShiftInterns = [
+      ...afternoonShiftInterns,
+      internToBeMoved,
+    ];
+    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
 
-    setMorningShiftInterns([...morningShiftInterns, internToBeMoved])
+    const updatedMorningShiftInterns = morningShiftInterns.filter(
+      (intern) => intern._id !== internToBeMoved._id
+    );
+    setMorningShiftInterns(updatedMorningShiftInterns);
 
-    const updatedWeeklySchedule ={ ...weeklySchedule};
-    updatedWeeklySchedule[selectedDepartment].splice(internIndex,1);
-    setWeeklySchedule(updatedWeeklySchedule)
-  }
-
-  const handleMoveToAfternoon = (internToBeMoved, internIndex) => {
-
-    const isInternAlreadyInAfternoonShift = afternoonShiftInterns.find((intern) => intern._id === internToBeMoved._id)
-    if (isInternAlreadyInAfternoonShift) {
-      return
+    try {
+      await axios.put(`/api/weeklySchedule`, {
+        params: {
+          scheduleGroup: {
+            Group: selectedDepartment,
+            Schedule: {
+              monday: {
+                shift: "",
+              },
+              tuesday: {
+                shift: "",
+              },
+              wednesday: {
+                shift: "",
+              },
+              thursday: {
+                shift: "",
+              },
+              friday: {
+                shift: "",
+              },
+            },
+          },
+        },
+      });
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    const updatedMorningShiftInterns = morningShiftInterns.filter((intern) => intern._id !== internToBeMoved._id)
-    setMorningShiftInterns(updatedMorningShiftInterns)
+  const handleExportToCsv = () => {
+    let shiftAssignedInterns = [];
+    morningShiftInterns.forEach((morningIntern) => {
+      const assignedInternInfo = getAssignedInternInfo(morningIntern, "Morning");
+      shiftAssignedInterns.push(assignedInternInfo);
+    });
+    afternoonShiftInterns.forEach((afternoonIntern) => {
+      const assignedInternInfo = getAssignedInternInfo(afternoonIntern, "Afternoon");
+      shiftAssignedInterns.push(assignedInternInfo);
+    });
+    setAssignedShifts(shiftAssignedInterns);
+    const downloadedCsvFile = setTimeout(function () {
+      csvLinkElement.current.link.click();
+    }, 1000);
+  };
 
-    setAfternoonShiftInterns([...afternoonShiftInterns, internToBeMoved])
+  useEffect(() => {
+    const fetchWeeklySchedule = async () => {
+      try {
+        handleCurrentWeekDateRange();
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/weeklySchedule`,
+          { params: { token: token } },
+          config
+        );
+        const weeklyScheduleGroupedByDepartment = data.reduce(
+          (departments, item) => {
+            const department = departments[item.department] || [];
+            department.push(item);
+            departments[item.department] = department;
+            return departments;
+          },
+          {}
+        );
+        setWeeklySchedule(weeklyScheduleGroupedByDepartment);
+        const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
+        setDepartmentNames(departmentNames);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchWeeklySchedule();
+  }, []);
 
-    const updatedWeeklySchedule ={ ...weeklySchedule};
-    updatedWeeklySchedule[selectedDepartment].splice(internIndex,1);
-    setWeeklySchedule(updatedWeeklySchedule)
-
-  }
-
-  const swapShift = (internToBeSwapped, shiftTime) => {
-
-    if (shiftTime === "morning") {
-      handleMoveToAfternoon(internToBeSwapped)
-    }
-    else if (shiftTime === "afternoon") {
-      handleMoveToMorning(internToBeSwapped)
-    }
-    else {
-      console.log("there is something wrong i can feel it")
-    }
-  }
-
-//function to count the number of interns in each department
   const countInternsInDepartments = (interns) => {
     const departmentCounts = {};
-  
     interns.forEach((eachIntern) => {
       const departmentName = eachIntern.department;
       if (departmentCounts[departmentName]) {
@@ -202,42 +229,19 @@ const WeeklySchedule = () => {
         departmentCounts[departmentName] = 1;
       }
     });
-  
     return departmentCounts;
   };
-  
 
   const getAssignedInternInfo = (intern, shiftTime) => {
-
     const assignedIntern = {
       "First Name": intern.student.firstName,
       "Last Name": intern.student.lastName,
       "Department": intern.department,
-      "Shift": shiftTime
-    }
-    return assignedIntern
-  }
-  const handleExportToCsv = () => {
+      "Shift": shiftTime,
+    };
+    return assignedIntern;
+  };
 
-    let shiftAssignedInterns = []
-
-    morningShiftInterns.forEach((morningIntern) => {
-      const assignedInternInfo = getAssignedInternInfo(morningIntern, "Morning")
-      shiftAssignedInterns.push(assignedInternInfo)
-    })
-
-    afternoonShiftInterns.forEach((afternoonIntern) => {
-      const assignedInternInfo = getAssignedInternInfo(afternoonIntern, "Afternoon")
-      shiftAssignedInterns.push(assignedInternInfo)
-    })
-
-    setAssignedShifts(shiftAssignedInterns)
-
-    const downloadedCsvFile = setTimeout(function () {
-      csvLinkElement.current.link.click()
-    }, 1000);
-
-  }
 
   return (
     <div className="min-h-screen  ">

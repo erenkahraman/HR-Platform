@@ -48,7 +48,7 @@ export default async function handler(req, res) {
       res.status(500).json(error);
     }
   }
-  if (method === "POST") {
+  else  if (method === "POST") {
     try {
       const weeklySchedule = await WeeklySchedule.create(req.body);
       res.status(201).json(weeklySchedule);
@@ -57,53 +57,25 @@ export default async function handler(req, res) {
       console.log(err);
     }
   }
-  if (method === "PUT") {
+  else if (method === "PUT") {
     try {
       console.log(req.body.params.scheduleGroup);
-      const weeklySchedule = await WeeklySchedule.updateOne(
+      const { scheduleGroup } = req.body.params;
+      const updatedWeeklySchedule = await WeeklySchedule.findOneAndUpdate(
+        { Group: scheduleGroup.Group },
         {
-          Group: req.body.params.scheduleGroup.Group,
+          Group: scheduleGroup.Group,
+          Schedule: scheduleGroup.Schedule,
         },
-        {
-          $set: {
-            Group: req.body.params.scheduleGroup.Group,
-            Schedule: {
-              monday: {
-                
-              },
-              tuesday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.tuesday.startTime,
-                endTime: req.body.params.scheduleGroup.Schedule.tuesday.endTime,
-              },
-              wednesday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.wednesday.startTime,
-                endTime:
-                  req.body.params.scheduleGroup.Schedule.wednesday.endTime,
-              },
-              thursday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.thursday.startTime,
-                endTime:
-                  req.body.params.scheduleGroup.Schedule.thursday.endTime,
-              },
-              friday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.friday.startTime,
-                endTime: req.body.params.scheduleGroup.Schedule.friday.endTime,
-              },
-            },
-          },
-        }
+        { new: true }
       );
 
-      res.status(201).json(weeklySchedule);
+      res.status(201).json(updatedWeeklySchedule);
     } catch (err) {
       res.status(500).json(err);
     }
   }
-  if (method === "DELETE") {
+  else if (method === "DELETE") {
     try {
       console.log(req.query.Group);
       const weeklySchedule = await WeeklySchedule.deleteOne({
