@@ -17,8 +17,9 @@ export default async function handler(req, res) {
   try {
     tokenCheckFunction(token);
   } catch (e) {
-    console.error(e);
+
     res.status(401).json("Unauthorized User");
+    console.error(e);
   }
   // Token CHECK
 
@@ -41,8 +42,7 @@ export default async function handler(req, res) {
           },
         ])
         .toArray();
-      console.log("lets see the interns here")
-      console.log(interns)
+
       res.status(200).json(interns);
     } catch (error) {
       res.status(500).json(error);

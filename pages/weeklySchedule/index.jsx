@@ -98,7 +98,7 @@ const WeeklySchedule = () => {
     const updatedWeeklySchedule = { ...weeklySchedule };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id
-    );
+);
     setWeeklySchedule(updatedWeeklySchedule);
   
     try {
