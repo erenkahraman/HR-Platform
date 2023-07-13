@@ -98,7 +98,7 @@ const WeeklySchedule = () => {
     const updatedWeeklySchedule = { ...weeklySchedule };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id
-    );
+);
     setWeeklySchedule(updatedWeeklySchedule);
   
     try {
@@ -509,18 +509,9 @@ const WeeklySchedule = () => {
   </div>
 </div>
         {/* End of Afternoon Shift People */}
-        <Button
-                                  className="move-button"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "black",
-                                    borderRadius: "10px",
-                                    padding: "8px 20px",
-                                    margin: "0px 5px",
-                                  }}
-                                >
-                                  Save
-                                </Button>
+        <div class="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
+          Click Export to CSV after Modifications
+        </div>
       </div>
     </div>
   );
