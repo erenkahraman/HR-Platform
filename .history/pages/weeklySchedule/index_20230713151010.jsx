@@ -472,42 +472,45 @@ const WeeklySchedule = () => {
           }}
         >
           <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
-  <div className="flex justify-center">
-    <table className="font-roboto w-full max-w-screen mx-auto">
-      <thead>
-        <tr>
-          {departmentNames.map((eachDepartmentName) => (
-            <th key={eachDepartmentName}>
-              {eachDepartmentName} ({countInternsInDepartments(afternoonShiftInterns)[eachDepartmentName] || 0})
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {departmentNames.map((eachDepartmentName) => (
-            <td key={eachDepartmentName}>
-              {afternoonShiftInterns.map((eachIntern, i) => {
-                if (eachIntern.department === eachDepartmentName) {
-                  return (
-                    <div key={i} className="flex items-center justify-between">
-                      <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                      <Button onClick={() => swapShift(eachIntern, "afternoon")}>
-                        <SwapHorizIcon style={{ marginRight: "5px" }} />
-                      </Button>
-                    </div>
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </td>
-          ))}
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+          <div className="flex justify-center">
+            {departmentNames.map((eachDepartmentName) => (
+              <table
+                key={eachDepartmentName}
+                className="font-roboto w-full max-w-screen mx-auto"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  padding: "12px 24px",
+                  gap: "10px",
+                  background: "#DCEBFC",
+                  borderRadius: "24px",
+                }}
+              >
+                <thead>
+                  <tr>
+                  <th>{eachDepartmentName} ({countInternsInDepartments(afternoonShiftInterns)[eachDepartmentName] || 0})</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {afternoonShiftInterns.map((eachIntern, i) => {
+                    return eachIntern.department !== eachDepartmentName ? null :
+                      (
+                        <tr key={i}>
+                          <td className="flex items-center justify-between">
+                            <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
+                            <Button onClick={() => swapShift(eachIntern, "afternoon")}>
+                              <SwapHorizIcon style={{ marginRight: "5px", }} />
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                  })}
+                </tbody>
+              </table>
+            ))}
+          </div>
+        </div>
         {/* End of Afternoon Shift People */}
         <Button
                                   className="move-button"

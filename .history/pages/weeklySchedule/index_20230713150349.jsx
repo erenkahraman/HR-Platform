@@ -414,15 +414,7 @@ const WeeklySchedule = () => {
         </div>
         {/* End of Table */}
         {/* Morning Shift People */}
-        <div
-          className="flex flex-col items-center justify-center gap-6 mt-4"
-          style={{
-            margin: "12px 26px",
-            padding: "12px 26px",
-            background: "#DCEBFC",
-            borderRadius: "24px",
-          }}
-        >
+        <div className="flex flex-col items-center justify-center gap-6 mt-4">
   <h2 className="text-center mb-4"><b>Morning Shift</b></h2>
   <div className="flex justify-center">
     <table className="font-roboto w-full max-w-screen mx-auto">
@@ -462,16 +454,8 @@ const WeeklySchedule = () => {
 </div>
         {/* End of Morning Shift People */}
         {/* Afternoon Shift People*/}
-        <div
-          className="flex flex-col items-center justify-center gap-6 mt-4"
-          style={{
-            margin: "12px 26px",
-            padding: "12px 26px",
-            background: "#DCEBFC",
-            borderRadius: "24px",
-          }}
-        >
-          <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
+        <div className="flex flex-col items-center justify-center gap-6 mt-4">
+  <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
   <div className="flex justify-center">
     <table className="font-roboto w-full max-w-screen mx-auto">
       <thead>

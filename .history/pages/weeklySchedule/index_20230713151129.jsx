@@ -462,16 +462,8 @@ const WeeklySchedule = () => {
 </div>
         {/* End of Morning Shift People */}
         {/* Afternoon Shift People*/}
-        <div
-          className="flex flex-col items-center justify-center gap-6 mt-4"
-          style={{
-            margin: "12px 26px",
-            padding: "12px 26px",
-            background: "#DCEBFC",
-            borderRadius: "24px",
-          }}
-        >
-          <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
+        <div className="flex flex-col items-center justify-center gap-6 mt-4">
+  <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
   <div className="flex justify-center">
     <table className="font-roboto w-full max-w-screen mx-auto">
       <thead>
@@ -490,7 +482,16 @@ const WeeklySchedule = () => {
               {afternoonShiftInterns.map((eachIntern, i) => {
                 if (eachIntern.department === eachDepartmentName) {
                   return (
-                    <div key={i} className="flex items-center justify-between">
+                    <div
+                      key={i}
+                      className="flex items-center justify-between"
+                      style={{
+                        border: "1px solid #000", // İstenilen border stilini tanımlayabilirsiniz
+                        borderRadius: "10px",
+                        padding: "8px",
+                        marginBottom: "5px",
+                      }}
+                    >
                       <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
                       <Button onClick={() => swapShift(eachIntern, "afternoon")}>
                         <SwapHorizIcon style={{ marginRight: "5px" }} />
