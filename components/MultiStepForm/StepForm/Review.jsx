@@ -70,7 +70,7 @@ export const Review = ({ formData, navigation }) => {
 export const RenderAccordion = ({ summary, details, go }) => (
   <Accordion>
     <AccordionSummary
-     
+
     >{summary}</AccordionSummary>
     <AccordionDetail>
       <div>

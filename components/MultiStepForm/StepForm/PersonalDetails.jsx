@@ -1,3 +1,4 @@
+import React from "react";
 import {useState, useMemo} from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -70,7 +71,7 @@ export const PersonalDetails = ({ formData, setForm, navigation }) => {
           />
         
           <TextField
-           error = {controlRegexError(lastName)}
+            error = {controlRegexError(lastName)}
             label="Last Name"
             name="lastName"
             value={lastName}
@@ -105,7 +106,6 @@ export const PersonalDetails = ({ formData, setForm, navigation }) => {
             disabled={controlSubmit()}
             variant="contained"
             fullWidth
-           
             style={{ marginTop: "1rem",backgroundColor: controlSubmit() ? "transparent": "#1565c0" }}
             onClick={() => navigation.next()}
           >

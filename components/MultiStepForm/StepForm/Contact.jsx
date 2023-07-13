@@ -1,3 +1,4 @@
+import React from "react";
 import {useState, useMemo} from "react";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
@@ -15,12 +16,12 @@ export const Contact = ({ formData, setForm, navigation }) => {
   const countriesList = useMemo(() => countryList().getData(), [])
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const emailRegex = new RegExp(emailPattern);
- 
+
 
   const controlRegexError = () => {
     return( email === "" || !emailRegex.test(email)? true : false)
   };
- 
+
   const handleChangeCountry = (country) => {
     formData.departCountry = country.label;
     setCountry(country);
@@ -66,7 +67,7 @@ export const Contact = ({ formData, setForm, navigation }) => {
         onChange={handleChange}
 />
     
-       <TextField
+      <TextField
         label="University"
         name="university"
         value={university}
