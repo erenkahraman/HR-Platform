@@ -21,13 +21,13 @@ const defaultData = {
     appliedOn: new Date()
   };
   
-  const steps = [
+const steps = [
     { id: "names" },
     { id: "contact" },
     { id: "appDetails" },
     { id: "review" },
     { id: "submit" },
-  ];
+];
 
 const MultiStepForm = () => {
   const [formData, setForm] = useForm(defaultData);
@@ -36,25 +36,25 @@ const MultiStepForm = () => {
     initialStep: 0,
   });
 
-  const props = { formData, setForm, navigation };
+const props = { formData, setForm, navigation };
 
-  switch (step.id) {
-    case "names":
-      return <PersonalDetails {...props} />;
-    case "appDetails":
-      return <AppDetails {...props} />;
-    case "contact":
-      return <Contact {...props} />;
-    case "review":
-      return <Review {...props} />;
-    case "submit":
-      return <Submit {...props} />;
-  }
+switch (step.id) {
+  case "names":
+    return <PersonalDetails {...props} />;
+  case "appDetails":
+    return <AppDetails {...props} />;
+  case "contact":
+    return <Contact {...props} />;
+  case "review":
+    return <Review {...props} />;
+  case "submit":
+    return <Submit {...props} />;
+}
 
-  return (
-    <div>
-      <h1>Multi step form</h1>
-    </div>
-  );
+return (
+  <div>
+    <h1>Multi step form</h1>
+  </div>
+);
 };
 export default MultiStepForm;
