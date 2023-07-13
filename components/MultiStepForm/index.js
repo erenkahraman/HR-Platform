@@ -1,1 +1,1 @@
-export {default as MultiStepForm} from '../MultiStepForm/MultiStepForm'
+export {default as MultiStepForm} from './MultiStepForm'
