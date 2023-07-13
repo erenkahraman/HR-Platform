@@ -29,7 +29,7 @@ const defaultData = {
     { id: "submit" },
   ];
 
- const MultiStepForm = () => {
+const MultiStepForm = () => {
   const [formData, setForm] = useForm(defaultData);
   const { step, navigation } = useStep({
     steps,
