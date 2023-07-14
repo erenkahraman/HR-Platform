@@ -227,6 +227,19 @@ const WeeklySchedule = () => {
     fetchWeeklySchedule();
   }, []);
 
+  const swapShift = (internToBeSwapped, shiftTime) => {
+
+    if (shiftTime === "morning") {
+      handleMoveToAfternoon(internToBeSwapped)
+    }
+    else if (shiftTime === "afternoon") {
+      handleMoveToMorning(internToBeSwapped)
+    }
+    else {
+      console.log("there is something wrong i can feel it")
+    }
+  }
+
   const countInternsInDepartments = (interns) => {
     const departmentCounts = {};
     interns.forEach((eachIntern) => {
