@@ -51,19 +51,16 @@ const FeedSchedule = () => {
     asyncRequest();
   }, []);
 
-  const swapShift = (internToBeSwapped, shiftTime) => {
-
-    if (shiftTime === "morning") {
-      handleMoveToAfternoon(internToBeSwapped)
-    }
-    else if (shiftTime === "afternoon") {
-      handleMoveToMorning(internToBeSwapped)
-    }
-    else {
-      console.log("there is something wrong i can feel it")
-    }
-  }
+  const swapShift = (departmentName, index) => {
+    const newWeeklySchedule = { ...weeklySchedule };
+    const department = newWeeklySchedule[departmentName];
+    const temp = department[index];
+    department[index] = department[index + 1];
+    department[index + 1] = temp;
+    setWeeklySchedule(newWeeklySchedule);
+  };
   
+
   const read = () => {
     confirmAlert({
       title: <strong>Schedule</strong>,
