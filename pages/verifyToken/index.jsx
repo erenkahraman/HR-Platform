@@ -1,6 +1,6 @@
+import React from "react";
 import { parseCookies } from "nookies";
 import axios from "axios";
-import { useState } from "react";
 
 export async function app(value) {
   const cookies = parseCookies();
@@ -32,3 +32,10 @@ export async function app(value) {
     return false;
   }
 }
+
+const VerifyTokenPage = () => {
+  // Your verifyToken logic here
+  return <div>Verify Token Page</div>;
+};
+
+export default VerifyTokenPage;

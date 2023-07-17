@@ -1,8 +1,11 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React from "react";
 import MultiStepForm from "../../components/MultiStepForm/MultiStepForm";
 
-export default function ApplicantsNew() {
-	return (
+
+const ApplicantsNew = () => {
+    return (
         <MultiStepForm></MultiStepForm>
     );
-}
+};
+
+export default ApplicantsNew;

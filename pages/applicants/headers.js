@@ -57,5 +57,7 @@ export const IDonedata = [
   { month: "Nov", InDValue: 40, IdValue: 40 },
   { month: "Dec", InDValue: 18, IdValue: 38 },
 ];
-
-export default listHeaders;
+const HeadersPage = () => {
+  return <div>List Headers Page</div>;
+};
+export default HeadersPage;
