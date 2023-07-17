@@ -59,7 +59,7 @@ export const Contact = ({ formData, setForm, navigation }) => {
         helperText={controlRegexHelper()}
         fullWidth
       />
-     
+
       <label>Phone number </label><br/>
       <PhoneInput
         country={'us'}
