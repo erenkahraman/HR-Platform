@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 
-const listHeaders = [
+export const listHeaders = [
   { label: "First name", key: "student.firstName" },
   { label: "Last name", key: "student.lastName" },
   { label: "Nationality", key: "student.nationality" },
