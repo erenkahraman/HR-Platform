@@ -4,9 +4,9 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
@@ -96,9 +96,9 @@ export const PersonalDetails = ({ formData, setForm, navigation }) => {
             </RadioGroup>
             <br></br>
             <FormLabel >Date of birth</FormLabel>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker value={value} onChange={(newValue) => setValue(newValue)} />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
             <br/>
             <FormLabel >Nationality</FormLabel>
             <Select options={countriesList}  value={country} onChange={handleChangeCountry} />
