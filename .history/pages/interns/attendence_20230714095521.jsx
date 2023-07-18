@@ -128,14 +128,33 @@ function Attendence() {
       },
     }));
 
+  //   try {
+  //    await axios.put(`/api/intern`, refreshedData);
+  //   localStorage.setItem("data", JSON.stringify(refreshedData));
+  //   setData(refreshedData);
+  //   setDraftedInternUpdates(refreshedData);
+  //   setUpdatedInterns(refreshedData);
+  //   setShowConfirmation(false);
+  // } catch (error) {
+  //   console.error(error);
+  // }
+  // };
+  async function updateInternData(refreshedData) {
+    try {
+      await axios.put(`/api/intern`, refreshedData);
+      localStorage.setItem("data", JSON.stringify(refreshedData));
+      setData(refreshedData);
+      setDraftedInternUpdates(refreshedData);
+      setUpdatedInterns(refreshedData);
+      setShowConfirmation(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
 
 
-    
-    setData(refreshedData);
-    setDraftedInternUpdates(refreshedData);
-    setUpdatedInterns(refreshedData);
-    setShowConfirmation(false);
-  };
+
   const handleCancelRefresh = () => {
     setShowConfirmation(false);
   };

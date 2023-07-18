@@ -130,7 +130,6 @@ function Attendence() {
 
 
 
-    
     setData(refreshedData);
     setDraftedInternUpdates(refreshedData);
     setUpdatedInterns(refreshedData);

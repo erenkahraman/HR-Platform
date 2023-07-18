@@ -128,18 +128,7 @@ function Attendence() {
       },
     }));
 
-
-
-    
-    setData(refreshedData);
-    setDraftedInternUpdates(refreshedData);
-    setUpdatedInterns(refreshedData);
-    setShowConfirmation(false);
-  };
-  const handleCancelRefresh = () => {
-    setShowConfirmation(false);
-  };
-
+  
 
 
   const fetchData = async () => {

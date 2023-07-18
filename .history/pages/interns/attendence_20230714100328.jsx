@@ -128,18 +128,19 @@ function Attendence() {
       },
     }));
 
-
-
-    
-    setData(refreshedData);
-    setDraftedInternUpdates(refreshedData);
-    setUpdatedInterns(refreshedData);
-    setShowConfirmation(false);
+    async function updateInternData(refreshedData) {
+      try {
+        await axios.put(`/api/intern`, refreshedData);
+        localStorage.setItem("data", JSON.stringify(refreshedData));
+        setData(refreshedData);
+        setDraftedInternUpdates(refreshedData);
+        setUpdatedInterns(refreshedData);
+        setShowConfirmation(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
-  const handleCancelRefresh = () => {
-    setShowConfirmation(false);
-  };
-
 
 
   const fetchData = async () => {

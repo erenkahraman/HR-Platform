@@ -129,17 +129,28 @@ function Attendence() {
     }));
 
 
+    async function refreshTable() {
+      try {
+        setRefreshing(true);
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
 
-    
-    setData(refreshedData);
-    setDraftedInternUpdates(refreshedData);
-    setUpdatedInterns(refreshedData);
-    setShowConfirmation(false);
+        await axios.put(`/api/intern`, { token: token, interns: refreshedData }, config);
+        setRefreshing(false);
+        alert("Table refreshed successfully!");
+        window.location.reload()
+      }
+      catch (e) {
+        console.error(e);
+        setRefreshing(false);
+        alert("An error occurred while refreshing the table. Please try again later.");
+      }
+    }
+    refreshTable();
   };
-  const handleCancelRefresh = () => {
-    setShowConfirmation(false);
-  };
-
 
 
   const fetchData = async () => {
