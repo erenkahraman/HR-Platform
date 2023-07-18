@@ -274,7 +274,7 @@ const WeeklySchedule = () => {
               </h1>
             </div>
             <div>
-              <CSVLink ref={csvLinkElement} data={assignedShifts} fileName={"assigned-shifts.csv"}></CSVLink>
+              <CSVLink ref={csvLinkElement} data={assignedShifts} filename={"assigned-shifts.csv"}></CSVLink>
               <Button
                 size="medium"
                 color="primary"
@@ -527,7 +527,7 @@ const WeeklySchedule = () => {
           </div>
         </div>
         {/* End of Afternoon Shift People */}
-        <div class="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
+        <div className="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
           Click Export to CSV after Modifications
         </div>
       </div>
