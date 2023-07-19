@@ -521,7 +521,7 @@ const WeeklySchedule = () => {
   </div>
 </div>
         {/* End of Afternoon Shift People */}
-        <div class="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
+        <div className="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
           Click Export to CSV after Modifications
         </div>
       </div>
