@@ -57,7 +57,7 @@ export default function ApplicantsList() {
 	}
 
 	return (
-		<section Name="relative w-full">
+		<section name="relative w-full">
 			<div className="w-full mb-12">
 				<div className="relative flex flex-col  min-w-0 break-words w-full mb-6 shadow-lg rounded">
 					{/* Title Container */}

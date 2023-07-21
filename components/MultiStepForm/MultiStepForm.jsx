@@ -1,10 +1,10 @@
 import React from "react";
 import { useForm, useStep } from "react-hooks-helper";
-import { PersonalDetails } from "./stepForm/PersonalDetails";
-import { AppDetails } from "./stepForm/AppDetails";
-import { Contact } from "./stepForm/Contact";
-import { Review } from "./stepForm/Review";
-import { Submit } from "./stepForm/Submit";
+import { PersonalDetails } from "./PersonalDetails";
+import { AppDetails } from "./AppDetails";
+import { Contact } from "./Contact";
+import { Review } from "./Review";
+import { Submit } from "./Submit";
 // import "./MultiStepForm.css";
 
 

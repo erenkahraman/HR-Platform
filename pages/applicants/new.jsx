@@ -7,18 +7,21 @@ import mongoose from "mongoose";
 import { Button } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DatePicker } from "@mui/x-date-pickers";
 import { TextField } from "@mui/material";
 import axios from "axios";
 import cookie from "js-cookie";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import LoadingState from "../../components/Utils/LoadingState";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'; // Import the stylesheet for react-datepicker
 
-export default function ApplicantsNew() {
+
+const NewApplicants = () => {
   // get dprtmnts from DB
   const [dbDepartment, setDbDepartment] = useState();
   //Loading model useState
@@ -78,7 +81,6 @@ export default function ApplicantsNew() {
     "Acceptance Letter",
     "Interview Record",
     "Passport"
-   
   ];
 
   
@@ -437,6 +439,19 @@ export default function ApplicantsNew() {
                     <div className="flex flex-col gap-2">
                       <label className="block text-sm">Date of Birth</label>
                       <Controller
+                          control={control}
+                          name="student.dateOfBirth"
+                          rules={{ required: "Please, enter birth date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                      />
+                      {/* <Controller
                         control={control}
                         name="student.dateOfBirth"
                         rules={{
@@ -453,13 +468,11 @@ export default function ApplicantsNew() {
                                 onChange(date?.isValid ? date : null);
                                 console.log(date)
                               }}
-                              renderInput={(params) => (
-                                <TextField {...params} />
-                              )}
+                              // renderInput={(params) => <TextField {...params} />}
                             />
                           </LocalizationProvider>
                         )}
-                      />
+                      /> */}
                       <p className="text-sm font-thin text-red-600">
                         {errors.student?.dateOfBirth?.message}
                       </p>
@@ -477,7 +490,7 @@ export default function ApplicantsNew() {
                         className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
                         <option value="">Select...</option>
-                        {countries.map((country) => (
+                        {countries.map((country,index) => (
                           <option key={index}>{country}</option>
                         ))}
                       </select>
@@ -572,7 +585,7 @@ export default function ApplicantsNew() {
                         className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
                         <option value="">Select...</option>
-                        {countries.map((country) => (
+                        {countries.map((country, index) => (
                           <option key={index}>{country}</option>
                         ))}
                       </select>
@@ -598,6 +611,19 @@ export default function ApplicantsNew() {
                         <Controller
                           control={control}
                           name="student.applicant.applicationDate"
+                          rules={{ required: "Please, enter birth date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
+                          control={control}
+                          name="student.applicant.applicationDate"
                           rules={{
                             required: "Please, enter the application date",
                           }}
@@ -610,13 +636,11 @@ export default function ApplicantsNew() {
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
+                                // renderInput={(params) => <TextField {...params} />}
                               />
                             </LocalizationProvider>
                           )}
-                        />
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
                           {errors.student?.applicant?.applicationDate?.message}
                         </p>
@@ -628,6 +652,19 @@ export default function ApplicantsNew() {
                           HR Interview Date
                         </label>
                         <Controller
+                          control={control}
+                          name="student.applicant.hrInterviewDate"
+                          rules={{ required: "Please, enter HR interview date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
                           control={control}
                           name="student.applicant.hrInterviewDate"
                           rules={{
@@ -642,13 +679,11 @@ export default function ApplicantsNew() {
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
+                                // renderInput={(params) => <TextField {...params} />}
                               />
                             </LocalizationProvider>
                           )}
-                        />
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
                           {errors.student?.applicant?.hrInterviewDate?.message}
                         </p>
@@ -666,27 +701,38 @@ export default function ApplicantsNew() {
                         <Controller
                           control={control}
                           name="student.applicant.ceoInterviewDate"
+                          rules={{ required: "Please, enter CEO interview date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
+                          control={control}
+                          name="student.applicant.ceoInterviewDate"
                           rules={{
                             required: "Please, enter the CEO interview date",
                           }}
-                          render={({ field: { onChange, value } }) => (
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                              disableMaskedInput
-                                value={value || null}
-                                inputFormat="DD/MM/YYYY"
-                                onChange={(date) => {
-                                  onChange(date?.isValid ? date : null);
-                                }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
-                              />
-                            </LocalizationProvider>
-                          )}
-                        />
+                          // render={({ field: { onChange, value } }) => (
+                          //   <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          //     <DatePicker
+                          //     disableMaskedInput
+                          //       value={value || null}
+                          //       inputFormat="DD/MM/YYYY"
+                          //       onChange={(date) => {
+                          //         onChange(date?.isValid ? date : null);
+                          //       }}
+                          //       // renderInput={(params) => <TextField {...params} />}
+                          //     />
+                          //   </LocalizationProvider>
+                          // )}
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
-                          {errors.student?.applicant?.ceoInterviewDate?.message}
+                          {errors.student?.applicant?.ceoInterviewDate?.message}  
                         </p>
                       </div>
                     </div>
@@ -792,25 +838,36 @@ export default function ApplicantsNew() {
                         <Controller
                           control={control}
                           name="student.applicant.startDate"
+                          rules={{ required: "Please, enter the application date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
+                          control={control}
+                          name="student.applicant.startDate"
                           rules={{
                             required: "Please, enter the application date",
                           }}
-                          render={({ field: { onChange, value } }) => (
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                              disableMaskedInput
-                                value={value || null}
-                                inputFormat="DD/MM/YYYY"
-                                onChange={(date) => {
-                                  onChange(date?.isValid ? date : null);
-                                }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
-                              />
-                            </LocalizationProvider>
-                          )}
-                        />
+                          // render={({ field: { onChange, value } }) => (
+                          //   <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          //     <DatePicker
+                          //       disableMaskedInput
+                          //       value={value || null}
+                          //       inputFormat="DD/MM/YYYY"
+                          //       onChange={(date) => {
+                          //         onChange(date?.isValid ? date : null);
+                          //       }}
+                          //       // renderInput={(params) => <TextField {...params} />}
+                          //     />
+                          //   </LocalizationProvider>
+                          // )}
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
                           {errors.student?.applicant?.startDate?.message}
                         </p>
@@ -827,25 +884,36 @@ export default function ApplicantsNew() {
                         <Controller
                           control={control}
                           name="student.applicant.endDate"
+                          rules={{ required: "Please, enter the application date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
+                          control={control}
+                          name="student.applicant.endDate"
                           rules={{
                             required: "Please, enter the end date",
                           }}
-                          render={({ field: { onChange, value } }) => (
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                              disableMaskedInput
-                                value={value || null}
-                                inputFormat="DD/MM/YYYY"
-                                onChange={(date) => {
-                                  onChange(date?.isValid ? date : null);
-                                }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
-                              />
-                            </LocalizationProvider>
-                          )}
-                        />
+                          // render={({ field: { onChange, value } }) => (
+                          //   <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          //     <DatePicker
+                          //     disableMaskedInput
+                          //       value={value || null}
+                          //       inputFormat="DD/MM/YYYY"
+                          //       onChange={(date) => {
+                          //         onChange(date?.isValid ? date : null);
+                          //       }}
+                          //       // renderInput={(params) => <TextField {...params} />}
+                          //     />
+                          //   </LocalizationProvider>
+                          // )}
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
                           {errors.student?.applicant?.endDate?.message}
                         </p>
@@ -1238,3 +1306,4 @@ export default function ApplicantsNew() {
     </div>
   );
 }
+export default NewApplicants
