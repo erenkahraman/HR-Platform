@@ -781,7 +781,6 @@ const NewApplicants = () => {
                         <label htmlFor="applied-on" className="block text-sm">
                           Start Date
                         </label>
-                        <form onSubmit={handleSubmit(onSubmit)}>
                           <Controller
                             control={control}
                             name="student.applicant.startDate"
@@ -796,7 +795,6 @@ const NewApplicants = () => {
                             )}
                           />
                           <button type="submit">Submit</button>
-                        </form>
                         {/* <Controller
                           control={control}
                           name="student.applicant.startDate"
