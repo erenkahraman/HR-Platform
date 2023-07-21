@@ -18,6 +18,7 @@ import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 
+
 const NewApplicants = () => {
   // get dprtmnts from DB
   const [dbDepartment, setDbDepartment] = useState();
@@ -781,22 +782,21 @@ const NewApplicants = () => {
                           Start Date
                         </label>
                         <form onSubmit={handleSubmit(onSubmit)}>
-                        <Controller
-                          control={control}
-                          name="student.applicant.startDate"
-                          rules={{ required: "Please, enter the application date" }}
-                          render={({ field }) => (
-                            <input
-                              type="text"
-                              name="student.applicant.startDate"
-                              value={field.value || ''}
-                              onChange={(e) => {
-                                setValue('student.applicant.startDate', e.target.value); // "setValue" ile form değerini güncelleyin
-                                field.onChange(e); // "field.onChange" ile controller değerini güncelleyin
-                              }}
-                            />
-                          )}
-                        />
+                          <Controller
+                            control={control}
+                            name="student.applicant.startDate"
+                            rules={{ required: "Please, enter the application date" }}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                name={field.name}
+                                value={field.value || ''}
+                                onChange={field.onChange}
+                              />
+                            )}
+                          />
+                          <button type="submit">Submit</button>
+                        </form>
                         {/* <Controller
                           control={control}
                           name="student.applicant.startDate"
