@@ -1,26 +1,35 @@
 import { getMongoDb } from "../../../util/mongodb";
 import WeeklySchedule from "../../../models/weeklySchedule";
 import dbConnect from "../../../util/mongodb";
-import { tokenCheckFunction } from "../auth/tokenCheck";
 import Student from "../../../models/student";
+const { tokenCheckFunction } = require("../auth/tokenCheck");
 
 export default async function handler(req, res) {
   const { method } = req;
   const db = await getMongoDb();
   await dbConnect();
+  console.log("Token Value weeklyschedule index =", req.query.token);
   // Token CHECK
-
-    console.log("Token Value",req.query.token)
   try {
-    tokenCheckFunction(req.query.token);
-  } catch (e) {
-    console.error(e);
+    await tokenCheckFunction(req.query.token);
+  } catch (error) {
+    console.error(error);
     res.status(401).json("Unauthorized User");
+    return;
   }
   // Token CHECK
 
   if (method === "GET") {
     try {
+      const token = req.query.token;
+      if (!token) {
+        res.status(401).json("Unauthorized User");
+        return;
+      }
+      tokenCheckFunction(token);
+      const db = await getMongoDb();
+      await dbConnect();
+      
       const interns = await db
         .collection("interns")
         .aggregate([
@@ -64,31 +73,19 @@ export default async function handler(req, res) {
             Group: req.body.params.scheduleGroup.Group,
             Schedule: {
               monday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.monday.startTime,
-                endTime: req.body.params.scheduleGroup.Schedule.monday.endTime,
+                shift: req.body.params.scheduleGroup.Schedule.shift,
               },
               tuesday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.tuesday.startTime,
-                endTime: req.body.params.scheduleGroup.Schedule.tuesday.endTime,
+                shift: req.body.params.scheduleGroup.Schedule.shift,
               },
               wednesday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.wednesday.startTime,
-                endTime:
-                  req.body.params.scheduleGroup.Schedule.wednesday.endTime,
+                shift: req.body.params.scheduleGroup.Schedule.shift,
               },
               thursday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.thursday.startTime,
-                endTime:
-                  req.body.params.scheduleGroup.Schedule.thursday.endTime,
+                shift: req.body.params.scheduleGroup.Schedule.shift,
               },
               friday: {
-                startTime:
-                  req.body.params.scheduleGroup.Schedule.friday.startTime,
-                endTime: req.body.params.scheduleGroup.Schedule.friday.endTime,
+                shift: req.body.params.scheduleGroup.Schedule.shift,
               },
             },
           },

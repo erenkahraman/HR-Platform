@@ -16,10 +16,13 @@ export default async (req, res) => {
 };
 function tokenCheckFunction(token) {
   try {
+    console.log("tokencheck function token=", token);
     var decoded = jwt.verify(token, process.env.JWT_SECRET);
     return true;
   } catch (error) {
-    throw error;
+    throw new Error("Invalid token");
   }
 }
+
 module.exports.tokenCheckFunction = tokenCheckFunction;
+

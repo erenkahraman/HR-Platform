@@ -102,7 +102,7 @@ const WeeklySchedule = () => {
     setWeeklySchedule(updatedWeeklySchedule);
   
     try {
-      await axios.put(`/api/weeklySchedule`, {
+      await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
             Group: selectedDepartment,
@@ -150,7 +150,7 @@ const WeeklySchedule = () => {
     setWeeklySchedule(updatedWeeklySchedule);
   
     try {
-      await axios.put(`/api/weeklySchedule`, {
+      await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
             Group: selectedDepartment,
@@ -198,16 +198,25 @@ const WeeklySchedule = () => {
     const fetchWeeklySchedule = async () => {
       try {
         handleCurrentWeekDateRange();
+
+        if (!token) {
+          console.log("Token Expired! error function: fetchweeklyschedule");
+          return;
+        }
+        else{
+          console.log("Token value from fetchweeklyschedule",token)
+        }
+
         const config = {
           headers: {
             "Content-Type": "application/json",
           },
+          params: {
+            token: token,
+          },
         };
-        const { data } = await axios.get(
-          `/api/weeklySchedule`,
-          { params: { token: token } },
-          config
-        );
+        const { data } = await axios.get(`/api/weeklySchedule`, config);
+
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
