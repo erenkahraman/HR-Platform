@@ -438,6 +438,19 @@ const NewApplicants = () => {
                     {/* Date of Birth */}
                     <div className="flex flex-col gap-2">
                       <label className="block text-sm">Date of Birth</label>
+                      <Controller
+                          control={control}
+                          name="student.dateOfBirth"
+                          rules={{ required: "Please, enter birth date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                      />
                       {/* <Controller
                         control={control}
                         name="student.dateOfBirth"
@@ -595,6 +608,19 @@ const NewApplicants = () => {
                         <label htmlFor="applied-on" className="block text-sm">
                           Applied on
                         </label>
+                        <Controller
+                          control={control}
+                          name="student.applicant.applicationDate"
+                          rules={{ required: "Please, enter birth date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
                         {/* <Controller
                           control={control}
                           name="student.applicant.applicationDate"
@@ -625,6 +651,19 @@ const NewApplicants = () => {
                         <label htmlFor="applied-on" className="block text-sm">
                           HR Interview Date
                         </label>
+                        <Controller
+                          control={control}
+                          name="student.applicant.hrInterviewDate"
+                          rules={{ required: "Please, enter HR interview date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
                         {/* <Controller
                           control={control}
                           name="student.applicant.hrInterviewDate"
@@ -659,6 +698,19 @@ const NewApplicants = () => {
                         >
                           CEO Interview Date
                         </label>
+                        <Controller
+                          control={control}
+                          name="student.applicant.ceoInterviewDate"
+                          rules={{ required: "Please, enter CEO interview date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
                         {/* <Controller
                           control={control}
                           name="student.applicant.ceoInterviewDate"
@@ -829,6 +881,19 @@ const NewApplicants = () => {
                         >
                           End Date
                         </label>
+                        <Controller
+                          control={control}
+                          name="student.applicant.endDate"
+                          rules={{ required: "Please, enter the application date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
                         {/* <Controller
                           control={control}
                           name="student.applicant.endDate"
