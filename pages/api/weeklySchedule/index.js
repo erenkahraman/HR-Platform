@@ -8,10 +8,11 @@ export default async function handler(req, res) {
   const { method } = req;
   const db = await getMongoDb();
   await dbConnect();
-  console.log("Token Value weeklyschedule index =", req.query.token);
+  const { token } = req.query;
+  console.log("Token Value weeklyschedule index =", token);
   // Token CHECK
   try {
-    await tokenCheckFunction(req.query.token);
+    await tokenCheckFunction(token);
   } catch (error) {
     console.error(error);
     res.status(401).json("Unauthorized User");
