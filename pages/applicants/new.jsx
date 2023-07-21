@@ -17,6 +17,8 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'; // Import the stylesheet for react-datepicker
 
 
 const NewApplicants = () => {
@@ -781,20 +783,19 @@ const NewApplicants = () => {
                         <label htmlFor="applied-on" className="block text-sm">
                           Start Date
                         </label>
-                          <Controller
-                            control={control}
-                            name="student.applicant.startDate"
-                            rules={{ required: "Please, enter the application date" }}
-                            render={({ field }) => (
-                              <input
-                                type="text"
-                                name={field.name}
-                                value={field.value || ''}
-                                onChange={field.onChange}
-                              />
-                            )}
-                          />
-                          <button type="submit">Submit</button>
+                        <Controller
+                          control={control}
+                          name="student.applicant.startDate"
+                          rules={{ required: "Please, enter the application date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
                         {/* <Controller
                           control={control}
                           name="student.applicant.startDate"
