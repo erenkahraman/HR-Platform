@@ -11,7 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TextField } from "@mui/material";
 import axios from "axios";
 import cookie from "js-cookie";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import LoadingState from "../../components/Utils/LoadingState";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
@@ -780,6 +780,23 @@ const NewApplicants = () => {
                         <label htmlFor="applied-on" className="block text-sm">
                           Start Date
                         </label>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                        <Controller
+                          control={control}
+                          name="student.applicant.startDate"
+                          rules={{ required: "Please, enter the application date" }}
+                          render={({ field }) => (
+                            <input
+                              type="text"
+                              name="student.applicant.startDate"
+                              value={field.value || ''}
+                              onChange={(e) => {
+                                setValue('student.applicant.startDate', e.target.value); // "setValue" ile form değerini güncelleyin
+                                field.onChange(e); // "field.onChange" ile controller değerini güncelleyin
+                              }}
+                            />
+                          )}
+                        />
                         {/* <Controller
                           control={control}
                           name="student.applicant.startDate"
