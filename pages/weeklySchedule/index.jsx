@@ -237,18 +237,6 @@ const WeeklySchedule = () => {
     fetchWeeklySchedule();
   }, []);
 
-  const countInternsInDepartments = (interns) => {
-    const departmentCounts = {};
-    interns.forEach((eachIntern) => {
-      const departmentName = eachIntern.department;
-      if (departmentCounts[departmentName]) {
-        departmentCounts[departmentName]++;
-      } else {
-        departmentCounts[departmentName] = 1;
-      }
-    });
-    return departmentCounts;
-  };
   const swapShift = (internToBeSwapped, shiftTime) => {
 
     if (shiftTime === "morning") {
@@ -261,6 +249,19 @@ const WeeklySchedule = () => {
       console.log("there is something wrong i can feel it")
     }
   }
+
+  const countInternsInDepartments = (interns) => {
+    const departmentCounts = {};
+    interns.forEach((eachIntern) => {
+      const departmentName = eachIntern.department;
+      if (departmentCounts[departmentName]) {
+        departmentCounts[departmentName]++;
+      } else {
+        departmentCounts[departmentName] = 1;
+      }
+    });
+    return departmentCounts;
+  };
 
   const getAssignedInternInfo = (intern, shiftTime) => {
     const assignedIntern = {
