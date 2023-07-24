@@ -9,7 +9,6 @@ export default async function handler(req, res) {
   const db = await getMongoDb();
   await dbConnect();
   const { token } = req.query;
-  console.log("Token Value weeklyschedule index =", token);
   // Token CHECK
   try {
     await tokenCheckFunction(token);
