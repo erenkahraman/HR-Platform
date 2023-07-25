@@ -539,7 +539,13 @@ const WeeklySchedule = () => {
         </div>
         {/* End of Afternoon Shift People */}
         <div className="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
-          Click Export to CSV after Modifications
+        {departmentNames.map((eachDepartmentName) => (
+                <div key={eachDepartmentName}>
+                  <br />
+                  <br />
+                  {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
+                </div>
+              ))}
         </div>
       </div>
     </div>

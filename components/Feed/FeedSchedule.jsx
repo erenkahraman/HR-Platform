@@ -12,6 +12,7 @@ const FeedSchedule = () => {
   const [afternoonDepartments, setAfternoonDepartments] = useState([]);
 
   const token = cookie.get("token");
+  // console.log("received cookies from FeedSchedule");
 
   useEffect(() => {
     const asyncRequest = async () => {

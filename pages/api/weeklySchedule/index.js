@@ -68,31 +68,28 @@ export default async function handler(req, res) {
       const updatedWeeklySchedule = await WeeklySchedule.findOneAndUpdate(
         { Group: scheduleGroup.Group },
         {
-          Group: scheduleGroup.Group,
-          Schedule: scheduleGroup.Schedule,
-        },
-        {
           $set: {
-            Group: req.body.params.scheduleGroup.Group,
+            Group: scheduleGroup.Group,
             Schedule: {
               monday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift: scheduleGroup.Schedule.monday.shift,
               },
               tuesday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift: scheduleGroup.Schedule.tuesday.shift,
               },
               wednesday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift:  scheduleGroup.Schedule.wednesday.shift,
               },
               thursday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift:  scheduleGroup.Schedule.thursday.shift,
               },
               friday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift:  scheduleGroup.Schedule.friday.shift,
               },
             },
           },
-        }
+        },
+        {new:true, upsert: true}
       );
 
       res.status(201).json(updatedWeeklySchedule);
