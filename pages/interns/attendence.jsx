@@ -125,11 +125,12 @@ function Attendence() {
             dates: [],
           },
         },
+        
       },
     }));
 
 
-
+    saveToDatabase(refreshedData);
     
     setData(refreshedData);
     setDraftedInternUpdates(refreshedData);
@@ -140,7 +141,35 @@ function Attendence() {
     setShowConfirmation(false);
   };
 
-
+  const saveToDatabase = async (dataList) => {
+    debugger;
+    try {
+      for (const data of dataList) {
+        // Her bir veri öğesine token ekliyoruz
+        data.intern.token = token;
+  
+        const JSONData = JSON.stringify(data.intern);
+        const endpoint = `/api/intern/${data.intern._id}`; 
+        const options = {
+          method: "PUT", 
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSONData,
+        };
+  
+        // PUT isteği ile verileri belirtilen endpoint'e gönderiyoruz
+        const response = await fetch(endpoint, options);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        console.log("Veriler basariyla sunucuya gönderildi!");
+      }
+    } catch (error) {
+      console.error("Hata: Veriler sunucuya gönderilemedi.", error);
+    }
+  };
 
   const fetchData = async () => {
     try {
@@ -279,7 +308,7 @@ function Attendence() {
       "Excused Leave": student.intern.attendance.excusedLeave.count,
       "Late": student.intern.attendance.late.count,
       "Present": student.intern.attendance.present.count,
-      "Sick": student.intern.attendance.sick.count,
+      "Sick": student.intern.attendance.sick.count, 
       "Unexcused Leave": student.intern.attendance.unexcusedleave.count,
     }
     return attendanceInfo
@@ -326,9 +355,7 @@ function Attendence() {
                   headers: {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
-
                   },
-
                   body: JSONintern,
                 };
                 await fetch(endpoint, options);
@@ -352,9 +379,6 @@ function Attendence() {
   };
 
   const saveAll = () => {
-
-
-
     setLoading(true);
     const asyncRequest = async () => {
       try {

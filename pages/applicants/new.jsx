@@ -1,6 +1,6 @@
 import { DocumentReview } from "../../components/DocumentReview";
 import countryList from "react-select-country-list";
-import { useState, useMemo, useEffect } from "react";
+import React,{ useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import Popup from "reactjs-popup";
 import mongoose from "mongoose";
@@ -508,7 +508,7 @@ const NewApplicants = () => {
                       <label htmlFor="email" className="block text-sm">
                         Email
                       </label>
-                      <controller
+                      <Controller
                         control={control}
                         name="student.email"
                         render={({ field }) => (
