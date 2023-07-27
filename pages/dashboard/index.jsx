@@ -474,7 +474,7 @@ const Dashboard = () => {
             {/* Daily Reminder Title*/}
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">
-                This Month's Birthdays 🥳🍰🎉
+                This Months Birthdays 🥳🍰🎉
               </div>
 
               <a

@@ -40,7 +40,7 @@ const Feed = () => {
 
   const read = (item) => {
     confirmAlert({
-      title: <strong>What's New</strong>,
+      title: <strong>Whats New</strong>,
       message:
         <div className="h-96 overflow-y-scroll ">
           <p>

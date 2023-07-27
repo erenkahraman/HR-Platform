@@ -1,30 +1,35 @@
 import { getMongoDb } from "../../../util/mongodb";
 import WeeklySchedule from "../../../models/weeklySchedule";
 import dbConnect from "../../../util/mongodb";
-import { tokenCheckFunction } from "../auth/tokenCheck";
 import Student from "../../../models/student";
+const { tokenCheckFunction } = require("../auth/tokenCheck");
 
 export default async function handler(req, res) {
   const { method } = req;
   const db = await getMongoDb();
   await dbConnect();
+  const { token } = req.query;
   // Token CHECK
-  let token = req.query.token
-    ? req.query.token
-    : req.body.token
-    ? req.body.token
-    : "";
   try {
-    tokenCheckFunction(token);
-  } catch (e) {
-
+    await tokenCheckFunction(token);
+  } catch (error) {
+    console.error(error);
     res.status(401).json("Unauthorized User");
-    console.error(e);
+    return;
   }
   // Token CHECK
 
   if (method === "GET") {
     try {
+      const token = req.query.token;
+      if (!token) {
+        res.status(401).json("Unauthorized User");
+        return;
+      }
+      tokenCheckFunction(token);
+      const db = await getMongoDb();
+      await dbConnect();
+      
       const interns = await db
         .collection("interns")
         .aggregate([
@@ -42,7 +47,6 @@ export default async function handler(req, res) {
           },
         ])
         .toArray();
-
       res.status(200).json(interns);
     } catch (error) {
       res.status(500).json(error);
@@ -67,7 +71,28 @@ export default async function handler(req, res) {
           Group: scheduleGroup.Group,
           Schedule: scheduleGroup.Schedule,
         },
-        { new: true }
+        {
+          $set: {
+            Group: req.body.params.scheduleGroup.Group,
+            Schedule: {
+              monday: {
+                shift: req.body.params.scheduleGroup.Schedule.shift,
+              },
+              tuesday: {
+                shift: req.body.params.scheduleGroup.Schedule.shift,
+              },
+              wednesday: {
+                shift: req.body.params.scheduleGroup.Schedule.shift,
+              },
+              thursday: {
+                shift: req.body.params.scheduleGroup.Schedule.shift,
+              },
+              friday: {
+                shift: req.body.params.scheduleGroup.Schedule.shift,
+              },
+            },
+          },
+        }
       );
 
       res.status(201).json(updatedWeeklySchedule);

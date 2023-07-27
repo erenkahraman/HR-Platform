@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BsPeopleFill } from "react-icons/bs";
 import EditIcon from "@mui/icons-material/Edit";
-// import Modal4 from "../../components/Modal/Modal4.jsx";
+import Modal4 from "../../components/LiaModal/model4.jsx";
 import Popup from "reactjs-popup";
 import * as React from "react";
 import { useState } from "react";

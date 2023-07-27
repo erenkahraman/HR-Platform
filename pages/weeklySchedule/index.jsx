@@ -102,7 +102,7 @@ const WeeklySchedule = () => {
     setWeeklySchedule(updatedWeeklySchedule);
   
     try {
-      await axios.put(`/api/weeklySchedule`, {
+      await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
             Group: selectedDepartment,
@@ -150,7 +150,7 @@ const WeeklySchedule = () => {
     setWeeklySchedule(updatedWeeklySchedule);
   
     try {
-      await axios.put(`/api/weeklySchedule`, {
+      await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
             Group: selectedDepartment,
@@ -193,33 +193,31 @@ const WeeklySchedule = () => {
       csvLinkElement.current.link.click();
     }, 1000);
   };
-  const swapShift = (internToBeSwapped, shiftTime) => {
-
-    if (shiftTime === "morning") {
-      handleMoveToAfternoon(internToBeSwapped)
-    }
-    else if (shiftTime === "afternoon") {
-      handleMoveToMorning(internToBeSwapped)
-    }
-    else {
-      console.log("there is something wrong i can feel it")
-    }
-  }
 
   useEffect(() => {
     const fetchWeeklySchedule = async () => {
       try {
         handleCurrentWeekDateRange();
+
+        const token = cookie.get("token");
+        if (!token) {
+          console.log("Token Expired! error function: fetchweeklyschedule");
+          return;
+        }
+        else{
+          console.log("Token value from fetchweeklyschedule",token)
+        }
+
         const config = {
           headers: {
             "Content-Type": "application/json",
           },
+          params: {
+            token: token,
+          },
         };
-        const { data } = await axios.get(
-          `/api/weeklySchedule`,
-          { params: { token: token } },
-          config
-        );
+        const { data } = await axios.get(`/api/weeklySchedule`, config);
+
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
@@ -238,6 +236,19 @@ const WeeklySchedule = () => {
     };
     fetchWeeklySchedule();
   }, []);
+
+  const swapShift = (internToBeSwapped, shiftTime) => {
+
+    if (shiftTime === "morning") {
+      handleMoveToAfternoon(internToBeSwapped)
+    }
+    else if (shiftTime === "afternoon") {
+      handleMoveToMorning(internToBeSwapped)
+    }
+    else {
+      console.log("there is something wrong i can feel it")
+    }
+  }
 
   const countInternsInDepartments = (interns) => {
     const departmentCounts = {};
@@ -274,7 +285,7 @@ const WeeklySchedule = () => {
               </h1>
             </div>
             <div>
-              <CSVLink ref={csvLinkElement} data={assignedShifts} fileName={"assigned-shifts.csv"}></CSVLink>
+              <CSVLink ref={csvLinkElement} data={assignedShifts} filename={"assigned-shifts.csv"}></CSVLink>
               <Button
                 size="medium"
                 color="primary"
@@ -435,43 +446,46 @@ const WeeklySchedule = () => {
             borderRadius: "24px",
           }}
         >
-  <h2 className="text-center mb-4"><b>Morning Shift</b></h2>
-  <div className="flex justify-center">
-    <table className="font-roboto w-full max-w-screen mx-auto">
-      <thead>
-        <tr>
-          {departmentNames.map((eachDepartmentName) => (
-            <th key={eachDepartmentName}>
-              {eachDepartmentName} ({countInternsInDepartments(morningShiftInterns)[eachDepartmentName] || 0})
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {departmentNames.map((eachDepartmentName) => (
-            <td key={eachDepartmentName}>
-              {morningShiftInterns.map((eachIntern, i) => {
-                if (eachIntern.department === eachDepartmentName) {
-                  return (
-                    <div key={i} className="flex items-center justify-between">
-                      <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                      <Button onClick={() => swapShift(eachIntern, "morning")}>
-                        <SwapHorizIcon style={{ marginRight: "5px" }} />
-                      </Button>
-                    </div>
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </td>
-          ))}
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+          <h2 className="text-center mb-4"><b>Morning Shift</b></h2>
+          <div className="flex justify-center">
+            {departmentNames.map((eachDepartmentName) => (
+              <table
+                key={eachDepartmentName}
+                className="font-roboto w-full max-w-screen mx-auto"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  padding: "12px 24px",
+                  gap: "10px",
+                  background: "#DCEBFC",
+                  borderRadius: "24px",
+                }}
+              >
+                <thead>
+                  <tr>
+                  <th>{eachDepartmentName} ({countInternsInDepartments(morningShiftInterns)[eachDepartmentName] || 0})</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {morningShiftInterns.map((eachIntern, i) => {
+                    return eachIntern.department !== eachDepartmentName ? null :
+                      (
+                        <tr key={i}>
+                          <td className="flex items-center justify-between">
+                            <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
+                            <Button onClick={() => swapShift(eachIntern, "morning")}>
+                              <SwapHorizIcon style={{ marginRight: "5px", }} />
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                  })}
+                </tbody>
+              </table>
+            ))}
+          </div>
+        </div>
         {/* End of Morning Shift People */}
         {/* Afternoon Shift People*/}
         <div
@@ -484,44 +498,47 @@ const WeeklySchedule = () => {
           }}
         >
           <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
-  <div className="flex justify-center">
-    <table className="font-roboto w-full max-w-screen mx-auto">
-      <thead>
-        <tr>
-          {departmentNames.map((eachDepartmentName) => (
-            <th key={eachDepartmentName}>
-              {eachDepartmentName} ({countInternsInDepartments(afternoonShiftInterns)[eachDepartmentName] || 0})
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {departmentNames.map((eachDepartmentName) => (
-            <td key={eachDepartmentName}>
-              {afternoonShiftInterns.map((eachIntern, i) => {
-                if (eachIntern.department === eachDepartmentName) {
-                  return (
-                    <div key={i} className="flex items-center justify-between">
-                      <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                      <Button onClick={() => swapShift(eachIntern, "afternoon")}>
-                        <SwapHorizIcon style={{ marginRight: "5px" }} />
-                      </Button>
-                    </div>
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </td>
-          ))}
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+          <div className="flex justify-center">
+            {departmentNames.map((eachDepartmentName) => (
+              <table
+                key={eachDepartmentName}
+                className="font-roboto w-full max-w-screen mx-auto"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  padding: "12px 24px",
+                  gap: "10px",
+                  background: "#DCEBFC",
+                  borderRadius: "24px",
+                }}
+              >
+                <thead>
+                  <tr>
+                  <th>{eachDepartmentName} ({countInternsInDepartments(afternoonShiftInterns)[eachDepartmentName] || 0})</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {afternoonShiftInterns.map((eachIntern, i) => {
+                    return eachIntern.department !== eachDepartmentName ? null :
+                      (
+                        <tr key={i}>
+                          <td className="flex items-center justify-between">
+                            <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
+                            <Button onClick={() => swapShift(eachIntern, "afternoon")}>
+                              <SwapHorizIcon style={{ marginRight: "5px", }} />
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                  })}
+                </tbody>
+              </table>
+            ))}
+          </div>
+        </div>
         {/* End of Afternoon Shift People */}
-        <div class="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
+        <div className="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
           Click Export to CSV after Modifications
         </div>
       </div>
