@@ -61,38 +61,37 @@ export default async function handler(req, res) {
       console.log(err);
     }
   }
-  else if (method === "PUT") {
+  else if (method === "PUT")  {
     try {
       console.log(req.body.params.scheduleGroup);
       const { scheduleGroup } = req.body.params;
       const updatedWeeklySchedule = await WeeklySchedule.findOneAndUpdate(
         { Group: scheduleGroup.Group },
         {
-          Group: scheduleGroup.Group,
-          Schedule: scheduleGroup.Schedule,
-        },
-        {
+          // Corrected code: Use $set operator to update the specific fields
           $set: {
-            Group: req.body.params.scheduleGroup.Group,
+            Group: scheduleGroup.Group,
             Schedule: {
               monday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift: scheduleGroup.Schedule.monday.shift,
               },
               tuesday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift: scheduleGroup.Schedule.tuesday.shift,
               },
               wednesday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift: scheduleGroup.Schedule.wednesday.shift,
               },
               thursday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift: scheduleGroup.Schedule.thursday.shift,
               },
               friday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
+                shift: scheduleGroup.Schedule.friday.shift,
               },
             },
           },
-        }
+        },
+        // Corrected code: Set the options 'new' and 'upsert' to true for correct behavior
+        { new: true, upsert: true }
       );
 
       res.status(201).json(updatedWeeklySchedule);
