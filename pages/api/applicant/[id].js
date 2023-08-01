@@ -11,11 +11,6 @@ export default async function handler(req, res) {
   } = req;
 
   // Token CHECK
-  let token = req.query.token
-    ? req.query.token
-    : req.body.token
-    ? req.body.token
-    : "";
   try {
     tokenCheckFunction(token);
   } catch (e) {

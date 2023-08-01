@@ -11,8 +11,6 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { confirmAlert } from "react-confirm-alert";
 import SaveIcon from "@mui/icons-material/Save";
 import "react-confirm-alert/src/react-confirm-alert.css";
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
 import { useState, useEffect } from "react";
 import reactSelect from "react-select";
 import { CheckCircle } from "@mui/icons-material";
@@ -20,21 +18,27 @@ import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
 import useTableSearch from "../../hooks/useTableSearch";
-import InfoIcon from '@mui/icons-material/Info';
+import InfoIcon from "@mui/icons-material/Info";
 import { CSVLink } from "react-csv";
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 import { Button, Grid } from "@mui/material";
 import { Add, SystemUpdateAlt } from "@mui/icons-material";
 import { format, startOfMonth, endOfMonth } from "date-fns";
-
+import RefreshIcon from "@mui/icons-material/Refresh";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+import DialogContentText from "@mui/material/DialogContentText";
 
 function Attendence() {
   var today = new Date();
 
-  //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState(today.toISOString().split('T')[0])
+  const [date, setDate] = useState(today.toISOString().split("T")[0]);
   const [status, setStatus] = useState("present");
   const [intern, setIntern] = useState();
   const [open, setOpen] = useState(false);
@@ -44,26 +48,29 @@ function Attendence() {
   const [dateIncluded, setDateIncluded] = useState(false);
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
-  const currentDate = new Date();
-  
-  
-
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [openDialog, setOpenDialog] = useState(false);
 
   const csvLinkElement = useRef();
   const csvLinkSingleStudent = useRef();
 
-
-    
-
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
-  console.log(filteredData)
+  console.log(filteredData);
 
-  const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
-  const [updatedInterns, setUpdatedInterns] = useState([])
+  const [draftedInternUpdates, setDraftedInternUpdates] = useState([]);
+  const [updatedInterns, setUpdatedInterns] = useState([]);
 
-  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] = useState([])
-  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] = useState([])
+  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] =
+    useState([]);
+  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] =
+    useState([]);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [cancelRefresh, setCancelRefresh] = useState(false);
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isRefreshing, setRefreshing] = useState(false);
 
   const listHeaders = [
     "Full Name",
@@ -78,6 +85,107 @@ function Attendence() {
     "Unexcused Leave",
     "Action",
   ];
+
+  const handleRefreshTable = () => {
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmRefresh = () => {
+    const refreshedData = data.map((student) => ({
+      ...student,
+      intern: {
+        ...student.intern,
+        attendance: {
+          present: {
+            count: 0,
+            dates: [],
+          },
+          late: {
+            count: 0,
+            dates: [],
+          },
+          coveredDay: {
+            count: 0,
+            dates: [],
+          },
+          dayOff: {
+            count: 0,
+            dates: [],
+          },
+          excusedLeave: {
+            count: 0,
+            dates: [],
+          },
+          sick: {
+            count: 0,
+            dates: [],
+          },
+          unexcusedleave: {
+            count: 0,
+            dates: [],
+          },
+        },
+        
+      },
+    }));
+
+
+    saveToDatabase(refreshedData);
+    
+    setData(refreshedData);
+    setDraftedInternUpdates(refreshedData);
+    setUpdatedInterns(refreshedData);
+    setShowConfirmation(false);
+  };
+  const handleCancelRefresh = () => {
+    setShowConfirmation(false);
+  };
+
+  const saveToDatabase = async (dataList) => {
+    debugger;
+    try {
+      for (const data of dataList) {
+        // Her bir veri öğesine token ekliyoruz
+        data.intern.token = token;
+  
+        const JSONData = JSON.stringify(data.intern);
+        const endpoint = `/api/intern/${data.intern._id}`; 
+        const options = {
+          method: "PUT", 
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSONData,
+        };
+  
+        // PUT isteği ile verileri belirtilen endpoint'e gönderiyoruz
+        const response = await fetch(endpoint, options);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        console.log("Veriler basariyla sunucuya gönderildi!");
+      }
+    } catch (error) {
+      console.error("Hata: Veriler sunucuya gönderilemedi.", error);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get('/api/intern');
+      setData(data);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  
+  
+
 
   const handleChangeStatus = (student, newStatus) => {
 
@@ -136,20 +244,35 @@ function Attendence() {
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
+
 
   useEffect(() => {
-    const handleCurrentMonthDateRange = () => {
+    const handleCurrentMonthDateRnage = () => {
       const firstDayOfMonth = startOfMonth(currentDate);
       const lastDayOfMonth = endOfMonth(currentDate);
       const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
       const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
       const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
       setDateRange(monthDateRange);
-    };
-
-    handleCurrentMonthDateRange();
+    };  
+    handleCurrentMonthDateRnage();
   }, [currentDate]);
+
+  
+
+  // useEffect(() => {
+  //   const handleCurrentMonthDateRange = () => {
+  //     const firstDayOfMonth = startOfMonth(currentDate);
+  //     const lastDayOfMonth = endOfMonth(currentDate);
+  //     const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
+  //     const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
+  //     const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
+  //     setDateRange(monthDateRange);
+  //   };
+
+  //   handleCurrentMonthDateRange();
+  // }, [currentDate]);
 
   const csvReport = {
     separator: "  ",
@@ -185,7 +308,7 @@ function Attendence() {
       "Excused Leave": student.intern.attendance.excusedLeave.count,
       "Late": student.intern.attendance.late.count,
       "Present": student.intern.attendance.present.count,
-      "Sick": student.intern.attendance.sick.count,
+      "Sick": student.intern.attendance.sick.count, 
       "Unexcused Leave": student.intern.attendance.unexcusedleave.count,
     }
     return attendanceInfo
@@ -232,9 +355,7 @@ function Attendence() {
                   headers: {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
-
                   },
-
                   body: JSONintern,
                 };
                 await fetch(endpoint, options);
@@ -258,9 +379,6 @@ function Attendence() {
   };
 
   const saveAll = () => {
-
-
-
     setLoading(true);
     const asyncRequest = async () => {
       try {
@@ -361,21 +479,63 @@ function Attendence() {
           <form>
             <label
               htmlFor="default-search"
-              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
             >
               Search
             </label>
 
           </form>
           {/* Title Container */}
-          <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white flex-col md:flex-row">
-            <div className="flex flex-wrap items-center">
-              <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-                <h3 className="font-semibold text-2xl">Intern Attendance ({dateRange})</h3>
-              </div>
-            </div>
+         
+                <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white flex-col md:flex-row">
+  <div className="flex flex-wrap items-center">
+    
+    <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+      <h3 className="font-semibold text-2xl">Intern Attendance  </h3>
+    </div>
+    <button className="prev-btn text-2xl">&lt;</button>
+    <h3 className="text-lg font-semibold mx-4">{dateRange}</h3>
+    <button className="next-btn text-2xl">&gt;</button>
+  </div>
 
             <div className="flex gap-2 flex-col md:flex-row">
+
+            <Button
+            size="medium"
+            color="primary"
+            startIcon={<RefreshIcon className="text-sm" />}
+            variant="contained"
+            sx={{ borderRadius: 2 }}
+            href="#"
+            onClick={handleRefreshTable}
+          >
+            Refresh Table
+          </Button>
+
+      {/* Confirmation Dialog */}
+            <Dialog
+              open={showConfirmation}
+              onClose={handleCancelRefresh}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">Confirm Refresh</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure you want to refresh the table? This action cannot be undone.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCancelRefresh} color="primary">
+                  No
+                </Button>
+                <Button onClick={handleConfirmRefresh} color="primary" autoFocus>
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+              
 
               <Button
                 size="medium"
@@ -393,24 +553,24 @@ function Attendence() {
               <form>
                 <label
                   htmlFor="default-search"
-                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                  className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                 >
                   Search
                 </label>
-                <div class="relative">
-                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      className="w-5 h-5 text-gray-500 dark:text-gray-400"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       ></path>
                     </svg>
@@ -418,7 +578,7 @@ function Attendence() {
                   <input
                     type="search"
                     id="default-search"
-                    class="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search..."
                     onChange={(e) => {
                       setSearchedVal(e.target.value);
@@ -427,14 +587,19 @@ function Attendence() {
                 </div>
               </form>
               <div className="relative"  >
-                <button
-                  onClick={saveAll}
-                  title="Save"
-                  className=" hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-                  <CheckCircle className="text-m py-1 "
-                  />
-                  Save All
-                </button>
+                
+                <Button
+                size="medium"
+                color="primary"
+                startIcon= {<CheckCircle className="text-sm" />}
+                variant="contained"
+                sx={{ borderRadius: 2 }}
+                href="#"
+                onClick={saveAll}
+              >
+                Save All
+              </Button>
+                
               </div>
             </div>
           </div>

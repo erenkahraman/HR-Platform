@@ -69,17 +69,17 @@ const EditAttendance = ({ intern, setModel }) => {
         <CircularProgress color="inherit" />
       </Backdrop>
       <form className="flex flex-col gap-4">
-        <div class=" bg-zinc-200 opacity-90 fixed inset-0 z-50  ">
-          <div class="flex h-screen justify-center items-center">
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className=" bg-zinc-200 opacity-90 fixed inset-0 z-50  ">
+          <div className="flex h-screen justify-center items-center">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Edit Attendance for {intern.student.firstName}{" "}
                   {intern.student.lastName}
                 </h3>
               </div>
 
-              <div class="p-6 space-y-6 flex-nowrap ">
+              <div className="p-6 space-y-6 flex-nowrap ">
                 <div className="flex  flex-row">
                   <label
                     htmlFor="startDate"
@@ -124,7 +124,7 @@ const EditAttendance = ({ intern, setModel }) => {
                       </label>
                     ) : (
                       dates.map((date) => (
-                        <li className="flex items-center space-x-3">
+                        <li className="flex items-center space-x-3" key={index}>
                           <label>{moment(date).format("dd/MM/yyyy")}</label>
                           <ClearIcon
                             color="error"
@@ -139,11 +139,11 @@ const EditAttendance = ({ intern, setModel }) => {
                   </ul>
                 </div>
               </div>
-              <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+              <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
                 <button
                   data-modal-toggle="defaultModal"
                   type="button"
-                  class="inset-y-0 right-0 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 
+                  className="inset-y-0 right-0 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 
                                 focus:outline-none focus:ring-blue-300 rounded-lg border 
                                 border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 
                                 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 

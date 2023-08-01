@@ -165,7 +165,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
                   }}
                 >
                   {departments.map((department, i) => (
-                    <option value={i}>{department.department}</option>
+                    <option key={i} value={i}>{department.department}</option>
                   ))}
                 </select>
               </div>
@@ -182,8 +182,8 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
                   id="position"
                   className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 >
-                  {positions.map((position) => (
-                    <option>{position}</option>
+                  {positions.map((position, index) => (
+                    <option key={index}>{position}</option>
                   ))}
                 </select>
               </div>
@@ -210,7 +210,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
                   <div role="status" className="px-4 py-2">
                     <svg
                       aria-hidden="true"
-                      class="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                      className="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                       viewBox="0 0 100 101"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -224,7 +224,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
                         fill="currentFill"
                       />
                     </svg>
-                    <span class="sr-only">Loading...</span>
+                    <span className="sr-only">Loading...</span>
                   </div>
                 ) : null}
               </div>

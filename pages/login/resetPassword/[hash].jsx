@@ -10,7 +10,7 @@ import jwt from "jsonwebtoken";
 import { app } from "../../verifyToken/index";
 import { confirmAlert } from "react-confirm-alert";
 
-export default function forgot() {
+export default function Forgot() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
