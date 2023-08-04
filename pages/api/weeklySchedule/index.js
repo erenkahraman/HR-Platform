@@ -61,13 +61,14 @@ export default async function handler(req, res) {
       console.log(err);
     }
   }
-  else if (method === "PUT") {
+  else if (method === "PUT")  {
     try {
       console.log(req.body.params.scheduleGroup);
       const { scheduleGroup } = req.body.params;
       const updatedWeeklySchedule = await WeeklySchedule.findOneAndUpdate(
         { Group: scheduleGroup.Group },
         {
+          // Corrected code: Use $set operator to update the specific fields
           $set: {
             Group: scheduleGroup.Group,
             Schedule: {
@@ -78,19 +79,23 @@ export default async function handler(req, res) {
                 shift: scheduleGroup.Schedule.tuesday.shift,
               },
               wednesday: {
-                shift:  scheduleGroup.Schedule.wednesday.shift,
+                shift: scheduleGroup.Schedule.wednesday.shift,
               },
               thursday: {
-                shift:  scheduleGroup.Schedule.thursday.shift,
+                shift: scheduleGroup.Schedule.thursday.shift,
               },
               friday: {
-                shift:  scheduleGroup.Schedule.friday.shift,
+                shift: scheduleGroup.Schedule.friday.shift,
               },
             },
+            Interns: scheduleGroup.Interns, // This should be an array of interns' ObjectIds
           },
         },
-        {new:true, upsert: true}
+        // Corrected code: Set the options 'new' and 'upsert' to true for correct behavior
+        { new: true, upsert: true }
       );
+
+      await updatedWeeklySchedule.addInternNames();
 
       res.status(201).json(updatedWeeklySchedule);
     } catch (err) {

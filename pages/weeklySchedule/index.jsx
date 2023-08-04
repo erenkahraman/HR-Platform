@@ -97,10 +97,13 @@ const WeeklySchedule = () => {
   
     const updatedWeeklySchedule = { ...weeklySchedule };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
-      (intern) => intern._id !== internToBeMoved._id
-);
+      (intern) => intern._id !== internToBeMoved._id);
     setWeeklySchedule(updatedWeeklySchedule);
-  
+
+    const updatedInterns = weeklySchedule[selectedDepartment].map((intern) =>
+    intern._id === internToBeMoved._id ? internToBeMoved._id : intern._id);
+    const internId = internToBeMoved._id;
+
     try {
       await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
@@ -123,6 +126,7 @@ const WeeklySchedule = () => {
                 shift: "morning",
               },
             },
+            Interns: [internId], // Include the updated interns array
           },
         },
       });
@@ -142,13 +146,17 @@ const WeeklySchedule = () => {
       (intern) => intern._id !== internToBeMoved._id
     );
     setMorningShiftInterns(updatedMorningShiftInterns);
-  
+
     const updatedWeeklySchedule = { ...weeklySchedule };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
+      (intern) => intern._id !== internToBeMoved._id);
+
+    const updatedInterns = weeklySchedule[selectedDepartment].map((intern) =>
+    intern._id === internToBeMoved._id ? internToBeMoved._id : intern._id  );
+
     setWeeklySchedule(updatedWeeklySchedule);
-  
+    const internId = internToBeMoved._id;
+
     try {
       await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
@@ -171,6 +179,7 @@ const WeeklySchedule = () => {
                 shift: "afternoon",
               },
             },
+            Interns: [internId], // Include the updated interns array
           },
         },
       });
@@ -539,13 +548,7 @@ const WeeklySchedule = () => {
         </div>
         {/* End of Afternoon Shift People */}
         <div className="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
-        {departmentNames.map((eachDepartmentName) => (
-                <div key={eachDepartmentName}>
-                  <br />
-                  <br />
-                  {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                </div>
-              ))}
+          Click Export to CSV after Modifications
         </div>
       </div>
     </div>

@@ -13,5 +13,14 @@ const weeklyScheduleSchema = mongoose.Schema({
   
 });
 
+weeklyScheduleSchema.methods.addInternNames = async function () {
+  const internNames = await Student.find(
+    { _id: { $in: this.Interns } },
+    "firstName lastName"
+  );
+  this.Interns = internNames.map((student) => student.firstName + " " + student.lastName);
+  await this.save();
+};
+
 export default mongoose.models.WeeklySchedule ||
   mongoose.model("WeeklySchedule", weeklyScheduleSchema);
