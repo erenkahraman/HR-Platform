@@ -11,7 +11,7 @@ export default async (req, res) => {
     console.log(error);
     //res.status(404).json({ message: "Unidentified User" });
     res.status(404).json({ message: "Unidentified User", data });
-    return false;a
+    return false;
   }
 };
 function tokenCheckFunction(token) {
