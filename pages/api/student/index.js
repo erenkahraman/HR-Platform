@@ -25,6 +25,9 @@ export default async function handler(req, res) {
 
   if (method === "GET") {
     try {
+      const token= req.query.token;
+      console.log('student',token);
+      
       const students = await db
         .collection("students")
         .aggregate([
