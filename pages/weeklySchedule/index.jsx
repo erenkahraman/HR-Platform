@@ -101,21 +101,28 @@ const WeeklySchedule = () => {
     setWeeklySchedule(updatedWeeklySchedule);
   
     try {
-      const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
-        params: {
-          scheduleGroup: {
-            Group: selectedDepartment,
-            day: "monday", // Change to the appropriate day
-            shift: "morning",
-            internId: internToBeMoved._id,
+      const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+
+      const updatePromises = days.map(async (day) => {
+        return axios.put(`/api/weeklySchedule?token=${token}`, {
+          params: {
+            scheduleGroup: {
+              Group: selectedDepartment,
+              day: day,
+              shift: "morning",
+              internId: internToBeMoved._id,
+            },
           },
-        },
+        });
       });
-      console.log(response.data); // Log the response if needed
+
+      const responses = await Promise.all(updatePromises);
+      console.log(responses.map(response => response.data)); // Log the responses if needed
     } catch (error) {
       console.error(error);
     }
-  };  
+  };
+  
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
     const updatedAfternoonShiftInterns = [
       ...afternoonShiftInterns,
@@ -134,22 +141,29 @@ const WeeklySchedule = () => {
     );
     setWeeklySchedule(updatedWeeklySchedule);
   
-   try {
-      const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
-        params: {
-          scheduleGroup: {
-            Group: selectedDepartment,
-            day: "monday", // Change to the appropriate day
-            shift: "afternoon",
-            internId: internToBeMoved._id,
+    try {
+      const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+
+      const updatePromises = days.map(async (day) => {
+        return axios.put(`/api/weeklySchedule?token=${token}`, {
+          params: {
+            scheduleGroup: {
+              Group: selectedDepartment,
+              day: day,
+              shift: "afternoon",
+              internId: internToBeMoved._id,
+            },
           },
-        },
+        });
       });
-      console.log(response.data); // Log the response if needed
+
+      const responses = await Promise.all(updatePromises);
+      console.log(responses.map(response => response.data)); // Log the responses if needed
     } catch (error) {
       console.error(error);
     }
-    };
+  };
+  
   const handleExportToCsv = () => {
     let shiftAssignedInterns = [];
     morningShiftInterns.forEach((morningIntern) => {
