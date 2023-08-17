@@ -61,38 +61,17 @@ export default async function handler(req, res) {
       console.log(err);
     }
   }
-  else if (method === "PUT") {
+  else  if (method === "PUT") {
     try {
-      console.log(req.body.params.scheduleGroup);
       const { scheduleGroup } = req.body.params;
       const updatedWeeklySchedule = await WeeklySchedule.findOneAndUpdate(
         { Group: scheduleGroup.Group },
         {
-          Group: scheduleGroup.Group,
-          Schedule: scheduleGroup.Schedule,
-        },
-        {
-          $set: {
-            Group: req.body.params.scheduleGroup.Group,
-            Schedule: {
-              monday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
-              },
-              tuesday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
-              },
-              wednesday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
-              },
-              thursday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
-              },
-              friday: {
-                shift: req.body.params.scheduleGroup.Schedule.shift,
-              },
-            },
+          $push: {
+            [`Schedule.${scheduleGroup.day}.${scheduleGroup.shift}`]: scheduleGroup.internId,
           },
-        }
+        },
+        { new: true, upsert: true }
       );
 
       res.status(201).json(updatedWeeklySchedule);

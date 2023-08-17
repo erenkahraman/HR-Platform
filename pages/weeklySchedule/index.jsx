@@ -97,35 +97,27 @@ const WeeklySchedule = () => {
   
     const updatedWeeklySchedule = { ...weeklySchedule };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
-      (intern) => intern._id !== internToBeMoved._id
-);
+      (intern) => intern._id !== internToBeMoved._id);
     setWeeklySchedule(updatedWeeklySchedule);
   
     try {
-      await axios.put(`/api/weeklySchedule?token=${token}`, {
-        params: {
-          scheduleGroup: {
-            Group: selectedDepartment,
-            Schedule: {
-              monday: {
-                shift: "morning",
-              },
-              tuesday: {
-                shift: "morning",
-              },
-              wednesday: {
-                shift: "morning",
-              },
-              thursday: {
-                shift: "morning",
-              },
-              friday: {
-                shift: "morning",
-              },
+      const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+
+      const updatePromises = days.map(async (day) => {
+        return axios.put(`/api/weeklySchedule?token=${token}`, {
+          params: {
+            scheduleGroup: {
+              Group: selectedDepartment,
+              day: day,
+              shift: "morning",
+              internId: internToBeMoved._id,
             },
           },
-        },
+        });
       });
+
+      const responses = await Promise.all(updatePromises);
+      console.log(responses.map(response => response.data)); // Log the responses if needed
     } catch (error) {
       console.error(error);
     }
@@ -150,34 +142,28 @@ const WeeklySchedule = () => {
     setWeeklySchedule(updatedWeeklySchedule);
   
     try {
-      await axios.put(`/api/weeklySchedule?token=${token}`, {
-        params: {
-          scheduleGroup: {
-            Group: selectedDepartment,
-            Schedule: {
-              monday: {
-                shift: "afternoon",
-              },
-              tuesday: {
-                shift: "afternoon",
-              },
-              wednesday: {
-                shift: "afternoon",
-              },
-              thursday: {
-                shift: "afternoon",
-              },
-              friday: {
-                shift: "afternoon",
-              },
+      const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+
+      const updatePromises = days.map(async (day) => {
+        return axios.put(`/api/weeklySchedule?token=${token}`, {
+          params: {
+            scheduleGroup: {
+              Group: selectedDepartment,
+              day: day,
+              shift: "afternoon",
+              internId: internToBeMoved._id,
             },
           },
-        },
+        });
       });
+
+      const responses = await Promise.all(updatePromises);
+      console.log(responses.map(response => response.data)); // Log the responses if needed
     } catch (error) {
       console.error(error);
     }
   };
+  
   const handleExportToCsv = () => {
     let shiftAssignedInterns = [];
     morningShiftInterns.forEach((morningIntern) => {
