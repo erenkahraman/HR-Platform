@@ -4,30 +4,11 @@ import axios from "axios";
 import cookie from "js-cookie";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+
 const ReminderViewAll = () => {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   const token = cookie.get("token");
-
-  const handleDelete = async (id) => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        params: {
-          token: token,
-        },
-      };
-      await axios.delete(`/api/reminder/${id}`, config);
-      const response = await axios.get("/api/reminder", config);
-      setData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-
 
 
   const formatDate = (dateString) => {
@@ -76,6 +57,22 @@ const ReminderViewAll = () => {
             <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
               {formatDate(reminder.date)}
             </div>
+            <div className="flex-[1] flex items-center justify-center">
+              <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
+                  <Circle className="text-xs text-green-500" />
+                  {reminder.status}
+                </div>  
+              </div>
+            </div>
+            <div className="flex-[1] flex items-center justify-center">
+              <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
+                  <Circle className="text-xs text-green-500" />
+                  {reminder.status}
+                </div>
+              </div>
+            </div>
             <div className="flex flex-[1] items-end p-2">
               <div className="flex h-fit text-sm font-semibold underline cursor-pointer">
                 Read More
@@ -84,6 +81,7 @@ const ReminderViewAll = () => {
               <button onClick={() => handleDelete(reminder.id)} className="ml-2 self-start">
                 <DeleteIcon />
               </button>
+              
               </div>
             </div>
           </div>
@@ -92,4 +90,3 @@ const ReminderViewAll = () => {
     </div>
   );
 };
-export default ReminderViewAll;

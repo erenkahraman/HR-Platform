@@ -70,10 +70,26 @@ const Feed = () => {
   };
 
   const handleDelete = (id) => {
-    const updatedData = data.filter((item) => item.id !== id);
+    const updatedData = data.map((item) => {
+      if (item.id === id) {
+        item.isDeleted = true;
+      }
+      return item;
+    });
     setData(updatedData);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      params: {
+        token: token,
+      },
+    };
+    axios.delete(`/api/whatsNew/${id}`, config);
   };
-  
+
+
+
 
 
 

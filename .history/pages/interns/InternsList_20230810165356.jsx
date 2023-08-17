@@ -16,7 +16,6 @@ import useTableSearch from "../../hooks/useTableSearch.js";
 import { useRouter } from "next/router";
 import moment, { Moment } from "moment/moment.js";
 
-
 export default function InternList() {
   // student count modal
   const [scModal, setScModal] = useState(false);
@@ -259,23 +258,52 @@ export default function InternList() {
                       >
                         <div className="h-48 w-52 ml-5...">
                           <div className="flex flex-col ml-8 ">
-                            <div>
-                              <button
-                                type="submit"
-                                className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                                // onClick={clicked}
-                              >
-                                <Link
-                                  href={{
-                                    pathname: "/applicants/new",
-                                    query: { student: JSON.stringify(student) },
-                                  }}
-                                  as={`/interns/${student.firstName}_${student.lastName}`}
-                                >
-                                  Edit
-                                </Link>
-                              </button>
-                            </div>
+                          <tbody className="divide-y">
+        {filteredData.map((student) => (
+          <tr key={student.intern}>
+            {/* ... (other table cells) */}
+
+            <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+              <Popup
+                contentStyle={{
+                  background: "transparent",
+                  borderRadius: "1rem",
+                }}
+                trigger={
+                  <Button
+                    variant="gradient"
+                    className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
+                  >
+                    More Actions
+                  </Button>
+                }
+                position="bottom"
+              >
+                <div className="h-48 w-52 ml-5...">
+                  <div className="flex flex-col ml-8 ">
+                    <div>
+                      {/* Handle Edit using onClick */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          router.push({
+                            pathname: "/applicants/new",
+                            query: { student: JSON.stringify(student) },
+                          });
+                        }}
+                        className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768]"
+                      >
+                        Edit
+                      </button>
+                    </div>
+                    {/* ... (other buttons and modals) */}
+                  </div>
+                </div>
+              </Popup>
+            </td>
+          </tr>
+        ))}
+      </tbody>
                             {/* <div>
                               <button
                                 onClick={(e) => startInternship(student)}

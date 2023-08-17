@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Circle } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 const WhatsNewViewAll = () => {
   const [data, setData] = useState([]);

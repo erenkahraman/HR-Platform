@@ -27,7 +27,7 @@ const ReminderViewAll = () => {
     }
   };
 
-
+  
 
 
   const formatDate = (dateString) => {
@@ -60,7 +60,7 @@ const ReminderViewAll = () => {
       }
     };
     asyncRequest();
-  }, [token]);
+  }, []);
   return (
     <div>
       {data.map((reminder) => (

@@ -4,30 +4,11 @@ import axios from "axios";
 import cookie from "js-cookie";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+
 const ReminderViewAll = () => {
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
   const token = cookie.get("token");
-
-  const handleDelete = async (id) => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        params: {
-          token: token,
-        },
-      };
-      await axios.delete(`/api/reminder/${id}`, config);
-      const response = await axios.get("/api/reminder", config);
-      setData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-
 
 
   const formatDate = (dateString) => {
@@ -60,7 +41,7 @@ const ReminderViewAll = () => {
       }
     };
     asyncRequest();
-  }, [token]);
+  }, []);
   return (
     <div>
       {data.map((reminder) => (
@@ -81,9 +62,10 @@ const ReminderViewAll = () => {
                 Read More
               </div>
               <div>
-              <button onClick={() => handleDelete(reminder.id)} className="ml-2 self-start">
+              <button onClick={() => handleDelete(whatsNew.id)} className="ml-2 self-start">
                 <DeleteIcon />
               </button>
+
               </div>
             </div>
           </div>
@@ -92,4 +74,5 @@ const ReminderViewAll = () => {
     </div>
   );
 };
-export default ReminderViewAll;
+
+export { ReminderViewAll };

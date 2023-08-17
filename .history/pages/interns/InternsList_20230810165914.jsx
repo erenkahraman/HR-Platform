@@ -15,6 +15,8 @@ import LoadingState from "../../components/Utils/LoadingState.jsx";
 import useTableSearch from "../../hooks/useTableSearch.js";
 import { useRouter } from "next/router";
 import moment, { Moment } from "moment/moment.js";
+import { format } from 'date-fns'; // import the necessary functions from date-fns
+
 
 
 export default function InternList() {
@@ -209,12 +211,13 @@ export default function InternList() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(student.intern.startDate).format("DD/MM/YYYY")}
-                      </td>
-
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(student.intern.endDate).format("DD/MM/YYYY")}
-                      </td>
+  {student.intern.startDate && format(new Date(student.intern.startDate), 'dd/MM/yyyy')}
+</td>
+
+<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+  {student.intern.endDate && format(new Date(student.intern.endDate), 'dd/MM/yyyy')}
+</td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         {student.intern.durationInWeeks}

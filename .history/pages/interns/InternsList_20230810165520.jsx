@@ -16,7 +16,6 @@ import useTableSearch from "../../hooks/useTableSearch.js";
 import { useRouter } from "next/router";
 import moment, { Moment } from "moment/moment.js";
 
-
 export default function InternList() {
   // student count modal
   const [scModal, setScModal] = useState(false);
@@ -266,14 +265,16 @@ export default function InternList() {
                                 // onClick={clicked}
                               >
                                 <Link
-                                  href={{
-                                    pathname: "/applicants/new",
-                                    query: { student: JSON.stringify(student) },
-                                  }}
-                                  as={`/interns/${student.firstName}_${student.lastName}`}
-                                >
-                                  Edit
-                                </Link>
+    href={{
+      pathname: "/applicants/new",
+      query: { student: JSON.stringify(student) },
+    }}
+    as={`/interns/${student.firstName}_${student.lastName}`}
+  >
+    <a className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4 shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768]">
+      Edit
+    </a>
+  </Link>
                               </button>
                             </div>
                             {/* <div>

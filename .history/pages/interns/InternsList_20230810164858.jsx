@@ -16,7 +16,6 @@ import useTableSearch from "../../hooks/useTableSearch.js";
 import { useRouter } from "next/router";
 import moment, { Moment } from "moment/moment.js";
 
-
 export default function InternList() {
   // student count modal
   const [scModal, setScModal] = useState(false);
@@ -263,7 +262,9 @@ export default function InternList() {
                               <button
                                 type="submit"
                                 className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                                // onClick={clicked}
+                                handleClick={(e) => editInternship(student)}
+
+                                 
                               >
                                 <Link
                                   href={{

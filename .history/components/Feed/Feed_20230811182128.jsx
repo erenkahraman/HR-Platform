@@ -69,9 +69,22 @@ const Feed = () => {
     });
   };
 
-  const handleDelete = (id) => {
-    const updatedData = data.filter((item) => item.id !== id);
-    setData(updatedData);
+  const asyncRequest = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      console.log("Making GET request...");
+      const { data } = await axios.get(`/api/whatsNew`, { params: { token: token } }, config);
+      console.log("API Response:", data);
+      setData(data);
+      setLoading(false);
+    } catch (e) {
+      console.error("API Error:", e);
+      setLoading(false);
+    }
   };
   
 

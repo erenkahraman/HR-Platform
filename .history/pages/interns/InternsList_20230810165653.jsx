@@ -15,6 +15,7 @@ import LoadingState from "../../components/Utils/LoadingState.jsx";
 import useTableSearch from "../../hooks/useTableSearch.js";
 import { useRouter } from "next/router";
 import moment, { Moment } from "moment/moment.js";
+import { format } from 'date-fns'; // import the necessary functions from date-fns
 
 
 export default function InternList() {
