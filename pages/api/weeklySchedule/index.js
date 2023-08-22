@@ -79,22 +79,20 @@ export default async function handler(req, res) {
       const weeklySchedule = await db.collection("weeklyschedules").find({}).toArray();
       const populatedWeeklySchedule = weeklySchedule.map(schedule => {
         const populatedSchedule = { ...schedule };
-        for (const day in populatedSchedule.Schedule) {
-          for (const shift in populatedSchedule.Schedule[day]) {
-            const internIds = populatedSchedule.Schedule[day][shift];
-            const internsNames = internIds.map(internId => {
-              const intern = interns.find(intern => intern._id.toString() === internId.toString());
-              if (intern && intern.student) {
-                return intern.student.firstName + " " + intern.student.lastName;
-              }
-              return "Unknown Intern";
-            });
-            populatedSchedule.Schedule[day][shift] = internsNames;
-          }
+        for (const shift in populatedSchedule.Schedule) {
+          const internIds = populatedSchedule.Schedule[shift];
+          const internsNames = internIds.map(internId => {
+            const intern = interns.find(intern => intern._id.toString() === internId.toString());
+            if (intern && intern.student) {
+              return intern.student.firstName + " " + intern.student.lastName;
+            }
+            return "Unknown Intern";
+          });
+          populatedSchedule.Schedule[shift] = internsNames;
         }
         return populatedSchedule;
       });
-
+      
       // Log the fetched populated weeklySchedule data
       console.log("Populated weeklySchedule datas:", JSON.stringify(populatedWeeklySchedule, null, 2));
 
@@ -120,7 +118,7 @@ export default async function handler(req, res) {
         { Group: scheduleGroup.Group },
         {
           $push: {
-            [`Schedule.${scheduleGroup.day}.${scheduleGroup.shift}`]: scheduleGroup.internId,
+            [`Schedule.${scheduleGroup.shift}`]: scheduleGroup.internId,
           },
         },
         { new: true, upsert: true }
