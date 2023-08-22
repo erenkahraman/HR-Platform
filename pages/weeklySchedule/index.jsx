@@ -12,7 +12,8 @@ import { CSVLink } from "react-csv";
 const WeeklySchedule = () => {
   const WEEKDAYS = 5;
   const [dateRange, setDateRange] = useState("");
-  const [weeklySchedule, setWeeklySchedule] = useState({});
+  const [weeklyScheduleByDepartment, setWeeklyScheduleByDepartment] = useState({});
+  const [weeklySchedule, setWeeklySchedule] = useState([]); // Add this state variable
   const [departmentNames, setDepartmentNames] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -95,34 +96,27 @@ const WeeklySchedule = () => {
     );
     setAfternoonShiftInterns(updatedAfternoonShiftInterns);
   
-    const updatedWeeklySchedule = { ...weeklySchedule };
+    const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id);
-    setWeeklySchedule(updatedWeeklySchedule);
+    setWeeklyScheduleByDepartment(updatedWeeklySchedule);
   
     try {
-      const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-
-      const updatePromises = days.map(async (day) => {
-        return axios.put(`/api/weeklySchedule?token=${token}`, {
-          params: {
-            scheduleGroup: {
-              Group: selectedDepartment,
-              day: day,
-              shift: "morning",
-              internId: internToBeMoved._id,
-            },
+      const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
+        params: {
+          scheduleGroup: {
+            Group: selectedDepartment,
+            day: "monday", // Change to the appropriate day
+            shift: "morning",
+            internId: internToBeMoved._id,
           },
-        });
+        },
       });
-
-      const responses = await Promise.all(updatePromises);
-      console.log(responses.map(response => response.data)); // Log the responses if needed
+      console.log(response.data); // Log the response if needed
     } catch (error) {
       console.error(error);
     }
-  };
-  
+  };  
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
     const updatedAfternoonShiftInterns = [
       ...afternoonShiftInterns,
@@ -135,35 +129,31 @@ const WeeklySchedule = () => {
     );
     setMorningShiftInterns(updatedMorningShiftInterns);
   
-    const updatedWeeklySchedule = { ...weeklySchedule };
+    const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id
     );
-    setWeeklySchedule(updatedWeeklySchedule);
+    setWeeklyScheduleByDepartment(updatedWeeklySchedule);
   
+  const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
+    // ... (existing code)
+
     try {
-      const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-
-      const updatePromises = days.map(async (day) => {
-        return axios.put(`/api/weeklySchedule?token=${token}`, {
-          params: {
-            scheduleGroup: {
-              Group: selectedDepartment,
-              day: day,
-              shift: "afternoon",
-              internId: internToBeMoved._id,
-            },
+      const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
+        params: {
+          scheduleGroup: {
+            Group: selectedDepartment,
+            day: "monday", // Change to the appropriate day
+            shift: "afternoon",
+            internId: internToBeMoved._id,
           },
-        });
+        },
       });
-
-      const responses = await Promise.all(updatePromises);
-      console.log(responses.map(response => response.data)); // Log the responses if needed
+      console.log(response.data); // Log the response if needed
     } catch (error) {
       console.error(error);
     }
-  };
-  
+  }  };
   const handleExportToCsv = () => {
     let shiftAssignedInterns = [];
     morningShiftInterns.forEach((morningIntern) => {
@@ -181,17 +171,17 @@ const WeeklySchedule = () => {
   };
 
   useEffect(() => {
-    const fetchWeeklySchedule = async () => {
+    const fetchInterns = async () => {
       try {
         handleCurrentWeekDateRange();
 
         const token = cookie.get("token");
         if (!token) {
-          console.log("Token Expired! error function: fetchweeklyschedule");
+          console.log("Token Expired! error function: fetchInterns");
           return;
         }
         else{
-          console.log("Token value from fetchweeklyschedule",token)
+          console.log("Token value from fetchInterns",token)
         }
 
         const config = {
@@ -202,8 +192,7 @@ const WeeklySchedule = () => {
             token: token,
           },
         };
-        const { data } = await axios.get(`/api/weeklySchedule`, config);
-
+        const { data } = await axios.get(`/api/intern`, config);
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
@@ -213,16 +202,46 @@ const WeeklySchedule = () => {
           },
           {}
         );
-        setWeeklySchedule(weeklyScheduleGroupedByDepartment);
+        setWeeklyScheduleByDepartment(weeklyScheduleGroupedByDepartment);
         const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         setDepartmentNames(departmentNames);
       } catch (e) {
         console.error(e);
       }
     };
-    fetchWeeklySchedule();
+    fetchInterns();
   }, []);
 
+
+  useEffect(() => {
+    const fetchWeeklySchedule = async () => {
+      try {
+        handleCurrentWeekDateRange();
+        debugger;
+        const token = cookie.get("token");
+        if (!token) {
+          console.log("Token Expired! error function: fetchWeeklySchedule");
+          return;
+        }
+        else{
+          console.log("Token value from fetchWeeklySchedule",token)
+        }
+
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(`/api/weeklySchedule?token=${token}`);
+        setWeeklySchedule(data.weeklySchedule);
+
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchWeeklySchedule();
+  }, []);
+  
   const swapShift = (internToBeSwapped, shiftTime) => {
 
     if (shiftTime === "morning") {
@@ -260,7 +279,7 @@ const WeeklySchedule = () => {
   };
 
 
-  return (
+    return (
     <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
         <div className=" flex w-full flex-col   items-center justify-center min-w-0 break-words w-full rounded">
@@ -361,7 +380,7 @@ const WeeklySchedule = () => {
                               open={Boolean(anchorEl)}
                               onClose={handleMenuClose}
                             >
-                              {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
+                              {weeklyScheduleByDepartment[eachDepartmentName].map((eachIntern, i) => (
                                 <MenuItem key={i}>
                                   {eachIntern.student.firstName + " " + eachIntern.student.lastName}
                                 </MenuItem>
@@ -374,7 +393,7 @@ const WeeklySchedule = () => {
                     
                     {eachDepartmentName === selectedDepartment && (
                       <>
-                        {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
+                        {weeklyScheduleByDepartment[eachDepartmentName].map((eachIntern, i) => (
                           <tr key={i}>
                             <td>
                               {eachIntern.student.firstName + " " + eachIntern.student.lastName}
