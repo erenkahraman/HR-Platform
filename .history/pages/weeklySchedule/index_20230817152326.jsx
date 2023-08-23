@@ -22,163 +22,7 @@ const WeeklySchedule = () => {
   const token = cookie.get("token");
   const csvLinkElement = useRef();
 
-  const handleClickOutside = (event) => {
-    if (anchorEl && !anchorEl.contains(event.target)) {
-      setAnchorEl(null);
-      setSelectedDepartment(null);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [anchorEl]);
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    setSelectedDepartment(null);
-  };
-
-  const handleDepartmentClick = (department) => {
-    setSelectedDepartment((prevDepartment) =>
-      prevDepartment === department ? null : department
-    );
-  };
-
-  const formatDate = (date) => {
-    const yyyy = date.getFullYear();
-    let mm = date.getMonth() + 1;
-    let dd = date.getDate();
-
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
-
-    const formattedDay = dd + '/' + mm + '/' + yyyy;
-    return formattedDay
-  }
-
-  const addDays = (date, days) => {
-    const result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-  }
-
-  const substractDays = (date, days) => {
-    const result = new Date(date);
-    result.setDate(result.getDate() - days);
-    return result;
-  }
-
-  const handleCurrentWeekDateRange = () => {
-    const currentDate = new Date();
-    const todayNameIndex = currentDate.getDay();
-    const firstDayOfTheWeek = substractDays(currentDate, todayNameIndex - 1);
-    const formattedFirstDayOfTheWeek = formatDate(firstDayOfTheWeek);
-    const lastDayOfTheWeek = addDays(currentDate, WEEKDAYS - todayNameIndex);
-    const formattedLastDayOfTheWeek = formatDate(lastDayOfTheWeek);
-    const weekDateRange = `${formattedFirstDayOfTheWeek} - ${formattedLastDayOfTheWeek}`;
-    setDateRange(weekDateRange);
-  }
-
-  const handleMoveToMorning = async (internToBeMoved, internIndex) => {
-    const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
-    setMorningShiftInterns(updatedMorningShiftInterns);
-  
-    const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
-    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-  
-    const updatedWeeklySchedule = { ...weeklySchedule };
-    updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
-      (intern) => intern._id !== internToBeMoved._id);
-    setWeeklySchedule(updatedWeeklySchedule);
-  
-    try {
-      const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-
-      const updatePromises = days.map(async (day) => {
-        return axios.put(`/api/weeklySchedule?token=${token}`, {
-          params: {
-            scheduleGroup: {
-              Group: selectedDepartment,
-              day: day,
-              shift: "morning",
-              internId: internToBeMoved._id,
-            },
-          },
-        });
-      });
-
-      const responses = await Promise.all(updatePromises);
-      console.log(responses.map(response => response.data)); // Log the responses if needed
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
-  const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
-    const updatedAfternoonShiftInterns = [
-      ...afternoonShiftInterns,
-      internToBeMoved,
-    ];
-    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-  
-    const updatedMorningShiftInterns = morningShiftInterns.filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
-    setMorningShiftInterns(updatedMorningShiftInterns);
-  
-    const updatedWeeklySchedule = { ...weeklySchedule };
-    updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
-    setWeeklySchedule(updatedWeeklySchedule);
-  
-    try {
-      const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-
-      const updatePromises = days.map(async (day) => {
-        return axios.put(`/api/weeklySchedule?token=${token}`, {
-          params: {
-            scheduleGroup: {
-              Group: selectedDepartment,
-              day: day,
-              shift: "afternoon",
-              internId: internToBeMoved._id,
-            },
-          },
-        });
-      });
-
-      const responses = await Promise.all(updatePromises);
-      console.log(responses.map(response => response.data)); // Log the responses if needed
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
-  const handleExportToCsv = () => {
-    let shiftAssignedInterns = [];
-    morningShiftInterns.forEach((morningIntern) => {
-      const assignedInternInfo = getAssignedInternInfo(morningIntern, "Morning");
-      shiftAssignedInterns.push(assignedInternInfo);
-    });
-    afternoonShiftInterns.forEach((afternoonIntern) => {
-      const assignedInternInfo = getAssignedInternInfo(afternoonIntern, "Afternoon");
-      shiftAssignedInterns.push(assignedInternInfo);
-    });
-    setAssignedShifts(shiftAssignedInterns);
-    const downloadedCsvFile = setTimeout(function () {
-      csvLinkElement.current.link.click();
-    }, 1000);
-  };
+  // ... (other existing functions)
 
   useEffect(() => {
     const fetchWeeklySchedule = async () => {
@@ -189,9 +33,8 @@ const WeeklySchedule = () => {
         if (!token) {
           console.log("Token Expired! error function: fetchweeklyschedule");
           return;
-        }
-        else{
-          console.log("Token value from fetchweeklyschedule",token)
+        } else {
+          console.log("Token value from fetchweeklyschedule", token);
         }
 
         const config = {
@@ -220,6 +63,8 @@ const WeeklySchedule = () => {
         console.error(e);
       }
     };
+
+    // Load data from localStorage
     const storedData = loadFromLocalStorage();
     setWeeklySchedule(storedData);
 
@@ -227,51 +72,27 @@ const WeeklySchedule = () => {
   }, []);
 
   const swapShift = (internToBeSwapped, shiftTime) => {
-
     if (shiftTime === "morning") {
-      handleMoveToAfternoon(internToBeSwapped)
+      handleMoveToAfternoon(internToBeSwapped);
+    } else if (shiftTime === "afternoon") {
+      handleMoveToMorning(internToBeSwapped);
+    } else {
+      console.log("there is something wrong i can feel it");
     }
-    else if (shiftTime === "afternoon") {
-      handleMoveToMorning(internToBeSwapped)
-    }
-    else {
-      console.log("there is something wrong i can feel it")
-    }
-  }
-
-  const countInternsInDepartments = (interns) => {
-    const departmentCounts = {};
-    interns.forEach((eachIntern) => {
-      const departmentName = eachIntern.department;
-      if (departmentCounts[departmentName]) {
-        departmentCounts[departmentName]++;
-      } else {
-        departmentCounts[departmentName] = 1;
-      }
-    });
-    return departmentCounts;
   };
 
-  const getAssignedInternInfo = (intern, shiftTime) => {
-    const assignedIntern = {
-      "First Name": intern.student.firstName,
-      "Last Name": intern.student.lastName,
-      "Department": intern.department,
-      "Shift": shiftTime,
-    };
-    return assignedIntern;
-  };
+  // ... (other existing functions)
 
+  // Save data to localStorage
   const saveToLocalStorage = (data) => {
     localStorage.setItem("weeklyScheduleData", JSON.stringify(data));
   };
 
+  // Load data from localStorage
   const loadFromLocalStorage = () => {
     const storedData = localStorage.getItem("weeklyScheduleData");
     return storedData ? JSON.parse(storedData) : {};
   };
-  
-
 
 
   return (

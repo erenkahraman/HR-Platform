@@ -220,9 +220,6 @@ const WeeklySchedule = () => {
         console.error(e);
       }
     };
-    const storedData = loadFromLocalStorage();
-    setWeeklySchedule(storedData);
-
     fetchWeeklySchedule();
   }, []);
 
@@ -266,11 +263,11 @@ const WeeklySchedule = () => {
     localStorage.setItem("weeklyScheduleData", JSON.stringify(data));
   };
 
+  // Load data from localStorage
   const loadFromLocalStorage = () => {
     const storedData = localStorage.getItem("weeklyScheduleData");
     return storedData ? JSON.parse(storedData) : {};
   };
-  
 
 
 
