@@ -472,7 +472,7 @@ const WeeklySchedule = () => {
               >
                 <thead>
                   <tr>
-                  {/* <th>{eachDepartmentName} ({countInternsInDepartments(morningShiftInterns)[eachDepartmentName] || 0})</th> */}
+                  <h3><strong>{schedule.Group} <span>[{schedule.Schedule.morning.length}]</span> </strong></h3>
                   </tr>
                 </thead>
                 <tbody>
@@ -518,7 +518,7 @@ const WeeklySchedule = () => {
               >
                 <thead>
                   <tr>
-                  {/* <th>{eachDepartmentName} ({countInternsInDepartments(afternoonShiftInterns)[eachDepartmentName] || 0})</th> */}
+                  <h3><strong>{schedule.Group} <span>[{schedule.Schedule.afternoon.length}]</span> </strong></h3>
                   </tr>
                 </thead>
                 <tbody>
