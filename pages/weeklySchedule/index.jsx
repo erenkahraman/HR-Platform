@@ -14,6 +14,7 @@ const WeeklySchedule = () => {
   const [dateRange, setDateRange] = useState("");
   const [weeklyScheduleByDepartment, setWeeklyScheduleByDepartment] = useState({});
   const [weeklySchedule, setWeeklySchedule] = useState([]); // Add this state variable
+  const [populatedWeeklySchedule, setPopulatedWeeklySchedule] = useState([]);
   const [departmentNames, setDepartmentNames] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -190,6 +191,7 @@ const WeeklySchedule = () => {
             token: token,
           },
         };
+        debugger;
         const { data } = await axios.get(`/api/intern`, config);
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
@@ -229,8 +231,12 @@ const WeeklySchedule = () => {
             "Content-Type": "application/json",
           },
         };
-        const { data } = await axios.get(`/api/weeklySchedule?token=${token}`);
-        setWeeklySchedule(data.weeklySchedule);
+        debugger;
+        const response = await axios.get(`/api/weeklySchedule?token=${token}`);
+        const { weeklySchedule, populatedWeeklySchedule } = response.data;
+        // Update state with fetched data
+        setWeeklySchedule(weeklySchedule);
+        setPopulatedWeeklySchedule(populatedWeeklySchedule);
 
       } catch (e) {
         console.error(e);
@@ -450,9 +456,9 @@ const WeeklySchedule = () => {
         >
           <h2 className="text-center mb-4"><b>Morning Shift</b></h2>
           <div className="flex justify-center">
-            {departmentNames.map((eachDepartmentName) => (
+            {populatedWeeklySchedule.map((schedule) => (
               <table
-                key={eachDepartmentName}
+                key={schedule._id}
                 className="font-roboto w-full max-w-screen mx-auto"
                 style={{
                   display: "flex",
@@ -466,23 +472,18 @@ const WeeklySchedule = () => {
               >
                 <thead>
                   <tr>
-                  <th>{eachDepartmentName} ({countInternsInDepartments(morningShiftInterns)[eachDepartmentName] || 0})</th>
+                  {/* <th>{eachDepartmentName} ({countInternsInDepartments(morningShiftInterns)[eachDepartmentName] || 0})</th> */}
                   </tr>
                 </thead>
                 <tbody>
-                  {morningShiftInterns.map((eachIntern, i) => {
-                    return eachIntern.department !== eachDepartmentName ? null :
-                      (
-                        <tr key={i}>
-                          <td className="flex items-center justify-between">
-                            <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                            <Button onClick={() => swapShift(eachIntern, "morning")}>
-                              <SwapHorizIcon style={{ marginRight: "5px", }} />
-                            </Button>
-                          </td>
-                        </tr>
-                      )
-                  })}
+                {schedule.Schedule.morning.map((internName, index) => (
+                  <li key={index}>
+                    {internName}
+                    <Button onClick={() => swapShift(internName, "morning")}>
+                      Swap Shift
+                    </Button>
+                  </li>
+                ))}
                 </tbody>
               </table>
             ))}
@@ -501,9 +502,9 @@ const WeeklySchedule = () => {
         >
           <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
           <div className="flex justify-center">
-            {departmentNames.map((eachDepartmentName) => (
+          {populatedWeeklySchedule.map((schedule) => (
               <table
-                key={eachDepartmentName}
+                key={schedule._id}
                 className="font-roboto w-full max-w-screen mx-auto"
                 style={{
                   display: "flex",
@@ -517,24 +518,19 @@ const WeeklySchedule = () => {
               >
                 <thead>
                   <tr>
-                  <th>{eachDepartmentName} ({countInternsInDepartments(afternoonShiftInterns)[eachDepartmentName] || 0})</th>
+                  {/* <th>{eachDepartmentName} ({countInternsInDepartments(afternoonShiftInterns)[eachDepartmentName] || 0})</th> */}
                   </tr>
                 </thead>
                 <tbody>
-                  {afternoonShiftInterns.map((eachIntern, i) => {
-                    return eachIntern.department !== eachDepartmentName ? null :
-                      (
-                        <tr key={i}>
-                          <td className="flex items-center justify-between">
-                            <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                            <Button onClick={() => swapShift(eachIntern, "afternoon")}>
-                              <SwapHorizIcon style={{ marginRight: "5px", }} />
-                            </Button>
-                          </td>
-                        </tr>
-                      )
-                  })}
-                </tbody>
+                {schedule.Schedule.afternoon.map((internName, index) => (
+                  <li key={index}>
+                    {internName}
+                    <Button onClick={() => swapShift(internName, "afternoon")}>
+                      Swap Shift
+                    </Button>
+                  </li>
+                ))}
+                  </tbody>
               </table>
             ))}
           </div>
