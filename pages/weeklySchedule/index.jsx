@@ -360,7 +360,7 @@ const WeeklySchedule = () => {
                 </tr>
               </thead>
               <tbody>
-                {departmentNames.map((eachDepartmentName,) => (
+                {departmentNames.map((eachDepartmentName) => (
                   <React.Fragment key={eachDepartmentName}>
                     <tr>
                       <td colSpan="3">
@@ -396,45 +396,23 @@ const WeeklySchedule = () => {
                     
                     {eachDepartmentName === selectedDepartment && (
                       <>
-                        {weeklyScheduleByDepartment[eachDepartmentName].map((eachIntern, i) => (
-                          <tr key={i}>
-                            <td>
-                              {eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                            </td>
-                            <td></td>
-                            <td>
-                              <div className="button-container">
-                                <Button
-                                  className="move-button"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "black",
-                                    borderRadius: "10px",
-                                    marginRight: "10px",
-                                    padding: "10px 20px",
-                                    margin: "2px 40px",
-                                  }}
-                                  onClick={() => handleMoveToMorning(eachIntern, i)}
-                                >
-                                  Move to Morning
-                                </Button>
-                                <Button
-                                  className="move-button"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "black",
-                                    borderRadius: "10px",
-                                    padding: "8px 20px",
-                                    margin: "0px 5px",
-                                  }}
-                                  onClick={() => handleMoveToAfternoon(eachIntern, i)}
-                                >
-                                  Move to Afternoon
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
+                          <ul>
+                {populatedWeeklySchedule.find(schedule => schedule.Group === eachDepartmentName)
+                  ? null
+                  : weeklyScheduleByDepartment[eachDepartmentName].map((eachIntern, index) => (
+                    <li key={index}>
+                      {eachIntern.student.firstName} {eachIntern.student.lastName}
+                      <Button onClick={() => handleMoveToMorning(eachIntern, index)}>
+                        Move to Morning
+                      </Button>
+                      <Button onClick={() => handleMoveToAfternoon(eachIntern, index)}>
+                        Move to Afternoon
+                      </Button>
+                    </li>
+                  ))
+                }
+              </ul>
+      
                       </>
                     )}
                   </React.Fragment>
