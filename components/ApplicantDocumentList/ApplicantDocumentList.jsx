@@ -164,7 +164,6 @@ const DocumentListContent = ({ type, status,student }) => {
       <a id="hiddenTag" style={{display:'none'}} href={fullpath} download> </a>
       
       </div>
-     
     </div>
   );
 };
@@ -270,15 +269,16 @@ const DocumentList = () => {
             </div>
 
             {/* Middle */}
+            
             <div className="flex flex-col md:flex-row gap-[2px]">
-              {Object.keys(students[index].applicant.documents).map((name) => (
-                <DocumentListContent
-                  key={name}
-                  type={name}
-                  status={students[index].intern.documents[name]}
-                  student={student}
-                />
-              ))}
+            {students[index].applicant.documents && Object.keys(students[index].applicant.documents).map((name) => (
+              <DocumentListContent
+                key={name}
+                type={name}
+                status={students[index].internTest.documents[name]}
+                student={student}
+              />
+            ))}
 
             </div>
             {/* Bottom */}

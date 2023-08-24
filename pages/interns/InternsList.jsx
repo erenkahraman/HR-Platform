@@ -29,52 +29,33 @@ export default function InternList() {
   const { filteredData } = useTableSearch({ data, searchedVal });
 
   useEffect(() => {
-    setLoading(true);
-    const asyncRequest = async () => {
+    // Fetch student list from the API
+    const fetchInterns = async () => {
       try {
         const config = {
           headers: {
             "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*", // allow request from all origin
           },
         };
-        const { data } = await axios.get(
-          `/api/intern`,
+        const response = await axios.get(
+          `/api/internTest`,
           { params: { token: token } },
           config
-        );
-        setData(data);
-        setLoading(false);
-      } catch (e) {
-        console.error(e);
-        setLoading(false);
+        ); 
+        debugger;
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching interns:', error);
       }
     };
-    asyncRequest();
+    fetchInterns();
   }, [token]);
 
-  const startInternship = async (intern) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const { data } = await axios.put(
-      `/api/intern`,
-      { params: { token: token, id: intern._id } },
-      config
-    );
-    if (data === 1) {
-      alert("Status updated Successfully");
-
-      router.reload(window.location.pathname);
-    } else {
-      alert("Status updated Failure");
-    }
-  };
 
   return (
     <section className="relative w-full sm:static">
-      <LoadingState open={isloading} />
+      {/* <LoadingState open={isloading} /> */}
       <div className="w-full mb-12">
         <div className="relative sm:static flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white ">
           {/* Title Container */}
@@ -199,35 +180,35 @@ export default function InternList() {
 
                 {/* Table Body */}
                 <tbody className="divide-y">
-                  {filteredData.map((student) => (
-                    <tr key={student.intern}>
+                  {filteredData.map((internTest) => (
+                    <tr key={internTest._id}>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                         <span className="ml-3 font-bold">
-                          {student.firstName} {student.lastName}{" "}
+                          {internTest.student.firstName} {internTest.student.lastName}{" "}
                         </span>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(student.intern.startDate).format("DD/MM/YYYY")}
+                        {moment(internTest.student.startDate).format("DD/MM/YYYY")}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(student.intern.endDate).format("DD/MM/YYYY")}
+                        {moment(internTest.student.endDate).format("DD/MM/YYYY")}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.intern.durationInWeeks}
+                        {internTest.durationInWeeks}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.intern.department}
+                        {internTest.department}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.intern.position}
+                        {internTest.position}
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.intern.status}
+                        {internTest.status}
                       </td>
 
                       <Popup
@@ -267,9 +248,9 @@ export default function InternList() {
                                 <Link
                                   href={{
                                     pathname: "/applicants/new",
-                                    query: { student: JSON.stringify(student) },
+                                    query: { student: JSON.stringify(internTest.student) },
                                   }}
-                                  as={`/interns/${student.firstName}_${student.lastName}`}
+                                  as={`/intern/${internTest.student.firstName}_${internTest.student.lastName}`}
                                 >
                                   Edit
                                 </Link>
@@ -295,7 +276,7 @@ export default function InternList() {
 
                               {eiModal && (
                                 <EndInternshipModal
-                                  intern={student.intern}
+                                  internTest={internTest}
                                   setEiModal={setEiModal}
                                 />
                               )}

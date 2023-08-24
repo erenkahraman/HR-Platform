@@ -61,7 +61,7 @@ const StudentSchema = new mongoose.Schema({
     required: true,
   },
   applicant: { type: mongoose.Schema.Types.ObjectId, ref: "Applicant" },
-  intern: { type: mongoose.Schema.Types.ObjectId, ref: "Intern" },
+  internTest: { type: mongoose.Schema.Types.ObjectId, ref: "InternTest" },
 });
 
 export default mongoose.models.Student ||

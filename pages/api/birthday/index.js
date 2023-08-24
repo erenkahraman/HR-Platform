@@ -1,5 +1,5 @@
 import { getMongoDb } from "../../../util/mongodb";
-import Intern from "../../../models/intern";
+import InternTest from "../../../models/internTest";
 import { tokenCheckFunction } from "../auth/tokenCheck";
 
 export default async function handler(req, res) {
@@ -29,10 +29,10 @@ export default async function handler(req, res) {
           { $match: { applicationStatus: "Accepted" } },
           {
             $lookup: {
-              from: Intern.collection.name,
-              localField: "intern",
+              from: InternTest.collection.name,
+              localField: "internTest",
               foreignField: "_id",
-              as: "intern",
+              as: "internTest",
             },
           },
           {
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
               firstName: 1,
               lastName: 1,
               dateOfBirth: 1,
-              "intern.position": 1,
+              "internTest.position": 1,
               month: { $month: "$dateOfBirth" },
               day: { $dayOfMonth: "$dateOfBirth" },
             },

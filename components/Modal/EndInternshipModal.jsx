@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import LoadingState from "../Utils/LoadingState";
 // import LoadingState from "../LoadingState";
 
-const EndInternshipModal = ({ intern, setEiModal }) => {
+const EndInternshipModal = ({ internTest, setEiModal }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -42,12 +42,12 @@ const EndInternshipModal = ({ intern, setEiModal }) => {
         },
         body: JSON.stringify({
           type: "FINISHED",
-          finishedInterns: `${intern._id}`,
+          finishedInterns: `${internTest._id}`,
         }),
       };
 
-      const endPointDprtmnt = `/api/department/${intern.departement}`;
-      const endPointStd = `/api/student/${intern.student._id}`;
+      const endPointDprtmnt = `/api/department/${internTest.departement}`;
+      const endPointStd = `/api/student/${internTest.student._id}`;
 
       await fetch(endPointStd, optionsStd);
       await fetch(endPointDprtmnt, optionsSdprtmnt);
@@ -75,7 +75,7 @@ const EndInternshipModal = ({ intern, setEiModal }) => {
               <span className="flex mx-2 text-red-500 text-lg font-bold">
                 end the internship
               </span>{" "}
-              for {intern.student.firstName} {intern.student.lastName}?
+              for {internTest.student.firstName} {internTest.student.lastName}?
             </div>
 
             <div className="flex flex-row ml-32">
