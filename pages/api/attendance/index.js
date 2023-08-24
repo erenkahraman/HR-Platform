@@ -1,7 +1,8 @@
 import { getMongoDb } from "../../../util/mongodb";
 import dbConnect from "../../../util/mongodb";
 import Attendance from "../../../models/attendance";
-import student from "../../../models/student";
+import Student from "../../../models/student";
+import InternTest from "../../../models/internTest";
 const { tokenCheckFunction } = require("../auth/tokenCheck");
 
 export default async function handler(req, res) {
@@ -29,11 +30,32 @@ export default async function handler(req, res) {
         res.status(401).json("Unauthorized User");
         return;
       }
-      tokenCheckFunction(token);
-      const db = await getMongoDb();
+      await tokenCheckFunction(token);
+      await getMongoDb();
       await dbConnect();
       
-      const attendances = await Attendance.find().populate("student");
+
+      // const attendances =  await db
+      // .collection("attendances")
+      // .aggregate([
+      //   {
+      //     $lookup: {
+      //       from: "interns",
+      //       localField: "intern",
+      //       foreignField: "_id",
+      //       as: "intern",
+      //     },
+      //   },
+      // ])
+      // .toArray();
+      const attendances = await Attendance.find().populate({
+        path: 'internTest',
+        populate: {
+          path: 'student',
+          model: 'Student' // Buradaki 'Student', student referansının modele göre olan adıdır.
+        }
+      });
+      console.log("attendances: ", attendances);
       res.status(200).json(attendances);
     } catch (error) {
       res.status(500).json(error);
@@ -42,8 +64,6 @@ export default async function handler(req, res) {
   else if (method === "POST") {
     debugger;
     try {
-      console.log('POST Token: ', token );
-
       const newAttendance = await Attendance.create(req.body);
       res.status(201).json(newAttendance);
     } catch (err) {

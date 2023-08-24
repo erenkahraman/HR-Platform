@@ -5,7 +5,7 @@ const EndIntern = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  intern: { type: mongoose.Schema.Types.ObjectId, ref: "Intern" },
+  internTest: { type: mongoose.Schema.Types.ObjectId, ref: "InternTest" },
 });
 
 export default mongoose.models.EndIntern ||

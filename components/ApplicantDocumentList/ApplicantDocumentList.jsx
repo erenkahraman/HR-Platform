@@ -275,7 +275,7 @@ const DocumentList = () => {
               <DocumentListContent
                 key={name}
                 type={name}
-                status={students[index].intern.documents[name]}
+                status={students[index].internTest.documents[name]}
                 student={student}
               />
             ))}

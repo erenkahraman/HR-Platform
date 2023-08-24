@@ -32,8 +32,8 @@ import {
   DialogActions,
 } from "@mui/material";
 import DialogContentText from "@mui/material/DialogContentText";
-import { Mongoose } from "mongoose";
 import mongoose from "mongoose";
+import { de } from "date-fns/locale";
 
 
 
@@ -44,7 +44,7 @@ function Attendence() {
   const [isloading, setLoading] = useState(true);
   const [date, setDate] = useState(today.toISOString().split("T")[0]);
   const [status, setStatus] = useState("present");
-  const [intern, setIntern] = useState();
+  const [internTest, setInterns] = useState([]);
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [openAlertIncludedDate, setOpenAlertIncludedDate] = useState(false);
@@ -56,18 +56,19 @@ function Attendence() {
   const [openDialog, setOpenDialog] = useState(false);
 
   const csvLinkElement = useRef();
-  const csvLinkSingleStudent = useRef();
+  const csvLinkSingleIntern = useRef();
 
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
+  console.log(data);
   console.log(filteredData);
 
   const [draftedInternUpdates, setDraftedInternUpdates] = useState([]);
   const [updatedInterns, setUpdatedInterns] = useState([]);
 
-  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] =
+  const [singleInternAttendanceInfo, setsingleInternAttendanceInfo] =
     useState([]);
-  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] =
+  const [allInternsAttendanceInfo, setAllInternsAttendanceInfo] =
     useState([]);
 
   const [showAlert, setShowAlert] = useState(false);
@@ -101,15 +102,20 @@ function Attendence() {
 
   const saveToAttendanceDatabase = async (attendanceData) => {
     try {
-      debugger;
+      const internTest=attendanceData.internTest
+      const attendance=attendanceData
 
+      // const internId = new mongoose.Types.ObjectId();
       const attendanceId = new mongoose.Types.ObjectId();
-      const studentId = new mongoose.Types.ObjectId();
+
+      // internTest._id = internId;
+      internTest.attendance=attendanceId;
 
       attendanceData._id = attendanceId
-      attendanceData.student._id = studentId
+      attendance.internTest=internTest._id;
+
       attendanceData.token=token
-      attendanceData.student.token=token
+      internTest.token=token
       await axios.post(`/api/attendance?token=${token}`, attendanceData, {
         headers: {
           "Content-Type": "application/json",
@@ -128,39 +134,22 @@ function Attendence() {
     }
   };
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get('/api/attendance');
-      setData(data);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  };
 
-  
-  
+  const handleChangeStatus = (attendance, newStatus) => {
 
-
-  const handleChangeStatus = (student, newStatus) => {
-
-
+    debugger;
     const isDateGiven = date !== ""
 
     if (!isDateGiven) {
       return;
     }
 
-    const updatedIntern = student.intern
-
-
+    const updatedIntern = attendance.internTest
 
     const draftedInternUpdate = {
       id: updatedIntern._id,
       status: newStatus,
-      count: updatedIntern.attendance[newStatus].count + 1,
+      count: attendance[newStatus] + 1,
       date: date
     }
 
@@ -178,42 +167,11 @@ function Attendence() {
       setDraftedInternUpdates([...draftedInternUpdates, updatedIntern])
       setUpdatedInterns([...updatedInterns, updatedIntern])
     }
-
     setStatus(newStatus)
   }
   useEffect(() => {
-    const asyncRequest = async () => {
-      debugger;
-      try {
-        const token = cookie.get("token");
-        console.log(token);
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const { data } = await axios.get(
-          "/api/attendance",
-          { params: { token: token } },
-          config
-        );
-        setData(data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    };
-    asyncRequest();
-  }, [token]);
-
-
-  const [students, setStudents] = useState([]);
-
-  useEffect(() => {
-    debugger;
     // Fetch student list from the API
-    const fetchStudents = async () => {
+    const fetchInterns = async () => {
       try {
         const config = {
           headers: {
@@ -221,37 +179,53 @@ function Attendence() {
           },
         };
         const response = await axios.get(
-          `/api/student`,
+          `/api/internTest`,
           { params: { token: token } },
           config
         ); 
-        setStudents(response.data);
+        setInterns(response.data);
       } catch (error) {
-        console.error('Error fetching students:', error);
+        console.error('Error fetching interns:', error);
       }
     };
-
-    fetchStudents();
+    fetchInterns();
   }, [token]);
 
-  useEffect(() => {
-    debugger;
 
-    students.map((student) => {
-      const attendanceData = {
-        present: 0,
-        late: 0,
-        coveredDay: 0,
-        dayOff: 0,
-        excusedLeave: 0,
-        sick: 0,
-        unexcusedleave: 0,
-        date: currentDate,
-        student: student,
+  const asyncRequest = async (newDate) => {
+    try {
+      const token = cookie.get("token");
+      console.log(token);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
       };
-      saveToAttendanceDatabase(attendanceData);
-    });
-  }, [data]);
+      const { data } = await axios.get(
+        "/api/attendance",
+        { params: { token: token } },
+        config
+      );
+      const filteredData = data.filter((attendance) => {
+        const attendanceDate = new Date(attendance.date); 
+        const attendanceMonth = attendanceDate.getMonth() + 1; 
+        return attendanceMonth === newDate.getMonth() + 1; 
+      });
+      setData(filteredData);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    asyncRequest(currentDate);
+  }, [token]);
+
+
+
+  
 
   const handleCurrentMonthDateRange = (date) => {
     const firstDayOfMonth = startOfMonth(date);
@@ -266,31 +240,17 @@ function Attendence() {
     handleCurrentMonthDateRange(currentDate);
   }, [currentDate]);
 
-  const handleNextMonth = () => {
-    debugger;
-    setCurrentDate(addMonths(currentDate, 1));
-    const refreshedData = data.map((student) => ({
-      present: 0,
-      late: 0,
-      coveredDay: 0,
-      dayOff: 0,
-      excusedLeave: 0,
-      sick: 0,
-      unexcusedleave: 0,
-      date: currentDate,
-      student: student,
-    }));
+  const handleNextMonth = async () => {
+    var newDate = addMonths(currentDate, 1);
+    setCurrentDate(newDate);
 
-    saveToAttendanceDatabase(refreshedData);
-    
-    setData(refreshedData);
-    setDraftedInternUpdates(refreshedData);
-    setUpdatedInterns(refreshedData);
-    setShowConfirmation(false);
+    await asyncRequest(newDate);
   };
 
-  const handlePreviousMonth = () => {
-    setCurrentDate(subMonths(currentDate, 1));
+  const handlePreviousMonth = async () => {
+    var newDate = subMonths(currentDate, 1);
+    setCurrentDate(newDate);
+    await asyncRequest(newDate);
   };
 
   // useEffect(() => {
@@ -315,65 +275,26 @@ function Attendence() {
 
   const handleExportJsonDataToCsv = () => {
 
-    let studentsAttendanceInfo = []
-    data.forEach((eachStudent) => {
-
-      const attendanceInfo = getAttendanceInfoOfStudent(eachStudent)
-      studentsAttendanceInfo.push(attendanceInfo)
+    let internsAttendanceInfo = []
+    data.forEach((attendance) => {
+      debugger;
+      const attendanceInfo = getAttendanceInfoOfIntern(attendance)
+      internsAttendanceInfo.push(attendanceInfo)
     })
 
-    setAllStudentsAttendanceInfo(studentsAttendanceInfo)
+    setAllInternsAttendanceInfo(internsAttendanceInfo)
 
     const downloadedCsvFile = setTimeout(function () {
       csvLinkElement.current.link.click()
     }, 1000);
   }
 
-  const handleConfirmRefresh = () => {
-    const refreshedData = data.map((student) => ({
-      ...student,
-      intern: {
-        ...student.intern,
-        attendance: {
-          present: {
-            count: 0,
-            dates: [],
-          },
-          late: {
-            count: 0,
-            dates: [],
-          },
-          coveredDay: {
-            count: 0,
-            dates: [],
-          },
-          dayOff: {
-            count: 0,
-            dates: [],
-          },
-          excusedLeave: {
-            count: 0,
-            dates: [],
-          },
-          sick: {
-            count: 0,
-            dates: [],
-          },
-          unexcusedleave: {
-            count: 0,
-            dates: [],
-          },
-        },
-        
-      },
-    }));
-  }
 
-  const getAttendanceInfoOfStudent = (attendance) => {
+  const getAttendanceInfoOfIntern = (attendance) => {
     debugger;
     const attendanceInfo = {
-      "First Name": attendance.student.firstName,
-      "Last Name": attendance.student.lastName,
+      "First Name": attendance.internTest.student.firstName,
+      "Last Name": attendance.internTest.student.lastName,
       "Covered Day": attendance.coveredDay,
       "Day Off": attendance.dayOff,
       "Excused Leave": attendance.excusedLeave,
@@ -384,50 +305,86 @@ function Attendence() {
     }
     return attendanceInfo
   }
-  const handleExportSingleInternAttendanceToCsv = (student) => {
+  const handleExportSingleInternAttendanceToCsv = (attendance) => {
 
-    if (event.target.tagName === "A") {
-      return
-    }
+    const attendanceInfo = getAttendanceInfoOfIntern(attendance)
 
-    const attendanceInfo = getAttendanceInfoOfStudent(attendance)
-
-    setSingleStudentAttendanceInfo([attendanceInfo])
+    setsingleInternAttendanceInfo([attendanceInfo])
 
     const downloadedCsvFile = setTimeout(function () {
-      csvLinkSingleStudent.current.link.click()
+      csvLinkSingleIntern.current.link.click()
     }, 1000);
 
   }
-
-
-
-  const save = (intern) => {
-    setOpenAlert(false);
-    setOpenAlertIncludedDate(false);
-    setIntern(intern);
-    if (!dateIncluded) {
-      if (status && date) {
-        setOpen(false);
+  const moveToNextMonth = async () => {
         confirmAlert({
           message: "Are you sure you want to save ?",
           buttons: [
             {
               label: "Yes",
               onClick: async () => {
+                var newDate = addMonths(currentDate, 1);
+                // setCurrentDate(newDate);
                 setOpen(true);
-                intern.attendance[status].count++;
-                intern.attendance[status].dates.push(date);
-                intern.token = token;
-                const JSONintern = JSON.stringify(intern);
-                const endpoint = `/api/intern/${intern._id}`;
+                for (const attendance of data) {
+                  const attendanceData = {
+                    present: 0,
+                    late: 0,
+                    coveredDay: 0,
+                    dayOff: 0,
+                    excusedLeave: 0,
+                    sick: 0,
+                    unexcusedleave: 0,
+                    date: newDate,
+                    internTest: attendance.internTest,
+                  };
+              
+                  
+                  await saveToAttendanceDatabase(attendanceData);
+                  debugger;
+
+                }
+                setData(data);
+                setInterns(data.internTest);
+                setDraftedInternUpdates(data);
+                setUpdatedInterns(data);
+                setShowConfirmation(false);
+                setOpen(false);
+              },
+            },
+            {
+              label: "No",
+            },
+          ],
+        });
+  };
+
+
+  const save = (attendance) => {
+    debugger;
+    setInterns(attendance.internTest);
+    if (!dateIncluded) {
+      if (status && date) {
+        confirmAlert({
+          message: "Are you sure you want to save ?",
+          buttons: [
+            {
+              label: "Yes",
+              onClick: async () => {
+                debugger;
+                setOpen(true);
+                attendance[status]++;
+                attendance.date=date;
+                attendance.internTest.token = token;
+                const JSONattendance = JSON.stringify(attendance);
+                const endpoint = `/api/attendance/${attendance._id}`;
                 const options = {
                   method: "PUT",
                   headers: {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
                   },
-                  body: JSONintern,
+                  body: JSONattendance,
                 };
                 await fetch(endpoint, options);
                 setOpen(false);
@@ -459,7 +416,7 @@ function Attendence() {
           },
         };
         // PUT request to update all interns in the database
-        await axios.put(`/api/intern`, { token: token, interns: updatedInterns, drafted: draftedInternUpdates }, config);
+        await axios.put(`/api/internTest`, { token: token, internTests: updatedInterns, drafted: draftedInternUpdates }, config);
         setLoading(false);
         // Show a success message to the user
         alert("All changes have been saved!");
@@ -488,25 +445,6 @@ function Attendence() {
     }
   };
 
-
-
-
-
-
-
-  const disableStatus = (intern, dt) => {
-    if (
-      intern.attendance.present.dates.includes(dt) ||
-      intern.attendance.late.dates.includes(dt) ||
-      intern.attendance.dayOff.dates.includes(dt) ||
-      intern.attendance.excusedLeave.dates.includes(dt) ||
-      intern.attendance.sick.dates.includes(dt) ||
-      intern.attendance.unexcusedleave.dates.includes(dt) ||
-      intern.attendance.coveredDay.dates.includes(dt)
-    )
-      setDateIncluded(true);
-    else setDateIncluded(false);
-  };
 
   if (isloading)
     return (
@@ -577,13 +515,12 @@ function Attendence() {
             <Button
             size="medium"
             color="primary"
-            startIcon={<RefreshIcon className="text-sm" />}
             variant="contained"
             sx={{ borderRadius: 2 }}
             href="#"
-            onClick={handleRefreshTable}
+            onClick={moveToNextMonth}
           >
-            Refresh Table
+            Move To Next Month
           </Button>
 
       {/* Confirmation Dialog */}
@@ -599,14 +536,14 @@ function Attendence() {
                   Are you sure you want to refresh the table? This action cannot be undone.
                 </DialogContentText>
               </DialogContent>
-              <DialogActions>
+              {/* <DialogActions>
                 <Button onClick={handleCancelRefresh} color="primary">
                   No
                 </Button>
                 <Button onClick={handleConfirmRefresh} color="primary" autoFocus>
                   Yes
                 </Button>
-              </DialogActions>
+              </DialogActions> */}
             </Dialog>
 
               
@@ -622,7 +559,7 @@ function Attendence() {
               >
                 Export to CSV
               </Button>
-              <CSVLink ref={csvLinkElement} data={allStudentsAttendanceInfo}></CSVLink>
+              <CSVLink ref={csvLinkElement} data={allInternsAttendanceInfo}></CSVLink>
 
               <form>
                 <label
@@ -662,7 +599,7 @@ function Attendence() {
               </form>
               <div className="relative"  >
                 
-                <Button
+                {/* <Button
                 size="medium"
                 color="primary"
                 startIcon= {<CheckCircle className="text-sm" />}
@@ -672,7 +609,7 @@ function Attendence() {
                 onClick={saveAll}
               >
                 Save All
-              </Button>
+              </Button> */}
                 
               </div>
             </div>
@@ -727,9 +664,6 @@ function Attendence() {
                     INTERN
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    DATE
-                  </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     SITUATION
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -766,43 +700,23 @@ function Attendence() {
                     The interns list is empty
                   </tr>
                 ) : (
-                  filteredData.map((student) => (
-                    <tr key={attendance.student.intern._id}>
+                  filteredData.map((attendance) => (
+                    <tr key={attendance._id}>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">
                           {" "}
-                          {attendance.student.firstName} {attendance.student.lastName}
+                          {attendance.internTest.student.firstName} {attendance.internTest.student.lastName}
                         </div>
                       </td>
 
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <input
-                          type="date"
-                          value={date}
-                          onChange={(e) => {
-                            setDate(e.target.value);
-                            console.log(date);
-
-                          }}
-                          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-
-                          onClick={(e) => {
-                            setDate(e.target.value);
-
-                            console.log(date);
-
-
-                          }}
-                        ></input>
-                      </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <select
                           id="country"
                           className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                           // onClick={(e) => setStatus(e.target.value)}
-                          onClick={(e) => handleChangeStatus(student, e.target.value)}
+                          onClick={(e) => handleChangeStatus(attendance, e.target.value)}
                         >
                           <option value="present">Present</option>
                           <option value="late">Late</option>
@@ -818,46 +732,46 @@ function Attendence() {
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{attendance.present.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.present}</div>
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
 
-                          <div>{attendance.late.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.late}</div>
 
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{attendance.coveredDay.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.coveredDay}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{attendance.dayOff.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.dayOff}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {attendance.excusedLeave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
+                            {attendance.excusedLeave}
                           </div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{attendance.sick.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.sick}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {attendance.unexcusedleave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
+                            {attendance.unexcusedleave}
                           </div>
                         </div>
                       </td>
@@ -867,7 +781,7 @@ function Attendence() {
                           <div className="flex flex-r">
                             <div>
                               <button
-                                onClick={() => save(attendance.student.intern)}
+                                onClick={() => save(attendance)}
                                 title="Save"
                               >
                                 <CheckCircle className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
@@ -877,20 +791,20 @@ function Attendence() {
                               <InfoIcon
                                 className="h-6 fill-[#0b3768] hover:fill-[#15803d]"
                                 onClick={(e) =>
-                                  setAttendanceEditModel(attendance.student.intern._id)
+                                  setAttendanceEditModel(attendance._id)
                                 }
 
                               />
-                              {editAttendanceModel === attendance.student.intern._id && (
+                              {editAttendanceModel === attendance._id && (
                                 <EditAttendance
-                                  intern={student.intern}
+                                  attendance={attendance}
                                   setModel={setAttendanceEditModel}
                                 />
                               )}
                             </button>
-                            <button title="Export to CSV" onClick={() => handleExportSingleInternAttendanceToCsv(student)}>
+                            <button title="Export to CSV" onClick={() => handleExportSingleInternAttendanceToCsv(attendance)}>
                               <SystemUpdateAlt className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
-                              <CSVLink ref={csvLinkSingleStudent} data={singleStudentAttendanceInfo}></CSVLink>
+                              <CSVLink ref={csvLinkSingleIntern} data={singleInternAttendanceInfo}></CSVLink>
                             </button>
                           </div>
                         </div>

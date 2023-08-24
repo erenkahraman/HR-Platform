@@ -11,7 +11,7 @@ const AttendanceSchema = new mongoose.Schema({
     sick: {type: Number,default: 0},
     unexcusedleave: {type: Number,default: 0},
     date: { type: Date, default: Date.now },
-    student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
+    internTest: { type: mongoose.Schema.Types.ObjectId, ref: "InternTest" },
 });
 
 // Create the Mongoose model for attendance

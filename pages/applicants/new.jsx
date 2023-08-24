@@ -133,16 +133,18 @@ const NewApplicants = () => {
     setOpen(true);
     const idSave = document.querySelector("#Save");
     if(idSave){
-
+      
       const student = data.student;
       const applicant = data.student.applicant;
 
       const applicantId = new mongoose.Types.ObjectId();
       const studentId = new mongoose.Types.ObjectId();
+      
       student._id = studentId;
       student.applicant = applicantId;
       applicant._id = applicantId;
       applicant.student = studentId;
+
       student.token = token;
       applicant.token = token;
       const JSONdstudent = JSON.stringify(student);
@@ -252,7 +254,7 @@ const NewApplicants = () => {
 
 
 
-  var today = new Date();
+    var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
@@ -266,15 +268,8 @@ const NewApplicants = () => {
     setOpen(true);
     const student = data.student;
     const applicant = data.student.applicant;
-    const intern = data.student.intern;
-
-    intern.department = applicant.department;
-    intern.position = applicant.position;
-    intern.startDate = applicant.startDate;
-    intern.endDate = applicant.endDate;
 
 
-    intern.token = token;
     student.token = token;
     applicant.token = token;
     try {
@@ -285,14 +280,6 @@ const NewApplicants = () => {
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify(student),
-      });
-      await fetch(`/api/intern/${intern._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify(intern),
       });
       await fetch(`/api/applicant/${applicant._id}`, {
         method: "PUT",
@@ -438,7 +425,7 @@ const NewApplicants = () => {
                     {/* Date of Birth */}
                     <div className="flex flex-col gap-2">
                       <label className="block text-sm">Date of Birth</label>
-                      <Controller
+                      {/* <Controller
                           control={control}
                           name="student.dateOfBirth"
                           render={({ field }) => (
@@ -449,7 +436,7 @@ const NewApplicants = () => {
                               placeholderText="DD/MM/YYYY" // Placeholder text for the input
                             />
                           )}
-                      />
+                      /> */}
                       {/* <Controller
                         control={control}
                         name="student.dateOfBirth"
