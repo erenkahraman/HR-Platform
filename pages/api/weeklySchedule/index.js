@@ -94,7 +94,7 @@ export default async function handler(req, res) {
       });
       
       // Log the fetched populated weeklySchedule data
-      console.log("Populated weeklySchedule datas:", JSON.stringify(populatedWeeklySchedule, null, 2));
+      // console.log("Populated weeklySchedule datas:", JSON.stringify(populatedWeeklySchedule, null, 2));
 
   
       res.status(200).json({weeklySchedule,populatedWeeklySchedule});

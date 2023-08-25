@@ -24,19 +24,18 @@ const WeeklySchedule = () => {
   const token = cookie.get("token");
   const csvLinkElement = useRef();
 
-  const handleClickOutside = (event) => {
-    if (anchorEl && !anchorEl.contains(event.target)) {
-      setAnchorEl(null);
-      setSelectedDepartment(null);
-    }
-  };
-
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (anchorEl && !event.target.closest(`#department-menu-${selectedDepartment}`)) {
+        setAnchorEl(null);
+        setSelectedDepartment(null);
+      }
+    };
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [anchorEl]);
+  },[]);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -173,7 +172,7 @@ const WeeklySchedule = () => {
     const fetchInterns = async () => {
       try {
         handleCurrentWeekDateRange();
-
+    
         const token = cookie.get("token");
         if (!token) {
           console.log("Token Expired! error function: fetchInterns");
@@ -182,7 +181,7 @@ const WeeklySchedule = () => {
         else{
           console.log("Token value from fetchInterns",token)
         }
-
+    
         const config = {
           headers: {
             "Content-Type": "application/json",
@@ -191,8 +190,19 @@ const WeeklySchedule = () => {
             token: token,
           },
         };
-        debugger;
+    
         const { data } = await axios.get(`/api/intern`, config);
+    
+        // Filter out assigned interns
+        const availableMorningShiftInterns = data.filter(intern => intern.shift === "morning" && !morningShiftInterns.some(shiftIntern => shiftIntern._id === intern._id));
+        const availableAfternoonShiftInterns = data.filter(intern => intern.shift === "afternoon" && !afternoonShiftInterns.some(shiftIntern => shiftIntern._id === intern._id));
+    
+        // Update state with the available interns for each shift
+        setMorningShiftInterns(availableMorningShiftInterns);
+        setAfternoonShiftInterns(availableAfternoonShiftInterns);
+    
+        // Continue with your existing code
+        
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
@@ -202,21 +212,22 @@ const WeeklySchedule = () => {
           },
           {}
         );
+    
         setWeeklyScheduleByDepartment(weeklyScheduleGroupedByDepartment);
         const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         setDepartmentNames(departmentNames);
+    
       } catch (e) {
         console.error(e);
       }
     };
     fetchInterns();
-  }, []);
-
+  }, [morningShiftInterns, afternoonShiftInterns]); // Add these dependencies
+  
   useEffect(() => {
     const fetchWeeklySchedule = async () => {
       try {
         handleCurrentWeekDateRange();
-        debugger;
         const token = cookie.get("token");
         if (!token) {
           console.log("Token Expired! error function: fetchWeeklySchedule");
@@ -225,26 +236,22 @@ const WeeklySchedule = () => {
         else{
           console.log("Token value from fetchWeeklySchedule",token)
         }
-
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        debugger;
+  
         const response = await axios.get(`/api/weeklySchedule?token=${token}`);
         const { weeklySchedule, populatedWeeklySchedule } = response.data;
-        // Update state with fetched data
+        
+        // Update state with the new data
         setWeeklySchedule(weeklySchedule);
         setPopulatedWeeklySchedule(populatedWeeklySchedule);
-
+  
       } catch (e) {
         console.error(e);
       }
     };
     fetchWeeklySchedule();
-  }, []);
-  
+  }, [morningShiftInterns, afternoonShiftInterns]); // Add these dependencies  
+
+
   const swapShift = (internToBeSwapped, shiftTime) => {
 
     if (shiftTime === "morning") {
@@ -308,31 +315,32 @@ const WeeklySchedule = () => {
             </div>
           </div>
           <div
-            className="flex flex-col items-center justify-center gap-10 mt-4"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "12px 24px",
-              gap: "10px",
-              background: "#DCEBFC",
-              borderRadius: "24px",
-            }}
-          >
-            <table
-              className="font-roboto"
-              style={{
-                width: "100%",
-              }}
-            >
-              <tbody>
-                <tr>
-                  <td>{dateRange}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+  className="flex flex-col items-center justify-center gap-10 mt-4"
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "12px 24px",
+    gap: "10px",
+    background: "#DCEBFC",
+    borderRadius: "24px",
+  }}
+>
+  <table
+    className="font-roboto"
+    style={{
+      width: "100%",
+    }}
+  >
+    <tbody>
+      <tr>
+        <td>{dateRange}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
           <div
             className="flex flex-col items-center justify-center gap-10 mt-4"
             style={{
@@ -356,69 +364,96 @@ const WeeklySchedule = () => {
             >
               <thead>
                 <tr>
-                  <th>INTERNS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {departmentNames.map((eachDepartmentName) => (
-                  <React.Fragment key={eachDepartmentName}>
-                    <tr>
-                      <td colSpan="3">
-                        <div>
-                          <Button
-                            aria-controls={`department-menu-${eachDepartmentName}`}
-                            aria-haspopup="true"
-                            onClick={() => handleDepartmentClick(eachDepartmentName)}
-                            endIcon={<ArrowDropDownIcon />}
-                            style={{
-                              backgroundColor: eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
-                            }}
-                          >
-                            {eachDepartmentName}
-                          </Button>
-                          {eachDepartmentName === selectedDepartment && (
-                            <Menu
-                              id={`department-menu-${eachDepartmentName}`}
-                              anchorEl={anchorEl}
-                              open={Boolean(anchorEl)}
-                              onClose={handleMenuClose}
-                            >
-                              {weeklyScheduleByDepartment[eachDepartmentName].map((eachIntern, i) => (
-                                <MenuItem key={i}>
-                                  {eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                                </MenuItem>
-                              ))}
-                            </Menu>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                    
-                    {eachDepartmentName === selectedDepartment && (
-                      <>
-                          <ul>
+                <th>INTERNS</th>
+      </tr>
+    </thead>
+    <tbody>
+    {departmentNames.map((eachDepartmentName) => (
+  <React.Fragment key={eachDepartmentName}>
+    <tr>
+      <td colSpan="3">
+        <div>
+          <Button
+            aria-controls={`department-menu-${eachDepartmentName}`}
+            aria-haspopup="true"
+            onClick={() => {
+              handleDepartmentClick(eachDepartmentName);
+              // event.stopPropagation();
+            }}
+            endIcon={<ArrowDropDownIcon />}
+            style={{
+              backgroundColor:
+                eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
+            }}
+          >
+            {eachDepartmentName}
+          </Button>
+        </div>
+      </td>
+    </tr>
+    {eachDepartmentName === selectedDepartment && (
+         <tr>
+         <td colSpan="3">
+           <Menu
+             id={`department-menu-${eachDepartmentName}`}
+             anchorEl={anchorEl}
+             open={Boolean(anchorEl)}
+             onClose={handleMenuClose}
+           >
+           {weeklyScheduleByDepartment[eachDepartmentName].map(
+                    (eachIntern, i) => (
+                      <MenuItem key={i}>
+                        {eachIntern.student.firstName +
+                          " " +
+                          eachIntern.student.lastName}
+                      </MenuItem>
+                        ))}
+                    </Menu>
+            </td>
+          </tr>
+    )}          
+          {eachDepartmentName === selectedDepartment && (
+            <div>
+              <ul>
                 {populatedWeeklySchedule.find(schedule => schedule.Group === eachDepartmentName)
                   ? null
-                  : weeklyScheduleByDepartment[eachDepartmentName].map((eachIntern, index) => (
-                    <li key={index}>
-                      {eachIntern.student.firstName} {eachIntern.student.lastName}
-                      <Button onClick={() => handleMoveToMorning(eachIntern, index)}>
-                        Move to Morning
-                      </Button>
-                      <Button onClick={() => handleMoveToAfternoon(eachIntern, index)}>
-                        Move to Afternoon
-                      </Button>
-                    </li>
-                  ))
+                  : weeklyScheduleByDepartment[eachDepartmentName].map((eachIntern, index) => {
+                      // Check if the intern is not in the assigned shifts
+                      const notAssigned = (
+                        morningShiftInterns.every(intern => intern._id !== eachIntern._id) &&
+                        afternoonShiftInterns.every(intern => intern._id !== eachIntern._id)
+                      );
+                      
+                      if (notAssigned) {
+                        return (
+                          <li key={index}>
+                            <div
+                              onClick={(e) => {
+                                // e.stopPropagation(); // Prevent the click from closing the menu
+                              }}
+                            >
+                              {eachIntern.student.firstName} {eachIntern.student.lastName}
+                              <Button onClick={() => handleMoveToMorning(eachIntern, index)}>
+                                Move to Morning
+                              </Button>
+                              <Button onClick={() => handleMoveToAfternoon(eachIntern, index)}>
+                                Move to Afternoon
+                              </Button>
+                            </div>
+                          </li>
+                        );
+                      }
+
+                      return null;
+                    })
                 }
               </ul>
-      
-                      </>
-                    )}
-                  </React.Fragment>
-                ))}
-              </tbody>
-            </table>
+            </div>
+          )}
+        </React.Fragment>
+      ))}
+    </tbody>  
+           </table>
           </div>
         </div>
         {/* End of Table */}
