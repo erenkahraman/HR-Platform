@@ -89,13 +89,14 @@ const WeeklySchedule = () => {
 
   const handleMoveToMorning = async (internToBeMoved, internIndex) => {
     const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
-    setMorningShiftInterns(updatedMorningShiftInterns);
   
     const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
       (intern) => intern._id !== internToBeMoved._id
     );
-    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
   
+    setMorningShiftInterns(updatedMorningShiftInterns);
+    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
+
     const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id);
@@ -123,12 +124,13 @@ const WeeklySchedule = () => {
       internToBeMoved,
     ];
     setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-  
+
     const updatedMorningShiftInterns = morningShiftInterns.filter(
       (intern) => intern._id !== internToBeMoved._id
     );
+
     setMorningShiftInterns(updatedMorningShiftInterns);
-  
+
     const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id
@@ -194,15 +196,20 @@ const WeeklySchedule = () => {
         const { data } = await axios.get(`/api/intern`, config);
     
         // Filter out assigned interns
-        const availableMorningShiftInterns = data.filter(intern => intern.shift === "morning" && !morningShiftInterns.some(shiftIntern => shiftIntern._id === intern._id));
-        const availableAfternoonShiftInterns = data.filter(intern => intern.shift === "afternoon" && !afternoonShiftInterns.some(shiftIntern => shiftIntern._id === intern._id));
-    
-        // Update state with the available interns for each shift
-        setMorningShiftInterns(availableMorningShiftInterns);
-        setAfternoonShiftInterns(availableAfternoonShiftInterns);
-    
-        // Continue with your existing code
-        
+        const availableMorningShiftInterns = data.filter(
+          intern =>
+            intern.shift === "morning" &&
+            !morningShiftInterns.some(shiftIntern => shiftIntern._id === intern._id) &&
+            !afternoonShiftInterns.some(shiftIntern => shiftIntern._id === intern._id)
+        );
+  
+        const availableAfternoonShiftInterns = data.filter(
+          intern =>
+            intern.shift === "afternoon" &&
+            !afternoonShiftInterns.some(shiftIntern => shiftIntern._id === intern._id) &&
+            !morningShiftInterns.some(shiftIntern => shiftIntern._id === intern._id)
+        );
+
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
@@ -362,97 +369,116 @@ const WeeklySchedule = () => {
                 width: "100%",
               }}
             >
-              <thead>
-                <tr>
-                <th>INTERNS</th>
+ <thead>
+  <tr>
+    <th>INTERNS</th>
+  </tr>
+</thead>
+<tbody>
+  {departmentNames.map((eachDepartmentName) => (
+    <React.Fragment key={eachDepartmentName}>
+      <tr>
+        <td colSpan="3">
+          <div>
+            <Button
+              aria-controls={`department-menu-${eachDepartmentName}`}
+              aria-haspopup="true"
+              onClick={() => {
+                handleDepartmentClick(eachDepartmentName);
+              }}
+              endIcon={<ArrowDropDownIcon />}
+              style={{
+                backgroundColor:
+                  eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
+              }}
+            >
+              {eachDepartmentName}
+            </Button>
+          </div>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-    {departmentNames.map((eachDepartmentName) => (
-  <React.Fragment key={eachDepartmentName}>
-    <tr>
-      <td colSpan="3">
-        <div>
-          <Button
-            aria-controls={`department-menu-${eachDepartmentName}`}
-            aria-haspopup="true"
-            onClick={() => {
-              handleDepartmentClick(eachDepartmentName);
-              // event.stopPropagation();
-            }}
-            endIcon={<ArrowDropDownIcon />}
-            style={{
-              backgroundColor:
-                eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
-            }}
-          >
-            {eachDepartmentName}
-          </Button>
-        </div>
-      </td>
-    </tr>
-    {eachDepartmentName === selectedDepartment && (
-         <tr>
-         <td colSpan="3">
-           <Menu
-             id={`department-menu-${eachDepartmentName}`}
-             anchorEl={anchorEl}
-             open={Boolean(anchorEl)}
-             onClose={handleMenuClose}
-           >
-           {weeklyScheduleByDepartment[eachDepartmentName].map(
-                    (eachIntern, i) => (
-                      <MenuItem key={i}>
-                        {eachIntern.student.firstName +
-                          " " +
-                          eachIntern.student.lastName}
-                      </MenuItem>
-                        ))}
-                    </Menu>
-            </td>
-          </tr>
-    )}          
-          {eachDepartmentName === selectedDepartment && (
-            <div>
-              <ul>
-                {populatedWeeklySchedule.find(schedule => schedule.Group === eachDepartmentName)
-                  ? null
-                  : weeklyScheduleByDepartment[eachDepartmentName].map((eachIntern, index) => {
-                      // Check if the intern is not in the assigned shifts
-                      const notAssigned = (
-                        morningShiftInterns.every(intern => intern._id !== eachIntern._id) &&
-                        afternoonShiftInterns.every(intern => intern._id !== eachIntern._id)
-                      );
-                      
-                      if (notAssigned) {
-                        return (
-                          <li key={index}>
-                            <div
-                              onClick={(e) => {
-                                // e.stopPropagation(); // Prevent the click from closing the menu
-                              }}
-                            >
-                              {eachIntern.student.firstName} {eachIntern.student.lastName}
-                              <Button onClick={() => handleMoveToMorning(eachIntern, index)}>
-                                Move to Morning
-                              </Button>
-                              <Button onClick={() => handleMoveToAfternoon(eachIntern, index)}>
-                                Move to Afternoon
-                              </Button>
-                            </div>
-                          </li>
-                        );
-                      }
-
-                      return null;
-                    })
-                }
-              </ul>
-            </div>
-          )}
-        </React.Fragment>
-      ))}
-    </tbody>  
+      {eachDepartmentName === selectedDepartment && (
+        <tr>
+          <td colSpan="3">
+            <Menu
+              id={`department-menu-${eachDepartmentName}`}
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              {weeklyScheduleByDepartment[eachDepartmentName].map(
+                (eachIntern, i) => (
+                  <MenuItem key={i}>
+                    {eachIntern.student.firstName +
+                      " " +
+                      eachIntern.student.lastName}
+                  </MenuItem>
+                )
+              )}
+            </Menu>
+          </td>
+        </tr>
+      )}
+      {eachDepartmentName === selectedDepartment && (
+        <>
+          {weeklyScheduleByDepartment[eachDepartmentName]
+            .filter(
+              (eachIntern) =>
+                !morningShiftInterns.some(
+                  (shiftIntern) =>
+                    shiftIntern._id === eachIntern._id
+                ) &&
+                !afternoonShiftInterns.some(
+                  (shiftIntern) =>
+                    shiftIntern._id === eachIntern._id
+                )
+            )
+            .map((eachIntern, i) => (
+              <tr key={i}>
+                <td>
+                  {eachIntern.student.firstName +
+                    " " +
+                    eachIntern.student.lastName}
+                </td>
+                <td></td>
+                <td>
+                  <div className="button-container">
+                    <Button
+                      className="move-button"
+                      style={{
+                        backgroundColor: "white",
+                        color: "black",
+                        borderRadius: "10px",
+                        marginRight: "10px",
+                        padding: "10px 20px",
+                        margin: "2px 40px",
+                      }}
+                      onClick={() => handleMoveToMorning(eachIntern, i)}
+                    >
+                      Move to Morning
+                    </Button>
+                    <Button
+                      className="move-button"
+                      style={{
+                        backgroundColor: "white",
+                        color: "black",
+                        borderRadius: "10px",
+                        padding: "8px 20px",
+                        margin: "0px 5px",
+                      }}
+                      onClick={() => handleMoveToAfternoon(eachIntern, i)}
+                    >
+                      Move to Afternoon
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+        </>
+      )}
+    </React.Fragment>
+  ))}
+</tbody>
            </table>
           </div>
         </div>
