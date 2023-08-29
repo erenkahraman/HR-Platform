@@ -23,6 +23,8 @@ const WeeklySchedule = () => {
   const [assignedShifts, setAssignedShifts] = useState([]);
   const token = cookie.get("token");
   const csvLinkElement = useRef();
+  const [availableMorningShiftInterns, setAvailableMorningShiftInterns] = useState([]);
+  const [availableAfternoonShiftInterns, setAvailableAfternoonShiftInterns] = useState([]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -61,6 +63,7 @@ const WeeklySchedule = () => {
     if (mm < 10) mm = '0' + mm;
 
     const formattedDay = dd + '/' + mm + '/' + yyyy;
+
     return formattedDay
   }
 
@@ -100,6 +103,7 @@ const WeeklySchedule = () => {
     const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id);
+    debugger;
     setWeeklyScheduleByDepartment(updatedWeeklySchedule);
   
     try {
@@ -135,6 +139,7 @@ const WeeklySchedule = () => {
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id
     );
+    debugger;
     setWeeklyScheduleByDepartment(updatedWeeklySchedule);
     try {
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
@@ -194,21 +199,7 @@ const WeeklySchedule = () => {
         };
     
         const { data } = await axios.get(`/api/intern`, config);
-    
-        // Filter out assigned interns
-        const availableMorningShiftInterns = data.filter(
-          intern =>
-            intern.shift === "morning" &&
-            !morningShiftInterns.some(shiftIntern => shiftIntern._id === intern._id) &&
-            !afternoonShiftInterns.some(shiftIntern => shiftIntern._id === intern._id)
-        );
-  
-        const availableAfternoonShiftInterns = data.filter(
-          intern =>
-            intern.shift === "afternoon" &&
-            !afternoonShiftInterns.some(shiftIntern => shiftIntern._id === intern._id) &&
-            !morningShiftInterns.some(shiftIntern => shiftIntern._id === intern._id)
-        );
+        
 
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
@@ -230,6 +221,47 @@ const WeeklySchedule = () => {
     };
     fetchInterns();
   }, [morningShiftInterns, afternoonShiftInterns]); // Add these dependencies
+  
+  useEffect(() => {
+    const fetchInterns2 = async () => {
+      try {
+        handleCurrentWeekDateRange();
+    
+        const token = cookie.get("token");
+        if (!token) {
+          console.log("Token Expired! error function: fetchInterns");
+          return;
+        }
+        else {
+          console.log("Token value from fetchInterns", token);
+        }
+    
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          params: {
+            token: token,
+          },
+        };
+        const response = await axios.get(`/api/weeklySchedule`, config);
+        const data2 = response.data;
+        
+        // Filter out assigned interns
+        const morningShiftInternsBefore = data2.populatedWeeklySchedule.map(intern => intern.Schedule.morning);
+        const afternoonShiftInternsBefore = data2.populatedWeeklySchedule.map(intern => intern.Schedule.afternoon);
+        const morningShiftInterns = morningShiftInternsBefore.flat();
+        const afternoonShiftInterns = afternoonShiftInternsBefore.flat();
+
+        setAvailableMorningShiftInterns(morningShiftInterns);
+        setAvailableAfternoonShiftInterns(afternoonShiftInterns);
+        debugger;
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchInterns2();
+  }, [morningShiftInterns, afternoonShiftInterns]);
   
   useEffect(() => {
     const fetchWeeklySchedule = async () => {
@@ -423,16 +455,15 @@ const WeeklySchedule = () => {
         <>
           {weeklyScheduleByDepartment[eachDepartmentName]
             .filter(
-              (eachIntern) =>
-                !morningShiftInterns.some(
+              (eachIntern) => (
+                !availableMorningShiftInterns.some(
                   (shiftIntern) =>
-                    shiftIntern._id === eachIntern._id
-                ) &&
-                !afternoonShiftInterns.some(
+                  shiftIntern === (eachIntern.student.firstName+ ' ' +eachIntern.student.lastName))&&
+                !availableAfternoonShiftInterns.some(
                   (shiftIntern) =>
-                    shiftIntern._id === eachIntern._id
+                  shiftIntern === (eachIntern.student.firstName+ ' ' +eachIntern.student.lastName)
                 )
-            )
+            ))
             .map((eachIntern, i) => (
               <tr key={i}>
                 <td>
