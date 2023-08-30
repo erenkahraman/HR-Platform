@@ -66,10 +66,6 @@ export default function ApplicantsNew() {
   ];
 
 
-  
-
-  
-
   const docs = [
     "Curriculum Vitae",
     "Motivation Letter",
