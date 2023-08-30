@@ -161,6 +161,6 @@ const EditAttendance = ({ intern, setModel }) => {
       </form>
     </div>
   );
-};
+}; 
 
 export default EditAttendance;

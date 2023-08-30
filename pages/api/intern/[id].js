@@ -41,8 +41,27 @@ export default async function handler(req, res) {
           data: error,
         });
       }
-    default:
-      res.setHeaders("Allow", ["GET", "PUT", "DELETE"]);
+      case "DELETE":
+
+        //await Intern.deleteOne({where:{_id:id}});
+        await Intern.findByIdAndDelete(id);
+
+
+        // try {
+        //   console.log("string");
+        //  await Intern.deleteOne({$where:{_id:id}})
+        //   return res.status(200).json({
+        //     success: true,
+       
+        //   });
+        // } catch (error) {
+        //   return res.status(500).json({
+        //     success: false,
+        //     data: error,
+        //   });
+        // }
+      default:
+      res.setHeaders("Allow", ["GET", "PUT"]);
       return res
         .status(405)
         .json({ success: false })

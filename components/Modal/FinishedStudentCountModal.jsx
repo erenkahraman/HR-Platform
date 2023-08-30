@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import LoadingState from "../Utils/LoadingState";
 import axios from "axios";
 import cookie from "js-cookie";
-import FinishedStudentCountModal from "./FinishedStudentCountModal";
 
 const departmanColor = (department) => {
   switch (department) {
@@ -26,11 +25,10 @@ const departmanColor = (department) => {
   }
 };
 
-const StudentCountModal = ({ setScModal, type }) => {
+const FinishedStudentCountModal = ({ setLvModal, type }) => {
   const [departments, setDepartment] = useState([]);
   const [open, setOpen] = useState(false);
   const token = cookie.get("token");
-  const [showFinishedModal, setShowFinishedModal] = useState(false);
 
   useEffect(() => {
     setOpen(true);
@@ -70,14 +68,14 @@ const StudentCountModal = ({ setScModal, type }) => {
       <div className="flex h-screen justify-center items-center  ">
         <div className="flex-col bg-white border-4 m-4 rounded-xl px-10 p-0 ">
           <button
-            onClick={(e) => setScModal(false)}
+            onClick={(e) => setLvModal(false)}
             className=" rounded px-4 py-2  text-black text-2xl"
           >
             <MdOutlineCancel />
           </button>
           <div className="flex flex-row gap-16 text-5xl  bg-white  mb-8 ml-4 mr-4">
             {departments.map((department) => (
-              <div className="flex flex-row ml-5" key={department.department}>
+              <div className="flex flex-row ml-5">
                 <div className="text-red-400 ">
                   <BsPeopleFill
                     className={`text-2xl ${departmanColor(
@@ -87,28 +85,15 @@ const StudentCountModal = ({ setScModal, type }) => {
                 </div>
                 <div className="flex flex-col text-sm font-bold ">
                   <div>{department.department}</div>
-                  <div className="text-xl ml-3 ">{department.onGoingInterns.length}</div>
+                  <div className="text-xl ml-3 ">{department.finishedInterns.length}</div>
                 </div>
               </div>
             ))}
           </div>
-          {/* Button to open FinishedStudentCountModal */}
-          <button
-            onClick={() => setShowFinishedModal(true)}
-            className="rounded px-4 py-2 ml-4 text-black text-xl"
-          >
-            Show Finished Students
-          </button>
         </div>
       </div>
-      {/* Show the FinishedStudentCountModal when showFinishedModal is true */}
-      {showFinishedModal && (
-        <FinishedStudentCountModal
-          setShowFinishedModal={setShowFinishedModal}
-        />
-      )}
     </div>
   );
 };
 
-export default StudentCountModal;
+export default FinishedStudentCountModal;
