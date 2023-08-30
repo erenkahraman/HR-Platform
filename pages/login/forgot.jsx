@@ -7,7 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { ConnectingAirportsOutlined } from "@mui/icons-material";
 
-export default function forgot() {
+export default function Forgot() {
   const [email, setEmail] = useState("");
   const router = useRouter();
   const submitHandler = async (e) => {

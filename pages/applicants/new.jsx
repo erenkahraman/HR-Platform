@@ -1,24 +1,27 @@
 import { DocumentReview } from "../../components/DocumentReview";
 import countryList from "react-select-country-list";
-import { useState, useMemo, useEffect } from "react";
+import React,{ useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import Popup from "reactjs-popup";
 import mongoose from "mongoose";
 import { Button } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DatePicker } from "@mui/x-date-pickers";
 import { TextField } from "@mui/material";
 import axios from "axios";
 import cookie from "js-cookie";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import LoadingState from "../../components/Utils/LoadingState";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'; // Import the stylesheet for react-datepicker
 
-export default function ApplicantsNew() {
+
+const NewApplicants = () => {
   // get dprtmnts from DB
   const [dbDepartment, setDbDepartment] = useState();
   //Loading model useState
@@ -74,7 +77,6 @@ export default function ApplicantsNew() {
     "Acceptance Letter",
     "Interview Record",
     "Passport"
-   
   ];
 
   
@@ -113,11 +115,11 @@ export default function ApplicantsNew() {
       }
     };
     asyncRequest();
-  }, [student]);
+  }, [student,token]);
 
   useEffect(() => {
     reset(student);
-  }, [student]);
+  }, [student, reset]);
 
   // get countries list from react-select-country-list
   const countries = useMemo(() => countryList().getLabels(), []);
@@ -127,16 +129,18 @@ export default function ApplicantsNew() {
     setOpen(true);
     const idSave = document.querySelector("#Save");
     if(idSave){
-
+      
       const student = data.student;
       const applicant = data.student.applicant;
 
       const applicantId = new mongoose.Types.ObjectId();
       const studentId = new mongoose.Types.ObjectId();
+      
       student._id = studentId;
       student.applicant = applicantId;
       applicant._id = applicantId;
       applicant.student = studentId;
+
       student.token = token;
       applicant.token = token;
       const JSONdstudent = JSON.stringify(student);
@@ -246,7 +250,7 @@ export default function ApplicantsNew() {
 
 
 
-  var today = new Date();
+    var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
@@ -256,9 +260,12 @@ export default function ApplicantsNew() {
   
 
   const updateStudent = async (data) => {
+    debugger;
     setOpen(true);
     const student = data.student;
     const applicant = data.student.applicant;
+
+
     student.token = token;
     applicant.token = token;
     try {
@@ -283,7 +290,11 @@ export default function ApplicantsNew() {
     }
     setAlertOpen(true);
     setOpen(false);
+    router.push("/interns/InternsList");
   };
+  
+  
+  
 
   return (
     <div>
@@ -410,7 +421,19 @@ export default function ApplicantsNew() {
                     {/* Date of Birth */}
                     <div className="flex flex-col gap-2">
                       <label className="block text-sm">Date of Birth</label>
-                      <Controller
+                      {/* <Controller
+                          control={control}
+                          name="student.dateOfBirth"
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                      /> */}
+                      {/* <Controller
                         control={control}
                         name="student.dateOfBirth"
                         rules={{
@@ -427,13 +450,11 @@ export default function ApplicantsNew() {
                                 onChange(date?.isValid ? date : null);
                                 console.log(date)
                               }}
-                              renderInput={(params) => (
-                                <TextField {...params} />
-                              )}
+                              // renderInput={(params) => <TextField {...params} />}
                             />
                           </LocalizationProvider>
                         )}
-                      />
+                      /> */}
                       <p className="text-sm font-thin text-red-600">
                         {errors.student?.dateOfBirth?.message}
                       </p>
@@ -451,8 +472,8 @@ export default function ApplicantsNew() {
                         className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
                         <option value="">Select...</option>
-                        {countries.map((country) => (
-                          <option>{country}</option>
+                        {countries.map((country,index) => (
+                          <option key={index}>{country}</option>
                         ))}
                       </select>
                       <p className="text-sm font-thin text-red-600">
@@ -470,31 +491,39 @@ export default function ApplicantsNew() {
                       <label htmlFor="email" className="block text-sm">
                         Email
                       </label>
-                      <input
-                        {...register("student.email", {
-                          required: "Please, enter the email",
-                        })}
+                      <Controller
+                        control={control}
+                        name="student.email"
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            type="email"
+                            autoComplete="email"  
+                            className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        )}
+                      />
+                      
+                    </div>
+
+
+                      {/* <input
+                        {...register("student.email",)}
+                        value= "No Email Information"
                         type="email"
                         autoComplete="email"
                         placeholder="example@gmail.com"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       <p className="text-sm font-thin text-red-600">
-                        {errors.student?.email?.message}
+                        
                       </p>
-                    </div>
+                    </div> */}
 
                     {/* Phone Number */}
                     <div className="flex flex-col gap-2">
                       <label className="block text-sm">Phone Number</label>
                       <input
-                        {...register("student.phoneNumber", {
-                          required: "Please enter the phone number",
-                          pattern: {
-                            value: /^[0-9]+$/,
-                            message: "Please enter a valid phone number",
-                          },
-                        })}
                         type="tel"
                         autoComplete="off"
                         onInput={(e) => {
@@ -502,9 +531,7 @@ export default function ApplicantsNew() {
                         }}
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      <p className="text-sm font-thin text-red-600">
-                        {errors.student?.phoneNumber?.message}
-                      </p>
+                      
                     </div>
 
 
@@ -516,9 +543,9 @@ export default function ApplicantsNew() {
                       </label>
                       
                       <input
-                        {...register("student.university", {
-                          required: "Please, enter the university",
-                        })}
+                         {...register("student.university", {
+                          value: " No University Information"
+                         })}
                         type="text"
                         autoComplete="university"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -539,15 +566,14 @@ export default function ApplicantsNew() {
                         Departing Country
                       </label>
                       <select
-                        {...register("student.departingCountry", {
-                          required: "Please, enter the departing country",
-                        })}
+                         {...register("student.departingCountry", {
+                         })}
                         autoComplete="departingCountry"
                         className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
                         <option value="">Select...</option>
-                        {countries.map((country) => (
-                          <option>{country}</option>
+                        {countries.map((country, index) => (
+                          <option key={index}>{country}</option>
                         ))}
                       </select>
                       <p className="text-sm font-thin text-red-600">
@@ -572,6 +598,18 @@ export default function ApplicantsNew() {
                         <Controller
                           control={control}
                           name="student.applicant.applicationDate"
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
+                          control={control}
+                          name="student.applicant.applicationDate"
                           rules={{
                             required: "Please, enter the application date",
                           }}
@@ -584,13 +622,11 @@ export default function ApplicantsNew() {
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
+                                // renderInput={(params) => <TextField {...params} />}
                               />
                             </LocalizationProvider>
                           )}
-                        />
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
                           {errors.student?.applicant?.applicationDate?.message}
                         </p>
@@ -604,8 +640,20 @@ export default function ApplicantsNew() {
                         <Controller
                           control={control}
                           name="student.applicant.hrInterviewDate"
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
+                          control={control}
+                          name="student.applicant.hrInterviewDate"
                           rules={{
-                            required: "Please, enter the HR interview date",
+                            requ : "Please, enter the HR interview date",
                           }}
                           render={({ field: { onChange, value } }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -616,13 +664,11 @@ export default function ApplicantsNew() {
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
+                                // renderInput={(params) => <TextField {...params} />}
                               />
                             </LocalizationProvider>
                           )}
-                        />
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
                           {errors.student?.applicant?.hrInterviewDate?.message}
                         </p>
@@ -640,27 +686,37 @@ export default function ApplicantsNew() {
                         <Controller
                           control={control}
                           name="student.applicant.ceoInterviewDate"
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
+                          control={control}
+                          name="student.applicant.ceoInterviewDate"
                           rules={{
                             required: "Please, enter the CEO interview date",
                           }}
-                          render={({ field: { onChange, value } }) => (
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                              disableMaskedInput
-                                value={value || null}
-                                inputFormat="DD/MM/YYYY"
-                                onChange={(date) => {
-                                  onChange(date?.isValid ? date : null);
-                                }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
-                              />
-                            </LocalizationProvider>
-                          )}
-                        />
+                          // render={({ field: { onChange, value } }) => (
+                          //   <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          //     <DatePicker
+                          //     disableMaskedInput
+                          //       value={value || null}
+                          //       inputFormat="DD/MM/YYYY"
+                          //       onChange={(date) => {
+                          //         onChange(date?.isValid ? date : null);
+                          //       }}
+                          //       // renderInput={(params) => <TextField {...params} />}
+                          //     />
+                          //   </LocalizationProvider>
+                          // )}
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
-                          {errors.student?.applicant?.ceoInterviewDate?.message}
+                          {errors.student?.applicant?.ceoInterviewDate?.message}  
                         </p>
                       </div>
                     </div>
@@ -766,25 +822,36 @@ export default function ApplicantsNew() {
                         <Controller
                           control={control}
                           name="student.applicant.startDate"
+                          // rules={{ required: "Please, enter the application date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
+                          control={control}
+                          name="student.applicant.startDate"
                           rules={{
                             required: "Please, enter the application date",
                           }}
-                          render={({ field: { onChange, value } }) => (
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                              disableMaskedInput
-                                value={value || null}
-                                inputFormat="DD/MM/YYYY"
-                                onChange={(date) => {
-                                  onChange(date?.isValid ? date : null);
-                                }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
-                              />
-                            </LocalizationProvider>
-                          )}
-                        />
+                          // render={({ field: { onChange, value } }) => (
+                          //   <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          //     <DatePicker
+                          //       disableMaskedInput
+                          //       value={value || null}
+                          //       inputFormat="DD/MM/YYYY"
+                          //       onChange={(date) => {
+                          //         onChange(date?.isValid ? date : null);
+                          //       }}
+                          //       // renderInput={(params) => <TextField {...params} />}
+                          //     />
+                          //   </LocalizationProvider>
+                          // )}
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
                           {errors.student?.applicant?.startDate?.message}
                         </p>
@@ -801,25 +868,36 @@ export default function ApplicantsNew() {
                         <Controller
                           control={control}
                           name="student.applicant.endDate"
+                          // rules={{ required: "Please, enter the application date" }}
+                          render={({ field }) => (
+                            <DatePicker
+                              selected={field.value}
+                              onChange={field.onChange}
+                              dateFormat="dd/MM/yyyy" // Set the desired date format here
+                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
+                            />
+                          )}
+                        />
+                        {/* <Controller
+                          control={control}
+                          name="student.applicant.endDate"
                           rules={{
                             required: "Please, enter the end date",
                           }}
-                          render={({ field: { onChange, value } }) => (
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                              disableMaskedInput
-                                value={value || null}
-                                inputFormat="DD/MM/YYYY"
-                                onChange={(date) => {
-                                  onChange(date?.isValid ? date : null);
-                                }}
-                                renderInput={(params) => (
-                                  <TextField {...params} />
-                                )}
-                              />
-                            </LocalizationProvider>
-                          )}
-                        />
+                          // render={({ field: { onChange, value } }) => (
+                          //   <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          //     <DatePicker
+                          //     disableMaskedInput
+                          //       value={value || null}
+                          //       inputFormat="DD/MM/YYYY"
+                          //       onChange={(date) => {
+                          //         onChange(date?.isValid ? date : null);
+                          //       }}
+                          //       // renderInput={(params) => <TextField {...params} />}
+                          //     />
+                          //   </LocalizationProvider>
+                          // )}
+                        /> */}
                         <p className="text-sm font-thin text-red-600">
                           {errors.student?.applicant?.endDate?.message}
                         </p>
@@ -975,7 +1053,7 @@ export default function ApplicantsNew() {
                     </div>
                     <div className="grid grid-cols-4 gap-2">
                       {docs.map((docs, i) => (
-                        <div className="grid-row-start-1 grid-row-end-3">
+                        <div className="grid-row-start-1 grid-row-end-3" key={i}>
                           <DocumentReview
                             register={register}
                             title={docs}
@@ -1073,49 +1151,49 @@ export default function ApplicantsNew() {
 
               {addDeprtmntModal && (
                 <div
-                  tabindex="-1"
-                  class="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
+                  tabIndex="-1"
+                  className="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
                           fixed top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 h-modal md:h-full"
                 >
-                  <div class="relative w-full max-w-md h-full md:h-auto">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                  <div className="relative w-full max-w-md h-full md:h-auto">
+                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                       <button
                         type="button"
-                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                        className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
                         onClick={(e) => setAddDeprtmntModal(false)}
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5"
+                          className="w-5 h-5"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           ></path>
                         </svg>
-                        <span class="sr-only">Close modal</span>
+                        <span className="sr-only">Close modal</span>
                       </button>
-                      <div class="py-6 px-6 lg:px-8 border border-gray-300">
-                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+                      <div className="py-6 px-6 lg:px-8 border border-gray-300">
+                        <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                           Add a new department
                         </h3>
-                        <form class="space-y-6" onSubmit={addNewDepartment}>
+                        <form className="space-y-6" onSubmit={addNewDepartment}>
                           <div>
                             <input
                               id="newdepartment"
                               type="text"
-                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                               placeholder="IT / Accounting / HR ..."
                               required
                             />
                           </div>
                           <button
                             type="submit"
-                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                           >
                             Add new department
                           </button>
@@ -1127,41 +1205,41 @@ export default function ApplicantsNew() {
               )}
               {addPositionModal && (
                 <div
-                  tabindex="-1"
-                  class="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
+                  tabIndex="-1"
+                  className="h-screen flex justify-center items-center overflow-y-auto overflow-x-hidden 
                           fixed top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 h-modal md:h-full"
                 >
-                  <div class="relative w-full max-w-md h-full md:h-auto">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                  <div className="relative w-full max-w-md h-full md:h-auto">
+                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                       <button
                         type="button"
-                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                        className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
                         onClick={(e) => setAddPositionModal(false)}
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5"
+                          className="w-5 h-5"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
+                            clipRule="evenodd"
                           ></path>
                         </svg>
-                        <span class="sr-only">Close modal</span>
+                        <span className="sr-only">Close modal</span>
                       </button>
-                      <div class="py-6 px-6 lg:px-8 border border-gray-300">
-                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+                      <div className="py-6 px-6 lg:px-8 border border-gray-300">
+                        <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                           Add a new position
                         </h3>
-                        <form class="space-y-6" onSubmit={addNewPosition}>
+                        <form className="space-y-6" onSubmit={addNewPosition}>
                           <div>
                             <label
-                              for="email"
-                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              htmlFor="email"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                               Department
                             </label>
@@ -1169,7 +1247,7 @@ export default function ApplicantsNew() {
                               id="newPosDepartment"
                               name="department"
                               autoComplete="department"
-                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                             >
                               {dbDepartment.map((department) => (
                                 <option
@@ -1182,20 +1260,20 @@ export default function ApplicantsNew() {
                             </select>
                           </div>
                           <div>
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                               Position
                             </label>
                             <input
                               id="newPosition"
                               type="text"
-                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                               placeholder="New position.."
                               required
                             />
                           </div>
                           <button
                             type="submit"
-                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                           >
                             Add new position
                           </button>
@@ -1212,3 +1290,4 @@ export default function ApplicantsNew() {
     </div>
   );
 }
+export default NewApplicants

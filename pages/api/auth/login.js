@@ -13,16 +13,20 @@ export default async (req, res) => {
       const { email, password } = req.body;
       const user = await User.findOne({ email: email });
       if (!user) {
+        console.log("User Doesn't Exists");
         res.status(422).json({ message: "User Doesn't Exists" });
       } else {
         if (password === "" || password.length == 0) {
+          console.log("Password is Required");
           res.status(400).json({ message: "Password is Required" });
         } else {
           const doMatch = await bcrypt.compare(password, user.password);
           if (!doMatch) {
+            console.log("Password Doesn't Match");
             res.status(404).json({ message: "Password Doesn't Match" });
           } else {
             if (user.confirmation === "0") {
+              console.log("Account not approved");
               res.status(404).json({
                 message:
                   "Your account is not yet approved by Extramus. Please get contact with an Authorized person to approve your registration.",
@@ -36,11 +40,12 @@ export default async (req, res) => {
                 }
               );
               const { email, _id } = user;
-              res.status(201).json({
+              res.status(200).json({
                 message: "Login Successful",
                 user: { email, _id },
                 token,
               });
+              console.log("User Login Successful");
             }
           }
         }

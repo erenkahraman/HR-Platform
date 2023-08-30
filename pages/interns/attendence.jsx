@@ -11,8 +11,6 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { confirmAlert } from "react-confirm-alert";
 import SaveIcon from "@mui/icons-material/Save";
 import "react-confirm-alert/src/react-confirm-alert.css";
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css'; //if you want to use something cool :)
 import { useState, useEffect } from "react";
 import reactSelect from "react-select";
 import { CheckCircle } from "@mui/icons-material";
@@ -20,23 +18,33 @@ import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
 import cookie from "js-cookie";
 import useTableSearch from "../../hooks/useTableSearch";
-import InfoIcon from '@mui/icons-material/Info';
+import InfoIcon from "@mui/icons-material/Info";
 import { CSVLink } from "react-csv";
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 import { Button, Grid } from "@mui/material";
 import { Add, SystemUpdateAlt } from "@mui/icons-material";
-import { format, startOfMonth, endOfMonth } from "date-fns";
+import { format, startOfMonth, endOfMonth,addMonths, subMonths } from "date-fns";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+import DialogContentText from "@mui/material/DialogContentText";
+import mongoose from "mongoose";
+import { de } from "date-fns/locale";
+
 
 
 function Attendence() {
   var today = new Date();
 
-  //  const notify =() => toast ("Please check if everything before saving!");
   const [data, setData] = useState([]);
   const [isloading, setLoading] = useState(true);
-  const [date, setDate] = useState(today.toISOString().split('T')[0])
+  const [date, setDate] = useState(today.toISOString().split("T")[0]);
   const [status, setStatus] = useState("present");
-  const [intern, setIntern] = useState();
+  const [internTest, setInterns] = useState([]);
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [openAlertIncludedDate, setOpenAlertIncludedDate] = useState(false);
@@ -44,26 +52,30 @@ function Attendence() {
   const [dateIncluded, setDateIncluded] = useState(false);
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
-  const currentDate = new Date();
-  
-  
-
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [openDialog, setOpenDialog] = useState(false);
 
   const csvLinkElement = useRef();
-  const csvLinkSingleStudent = useRef();
-
-
-    
+  const csvLinkSingleIntern = useRef();
 
   const [searchedVal, setSearchedVal] = useState("");
   const { filteredData } = useTableSearch({ data, searchedVal });
-  console.log(filteredData)
+  console.log(data);
+  console.log(filteredData);
 
-  const [draftedInternUpdates, setDraftedInternUpdates] = useState([])
-  const [updatedInterns, setUpdatedInterns] = useState([])
+  const [draftedInternUpdates, setDraftedInternUpdates] = useState([]);
+  const [updatedInterns, setUpdatedInterns] = useState([]);
 
-  const [singleStudentAttendanceInfo, setSingleStudentAttendanceInfo] = useState([])
-  const [allStudentsAttendanceInfo, setAllStudentsAttendanceInfo] = useState([])
+  const [singleInternAttendanceInfo, setsingleInternAttendanceInfo] =
+    useState([]);
+  const [allInternsAttendanceInfo, setAllInternsAttendanceInfo] =
+    useState([]);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [cancelRefresh, setCancelRefresh] = useState(false);
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isRefreshing, setRefreshing] = useState(false);
 
   const listHeaders = [
     "Full Name",
@@ -79,21 +91,65 @@ function Attendence() {
     "Action",
   ];
 
-  const handleChangeStatus = (student, newStatus) => {
+  const handleRefreshTable = () => {
+    setShowConfirmation(true);
+  };
+
+  const handleCancelRefresh = () => {
+    setShowConfirmation(false);
+  };
 
 
+  const saveToAttendanceDatabase = async (attendanceData) => {
+    try {
+      const internTest=attendanceData.internTest
+      const attendance=attendanceData
+
+      // const internId = new mongoose.Types.ObjectId();
+      const attendanceId = new mongoose.Types.ObjectId();
+
+      // internTest._id = internId;
+      internTest.attendance=attendanceId;
+
+      attendanceData._id = attendanceId
+      attendance.internTest=internTest._id;
+
+      attendanceData.token=token
+      internTest.token=token
+      await axios.post(`/api/attendance?token=${token}`, attendanceData, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+
+      const response = await fetch(endpoint, options);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      console.log("Veriler basariyla sunucuya gönderildi!");
+      }
+      catch (error) {
+      console.error("Hata: Veriler sunucuya gönderilemedi.", error);
+    }
+  };
+
+
+  const handleChangeStatus = (attendance, newStatus) => {
+
+    debugger;
     const isDateGiven = date !== ""
 
     if (!isDateGiven) {
       return;
     }
 
-    const updatedIntern = student.intern
+    const updatedIntern = attendance.internTest
 
     const draftedInternUpdate = {
       id: updatedIntern._id,
       status: newStatus,
-      count: updatedIntern.attendance[newStatus].count + 1,
+      count: attendance[newStatus] + 1,
       date: date
     }
 
@@ -111,45 +167,104 @@ function Attendence() {
       setDraftedInternUpdates([...draftedInternUpdates, updatedIntern])
       setUpdatedInterns([...updatedInterns, updatedIntern])
     }
-
     setStatus(newStatus)
   }
   useEffect(() => {
-    setLoading(true);
-    const asyncRequest = async () => {
+    // Fetch student list from the API
+    const fetchInterns = async () => {
       try {
         const config = {
           headers: {
             "Content-Type": "application/json",
           },
         };
-        const { data } = await axios.get(
-          "/api/intern",
+        const response = await axios.get(
+          `/api/internTest`,
           { params: { token: token } },
           config
-        );
-        setData(data);
-        setLoading(false);
+        ); 
+        setInterns(response.data);
       } catch (error) {
-        console.error(error);
-        setLoading(false);
+        console.error('Error fetching interns:', error);
       }
     };
-    asyncRequest();
-  }, []);
+    fetchInterns();
+  }, [token]);
+
+
+  const asyncRequest = async (newDate) => {
+    try {
+      const token = cookie.get("token");
+      console.log(token);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.get(
+        "/api/attendance",
+        { params: { token: token } },
+        config
+      );
+      const filteredData = data.filter((attendance) => {
+        const attendanceDate = new Date(attendance.date); 
+        const attendanceMonth = attendanceDate.getMonth() + 1; 
+        return attendanceMonth === newDate.getMonth() + 1; 
+      });
+      setData(filteredData);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    asyncRequest(currentDate);
+  }, [token]);
+
+
+
+  
+
+  const handleCurrentMonthDateRange = (date) => {
+    const firstDayOfMonth = startOfMonth(date);
+    const lastDayOfMonth = endOfMonth(date);
+    const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
+    const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
+    const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
+    setDateRange(monthDateRange);
+  };
 
   useEffect(() => {
-    const handleCurrentMonthDateRange = () => {
-      const firstDayOfMonth = startOfMonth(currentDate);
-      const lastDayOfMonth = endOfMonth(currentDate);
-      const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
-      const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
-      const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
-      setDateRange(monthDateRange);
-    };
-
-    handleCurrentMonthDateRange();
+    handleCurrentMonthDateRange(currentDate);
   }, [currentDate]);
+
+  const handleNextMonth = async () => {
+    var newDate = addMonths(currentDate, 1);
+    setCurrentDate(newDate);
+
+    await asyncRequest(newDate);
+  };
+
+  const handlePreviousMonth = async () => {
+    var newDate = subMonths(currentDate, 1);
+    setCurrentDate(newDate);
+    await asyncRequest(newDate);
+  };
+
+  // useEffect(() => {
+  //   const handleCurrentMonthDateRange = () => {
+  //     const firstDayOfMonth = startOfMonth(currentDate);
+  //     const lastDayOfMonth = endOfMonth(currentDate);
+  //     const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
+  //     const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
+  //     const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
+  //     setDateRange(monthDateRange);
+  //   };
+
+  //   handleCurrentMonthDateRange();
+  // }, [currentDate]);
 
   const csvReport = {
     separator: "  ",
@@ -160,81 +275,116 @@ function Attendence() {
 
   const handleExportJsonDataToCsv = () => {
 
-    let studentsAttendanceInfo = []
-    data.forEach((eachStudent) => {
-
-      const attendanceInfo = getAttendanceInfoOfStudent(eachStudent)
-      studentsAttendanceInfo.push(attendanceInfo)
+    let internsAttendanceInfo = []
+    data.forEach((attendance) => {
+      debugger;
+      const attendanceInfo = getAttendanceInfoOfIntern(attendance)
+      internsAttendanceInfo.push(attendanceInfo)
     })
 
-    setAllStudentsAttendanceInfo(studentsAttendanceInfo)
+    setAllInternsAttendanceInfo(internsAttendanceInfo)
 
     const downloadedCsvFile = setTimeout(function () {
       csvLinkElement.current.link.click()
     }, 1000);
   }
 
-  const getAttendanceInfoOfStudent = (student) => {
 
+  const getAttendanceInfoOfIntern = (attendance) => {
+    debugger;
     const attendanceInfo = {
-      "First Name": student.firstName,
-      "Last Name": student.lastName,
-      "Covered Day": student.intern.attendance.coveredDay.count,
-      "Day Off": student.intern.attendance.dayOff.count,
-      "Excused Leave": student.intern.attendance.excusedLeave.count,
-      "Late": student.intern.attendance.late.count,
-      "Present": student.intern.attendance.present.count,
-      "Sick": student.intern.attendance.sick.count,
-      "Unexcused Leave": student.intern.attendance.unexcusedleave.count,
+      "First Name": attendance.internTest.student.firstName,
+      "Last Name": attendance.internTest.student.lastName,
+      "Covered Day": attendance.coveredDay,
+      "Day Off": attendance.dayOff,
+      "Excused Leave": attendance.excusedLeave,
+      "Late": attendance.late,
+      "Present": attendance.present,
+      "Sick": attendance.sick, 
+      "Unexcused Leave": attendance.unexcusedleave,
     }
     return attendanceInfo
   }
-  const handleExportSingleInternAttendanceToCsv = (student) => {
+  const handleExportSingleInternAttendanceToCsv = (attendance) => {
 
-    if (event.target.tagName === "A") {
-      return
-    }
+    const attendanceInfo = getAttendanceInfoOfIntern(attendance)
 
-    const attendanceInfo = getAttendanceInfoOfStudent(student)
-
-    setSingleStudentAttendanceInfo([attendanceInfo])
+    setsingleInternAttendanceInfo([attendanceInfo])
 
     const downloadedCsvFile = setTimeout(function () {
-      csvLinkSingleStudent.current.link.click()
+      csvLinkSingleIntern.current.link.click()
     }, 1000);
 
   }
-
-
-
-  const save = (intern) => {
-    setOpenAlert(false);
-    setOpenAlertIncludedDate(false);
-    setIntern(intern);
-    if (!dateIncluded) {
-      if (status && date) {
-        setOpen(false);
+  const moveToNextMonth = async () => {
         confirmAlert({
           message: "Are you sure you want to save ?",
           buttons: [
             {
               label: "Yes",
               onClick: async () => {
+                var newDate = addMonths(currentDate, 1);
+                // setCurrentDate(newDate);
                 setOpen(true);
-                intern.attendance[status].count++;
-                intern.attendance[status].dates.push(date);
-                intern.token = token;
-                const JSONintern = JSON.stringify(intern);
-                const endpoint = `/api/intern/${intern._id}`;
+                for (const attendance of data) {
+                  const attendanceData = {
+                    present: 0,
+                    late: 0,
+                    coveredDay: 0,
+                    dayOff: 0,
+                    excusedLeave: 0,
+                    sick: 0,
+                    unexcusedleave: 0,
+                    date: newDate,
+                    internTest: attendance.internTest,
+                  };
+              
+                  
+                  await saveToAttendanceDatabase(attendanceData);
+                  debugger;
+
+                }
+                setData(data);
+                setInterns(data.internTest);
+                setDraftedInternUpdates(data);
+                setUpdatedInterns(data);
+                setShowConfirmation(false);
+                setOpen(false);
+              },
+            },
+            {
+              label: "No",
+            },
+          ],
+        });
+  };
+
+
+  const save = (attendance) => {
+    debugger;
+    setInterns(attendance.internTest);
+    if (!dateIncluded) {
+      if (status && date) {
+        confirmAlert({
+          message: "Are you sure you want to save ?",
+          buttons: [
+            {
+              label: "Yes",
+              onClick: async () => {
+                debugger;
+                setOpen(true);
+                attendance[status]++;
+                attendance.date=date;
+                attendance.internTest.token = token;
+                const JSONattendance = JSON.stringify(attendance);
+                const endpoint = `/api/attendance/${attendance._id}`;
                 const options = {
                   method: "PUT",
                   headers: {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
-
                   },
-
-                  body: JSONintern,
+                  body: JSONattendance,
                 };
                 await fetch(endpoint, options);
                 setOpen(false);
@@ -257,9 +407,6 @@ function Attendence() {
   };
 
   const saveAll = () => {
-
-
-
     setLoading(true);
     const asyncRequest = async () => {
       try {
@@ -269,7 +416,7 @@ function Attendence() {
           },
         };
         // PUT request to update all interns in the database
-        await axios.put(`/api/intern`, { token: token, interns: updatedInterns, drafted: draftedInternUpdates }, config);
+        await axios.put(`/api/internTest`, { token: token, internTests: updatedInterns, drafted: draftedInternUpdates }, config);
         setLoading(false);
         // Show a success message to the user
         alert("All changes have been saved!");
@@ -298,25 +445,6 @@ function Attendence() {
     }
   };
 
-
-
-
-
-
-
-  const disableStatus = (intern, dt) => {
-    if (
-      intern.attendance.present.dates.includes(dt) ||
-      intern.attendance.late.dates.includes(dt) ||
-      intern.attendance.dayOff.dates.includes(dt) ||
-      intern.attendance.excusedLeave.dates.includes(dt) ||
-      intern.attendance.sick.dates.includes(dt) ||
-      intern.attendance.unexcusedleave.dates.includes(dt) ||
-      intern.attendance.coveredDay.dates.includes(dt)
-    )
-      setDateIncluded(true);
-    else setDateIncluded(false);
-  };
 
   if (isloading)
     return (
@@ -360,21 +488,65 @@ function Attendence() {
           <form>
             <label
               htmlFor="default-search"
-              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
             >
               Search
             </label>
 
           </form>
           {/* Title Container */}
-          <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white flex-col md:flex-row">
-            <div className="flex flex-wrap items-center">
-              <div className="relative w-full px-4 max-w-full flex-grow flex-1 ">
-                <h3 className="font-semibold text-2xl">Intern Attendance ({dateRange})</h3>
-              </div>
-            </div>
+
+            <div className="flex justify-between rounded-t mb-0 px-4 py-6 border-0 bg-white flex-col md:flex-row">
+
+                  <div className="flex flex-wrap items-center">
+                    <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                      <h3 className="font-semibold text-2xl">Intern Attendance  </h3>
+                    </div>
+                    <button className="prev-btn text-2xl" onClick={handlePreviousMonth}>
+                      &lt;
+                    </button>
+                    <h3 className="text-lg font-semibold mx-4">{dateRange}</h3>
+                    <button className="next-btn text-2xl" onClick={handleNextMonth}>
+                      &gt;
+                    </button>
+                  </div>
 
             <div className="flex gap-2 flex-col md:flex-row">
+            <Button
+            size="medium"
+            color="primary"
+            variant="contained"
+            sx={{ borderRadius: 2 }}
+            href="#"
+            onClick={moveToNextMonth}
+          >
+            Move To Next Month
+          </Button>
+
+      {/* Confirmation Dialog */}
+            <Dialog
+              open={showConfirmation}
+              onClose={handleCancelRefresh}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">Confirm Refresh</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure you want to refresh the table? This action cannot be undone.
+                </DialogContentText>
+              </DialogContent>
+              {/* <DialogActions>
+                <Button onClick={handleCancelRefresh} color="primary">
+                  No
+                </Button>
+                <Button onClick={handleConfirmRefresh} color="primary" autoFocus>
+                  Yes
+                </Button>
+              </DialogActions> */}
+            </Dialog>
+
+              
 
               <Button
                 size="medium"
@@ -387,29 +559,29 @@ function Attendence() {
               >
                 Export to CSV
               </Button>
-              <CSVLink ref={csvLinkElement} data={allStudentsAttendanceInfo}></CSVLink>
+              <CSVLink ref={csvLinkElement} data={allInternsAttendanceInfo}></CSVLink>
 
               <form>
                 <label
                   htmlFor="default-search"
-                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                  className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                 >
                   Search
                 </label>
-                <div class="relative">
-                  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-                      class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                      className="w-5 h-5 text-gray-500 dark:text-gray-400"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       ></path>
                     </svg>
@@ -417,7 +589,7 @@ function Attendence() {
                   <input
                     type="search"
                     id="default-search"
-                    class="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="block w-full pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search..."
                     onChange={(e) => {
                       setSearchedVal(e.target.value);
@@ -426,14 +598,19 @@ function Attendence() {
                 </div>
               </form>
               <div className="relative"  >
-                <button
-                  onClick={saveAll}
-                  title="Save"
-                  className=" hover:bg-blue-400 group flex items-center rounded-md bg-blue-500 text-white text-xs font-light pl-2 pr-3 py-2 shadow-sm cursor-pointer">
-                  <CheckCircle className="text-m py-1 "
-                  />
-                  Save All
-                </button>
+                
+                {/* <Button
+                size="medium"
+                color="primary"
+                startIcon= {<CheckCircle className="text-sm" />}
+                variant="contained"
+                sx={{ borderRadius: 2 }}
+                href="#"
+                onClick={saveAll}
+              >
+                Save All
+              </Button> */}
+                
               </div>
             </div>
           </div>
@@ -487,9 +664,6 @@ function Attendence() {
                     INTERN
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    DATE
-                  </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     SITUATION
                   </th>
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -526,44 +700,23 @@ function Attendence() {
                     The interns list is empty
                   </tr>
                 ) : (
-                  filteredData.map((student) => (
-                    <tr key={student.intern._id}>
+                  filteredData.map((attendance) => (
+                    <tr key={attendance._id}>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left flex items-center mt-3">
                         <div className="font-bold">
                           {" "}
-                          {student.firstName} {student.lastName}
+                          {attendance.internTest.student.firstName} {attendance.internTest.student.lastName}
                         </div>
                       </td>
 
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <input
-                          type="date"
-                          defaultValue={date}
-                          value={date}
-                          onChange={(e) => {
-                            setDate(e.target.value);
-                            console.log(date);
-
-                          }}
-                          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-
-                          onClick={(e) => {
-                            setDate(e.target.value);
-
-                            console.log(date);
-
-
-                          }}
-                        ></input>
-                      </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <select
                           id="country"
                           className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                           // onClick={(e) => setStatus(e.target.value)}
-                          onClick={(e) => handleChangeStatus(student, e.target.value)}
+                          onClick={(e) => handleChangeStatus(attendance, e.target.value)}
                         >
                           <option value="present">Present</option>
                           <option value="late">Late</option>
@@ -579,46 +732,46 @@ function Attendence() {
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.present.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.present}</div>
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
 
-                          <div>{student.intern.attendance.late.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.late}</div>
 
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.coveredDay.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.coveredDay}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.dayOff.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.dayOff}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {student.intern.attendance.excusedLeave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
+                            {attendance.excusedLeave}
                           </div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{student.intern.attendance.sick.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}</div>
+                          <div>{attendance.sick}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {student.intern.attendance.unexcusedleave.dates.filter(date => +date.split("-")[1] === (new Date().getMonth() + 1) && +date.split("-")[0] === new Date().getFullYear()).length}
+                            {attendance.unexcusedleave}
                           </div>
                         </div>
                       </td>
@@ -628,7 +781,7 @@ function Attendence() {
                           <div className="flex flex-r">
                             <div>
                               <button
-                                onClick={() => save(student.intern)}
+                                onClick={() => save(attendance)}
                                 title="Save"
                               >
                                 <CheckCircle className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
@@ -638,20 +791,20 @@ function Attendence() {
                               <InfoIcon
                                 className="h-6 fill-[#0b3768] hover:fill-[#15803d]"
                                 onClick={(e) =>
-                                  setAttendanceEditModel(student.intern._id)
+                                  setAttendanceEditModel(attendance._id)
                                 }
 
                               />
-                              {editAttendanceModel === student.intern._id && (
+                              {editAttendanceModel === attendance._id && (
                                 <EditAttendance
-                                  intern={student.intern}
+                                  attendance={attendance}
                                   setModel={setAttendanceEditModel}
                                 />
                               )}
                             </button>
-                            <button title="Export to CSV" onClick={() => handleExportSingleInternAttendanceToCsv(student)}>
+                            <button title="Export to CSV" onClick={() => handleExportSingleInternAttendanceToCsv(attendance)}>
                               <SystemUpdateAlt className="h-6 fill-[#0b3768] hover:fill-[#15803d]" />
-                              <CSVLink ref={csvLinkSingleStudent} data={singleStudentAttendanceInfo}></CSVLink>
+                              <CSVLink ref={csvLinkSingleIntern} data={singleInternAttendanceInfo}></CSVLink>
                             </button>
                           </div>
                         </div>
@@ -667,5 +820,4 @@ function Attendence() {
     </section>
   );
 }
-
 export default Attendence;

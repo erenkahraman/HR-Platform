@@ -9,7 +9,7 @@ import FinishedStudentCountModal from "./FinishedStudentCountModal";
 
 const departmanColor = (department) => {
   switch (department) {
-    case "The Information And Communications Technology":
+    case "Information Technologies":
       return "text-blue-400";
     case "Human Resources":
       return "text-green-400";
@@ -21,6 +21,12 @@ const departmanColor = (department) => {
       return "text-purple-400";
     case "Language Teaching":
       return "text-yellow-400";
+    case "UEX Designing":
+      return "text-cyan-400";
+    case "Administration":
+      return "text-yellow-900";
+    case "Business Lawyer ":
+      return "text-orange-100";
     default:
       return "";
   }
@@ -77,7 +83,11 @@ const StudentCountModal = ({ setScModal, type }) => {
           </button>
           <div className="flex flex-row gap-16 text-5xl  bg-white  mb-8 ml-4 mr-4">
             {departments.map((department) => (
+<<<<<<< HEAD
               <div className="flex flex-row ml-5" key={department.department}>
+=======
+              <div className="flex flex-row ml-5" key={department.id}>
+>>>>>>> 68c53c84d5901bdbc3d5e216edc2eda9c57a8ba4
                 <div className="text-red-400 ">
                   <BsPeopleFill
                     className={`text-2xl ${departmanColor(

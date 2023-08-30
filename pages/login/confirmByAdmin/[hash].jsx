@@ -11,7 +11,7 @@ import { app } from "../../verifyToken/index";
 import { confirmAlert } from "react-confirm-alert";
 import ready from "@document/ready";
 
-export default function forgot() {
+export default function Forgot() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");

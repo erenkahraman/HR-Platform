@@ -4,8 +4,8 @@ const useTableSearch = ({ data, searchedVal }) => {
   const [filteredData, setFilteredData] = useState(data);
   useEffect(() => {
     if (searchedVal) {
-      const filtered = data.filter((student) => {
-        return JSON.stringify(student)
+      const filtered = data.filter((attendance) => {
+        return JSON.stringify(attendance)
           .toLocaleLowerCase()
           .includes(searchedVal.toString().toLocaleLowerCase());
       });

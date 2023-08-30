@@ -74,7 +74,7 @@ export default function Topbar({ isOpen, handler }) {
               ...(isOpen && { display: "none" }),
             }}
           >
-            {theme.direction === "rtl" ? <ChevronLefIcon /> : <MenuIcon />}
+            {theme.direction === "rtl" ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
         )}
 

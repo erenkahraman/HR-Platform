@@ -2,13 +2,12 @@ import mongoose from "mongoose";
 
 const weeklyScheduleSchema = mongoose.Schema({
   Group: { type: String, required: true },
-  Interns: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }],
   Schedule: {
-    monday: { startTime: { type: String }, endTime: { type: String } },
-    tuesday: { startTime: { type: String }, endTime: { type: String } },
-    wednesday: { startTime: { type: String }, endTime: { type: String } },
-    thursday: { startTime: { type: String }, endTime: { type: String } },
-    friday: { startTime: { type: String }, endTime: { type: String } },
+    monday: { morning: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }], afternoon: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }] },
+    tuesday: { morning: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }], afternoon: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }] },
+    wednesday: { morning: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }], afternoon: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }] },
+    thursday: { morning: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }], afternoon: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }] },
+    friday: { morning: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }], afternoon: [{ type: mongoose.Schema.Types.ObjectId, ref: "Intern" }] },
   },
 });
 

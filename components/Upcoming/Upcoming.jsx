@@ -22,7 +22,7 @@ const Upcoming = () => {
           { params: { token: token } },
           config
         );
-        const filteredData = data.filter(intern => new Date(intern.date) >= new Date());
+        const filteredData = data.filter(internTest => new Date(internTest.date) >= new Date());
         filteredData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setData(filteredData.slice(0, 5)); // Limit the data to 5 interns
         setLoading(false);
@@ -55,15 +55,15 @@ const Upcoming = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        data.map((intern, i) => (
+        data.map((internTest, i) => (
           <div key={i} className="flex w-full">
             <div className="flex-[1] flex flex-col">
-              <div className="text-sm font-semibold">{intern.name}</div>
-              <div className="text-xs font-light ">{intern.department}</div>
+              <div className="text-sm font-semibold">{internTest.name}</div>
+              <div className="text-xs font-light ">{internTest.department}</div>
             </div>
-            <div className={statusColor(intern.action)}>{intern.action}</div>
+            <div className={statusColor(internTest.action)}>{internTest.action}</div>
             <div className="flex-[1] flex items-center justify-center text-xs text-gray-500">
-              {formatDate(intern.date)}
+              {formatDate(internTest.date)}
             </div>
           </div>
         ))

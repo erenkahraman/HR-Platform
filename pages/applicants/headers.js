@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 
-const listHeaders = [
+export const listHeaders = [
   { label: "First name", key: "student.firstName" },
   { label: "Last name", key: "student.lastName" },
   { label: "Nationality", key: "student.nationality" },
@@ -57,5 +57,7 @@ export const IDonedata = [
   { month: "Nov", InDValue: 40, IdValue: 40 },
   { month: "Dec", InDValue: 18, IdValue: 38 },
 ];
-
-export default listHeaders;
+const HeadersPage = () => {
+  return <div>List Headers Page</div>;
+};
+export default HeadersPage;
