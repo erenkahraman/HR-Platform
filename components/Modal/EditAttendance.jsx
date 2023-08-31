@@ -172,6 +172,6 @@ const EditAttendance = ({ attendance, setModel }) => {
       </form>
     </div>
   );
-};
+}; 
 
 export default EditAttendance;

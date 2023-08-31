@@ -7,6 +7,9 @@ import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../../components/Utils/LoadingState.jsx";
 import StudentCountModal from "../../components/Modal/StudentCountModal.jsx";
+//------
+import FinishedStudentCountModal from "../../components/Modal/FinishedStudentCountModal.jsx"; 
+// Import the StudentFinishedModal component
 import useTableSearch from "../../hooks/useTableSearch";
 import {
   Button,
@@ -34,6 +37,9 @@ export default function ApplicantsList({ status }) {
   const [open, setOpen] = useState(false);
   const token = cookie.get("token");
   const [scModal, setScModal] = useState(false);
+  //setScModal2 for second modal for finished interns
+  const [lvModal, setLvModal] = useState(false);
+  //-----
   const [type, setType] = useState("");
 
   const border = ((status) => {
@@ -204,7 +210,9 @@ export default function ApplicantsList({ status }) {
                     size="small"
                     variant="outlined"
                     onClick={(e) => {
-                      setScModal(true);
+                      // setScModal(true);
+                      setLvModal(true);
+                      //----------
                       setType("finishedInterns");
                     }}
                   >
@@ -254,6 +262,9 @@ export default function ApplicantsList({ status }) {
             </Grid>
           </Box>
           {scModal && <StudentCountModal setScModal={setScModal} type={type} />}
+          {/* ------ */}
+          {lvModal && <FinishedStudentCountModal setLvModal={setLvModal} type={type} />}
+          {/* ------- */}
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
             {data.length === 0 ? (

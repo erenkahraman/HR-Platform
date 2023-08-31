@@ -7,7 +7,7 @@ export default async function authHandler(req, res) {
   const client = await clientPromise;
   
   return NextAuth(req, res, {
-    adapter: MongoDBAdapter({ db: client.db("your-database-name") }),
+    adapter: MongoDBAdapter({ db: client.db("Extramus") }),
     secret: process.env.JWT_SECRET,
     providers: [
       // OAuth authentication providers...

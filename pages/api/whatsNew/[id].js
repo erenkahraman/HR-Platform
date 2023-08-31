@@ -1,4 +1,4 @@
-import Intern from "../../../models/intern";
+import WhatsNew from "../../../models/whatsNew";
 import dbConnect from "../../../util/mongodb";
 import { tokenCheckFunction } from "../auth/tokenCheck";
 
@@ -25,15 +25,12 @@ export default async function handler(req, res) {
   // Token CHECK
 
   switch (method) {
-    case "PUT":
+    case "DELETE":
       try {
-        const intern = await Intern.findByIdAndUpdate(id, req.body, {
-          new: true,
-          runValidators: true,
-        });
+        const whatsNew = await WhatsNew.deleteOne({ _id: id });
         return res.status(200).json({
           success: true,
-          data: intern,
+          data: whatsNew,
         });
       } catch (error) {
         return res.status(500).json({
@@ -41,27 +38,8 @@ export default async function handler(req, res) {
           data: error,
         });
       }
-      case "DELETE":
-
-        //await Intern.deleteOne({where:{_id:id}});
-        await Intern.findByIdAndDelete(id);
-
-
-        // try {
-        //   console.log("string");
-        //  await Intern.deleteOne({$where:{_id:id}})
-        //   return res.status(200).json({
-        //     success: true,
-       
-        //   });
-        // } catch (error) {
-        //   return res.status(500).json({
-        //     success: false,
-        //     data: error,
-        //   });
-        // }
-      default:
-      res.setHeaders("Allow", ["GET", "PUT"]);
+    default:
+      res.setHeaders("Allow", ["GET", "PUT", "DELETE"]);
       return res
         .status(405)
         .json({ success: false })
