@@ -56,16 +56,14 @@ export default async function handler(req, res) {
       for (let i = 0; i < internTest.length; i++) {
         if (internTest[i].status === "Waiting Start Date") {
           data.push({
-            name:
-              internTest[i].student.firstName + " " + internTest[i].student.lastName,
+            name:internTest[i].student.firstName + " " + internTest[i].student.lastName,
             department: internTest[i].department,
             action: "Arriving",
             date: internTest[i].endDate,
           });
         } else if (internTest[i].status === "Ongoing") {
           data.push({
-            name:
-              internTest[i].student.firstName + " " + internTest[i].student.lastName,
+            name: internTest[i].student.firstName + " " + internTest[i].student.lastName,
             department: internTest[i].department,
             action: "Departing",
             date: internTest[i].endDate,

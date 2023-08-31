@@ -24,6 +24,7 @@ const Upcoming = () => {
         );
         const filteredData = data.filter(internTest => new Date(internTest.date) >= new Date());
         filteredData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        console.log(filteredData.slice(0, 5));
         setData(filteredData.slice(0, 5)); // Limit the data to 5 interns
         setLoading(false);
       } catch (e) {

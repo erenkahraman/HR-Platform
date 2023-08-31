@@ -96,10 +96,9 @@ const WeeklySchedule = () => {
     const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
       (intern) => intern._id !== internToBeMoved._id
     );
-
+  
     setMorningShiftInterns(updatedMorningShiftInterns);
     setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-
 
     const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
@@ -121,7 +120,6 @@ const WeeklySchedule = () => {
       console.error(error);
     }
   };  
-
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
     const updatedAfternoonShiftInterns = [
       ...afternoonShiftInterns,
@@ -155,7 +153,6 @@ const WeeklySchedule = () => {
       console.error(error);
     }
   }; 
-
 
 
   const handleExportToCsv = () => {
@@ -196,10 +193,10 @@ const WeeklySchedule = () => {
             token: token,
           },
         };
-
     
         const { data } = await axios.get(`/api/intern`, config);
- 
+        
+
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
@@ -209,7 +206,7 @@ const WeeklySchedule = () => {
           },
           {}
         );
-
+    
         setWeeklyScheduleByDepartment(weeklyScheduleGroupedByDepartment);
         const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         setDepartmentNames(departmentNames);
@@ -286,44 +283,10 @@ const WeeklySchedule = () => {
         console.error(e);
       }
     };
-
     fetchWeeklySchedule();
   }, [morningShiftInterns, afternoonShiftInterns]); // Add these dependencies  
 
 
-  useEffect(() => {
-    const fetchWeeklySchedule = async () => {
-      try {
-        handleCurrentWeekDateRange();
-        debugger;
-        const token = cookie.get("token");
-        if (!token) {
-          console.log("Token Expired! error function: fetchWeeklySchedule");
-          return;
-        }
-        else{
-          console.log("Token value from fetchWeeklySchedule",token)
-        }
-
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        debugger;
-        const response = await axios.get(`/api/weeklySchedule?token=${token}`);
-        const { weeklySchedule, populatedWeeklySchedule } = response.data;
-        // Update state with fetched data
-        setWeeklySchedule(weeklySchedule);
-        setPopulatedWeeklySchedule(populatedWeeklySchedule);
-
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchWeeklySchedule();
-  }, []);
-  
   const swapShift = (internToBeSwapped, shiftTime) => {
 
     if (shiftTime === "morning") {
@@ -362,8 +325,7 @@ const WeeklySchedule = () => {
 
 
     return (
-    
-      div className="min-h-screen  ">
+    <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
         <div className=" flex w-full flex-col   items-center justify-center min-w-0 break-words w-full rounded">
           <div className="flex justify-between gap-4 rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
@@ -435,7 +397,6 @@ const WeeklySchedule = () => {
                 width: "100%",
               }}
             >
-
  <thead>
   <tr>
     <th>INTERNS</th>

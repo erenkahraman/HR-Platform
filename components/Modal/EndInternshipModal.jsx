@@ -6,7 +6,7 @@ import LoadingState from "../Utils/LoadingState";
 
 
 
-const EndInternshipModal = ({ intern, setEiModal }) => {
+const EndInternshipModal = ({ internTest, setEiModal }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ const handleAccept = async () => {
       },
     };
 
-    const deleteEndpoint = `/api/intern/${intern._id}`;
+    const deleteEndpoint = `/api/internTest/${internTest._id}`;
 
       await fetch(deleteEndpoint, deleteOptions);
     
@@ -45,12 +45,12 @@ const handleAccept = async () => {
       },
       body: JSON.stringify({
         type: "FINISHED", // Assuming this is the value for finished interns
-        finishedInterns: intern._id, // Assuming this is the intern ID
+        finishedInterns: internTest._id, // Assuming this is the intern ID
       }),
     };
   
     // Update the department's finishedInterns array
-    await fetch(`/api/department/${intern.department}`, departmentUpdateOptions);
+    await fetch(`/api/department/${internTest.department}`, departmentUpdateOptions);
   }; 
 
   
@@ -112,7 +112,7 @@ return (
             <span className="flex mx-2 text-red-500 text-lg font-bold">
               end the internship
             </span>{" "}
-            for {intern.student.firstName} {intern.student.lastName} ?
+            for {internTest.student.firstName} {internTest.student.lastName} ?
           </div>
 
           <div className="flex flex-row ml-32">
