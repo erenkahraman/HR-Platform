@@ -82,25 +82,22 @@ const StudentCountModal = ({ setScModal, type }) => {
             <MdOutlineCancel />
           </button>
           <div className="flex flex-row gap-16 text-5xl  bg-white  mb-8 ml-4 mr-4">
-            {departments.map((department) => (
-
-              <div className="flex flex-row ml-5" key={department.department}>
-
-              <div className="flex flex-row ml-5" key={department.id}>
-
-                <div className="text-red-400 ">
-                  <BsPeopleFill
-                    className={`text-2xl ${departmanColor(
-                      department.department
-                    )}`}
-                  />
-                </div>
-                <div className="flex flex-col text-sm font-bold ">
-                  <div>{department.department}</div>
-                  <div className="text-xl ml-3 ">{department.onGoingInterns.length}</div>
-                </div>
+          {departments.map((department) => (
+            <div className="flex flex-row ml-5" key={department.id}>
+              <div className="text-red-400">
+                <BsPeopleFill
+                  className={`text-2xl ${departmanColor(
+                    department.department
+                  )}`}
+                />
               </div>
-            ))}
+              <div className="flex flex-col text-sm font-bold">
+                <div>{department.department}</div>
+                <div className="text-xl ml-3">{department.onGoingInterns.length}</div>
+              </div>
+            </div>
+          ))}
+
           </div>
           {/* Button to open FinishedStudentCountModal */}
           <button
