@@ -12,7 +12,9 @@ import { CSVLink } from "react-csv";
 const WeeklySchedule = () => {
   const WEEKDAYS = 5;
   const [dateRange, setDateRange] = useState("");
-  const [weeklySchedule, setWeeklySchedule] = useState({});
+  const [weeklyScheduleByDepartment, setWeeklyScheduleByDepartment] = useState({});
+  const [weeklySchedule, setWeeklySchedule] = useState([]); // Add this state variable
+  const [populatedWeeklySchedule, setPopulatedWeeklySchedule] = useState([]);
   const [departmentNames, setDepartmentNames] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -21,20 +23,21 @@ const WeeklySchedule = () => {
   const [assignedShifts, setAssignedShifts] = useState([]);
   const token = cookie.get("token");
   const csvLinkElement = useRef();
-
-  const handleClickOutside = (event) => {
-    if (anchorEl && !anchorEl.contains(event.target)) {
-      setAnchorEl(null);
-      setSelectedDepartment(null);
-    }
-  };
+  const [availableMorningShiftInterns, setAvailableMorningShiftInterns] = useState([]);
+  const [availableAfternoonShiftInterns, setAvailableAfternoonShiftInterns] = useState([]);
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (anchorEl && !event.target.closest(`#department-menu-${selectedDepartment}`)) {
+        setAnchorEl(null);
+        setSelectedDepartment(null);
+      }
+    };
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [anchorEl]);
+  },[]);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -60,6 +63,7 @@ const WeeklySchedule = () => {
     if (mm < 10) mm = '0' + mm;
 
     const formattedDay = dd + '/' + mm + '/' + yyyy;
+
     return formattedDay
   }
 
@@ -88,24 +92,24 @@ const WeeklySchedule = () => {
 
   const handleMoveToMorning = async (internToBeMoved, internIndex) => {
     const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
-    setMorningShiftInterns(updatedMorningShiftInterns);
   
     const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
       (intern) => intern._id !== internToBeMoved._id
     );
-    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
   
-    const updatedWeeklySchedule = { ...weeklySchedule };
+    setMorningShiftInterns(updatedMorningShiftInterns);
+    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
+
+    const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id);
-    setWeeklySchedule(updatedWeeklySchedule);
+    setWeeklyScheduleByDepartment(updatedWeeklySchedule);
   
     try {
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
             Group: selectedDepartment,
-            day: "monday", // Change to the appropriate day
             shift: "morning",
             internId: internToBeMoved._id,
           },
@@ -122,27 +126,23 @@ const WeeklySchedule = () => {
       internToBeMoved,
     ];
     setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-  
+
     const updatedMorningShiftInterns = morningShiftInterns.filter(
       (intern) => intern._id !== internToBeMoved._id
     );
+
     setMorningShiftInterns(updatedMorningShiftInterns);
-  
-    const updatedWeeklySchedule = { ...weeklySchedule };
+
+    const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id
     );
-    setWeeklySchedule(updatedWeeklySchedule);
-  
-  const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
-    // ... (existing code)
-
+    setWeeklyScheduleByDepartment(updatedWeeklySchedule);
     try {
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
             Group: selectedDepartment,
-            day: "monday", // Change to the appropriate day
             shift: "afternoon",
             internId: internToBeMoved._id,
           },
@@ -152,7 +152,9 @@ const WeeklySchedule = () => {
     } catch (error) {
       console.error(error);
     }
-  }  };
+  }; 
+
+
   const handleExportToCsv = () => {
     let shiftAssignedInterns = [];
     morningShiftInterns.forEach((morningIntern) => {
@@ -170,19 +172,19 @@ const WeeklySchedule = () => {
   };
 
   useEffect(() => {
-    const fetchWeeklySchedule = async () => {
+    const fetchInterns = async () => {
       try {
         handleCurrentWeekDateRange();
-
+    
         const token = cookie.get("token");
         if (!token) {
-          console.log("Token Expired! error function: fetchweeklyschedule");
+          console.log("Token Expired! error function: fetchInterns");
           return;
         }
         else{
-          console.log("Token value from fetchweeklyschedule",token)
+          console.log("Token value from fetchInterns",token)
         }
-
+    
         const config = {
           headers: {
             "Content-Type": "application/json",
@@ -191,7 +193,9 @@ const WeeklySchedule = () => {
             token: token,
           },
         };
-        const { data } = await axios.get(`/api/weeklySchedule`, config);
+    
+        const { data } = await axios.get(`/api/intern`, config);
+        
 
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
@@ -202,15 +206,86 @@ const WeeklySchedule = () => {
           },
           {}
         );
-        setWeeklySchedule(weeklyScheduleGroupedByDepartment);
+    
+        setWeeklyScheduleByDepartment(weeklyScheduleGroupedByDepartment);
         const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         setDepartmentNames(departmentNames);
+    
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchInterns();
+  }, [morningShiftInterns, afternoonShiftInterns]); // Add these dependencies
+  
+  useEffect(() => {
+    const fetchInterns2 = async () => {
+      try {
+        handleCurrentWeekDateRange();
+    
+        const token = cookie.get("token");
+        if (!token) {
+          console.log("Token Expired! error function: fetchInterns");
+          return;
+        }
+        else {
+          console.log("Token value from fetchInterns", token);
+        }
+    
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          params: {
+            token: token,
+          },
+        };
+        const response = await axios.get(`/api/weeklySchedule`, config);
+        const data2 = response.data;
+        
+        // Filter out assigned interns
+        const morningShiftInternsBefore = data2.populatedWeeklySchedule.map(intern => intern.Schedule.morning);
+        const afternoonShiftInternsBefore = data2.populatedWeeklySchedule.map(intern => intern.Schedule.afternoon);
+        const morningShiftInterns = morningShiftInternsBefore.flat();
+        const afternoonShiftInterns = afternoonShiftInternsBefore.flat();
+
+        setAvailableMorningShiftInterns(morningShiftInterns);
+        setAvailableAfternoonShiftInterns(afternoonShiftInterns);
+        debugger;
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchInterns2();
+  }, [morningShiftInterns, afternoonShiftInterns]);
+  
+  useEffect(() => {
+    const fetchWeeklySchedule = async () => {
+      try {
+        handleCurrentWeekDateRange();
+        const token = cookie.get("token");
+        if (!token) {
+          console.log("Token Expired! error function: fetchWeeklySchedule");
+          return;
+        }
+        else{
+          console.log("Token value from fetchWeeklySchedule",token)
+        }
+  
+        const response = await axios.get(`/api/weeklySchedule?token=${token}`);
+        const { weeklySchedule, populatedWeeklySchedule } = response.data;
+        
+        // Update state with the new data
+        setWeeklySchedule(weeklySchedule);
+        setPopulatedWeeklySchedule(populatedWeeklySchedule);
+  
       } catch (e) {
         console.error(e);
       }
     };
     fetchWeeklySchedule();
-  }, []);
+  }, [morningShiftInterns, afternoonShiftInterns]); // Add these dependencies  
+
 
   const swapShift = (internToBeSwapped, shiftTime) => {
 
@@ -249,7 +324,7 @@ const WeeklySchedule = () => {
   };
 
 
-  return (
+    return (
     <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
         <div className=" flex w-full flex-col   items-center justify-center min-w-0 break-words w-full rounded">
@@ -275,31 +350,32 @@ const WeeklySchedule = () => {
             </div>
           </div>
           <div
-            className="flex flex-col items-center justify-center gap-10 mt-4"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "12px 24px",
-              gap: "10px",
-              background: "#DCEBFC",
-              borderRadius: "24px",
-            }}
-          >
-            <table
-              className="font-roboto"
-              style={{
-                width: "100%",
-              }}
-            >
-              <tbody>
-                <tr>
-                  <td>{dateRange}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+  className="flex flex-col items-center justify-center gap-10 mt-4"
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "12px 24px",
+    gap: "10px",
+    background: "#DCEBFC",
+    borderRadius: "24px",
+  }}
+>
+  <table
+    className="font-roboto"
+    style={{
+      width: "100%",
+    }}
+  >
+    <tbody>
+      <tr>
+        <td>{dateRange}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
           <div
             className="flex flex-col items-center justify-center gap-10 mt-4"
             style={{
@@ -321,93 +397,116 @@ const WeeklySchedule = () => {
                 width: "100%",
               }}
             >
-              <thead>
-                <tr>
-                  <th>INTERNS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {departmentNames.map((eachDepartmentName,) => (
-                  <React.Fragment key={eachDepartmentName}>
-                    <tr>
-                      <td colSpan="3">
-                        <div>
-                          <Button
-                            aria-controls={`department-menu-${eachDepartmentName}`}
-                            aria-haspopup="true"
-                            onClick={() => handleDepartmentClick(eachDepartmentName)}
-                            endIcon={<ArrowDropDownIcon />}
-                            style={{
-                              backgroundColor: eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
-                            }}
-                          >
-                            {eachDepartmentName}
-                          </Button>
-                          {eachDepartmentName === selectedDepartment && (
-                            <Menu
-                              id={`department-menu-${eachDepartmentName}`}
-                              anchorEl={anchorEl}
-                              open={Boolean(anchorEl)}
-                              onClose={handleMenuClose}
-                            >
-                              {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                                <MenuItem key={i}>
-                                  {eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                                </MenuItem>
-                              ))}
-                            </Menu>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                    
-                    {eachDepartmentName === selectedDepartment && (
-                      <>
-                        {weeklySchedule[eachDepartmentName].map((eachIntern, i) => (
-                          <tr key={i}>
-                            <td>
-                              {eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                            </td>
-                            <td></td>
-                            <td>
-                              <div className="button-container">
-                                <Button
-                                  className="move-button"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "black",
-                                    borderRadius: "10px",
-                                    marginRight: "10px",
-                                    padding: "10px 20px",
-                                    margin: "2px 40px",
-                                  }}
-                                  onClick={() => handleMoveToMorning(eachIntern, i)}
-                                >
-                                  Move to Morning
-                                </Button>
-                                <Button
-                                  className="move-button"
-                                  style={{
-                                    backgroundColor: "white",
-                                    color: "black",
-                                    borderRadius: "10px",
-                                    padding: "8px 20px",
-                                    margin: "0px 5px",
-                                  }}
-                                  onClick={() => handleMoveToAfternoon(eachIntern, i)}
-                                >
-                                  Move to Afternoon
-                                </Button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </>
-                    )}
-                  </React.Fragment>
-                ))}
-              </tbody>
-            </table>
+ <thead>
+  <tr>
+    <th>INTERNS</th>
+  </tr>
+</thead>
+<tbody>
+  {departmentNames.map((eachDepartmentName) => (
+    <React.Fragment key={eachDepartmentName}>
+      <tr>
+        <td colSpan="3">
+          <div>
+            <Button
+              aria-controls={`department-menu-${eachDepartmentName}`}
+              aria-haspopup="true"
+              onClick={() => {
+                handleDepartmentClick(eachDepartmentName);
+              }}
+              endIcon={<ArrowDropDownIcon />}
+              style={{
+                backgroundColor:
+                  eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
+              }}
+            >
+              {eachDepartmentName}
+            </Button>
+          </div>
+        </td>
+      </tr>
+      {eachDepartmentName === selectedDepartment && (
+        <tr>
+          <td colSpan="3">
+            <Menu
+              id={`department-menu-${eachDepartmentName}`}
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              {weeklyScheduleByDepartment[eachDepartmentName].map(
+                (eachIntern, i) => (
+                  <MenuItem key={i}>
+                    {eachIntern.student.firstName +
+                      " " +
+                      eachIntern.student.lastName}
+                  </MenuItem>
+                )
+              )}
+            </Menu>
+          </td>
+        </tr>
+      )}
+      {eachDepartmentName === selectedDepartment && (
+        <>
+          {weeklyScheduleByDepartment[eachDepartmentName]
+            .filter(
+              (eachIntern) => (
+                !availableMorningShiftInterns.some(
+                  (shiftIntern) =>
+                  shiftIntern === (eachIntern.student.firstName+ ' ' +eachIntern.student.lastName))&&
+                !availableAfternoonShiftInterns.some(
+                  (shiftIntern) =>
+                  shiftIntern === (eachIntern.student.firstName+ ' ' +eachIntern.student.lastName)
+                )
+            ))
+            .map((eachIntern, i) => (
+              <tr key={i}>
+                <td>
+                  {eachIntern.student.firstName +
+                    " " +
+                    eachIntern.student.lastName}
+                </td>
+                <td></td>
+                <td>
+                  <div className="button-container">
+                    <Button
+                      className="move-button"
+                      style={{
+                        backgroundColor: "white",
+                        color: "black",
+                        borderRadius: "10px",
+                        marginRight: "10px",
+                        padding: "10px 20px",
+                        margin: "2px 40px",
+                      }}
+                      onClick={() => handleMoveToMorning(eachIntern, i)}
+                    >
+                      Move to Morning
+                    </Button>
+                    <Button
+                      className="move-button"
+                      style={{
+                        backgroundColor: "white",
+                        color: "black",
+                        borderRadius: "10px",
+                        padding: "8px 20px",
+                        margin: "0px 5px",
+                      }}
+                      onClick={() => handleMoveToAfternoon(eachIntern, i)}
+                    >
+                      Move to Afternoon
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+        </>
+      )}
+    </React.Fragment>
+  ))}
+</tbody>
+           </table>
           </div>
         </div>
         {/* End of Table */}
@@ -423,9 +522,9 @@ const WeeklySchedule = () => {
         >
           <h2 className="text-center mb-4"><b>Morning Shift</b></h2>
           <div className="flex justify-center">
-            {departmentNames.map((eachDepartmentName) => (
+            {populatedWeeklySchedule.map((schedule) => (
               <table
-                key={eachDepartmentName}
+                key={schedule._id}
                 className="font-roboto w-full max-w-screen mx-auto"
                 style={{
                   display: "flex",
@@ -439,23 +538,18 @@ const WeeklySchedule = () => {
               >
                 <thead>
                   <tr>
-                  <th>{eachDepartmentName} ({countInternsInDepartments(morningShiftInterns)[eachDepartmentName] || 0})</th>
+                  <h3><strong>{schedule.Group} <span>[{schedule.Schedule.morning.length}]</span> </strong></h3>
                   </tr>
                 </thead>
                 <tbody>
-                  {morningShiftInterns.map((eachIntern, i) => {
-                    return eachIntern.department !== eachDepartmentName ? null :
-                      (
-                        <tr key={i}>
-                          <td className="flex items-center justify-between">
-                            <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                            <Button onClick={() => swapShift(eachIntern, "morning")}>
-                              <SwapHorizIcon style={{ marginRight: "5px", }} />
-                            </Button>
-                          </td>
-                        </tr>
-                      )
-                  })}
+                {schedule.Schedule.morning.map((internName, index) => (
+                  <li key={index}>
+                    {internName}
+                    <Button onClick={() => swapShift(internName, "morning")}>
+                      Swap Shift
+                    </Button>
+                  </li>
+                ))}
                 </tbody>
               </table>
             ))}
@@ -474,9 +568,9 @@ const WeeklySchedule = () => {
         >
           <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
           <div className="flex justify-center">
-            {departmentNames.map((eachDepartmentName) => (
+          {populatedWeeklySchedule.map((schedule) => (
               <table
-                key={eachDepartmentName}
+                key={schedule._id}
                 className="font-roboto w-full max-w-screen mx-auto"
                 style={{
                   display: "flex",
@@ -490,24 +584,19 @@ const WeeklySchedule = () => {
               >
                 <thead>
                   <tr>
-                  <th>{eachDepartmentName} ({countInternsInDepartments(afternoonShiftInterns)[eachDepartmentName] || 0})</th>
+                  <h3><strong>{schedule.Group} <span>[{schedule.Schedule.afternoon.length}]</span> </strong></h3>
                   </tr>
                 </thead>
                 <tbody>
-                  {afternoonShiftInterns.map((eachIntern, i) => {
-                    return eachIntern.department !== eachDepartmentName ? null :
-                      (
-                        <tr key={i}>
-                          <td className="flex items-center justify-between">
-                            <span>{eachIntern.student.firstName + " " + eachIntern.student.lastName}</span>
-                            <Button onClick={() => swapShift(eachIntern, "afternoon")}>
-                              <SwapHorizIcon style={{ marginRight: "5px", }} />
-                            </Button>
-                          </td>
-                        </tr>
-                      )
-                  })}
-                </tbody>
+                {schedule.Schedule.afternoon.map((internName, index) => (
+                  <li key={index}>
+                    {internName}
+                    <Button onClick={() => swapShift(internName, "afternoon")}>
+                      Swap Shift
+                    </Button>
+                  </li>
+                ))}
+                  </tbody>
               </table>
             ))}
           </div>
