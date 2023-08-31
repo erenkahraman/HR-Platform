@@ -16,6 +16,7 @@ import useTableSearch from "../../hooks/useTableSearch.js";
 import { useRouter } from "next/router";
 import moment, { Moment } from "moment/moment.js";
 
+
 export default function InternList() {
   // student count modal
   const [scModal, setScModal] = useState(false);
@@ -50,7 +51,7 @@ export default function InternList() {
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
 
   const startInternship = async (intern) => {
     const config = {
@@ -208,11 +209,11 @@ export default function InternList() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(student.intern.startDate).format("DD/MM/YYYY")}
+                        {/* {moment(student.intern.startDate).format("DD/MM/YYYY")} */}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(student.intern.endDate).format("DD/MM/YYYY")}
+                        {/* {moment(student.intern.endDate).format("DD/MM/YYYY")} */}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -287,16 +288,16 @@ export default function InternList() {
                             <div>
                               <button
                                 onClick={(e) => setEiModal(true)}
-                                type="submit"
-                                className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+                                className="w-28 inline-flex rounded-b-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768]"
                               >
                                 End Internship
                               </button>
 
                               {eiModal && (
                                 <EndInternshipModal
-                                  intern={student.intern}
+
                                   setEiModal={setEiModal}
+                                  intern={student.intern}
                                 />
                               )}
                             </div>
