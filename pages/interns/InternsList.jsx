@@ -49,13 +49,8 @@ export default function InternList() {
         console.error('Error fetching interns:', error);
       }
     };
-<<<<<<< HEAD
-    asyncRequest();
-  }, []);
-=======
     fetchInterns();
   }, [token]);
->>>>>>> kutay
 
 
   return (
