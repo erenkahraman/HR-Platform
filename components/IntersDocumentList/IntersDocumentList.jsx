@@ -51,7 +51,6 @@ const DocumentListContent = ({ type, status,interns }) => {
 
   const downloadServer = async () => {
     
-    debugger;
     const internName = interns.student.firstName.trim()+'_'+interns.student.lastName;
     const body = new FormData();
 
@@ -73,7 +72,7 @@ const DocumentListContent = ({ type, status,interns }) => {
   
  
   const handleFormSubmit = async (event) => {
-    debugger;
+
     event.preventDefault();
  
     const internName = interns.student.firstName.trim()+'_'+interns.student.lastName;
