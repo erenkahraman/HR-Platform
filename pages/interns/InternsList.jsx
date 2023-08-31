@@ -53,6 +53,30 @@ export default function InternList() {
   }, [token]);
 
 
+  
+  const asyncRequest = async () => {
+    try {
+      const token = cookie.get("token");
+      console.log(token);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.get(
+        "/api/attendance",
+        { params: { token: token } },
+        config
+      );
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    asyncRequest();
+  }, [token]);
   return (
     <section className="relative w-full sm:static">
       {/* <LoadingState open={isloading} /> */}

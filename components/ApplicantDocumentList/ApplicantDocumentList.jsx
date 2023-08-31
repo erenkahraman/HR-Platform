@@ -49,7 +49,7 @@ const DocumentListContent = ({ type, status,student }) => {
   
 
   const downloadServer = async () => {
-    
+    //Turkce karakter sorunu var dosya isminde Turkce karakter varsa dosyayi indirmiyor
     const studentName = student.firstName.trim()+'_'+student.lastName;
     const body = new FormData();
 
@@ -189,7 +189,6 @@ const DocumentList = () => {
           config
         );
         setStudents(data);
-        console.log(data);
         setOpen(false);
       } catch (e) {
         console.error(e);
@@ -275,7 +274,7 @@ const DocumentList = () => {
               <DocumentListContent
                 key={name}
                 type={name}
-                status={students[index].internTest.documents[name]}
+                status={student.applicant.documents[name]}
                 student={student}
               />
             ))}
