@@ -14,36 +14,7 @@ const InternSchema = new mongoose.Schema({
   position: { type: String, maxlength: 30 },
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
   status: { type: String },
-  attendance: {
-    coveredDay: {
-      count: { type: Number, default: 0 },
-      dates: Array,
-    },
-    present: {
-      count: { type: Number, default: 0 },
-      dates: Array,
-    },
-    dayOff: {
-      count: { type: Number, default: 0 },
-      dates: Array,
-    },
-    late: {
-      count: { type: Number, default: 0 },
-      dates: Array,
-    },
-    excusedLeave: {
-      count: { type: Number, default: 0 },
-      dates: Array,
-    },
-    sick: {
-      count: { type: Number, default: 0 },
-      dates: Array,
-    },
-    unexcusedleave: {
-      count: { type: Number, default: 0 },
-      dates: Array,
-    },
-  },
+  attendance: { type: mongoose.Schema.Types.ObjectId, ref: "Attendance" },
   departure: {
     departureDate: String,
     departureTime: String,

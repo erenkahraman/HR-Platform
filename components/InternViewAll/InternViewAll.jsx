@@ -20,7 +20,7 @@ import EditDocumentsModal from "../Modal/EditDocumentsModal";
         ? (statusColor = " bg-blue-400 ")
         : title === "Marketing"
         ?(statusColor = " bg-yellow-400 ")
-        : title === "Information Technology"
+        : title === "The Information And Communications Technology"
         ?(statusColor = " bg-cyan-400 ")
         : title === "Language Teaching Department"
         ?(statusColor = " bg-orange-400 ")
@@ -67,7 +67,7 @@ const InternView = () => {
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
 
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const InternView = () => {
           },
         };
         const { data } = await axios.get(
-          `/api/intern`,
+          `/api/internTest`,
           { params: { token: token } },
           config
         );
@@ -92,7 +92,7 @@ const InternView = () => {
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
 
  
 
@@ -106,10 +106,10 @@ const InternView = () => {
        ) : (
         department.map((dep, index) => 
         (
-          <div  className={Border(dep.department)}>
+          <div key={index} className={Border(dep.department)}>
               {/* Top  */}
 
-            <tr>
+            <tr key={index}>
               <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center"> 
                 {dep.department}
               </th>
@@ -143,11 +143,11 @@ const InternView = () => {
                         return std.applicant.department === dep.department ? std.lastName : ""
                     }).map((std) => (
 
-                      <tr>
+                      <tr key={index}>
                         <td>{std.firstName} {std.lastName}</td>
-                        <td>{std.intern.position}</td>
-                        <td>{std.intern.startDate}</td>
-                        <td>{std.intern.endDate}</td>
+                        <td>{std.internTest.position}</td>
+                        <td>{std.internTest.startDate}</td>
+                        <td>{std.internTest.endDate}</td>
                       </tr>
                     ))
                   }

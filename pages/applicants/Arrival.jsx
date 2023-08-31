@@ -76,66 +76,66 @@ export default function ApplicantsList() {
             <div>
               <div className="flex flex-row justify-between font-semibold pl-4 pt-5 pb-10">
                 {/* Radio check */}
-                <div class="pr-3 pl-1.5 pt-3">
+                <div className="pr-3 pl-1.5 pt-3">
                   <input
                     id="checked-checkbox"
                     type="checkbox"
                     name="city"
                     value="Terranova da Sibari"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     onChange={handleChange}
                   />
                   <label
                     htmlFor="Terranova da Sibari"
-                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
                     Terranova da Sibari
                   </label>
                 </div>
-                <div class="pr-3 pl-1.5 pt-3">
+                <div className="pr-3 pl-1.5 pt-3">
                   <input
                     id="checked-checkbox"
                     type="checkbox"
                     name="city"
                     value="Bivo Cantinella"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     onChange={handleChange}
                   />
                   <label
                     htmlFor="Bivo Cantinella"
-                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
                     Bivo Cantinella
                   </label>
                 </div>
-                <div class="pr-3 pl-1.5 pt-3">
+                <div className="pr-3 pl-1.5 pt-3">
                   <input
                     id="checked-checkbox"
                     type="checkbox"
                     name="city"
                     value="Sibari"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     onChange={handleChange}
                   />
                   <label
                     htmlFor="Sibari"
-                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
                     Sibari
                   </label>
                 </div>
-                <div class="pr-3 pl-1.5 pt-3">
+                <div className="pr-3 pl-1.5 pt-3">
                   <input
                     id="checked-checkbox"
                     type="checkbox"
                     name="city"
                     value="Spezzano Albanese Terme"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     onChange={handleChange}
                   />
                   <label
                     htmlFor="Spezzano Albanese Terme"
-                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                   >
                     Spezzano Albanese Terme
                   </label>

@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { Spinner, Button } from "flowbite-react";
 import axios from "axios";
 import cookie from "js-cookie";
+import { format, startOfMonth, endOfMonth } from "date-fns";
+
 
 const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
   const router = useRouter();
@@ -12,6 +14,9 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
   const [departments, setDepartments] = useState([]);
   const [positions, setPositions] = useState([]);
   const token = cookie.get("token");
+  // const [date, setDate] = useState(today.toISOString().split("T")[0]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [dateRange, setDateRange] = useState("");
 
   // Get Departments
   useEffect(() => {
@@ -49,10 +54,11 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
   };
 
   const handleSubmit = async (event) => {
+    debugger;
     SetSpinnerState(true);
     event.preventDefault();
     const id = new mongoose.Types.ObjectId();
-    const intern = {
+    const internTest = {
       _id: id,
       startDate: event.target.startDate.value,
       endDate: event.target.endDate.value,
@@ -68,12 +74,24 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
       student: stdId,
       token: token,
     };
-    intern.durationInWeeks = await calculateWeeks(
-      intern.startDate,
-      intern.endDate
+    internTest.durationInWeeks = await calculateWeeks(
+      internTest.startDate,
+      internTest.endDate
     );
-    const JSONintern = JSON.stringify(intern);
-    const endpointIntern = "/api/intern";
+    const attendanceData = {
+      present: 0,
+      late: 0,
+      coveredDay: 0,
+      dayOff: 0,
+      excusedLeave: 0,
+      sick: 0,
+      unexcusedleave: 0,
+      date: currentDate,
+      internTest: internTest,
+    };
+    saveToAttendanceDatabase(attendanceData);
+    const JSONintern = JSON.stringify(internTest);
+    const endpointIntern = "/api/internTest";
     const endpointstudent = `/api/student/${stdId}`;
     const endpointDepartment = `/api/department/${departments[event.target.department.value]._id
       }`;
@@ -92,7 +110,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        intern: intern._id,
+        internTest: internTest._id,
         applicationStatus: "Accepted",
         token: token,
       }),
@@ -109,6 +127,55 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
     await fetch(endpointstudent, optionsStudent);
     await fetch(endpointIntern, optionsIntern);
     router.push("/interns/InternsList");
+  };
+
+  const handleCurrentMonthDateRange = (date) => {
+    const firstDayOfMonth = startOfMonth(date);
+    const lastDayOfMonth = endOfMonth(date);
+    const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
+    const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
+    const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
+    setDateRange(monthDateRange);
+  };
+
+  useEffect(() => {
+    handleCurrentMonthDateRange(currentDate);
+  }, [currentDate]);
+  
+  const saveToAttendanceDatabase = async (attendanceData) => {
+    try {
+      debugger;
+      
+      const internTest=attendanceData.internTest
+      const attendance=attendanceData
+
+      // const internId = new mongoose.Types.ObjectId();
+      const attendanceId = new mongoose.Types.ObjectId();
+
+      // internTest._id = internId;
+      internTest.attendance=attendanceId;
+
+      attendanceData._id = attendanceId
+      attendance.internTest=internTest._id;
+
+      attendanceData.token=token
+      attendanceData.internTest.token=token
+      await axios.post(`/api/attendance?token=${token}`, attendanceData, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+
+      const response = await fetch(endpoint, options);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      console.log("Veriler basariyla sunucuya gönderildi!");
+      }
+      catch (error) {
+      console.error("Hata: Veriler sunucuya gönderilemedi.", error);
+    }
   };
 
   return (
@@ -165,7 +232,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
                   }}
                 >
                   {departments.map((department, i) => (
-                    <option value={i}>{department.department}</option>
+                    <option key={i} value={i}>{department.department}</option>
                   ))}
                 </select>
               </div>
@@ -182,8 +249,8 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
                   id="position"
                   className="block w-48 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 >
-                  {positions.map((position) => (
-                    <option>{position}</option>
+                  {positions.map((position, index) => (
+                    <option key={index}>{position}</option>
                   ))}
                 </select>
               </div>
@@ -210,7 +277,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
                   <div role="status" className="px-4 py-2">
                     <svg
                       aria-hidden="true"
-                      class="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                      className="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                       viewBox="0 0 100 101"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -224,7 +291,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
                         fill="currentFill"
                       />
                     </svg>
-                    <span class="sr-only">Loading...</span>
+                    <span className="sr-only">Loading...</span>
                   </div>
                 ) : null}
               </div>

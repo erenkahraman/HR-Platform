@@ -1,5 +1,6 @@
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+// import countInternsInDepartments from 'pages/weeklySchedule/index.jsx';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
@@ -11,6 +12,7 @@ const FeedSchedule = () => {
   const [afternoonDepartments, setAfternoonDepartments] = useState([]);
 
   const token = cookie.get("token");
+  // console.log("received cookies from FeedSchedule");
 
   useEffect(() => {
     const asyncRequest = async () => {
@@ -40,22 +42,16 @@ const FeedSchedule = () => {
         const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         setDepartmentNames(departmentNames);
 
-        const clonedDepartmentNamesForMorning = departmentNames.slice(0);
-        const clonedDepartmentNamesForAfternoon = departmentNames.slice(0);
-
-        setMorningDepartments(
-          clonedDepartmentNamesForMorning.splice(
-            0,
-            Math.ceil(departmentNames.length / 2)
-          )
-        );
-        setAfternoonDepartments(clonedDepartmentNamesForAfternoon);
+        const halfLength = Math.ceil(departmentNames.length / 2);
+        setMorningDepartments(departmentNames.slice(0, halfLength));
+        setAfternoonDepartments(departmentNames.slice(halfLength));
       } catch (e) {
         console.error(e);
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
+
 
   const read = () => {
     confirmAlert({
@@ -69,11 +65,6 @@ const FeedSchedule = () => {
                 <br />
                 <br />
                 {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                {weeklySchedule[eachDepartmentName].map((eachIntern) => (
-                  <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
-                    {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                  </p>
-                ))}
               </div>
             ))}
           </div>
@@ -84,11 +75,6 @@ const FeedSchedule = () => {
                 <br />
                 <br />
                 {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                {weeklySchedule[eachDepartmentName].map((eachIntern) => (
-                  <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
-                    {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                  </p>
-                ))}
               </div>
             ))}
           </div>
@@ -108,7 +94,7 @@ const FeedSchedule = () => {
   };
 
   return (
-    <div className="flex m-2 py-4">
+    <div className="flex flex-wrap m-2 py-4">
       <div className="flex flex-[1] flex-col gap-2 p-2">
         <div className="text-sm font-semibold">10 August 2022</div>
         <div className="text-xs font-light">
@@ -116,33 +102,27 @@ const FeedSchedule = () => {
           <div>Antonio Gallo</div>
         </div>
       </div>
-      <div className="flex flex-[3] flex-col gap-2 p-2">
-        <div className="text-sm font-semibold">Schedule for this week</div>
-        <div className="text-xs font-light h-72">
-          <div className="flex justify-center gap-8 my-1">
+      <div className="flex flex-[3]  flex-col  ">
+        <div className="text-sm text-center font-semibold">Schedule for this week</div>
+        <div className="text-xs font-light h-74">
+          <div className="flex flex-wrap justify-center flex gap-8 my-1">
             <div>
               <h3>Morning Shift:</h3>
-              {morningDepartments.map((eachDepartmentName) => (
+              {departmentNames.map((eachDepartmentName) => (
                 <div key={eachDepartmentName}>
                   <br />
                   <br />
                   {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                  {/* {weeklySchedule[eachDepartmentName].map((eachIntern) => (
-                    <p key={eachIntern.student.firstName + eachIntern.student.lastName}>
-                      {"• " + eachIntern.student.firstName + " " + eachIntern.student.lastName}
-                    </p>
-                  ))} */}
                 </div>
               ))}
             </div>
             <div>
-              <h3>Afternoon Shift:	</h3>
-              {afternoonDepartments.map((eachDepartmentName) => (
+              <h3>Afternoon Shift:</h3>
+              {departmentNames.map((eachDepartmentName) => (
                 <div key={eachDepartmentName}>
                   <br />
                   <br />
                   {eachDepartmentName + ": " + weeklySchedule[eachDepartmentName].length}
-                  
                 </div>
               ))}
             </div>

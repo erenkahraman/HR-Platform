@@ -27,35 +27,36 @@ export default async function handler(req, res) {
 
   if (method === "GET") {
     try {
-      const applicant = await db
-        .collection("students")
-        .aggregate([
-          { $match: { applicationStatus: "Accepted" } },
-          {
-            $lookup: {
-              from: Intern.collection.name,
-              localField: "intern",
-              foreignField: "_id",
-              as: "intern",
-            },
-          },
-          {
-            $lookup: {
-              from: Applicant.collection.name,
-              localField: "applicant",
-              foreignField: "_id",
-              as: "applicant",
-            },
-          },
-          {
-            $unwind: "$intern",
-          },
-          {
-            $unwind: "$applicant",
-          },
-        ])
-        .toArray();
-      res.status(200).json(applicant);
+      // const applicant = await db
+      //   .collection("students")
+      //   .aggregate([
+      //     { $match: { applicationStatus: "Accepted" } },
+      //     {
+      //       $lookup: {
+      //         from: Intern.collection.name,
+      //         localField: "intern",
+      //         foreignField: "_id",
+      //         as: "intern",
+      //       },
+      //     },
+      //     {
+      //       $lookup: {
+      //         from: Applicant.collection.name,
+      //         localField: "applicant",
+      //         foreignField: "_id",
+      //         as: "applicant",
+      //       },
+      //     },
+      //     {
+      //       $unwind: "$intern",
+      //     },
+      //     {
+      //       $unwind: "$applicant",
+      //     },
+      //   ])
+      //   .toArray();
+      const interns =await Intern.find().populate(['student','attendance']);
+      res.status(200).json(interns);
     } catch (error) {
       res.status(500).json(error);
     }

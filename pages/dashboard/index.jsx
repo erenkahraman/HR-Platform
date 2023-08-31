@@ -379,7 +379,7 @@ const Dashboard = () => {
           </div>
 
           {/* Weekly Schedule */}
-          <div className="flex flex-[1.5] flex-col gap-2">
+          <div className="flex flex-[1.5] flex-col gap-2 ">
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">Weekly Schedule</div>
               <a
@@ -474,7 +474,7 @@ const Dashboard = () => {
             {/* Daily Reminder Title*/}
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">
-                This Month's Birthdays 🥳🍰🎉
+                This Months Birthdays 🥳🍰🎉
               </div>
 
               <a

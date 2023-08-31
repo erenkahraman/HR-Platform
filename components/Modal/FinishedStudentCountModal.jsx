@@ -96,4 +96,6 @@ const FinishedStudentCountModal = ({ setLvModal, type }) => {
   );
 };
 
+
 export default FinishedStudentCountModal;
+

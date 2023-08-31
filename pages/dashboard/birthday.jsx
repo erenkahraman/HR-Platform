@@ -10,7 +10,7 @@ function news() {
             <div className="flex flex-wrap items-center">
               <div className="relative w-full max-w-full flex-grow flex-1 ">
                 <h3 className="font-semibold text-2xl">
-                  This Month's Birthdays 🥳🍰🎉
+                  This Months Birthdays 🥳🍰🎉
                 </h3>
               </div>
             </div>

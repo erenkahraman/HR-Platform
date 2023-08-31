@@ -5,7 +5,7 @@ import { ArrowForward, Verified } from "@mui/icons-material";
 import { Button, Grid, Typography } from "@mui/material";
 
 //Button used in tigger for0 Popup
-export default function ({
+export default function CustomButton({
   btnIcon,
   btnText,
   btnDescription,
@@ -35,7 +35,7 @@ export default function ({
 };
 
 //PopUp component function
-export const PopUp = ({ triggerData, children }) => {
+export const PopUp = function PopUpComponent({ triggerData, children }){
   return (
     <Popup
       contentStyle={{ background: "#0B3768", borderRadius: "0.25rem" }}
@@ -49,7 +49,7 @@ export const PopUp = ({ triggerData, children }) => {
 };
 
 //popup form component
-export const PopupForm = ({ heading, submitFunction }) => {
+export const PopupForm = function PopupFormComponent({ heading, submitFunction }){
   return (
     /* NEW POST */
     <div className="m-2 p-4">
