@@ -17,9 +17,8 @@ import { Button } from "@mui/material";
 const EditDocumentsModal = ({
   openDialog,
   setOpenDialog,
-  student,
+  intern,
   index,
-  students,
   type,
 }) => {
   const docs = [
@@ -39,13 +38,13 @@ const EditDocumentsModal = ({
     formState: { errors },
   } = useForm({
     defaultValues: useMemo(() => {
-      return student;
-    }, [student]),
+      return intern;
+    }, [intern]),
   });
 
   useEffect(() => {
-    reset(student);
-  }, [student]);
+    reset(intern);
+  }, [intern]);
 
   const updateDocuments = async (data) => {
     setLoading(true);
@@ -60,22 +59,22 @@ const EditDocumentsModal = ({
             },
             body: JSON.stringify({ documents: data.applicant.documents }),
           });
-          students[index] = data;
+          // students[index] = data;
         } catch (error) {
           console.error(error);
         }
         break;
-      case "intern":
+      case "internTest":
         try {
-          await fetch(`/api/intern/${data.intern._id}`, {
+          await fetch(`/api/internTest/${data.internTest._id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
             },
-            body: JSON.stringify({ documents: data.intern.documents }),
+            body: JSON.stringify({ documents: data.internTest.documents }),
           });
-          students[index] = data;
+          // students[index] = data;
         } catch (error) {
           console.error(error);
         }
@@ -91,13 +90,13 @@ const EditDocumentsModal = ({
         className="fixed  w-3/4 h-50 ml-64 px-80 p-0 pl-8 mt-32 border-2 border-[#0B3768] rounded-xl shadow-lg shadow-[#0B3768]"
       >
         <DialogHeader>
-          Edit Documents for {student.firstName} {student.lastName}
+          Edit Documents for {intern.student.firstName} {intern.student.lastName}
         </DialogHeader>
         <DialogBody className="" divider>
           <div className="flex p-4">
             <div className="flex flex-col w-full gap-4">
               <div className="flex gap-6 justify-start">
-                {Object.keys(student[type].documents).map((doc) => (
+                {Object.keys(intern.documents).map((doc) => (
                   <DocumentReview key={doc} register={register} title={doc} type={type} />
                 ))}
               </div>

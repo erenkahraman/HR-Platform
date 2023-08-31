@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-const EndInternshipModal = ({ intern, setEiModal }) => {
+const EndInternshipModal = ({ internTest, setEiModal }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -32,12 +32,17 @@ const EndInternshipModal = ({ intern, setEiModal }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+<<<<<<< HEAD
           internship: null,
+=======
+          type: "FINISHED",
+          finishedInterns: `${internTest._id}`,
+>>>>>>> kutay
         }),
       };
 
-      const endPointDprtmnt = `/api/department/${intern.departement}`;
-      const endPointStd = `/api/student/${intern.student._id}`;
+      const endPointDprtmnt = `/api/department/${internTest.departement}`;
+      const endPointStd = `/api/student/${internTest.student._id}`;
 
       console.log("Making API requests...");
 
@@ -62,6 +67,7 @@ const EndInternshipModal = ({ intern, setEiModal }) => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="bg-zinc-200 opacity-90 fixed inset-0 z-50">
       <div className="flex h-screen justify-center items-center">
         <div className="flex-col justify-center bg-[#0B3768] py-12 px-24 border-4 rounded-xl">
@@ -72,6 +78,20 @@ const EndInternshipModal = ({ intern, setEiModal }) => {
             </span>{" "}
             for {intern.student.firstName} {intern.student.lastName}?
           </div>
+=======
+    <>
+      {loading && <LoadingState open={loading} />}
+      <div className="bg-zinc-200 opacity-90 fixed inset-0 z-50">
+        <div className="flex h-screen justify-center items-center">
+          <div className="flex-col justify-center bg-[#0B3768] py-12 px-24 border-4 rounded-xl">
+            <div className="flex text-lg text-white ml-0 mb-8 py-0 px-0">
+              Are you sure you want to{" "}
+              <span className="flex mx-2 text-red-500 text-lg font-bold">
+                end the internship
+              </span>{" "}
+              for {internTest.student.firstName} {internTest.student.lastName}?
+            </div>
+>>>>>>> kutay
 
           <div className="flex flex-row ml-32">
             <button

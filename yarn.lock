@@ -4866,7 +4866,7 @@ next-swagger-doc@^0.3.6:
     isarray "2.0.5"
     swagger-jsdoc "6.2.5"
 
-next@^12.2.1, "next@^12.2.5 || ^13", next@>=9:
+"next@^12.2.5 || ^13", next@^12.3.4, next@>=9:
   version "12.3.4"
   resolved "https://registry.npmjs.org/next/-/next-12.3.4.tgz"
   integrity sha512-VcyMJUtLZBGzLKo3oMxrEF0stxh8HwuW976pAzlHhI3t8qJ4SROjCrSh1T24bhrbjw55wfZXAbXPGwPt5FLRfQ==
