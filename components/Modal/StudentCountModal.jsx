@@ -83,11 +83,11 @@ const StudentCountModal = ({ setScModal, type }) => {
           </button>
           <div className="flex flex-row gap-16 text-5xl  bg-white  mb-8 ml-4 mr-4">
             {departments.map((department) => (
-<<<<<<< HEAD
+
               <div className="flex flex-row ml-5" key={department.department}>
-=======
+
               <div className="flex flex-row ml-5" key={department.id}>
->>>>>>> 68c53c84d5901bdbc3d5e216edc2eda9c57a8ba4
+
                 <div className="text-red-400 ">
                   <BsPeopleFill
                     className={`text-2xl ${departmanColor(
