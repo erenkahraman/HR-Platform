@@ -8,25 +8,24 @@ export default async function handler(req, res) {
 
   // Token CHECK
 
-  let token = req.query.token
-    ? req.query.token
-    : req.body.token
-    ? req.body.token
-    : "";
+  let token = req.query.token || req.body.token || "";
+  console.log("TAPPLICATION INTERN TOKEN:",token);
+
   try {
     tokenCheckFunction(token);
   } catch (e) {
     console.error(e);
-    res.status(401).json("Unauthorized User");
+    return res.status(401).json("Unauthorized User");
   }
+
   // Token CHECK
 
-  const db = await getMongoDb();
   await dbConnect();
+  const db = await getMongoDb();
 
   if (method === "GET") {
     try {
-      const applicant = await db
+      const applicants = await db
         .collection("students")
         .aggregate([
           { $match: { applicationStatus: "On Process" } },
@@ -43,7 +42,7 @@ export default async function handler(req, res) {
           },
           {
             $set: {
-              "applicant.applicationDate": {
+                "applicant.applicationDate": {
                 $dateToString: {
                   format: "%m/%d/%Y",
                   date: "$applicant.applicationDate",
@@ -78,41 +77,57 @@ export default async function handler(req, res) {
                   format: "%m/%d/%Y",
                   date: "$dateOfBirth",
                 },
-              },
+              },            
             },
           },
         ])
         .toArray();
-      res.status(200).json(applicant);
+
+      return res.status(200).json(applicants);
     } catch (error) {
-      res.status(500).json(error);
+      console.error(error);
+      return res.status(500).json({ error: "Internal Server Error" });
     }
   }
+
   if (method === "POST") {
     try {
       const applicant = await Applicant.create(req.body);
-      res.status(201).json(applicant);
+      return res.status(201).json(applicant);
     } catch (err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).json({ error: "Internal Server Error" });
     }
- 
   }
-  if(method === "PUT"){
+
+  if (method === "PUT") {
     try {
-      const applicant = await Applicant.findByIdAndUpdate(id, req.body, {
-        new: true,
-        runValidators: true,
-      });
+      const { id } = req.body;
+      
+      if (!id) {
+        return res.status(400).json({ error: "Missing 'id' in request body" });
+      }
+  
+      const updatedApplicant = await Applicant.findByIdAndUpdate(
+        id,
+        req.body,
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedApplicant) {
+        return res.status(404).json({ error: "Applicant not found" });
+      }
+  
+  
       return res.status(200).json({
         success: true,
-        data: applicant,
+        data: updatedApplicant,
       });
     } catch (error) {
-      return res.status(500).json({
-        success: false,
-        data: error,
-      });
+      console.error(error);
+      return res.status(500).json({ error: "Internal Server Error" });
     }
   }
   
+  return res.status(405).json({ error: "Method Not Allowed" });
 }

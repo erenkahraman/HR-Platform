@@ -103,7 +103,6 @@ const WeeklySchedule = () => {
     const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id);
-    debugger;
     setWeeklyScheduleByDepartment(updatedWeeklySchedule);
   
     try {
@@ -121,7 +120,6 @@ const WeeklySchedule = () => {
       console.error(error);
     }
   };  
-
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
     const updatedAfternoonShiftInterns = [
       ...afternoonShiftInterns,
@@ -139,7 +137,6 @@ const WeeklySchedule = () => {
     updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
       (intern) => intern._id !== internToBeMoved._id
     );
-    debugger;
     setWeeklyScheduleByDepartment(updatedWeeklySchedule);
     try {
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
@@ -157,7 +154,6 @@ const WeeklySchedule = () => {
     }
   }; 
 
-  
 
   const handleExportToCsv = () => {
     let shiftAssignedInterns = [];

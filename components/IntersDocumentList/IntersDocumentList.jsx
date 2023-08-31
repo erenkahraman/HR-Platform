@@ -14,7 +14,7 @@ import ArrowRightAlt  from '@mui/icons-material/ArrowRightAlt';
 import { saveAs } from 'file-saver';
 
 
-const DocumentListContent = ({ type, status,student }) => {
+const DocumentListContent = ({ type, status,interns }) => {
   const [fullpath,setFullPath] = useState();
   const [file, setFile] = useState();
   const [mess, setMess] = useState("");
@@ -51,13 +51,14 @@ const DocumentListContent = ({ type, status,student }) => {
 
   const downloadServer = async () => {
     
-    const studentName = student.firstName.trim()+'_'+student.lastName;
+    debugger;
+    const internName = interns.student.firstName.trim()+'_'+interns.student.lastName;
     const body = new FormData();
 
     const words = type.split(' ');
     const trimmedStr = words.join('');
 
-    body.append("student", studentName);
+    body.append("intern", internName);
     body.append("type", trimmedStr);
     
     const dt = await axios.post("/api/download",body);
@@ -72,9 +73,10 @@ const DocumentListContent = ({ type, status,student }) => {
   
  
   const handleFormSubmit = async (event) => {
+    debugger;
     event.preventDefault();
  
-    const studentName = student.firstName.trim()+'_'+student.lastName;
+    const internName = interns.student.firstName.trim()+'_'+interns.student.lastName;
     const formData = new FormData();
    
     const words = type.split(' ');
@@ -83,7 +85,7 @@ const DocumentListContent = ({ type, status,student }) => {
       alert('Chose a file !');
       return;
     }
-    const newfile = new File([file],studentName + ' ' +trimmedStr + ' '+ file.name,{type: file.type});
+    const newfile = new File([file],internName + ' ' +trimmedStr + ' '+ file.name,{type: file.type});
   
     formData.append('file', newfile);
     setMess("File has uploaded");
@@ -173,7 +175,7 @@ const DocumentListContent = ({ type, status,student }) => {
 const DocumentList = () => {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [students, setStudents] = useState([]);
+  const [interns, setInterns] = useState([]);
   const token = cookie.get("token");
 
   useEffect(() => {
@@ -186,11 +188,11 @@ const DocumentList = () => {
           },
         };
         const { data } = await axios.get(
-          `/api/intern`,
+          `/api/internTest`,
           { params: { token: token } },
           config
         );
-        setStudents(data);
+        setInterns(data);
         setOpen(false);
       } catch (e) {
         console.error(e);
@@ -198,13 +200,13 @@ const DocumentList = () => {
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
 
   return (
     <div className="flex flex-col w-full gap-2">
       <LoadingState open={open} />
      
-      {students.length == 0 ? (
+      {interns.length == 0 ? (
         <div
           className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
                   p-4 flex items-center"
@@ -215,7 +217,7 @@ const DocumentList = () => {
           </div>
         </div>
       ) : (
-        students.map((student, index) => (
+        interns.map((intern, index) => (
           <div key={index} className="flex flex-col w-full py-2 px-6 gap-2 bg-white border rounded-md">
             {/* Top */}
             <div className="flex justify-between">
@@ -223,20 +225,20 @@ const DocumentList = () => {
               <div className="flex gap-4 items-center">
                 <div className="flex font-semibold">
                   <p>
-                    {student.firstName} {student.lastName}
+                    {intern.student.firstName} {intern.student.lastName}
                   </p>
                 </div>
                 <div className="flex items-center gap-1 text-xs font-light text-gray-500">
                   <WorkOutline className="text-sm" />
                   <p>
-                    {student.intern.department} / {student.intern.position}
+                    {intern.department} / {intern.position}
                   </p>
                 </div>
               </div>
               {/* Top Right */}
               <div className="flex gap-2">
                 <div className="py-1 px-2 text-xs rounded bg-sky-200 text-blue-900">
-                  Starting the {student.intern.startDate}
+                  Starting the {intern.startDate}
                 </div>
                 <Tooltip
                   className="bg-transparent text-black"
@@ -248,7 +250,7 @@ const DocumentList = () => {
                 >
                   <Button
                     onClick={(e) => {
-                      setOpenDialog(student._id);
+                      setOpenDialog(intern);
                     }}
                     variant="gradient"
                     className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
@@ -256,14 +258,13 @@ const DocumentList = () => {
                     <MdOutlineModeEditOutline />
                   </Button>
                 </Tooltip>
-                {openDialog == student._id && (
+                {openDialog == intern && (
                   <EditDocumentsModal
                     openDialog={openDialog}
                     setOpenDialog={setOpenDialog}
-                    student={student}
+                    intern={intern}
                     index={index}
-                    students={students}
-                    type="intern"
+                    type="internTest"
                   />
                 )}
               </div>
@@ -271,12 +272,12 @@ const DocumentList = () => {
 
             {/* Middle */}
             <div className="flex flex-col md:flex-row gap-[2px]">
-              {Object.keys(students[index].intern.documents).map((name) => (
+              {Object.keys(interns[index].documents).map((name) => (
                 <DocumentListContent
-                  key={i}
+                  key={name}
                   type={name}
-                  status={students[index].intern.documents[name]}
-                  student={student}
+                  status={intern.documents[name]}
+                  interns={intern}
                 />
               ))}
 
@@ -285,8 +286,8 @@ const DocumentList = () => {
             <div className="flex justify-between">
               {/* Bottom Left */}
               <div className="flex items-center gap-5 text-xs font-light text-gray-500">
-                <p>Starts on {student.intern.startDate}</p>
-                <p>Finishing on {student.intern.endDate}</p>
+                <p>Starts on {intern.startDate}</p>
+                <p>Finishing on {intern.endDate}</p>
               </div>
               <div className="flex cursor-pointer">
               {/* Bottom Right */}
