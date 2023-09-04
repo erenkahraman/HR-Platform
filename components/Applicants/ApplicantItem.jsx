@@ -15,6 +15,7 @@ import RejectModal from "../../components/Modal/RejectModal";
 import { Box } from "@mui/system";
 import { Input } from "postcss";
 import Link from "next/link";
+import cookie from "js-cookie";
 
 //start: Funtion that renders individual applicant rows
 export const ApplicantItem = ({ student }) => {
@@ -25,6 +26,7 @@ export const ApplicantItem = ({ student }) => {
   const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
   const [rejectModal, setRejectModal] = useState(false);
   const [isEditIconActive, setIsEditIconActive] = useState(false);
+  const token=cookie.get("token");
 
 
   // set progress bar
@@ -47,9 +49,8 @@ export const ApplicantItem = ({ student }) => {
 
   const handleSaveDoneStatus = async () => {
 
-
     try {
-      await fetch(`/api/applicant/${student.applicant._id}`, {
+      await fetch(`/api/applicant/${student.applicant._id}?token=${token}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -69,9 +70,25 @@ export const ApplicantItem = ({ student }) => {
 
     setIsEditIconActive(false)
   }
+  
   const handleClickEdit = () => {
     setIsEditIconActive(!isEditIconActive);
   };
+
+  // const handleEditRedirect = () => {
+  //   const queryParams = new URLSearchParams({
+  //     editId: student._id,
+  //     firstName: student.firstName,
+  //     lastName: student.lastName,
+  //     progress: student.applicant.progress,
+  //     hrInterviewStatus: HRchecked,
+  //     ceoInterviewStatus: CEOchecked,
+  //     departmentInterviewStatus: departmentManagerChecked,
+  //   }).toString();
+
+  //   // Redirect to the "Add New Form" page with query parameters containing the applicant's data
+  //   window.location.href = `/applicants/new?${queryParams}`;
+  // };
 
   return (
     <TableRow key={student._id}>
@@ -205,9 +222,17 @@ export const ApplicantItem = ({ student }) => {
                       size="small"
                       className="text-sm font-medium border-solid border-white text-white bg-[#0B3768] hover:bg-[#0b37682b] hover:text-[#0B3768]"
                       type="submit"
-                      onClick={handleSaveDoneStatus}
+                      // onClick={handleEditRedirect}
                   >
-                    <Link href={""}>Edit</Link>
+                      <Link
+                        href={{
+                          pathname: "/applicants/new",
+                          query: { student: JSON.stringify(student) },
+                        }}
+                        as={`/interns/${student.firstName}_${student.lastName}`}
+                      >
+                        Edit
+                      </Link>
                   </Button>
                 </div>
               </div>

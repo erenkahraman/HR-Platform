@@ -121,7 +121,6 @@ const WeeklySchedule = () => {
       console.error(error);
     }
   };  
-
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
     debugger;
     const updatedAfternoonShiftInterns = [
@@ -157,7 +156,6 @@ const WeeklySchedule = () => {
     }
   }; 
 
-  
 
   const handleExportToCsv = () => {
     let shiftAssignedInterns = [];

@@ -1,6 +1,6 @@
 import { DocumentReview } from "../../components/DocumentReview";
 import countryList from "react-select-country-list";
-import { useState, useMemo, useEffect } from "react";
+import React,{ useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import Popup from "reactjs-popup";
 import mongoose from "mongoose";
@@ -69,10 +69,6 @@ const NewApplicants = () => {
   ];
 
 
-  
-
-  
-
   const docs = [
     "Curriculum Vitae",
     "Motivation Letter",
@@ -119,11 +115,11 @@ const NewApplicants = () => {
       }
     };
     asyncRequest();
-  }, [student]);
+  }, [student,token]);
 
   useEffect(() => {
     reset(student);
-  }, [student]);
+  }, [student, reset]);
 
   // get countries list from react-select-country-list
   const countries = useMemo(() => countryList().getLabels(), []);
@@ -133,16 +129,18 @@ const NewApplicants = () => {
     setOpen(true);
     const idSave = document.querySelector("#Save");
     if(idSave){
-
+      
       const student = data.student;
       const applicant = data.student.applicant;
 
       const applicantId = new mongoose.Types.ObjectId();
       const studentId = new mongoose.Types.ObjectId();
+      
       student._id = studentId;
       student.applicant = applicantId;
       applicant._id = applicantId;
       applicant.student = studentId;
+
       student.token = token;
       applicant.token = token;
       const JSONdstudent = JSON.stringify(student);
@@ -252,7 +250,7 @@ const NewApplicants = () => {
 
 
 
-  var today = new Date();
+    var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
@@ -266,15 +264,8 @@ const NewApplicants = () => {
     setOpen(true);
     const student = data.student;
     const applicant = data.student.applicant;
-    const intern = data.student.intern;
-
-    intern.department = applicant.department;
-    intern.position = applicant.position;
-    intern.startDate = applicant.startDate;
-    intern.endDate = applicant.endDate;
 
 
-    intern.token = token;
     student.token = token;
     applicant.token = token;
     try {
@@ -285,14 +276,6 @@ const NewApplicants = () => {
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify(student),
-      });
-      await fetch(`/api/intern/${intern._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify(intern),
       });
       await fetch(`/api/applicant/${applicant._id}`, {
         method: "PUT",
@@ -438,10 +421,9 @@ const NewApplicants = () => {
                     {/* Date of Birth */}
                     <div className="flex flex-col gap-2">
                       <label className="block text-sm">Date of Birth</label>
-                      <Controller
+                      {/* <Controller
                           control={control}
                           name="student.dateOfBirth"
-                          rules={{ required: "Please, enter birth date" }}
                           render={({ field }) => (
                             <DatePicker
                               selected={field.value}
@@ -450,7 +432,7 @@ const NewApplicants = () => {
                               placeholderText="DD/MM/YYYY" // Placeholder text for the input
                             />
                           )}
-                      />
+                      /> */}
                       {/* <Controller
                         control={control}
                         name="student.dateOfBirth"
@@ -509,31 +491,39 @@ const NewApplicants = () => {
                       <label htmlFor="email" className="block text-sm">
                         Email
                       </label>
-                      <input
-                        {...register("student.email", {
-                          required: "Please, enter the email",
-                        })}
+                      <Controller
+                        control={control}
+                        name="student.email"
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            type="email"
+                            autoComplete="email"  
+                            className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        )}
+                      />
+                      
+                    </div>
+
+
+                      {/* <input
+                        {...register("student.email",)}
+                        value= "No Email Information"
                         type="email"
                         autoComplete="email"
                         placeholder="example@gmail.com"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                       <p className="text-sm font-thin text-red-600">
-                        {errors.student?.email?.message}
+                        
                       </p>
-                    </div>
+                    </div> */}
 
                     {/* Phone Number */}
                     <div className="flex flex-col gap-2">
                       <label className="block text-sm">Phone Number</label>
                       <input
-                        {...register("student.phoneNumber", {
-                          required: "Please enter the phone number",
-                          pattern: {
-                            value: /^[0-9]+$/,
-                            message: "Please enter a valid phone number",
-                          },
-                        })}
                         type="tel"
                         autoComplete="off"
                         onInput={(e) => {
@@ -541,9 +531,7 @@ const NewApplicants = () => {
                         }}
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      <p className="text-sm font-thin text-red-600">
-                        {errors.student?.phoneNumber?.message}
-                      </p>
+                      
                     </div>
 
 
@@ -555,9 +543,9 @@ const NewApplicants = () => {
                       </label>
                       
                       <input
-                        {...register("student.university", {
-                          required: "Please, enter the university",
-                        })}
+                         {...register("student.university", {
+                          value: " No University Information"
+                         })}
                         type="text"
                         autoComplete="university"
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -578,9 +566,8 @@ const NewApplicants = () => {
                         Departing Country
                       </label>
                       <select
-                        {...register("student.departingCountry", {
-                          required: "Please, enter the departing country",
-                        })}
+                         {...register("student.departingCountry", {
+                         })}
                         autoComplete="departingCountry"
                         className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                       >
@@ -611,7 +598,6 @@ const NewApplicants = () => {
                         <Controller
                           control={control}
                           name="student.applicant.applicationDate"
-                          rules={{ required: "Please, enter birth date" }}
                           render={({ field }) => (
                             <DatePicker
                               selected={field.value}
@@ -654,7 +640,6 @@ const NewApplicants = () => {
                         <Controller
                           control={control}
                           name="student.applicant.hrInterviewDate"
-                          rules={{ required: "Please, enter HR interview date" }}
                           render={({ field }) => (
                             <DatePicker
                               selected={field.value}
@@ -668,7 +653,7 @@ const NewApplicants = () => {
                           control={control}
                           name="student.applicant.hrInterviewDate"
                           rules={{
-                            required: "Please, enter the HR interview date",
+                            requ : "Please, enter the HR interview date",
                           }}
                           render={({ field: { onChange, value } }) => (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -701,7 +686,6 @@ const NewApplicants = () => {
                         <Controller
                           control={control}
                           name="student.applicant.ceoInterviewDate"
-                          rules={{ required: "Please, enter CEO interview date" }}
                           render={({ field }) => (
                             <DatePicker
                               selected={field.value}
@@ -838,7 +822,7 @@ const NewApplicants = () => {
                         <Controller
                           control={control}
                           name="student.applicant.startDate"
-                          rules={{ required: "Please, enter the application date" }}
+                          // rules={{ required: "Please, enter the application date" }}
                           render={({ field }) => (
                             <DatePicker
                               selected={field.value}
@@ -884,7 +868,7 @@ const NewApplicants = () => {
                         <Controller
                           control={control}
                           name="student.applicant.endDate"
-                          rules={{ required: "Please, enter the application date" }}
+                          // rules={{ required: "Please, enter the application date" }}
                           render={({ field }) => (
                             <DatePicker
                               selected={field.value}

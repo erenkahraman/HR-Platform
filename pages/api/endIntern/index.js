@@ -1,5 +1,5 @@
 import { getMongoDb } from "../../../util/mongodb";
-import Intern from "../../../models/intern";
+import InternTest from "../../../models/internTest";
 import dbConnect from "../../../util/mongodb";
 import { tokenCheckFunction } from "../auth/tokenCheck";
 
@@ -25,16 +25,16 @@ export default async function handler(req, res) {
   await dbConnect();
   if (method === "GET") {
     try {
-      const intern = await Intern.find({});
-      res.status(201).json(intern);
+      const internTest = await InternTest.find({});
+      res.status(201).json(internTest);
     } catch (err) {
       res.status(500).json(err);
     }
   }
   if (method === "POST") {
     try {
-      const intern = await Intern.create(req.body);
-      res.status(201).json(intern);
+      const internTest = await Intern.create(req.body);
+      res.status(201).json(internTest);
     } catch (err) {
       res.status(500).json(err);
     }

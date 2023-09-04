@@ -164,7 +164,6 @@ const DocumentListContent = ({ type, status,student }) => {
       <a id="hiddenTag" style={{display:'none'}} href={fullpath} download> </a>
       
       </div>
-     
     </div>
   );
 };
@@ -198,7 +197,7 @@ const DocumentList = () => {
       }
     };
     asyncRequest();
-  }, []);
+}, [token]);
 
   return (
     <div className="flex flex-col w-full gap-2">
@@ -270,15 +269,17 @@ const DocumentList = () => {
             </div>
 
             {/* Middle */}
-            <div className="flex flex-col  lg:flex-row  gap-[2px]">
-              {Object.keys(students[index].applicant.documents).map((name, i) => (
-                <DocumentListContent
-                  key={i}
-                  type={name}
-                  status={students[index].applicant.documents[name]}
-                  student={student}
-                />
-              ))}
+            
+            <div className="flex flex-col md:flex-row gap-[2px]">
+            {students[index].applicant.documents && Object.keys(students[index].applicant.documents).map((name) => (
+              <DocumentListContent
+                key={name}
+                type={name}
+                status={students[index].internTest.documents[name]}
+                student={student}
+              />
+            ))}
+
             </div>
             {/* Bottom */}
             <div className="flex justify-between">

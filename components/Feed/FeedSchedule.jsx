@@ -50,21 +50,9 @@ const FeedSchedule = () => {
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
 
-  const swapShift = (internToBeSwapped, shiftTime) => {
 
-    if (shiftTime === "morning") {
-      handleMoveToAfternoon(internToBeSwapped)
-    }
-    else if (shiftTime === "afternoon") {
-      handleMoveToMorning(internToBeSwapped)
-    }
-    else {
-      console.log("there is something wrong i can feel it")
-    }
-  }
-  
   const read = () => {
     confirmAlert({
       title: <strong>Schedule</strong>,
