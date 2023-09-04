@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       await dbConnect();
       debugger;
       const interns = await db
-      .collection("interns")
+      .collection("interntests")
       .aggregate([
         { $match: {} },
         {
