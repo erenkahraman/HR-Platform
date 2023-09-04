@@ -125,6 +125,25 @@ export default function Sidebar() {
     return result;
   };
 
+  const sideBarItem = (menu) => {
+    const isClickable = !menu.isSeperator;
+    return (
+      <Link href={isClickable ? menu.href : "#"}>
+        <a
+          className={
+            isClickable
+              ? sideBarListItem()
+              : sideBarListSeperator()
+          }
+          style={{ cursor: isClickable ? "pointer" : "default" }}
+        >
+          {menu.icon}
+          <p>{menu.title}</p>
+        </a>
+      </Link>
+    );
+  };
+
   return (
     <div className="  sm:h-screen  text-gray-400">
       <>

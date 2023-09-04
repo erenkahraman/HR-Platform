@@ -119,7 +119,7 @@ Don't forget to pass props when rendering
 You can add or change the props based on features*/
 export const ViewMore = ({ itemText, itemLink }) => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between my-20, mx-0">
       <div className="text-md font-semibold">{itemText}</div>
       <a
         href={itemLink}
