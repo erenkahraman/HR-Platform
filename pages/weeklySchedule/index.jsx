@@ -108,7 +108,7 @@ const WeeklySchedule = () => {
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
-            Group: selectedDepartment, // Use the selected department
+            Group: internToBeMoved.department, // Use the selected department
             shift: "morning",
             internId: internToBeMoved._id,
           },
@@ -142,7 +142,7 @@ const WeeklySchedule = () => {
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
-            Group: selectedDepartment, // Use the selected department
+            Group: internToBeMoved.department, // Use the selected department
             shift: "afternoon",
             internId: internToBeMoved._id,
           },
@@ -378,7 +378,7 @@ const WeeklySchedule = () => {
   >
     <tbody>
       <tr>
-        <td>{dateRange}</td>
+        <td><strong>{dateRange}</strong></td>
       </tr>
     </tbody>
   </table>
@@ -610,9 +610,6 @@ const WeeklySchedule = () => {
           </div>
         </div>
         {/* End of Afternoon Shift People */}
-        <div className="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
-          Click Export to CSV after Modifications
-        </div>
       </div>
     </div>
   );
