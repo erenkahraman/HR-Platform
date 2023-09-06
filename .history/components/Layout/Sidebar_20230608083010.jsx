@@ -15,6 +15,7 @@ import {
   List,
 } from "@mui/icons-material";
 
+
 export default function Sidebar() {
   const router = useRouter();
   const [open, setOpen] = useState(true);
@@ -118,6 +119,12 @@ export default function Sidebar() {
     return result;
   };
   
+  const sideBarListItemText = () => {
+    let result =
+      "flex w-full sm:w-32 items-center px-1 sm:pl-0 py-2 gap-2 hover:text-[#2F80ED] hover:bg-sky-50 cursor-pointer";
+  
+    return result;
+  };
 
   const sideBarListSeperator = () => {
     let result = "flex  items-center px-1 py-2 mt-4 sm:pl-0 text-gray-700 hidden lg:block";
@@ -125,30 +132,32 @@ export default function Sidebar() {
     return result;
   };
 
-  const sideBarItem = (menu) => {
-    const isClickable = !menu.isSeperator;
-    return (
-      <Link href={isClickable ? menu.href : "#"}>
-        <a
-          className={
-            isClickable
-              ? sideBarListItem()
-              : sideBarListSeperator()
-          }
-          style={{ cursor: isClickable ? "pointer" : "default" }}
-        >
-          {menu.icon}
-          <p>{menu.title}</p>
-        </a>
-      </Link>
-    );
-  };
+  
+
+  // const sideBarItem = (menu) => {
+  //   const isClickable = !menu.isSeperator;
+  //   return (
+  //     <Link href={isClickable ? menu.href : "#"}>
+  //       <a
+  //         className={
+  //           isClickable
+  //             ? sideBarListItem()
+  //             : sideBarListSeperator()
+  //         }
+  //         style={{ cursor: isClickable ? "pointer" : "default" }}
+  //       >
+  //         {menu.icon}
+  //         <p>{menu.title}</p>
+  //       </a>
+  //     </Link>
+  //   );
+  // };
 
   return (
     <div className="  sm:h-screen  text-gray-400">
       <>
         <div className=" w-full sm:h-screen  mt-4 lg:px-4">
-          <ul className=" sm:h-screen text-sm items-center font-light flex flex-wrap justify-center flex-row lg:inline-block">
+          <ul className="sm:h-screen text-sm items-center font-light flex flex-wrap justify-center flex-row lg:inline-block">
             {Menus.map((menu, index) => (
               <li key={index}>
                 {menu.isSeperator === undefined ? (
@@ -161,7 +170,7 @@ export default function Sidebar() {
                       }
                     >
                       {menu.icon}
-                      <p>{menu.title}</p>
+                      <p className={sideBarListItemText()} >{menu.title}</p>
                     </a>
                   </Link>
                 ) : (

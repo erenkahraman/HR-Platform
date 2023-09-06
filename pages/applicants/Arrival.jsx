@@ -17,7 +17,11 @@ export default function ApplicantsList() {
   const [open, setOpen] = useState(false);
   // cities to get from checkbox
   const [cities, setCities] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const token = cookie.get("token");
+
+  const [departmentMenus, setDepartmentMenus] = useState({});
+  const [openDepartmentMenus, setOpenDepartmentMenus] = useState({});
 
   useEffect(() => {
     setOpen(true);
@@ -52,13 +56,50 @@ export default function ApplicantsList() {
     }
   };
 
-  const filterCities = (student) => {
-    if (cities.length == 0) {
+  const handleDepartmentChange = (studentId, selectedDepartment) => {
+    const updatedData = data.map((student) => {
+      if (student.applicant._id === studentId) {
+        return {
+          ...student,
+          applicant: {
+            ...student.applicant,
+            selectedDepartment: selectedDepartment,
+          },
+        };
+      }
       return student;
-    } else {
-      return cities.includes(student.applicant.arrivalCity);
-    }
+    });
+    setData(updatedData);
+    toggleDepartmentMenu(studentId);
+
   };
+
+  const filterCities = (student) => {
+   if (cities.length == 0) {
+       return student;
+     } else {
+       return cities.includes(student.applicant.arrivalCity);
+     }
+   };
+// const filterCities = (student) => {
+//     if (cities.length === 0 && selectedDepartments.length === 0) {
+//       return true;
+//     } else {
+//       const cityFilter = cities.length === 0 || cities.includes(student.applicant.arrivalCity);
+//       const departmentFilter =
+//         selectedDepartments.length === 0 ||
+//         selectedDepartments.includes(student.applicant.department);
+//       return cityFilter && departmentFilter;
+//     }
+//   };
+
+const toggleDepartmentMenu = (studentId) => {
+  setOpenDepartmentMenus((prevOpenMenus) => ({
+    ...prevOpenMenus,
+    [studentId]: !prevOpenMenus[studentId],
+  }));
+};
+
   return (
     <section className="relative w-full sm:static">
       <LoadingState open={open} />
@@ -67,7 +108,7 @@ export default function ApplicantsList() {
           {/* Title Container */}
           <div className=" relative sm:static flex justify-between rounded-t mb-0 px-4 pt-3 border-0 bg-white">
             <div className="flex flex-wrap items-center">
-              <div className="relative sm:static w-full px-3 max-w-full flex-grow flex-1 ">
+              <div className="relative sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex-grow flex-1 ">
                 <h3 className="font-semibold text-2xl">Applicant Arrival</h3>
               </div>
             </div>
@@ -224,6 +265,9 @@ export default function ApplicantsList() {
                     <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                       Pick Up By
                     </th>
+                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
+                      Department
+                    </th>
                   </tr>
                 </thead>
 
@@ -251,6 +295,105 @@ export default function ApplicantsList() {
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         {student.applicant.pickUpBy || "Not Set"}
+                      </td>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                        {student.applicant.departments}
+                        <div className="relative inline-block text-left">
+    <div>
+      <button
+        type="button"
+        className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+        id={`department-menu-${student.applicant._id}`}
+        aria-haspopup="true"
+        aria-expanded="true"
+        onClick={() => toggleDepartmentMenu(student.applicant._id)}
+      >
+        {student.applicant.selectedDepartment || "Select Department"}
+        <svg
+          className="-mr-1 ml-2 h-5 w-5"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fillRule="evenodd"
+            d="M6.293 9.293a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+    </div>
+
+    {/* Dropdown menu */}
+    {openDepartmentMenus[student.applicant._id] && (
+    <div
+    className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby={`department-menu-${student.applicant._id}`}
+    >
+      <div className="py-1" role="none">
+        <button
+          onClick={() => handleDepartmentChange(student.applicant._id, "Digital marketing")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+          role="menuitem"
+        >
+          Digital marketing
+        </button>
+        <button
+          onClick={() => handleDepartmentChange(student.applicant._id, "Human resuorce")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+          role="menuitem"
+        >
+          Human resuorce
+        </button>
+        <button
+          onClick={() => handleDepartmentChange(student.applicant._id, "Bussines & Data analyst")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+          role="menuitem"
+        >
+          Bussines & Data analyst
+        </button>
+        <button
+          onClick={() => handleDepartmentChange(student.applicant._id, "Project management")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+          role="menuitem"
+        >
+          Project management
+        </button>
+        <button
+          onClick={() => handleDepartmentChange(student.applicant._id, "Languages")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+          role="menuitem"
+        >
+          Languages
+        </button>
+        <button
+          onClick={() => handleDepartmentChange(student.applicant._id, "ICT")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+          role="menuitem"
+        >
+          ICT
+        </button>
+        <button
+          onClick={() => handleDepartmentChange(student.applicant._id, "UIX")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+          role="menuitem"
+        >
+          UIX
+        </button>
+        <button
+          onClick={() => handleDepartmentChange(student.applicant._id, "Law")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+          role="menuitem"
+        >
+          Law
+        </button>
+      </div>
+    </div>
+    )}
+  </div>
                       </td>
                     </tr>
                   ))}
