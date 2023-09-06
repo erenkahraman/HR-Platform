@@ -91,69 +91,72 @@ const WeeklySchedule = () => {
   }
 
   const handleMoveToMorning = async (internToBeMoved, internIndex) => {
-    const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
-  
-    const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
-  
-    setMorningShiftInterns(updatedMorningShiftInterns);
-    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-
-    const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
-    updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
-      (intern) => intern._id !== internToBeMoved._id);
-    setWeeklyScheduleByDepartment(updatedWeeklySchedule);
-  
     try {
+      // Remove the intern from the afternoon shift
+      const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
+        (intern) => intern._id !== internToBeMoved._id
+      );
+  
+      // Add the intern to the morning shift
+      const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
+  
+      // Update state with the new intern lists
+      setAfternoonShiftInterns(updatedAfternoonShiftInterns);
+      setMorningShiftInterns(updatedMorningShiftInterns);
+  
+      // Update the WeeklySchedule model in the database
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
-            Group: selectedDepartment,
+            Group: selectedDepartment, // Use the selected department
             shift: "morning",
             internId: internToBeMoved._id,
           },
         },
       });
-      console.log(response.data); // Log the response if needed
+  
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
-  };  
+  };
+  
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
-    const updatedAfternoonShiftInterns = [
-      ...afternoonShiftInterns,
-      internToBeMoved,
-    ];
-    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-
-    const updatedMorningShiftInterns = morningShiftInterns.filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
-
-    setMorningShiftInterns(updatedMorningShiftInterns);
-
-    const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
-    updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
-    setWeeklyScheduleByDepartment(updatedWeeklySchedule);
     try {
+      // Remove the intern from the morning shift
+      const updatedMorningShiftInterns = morningShiftInterns.filter(
+        (intern) => intern._id !== internToBeMoved._id
+      );
+  
+      // Add the intern to the afternoon shift
+      const updatedAfternoonShiftInterns = [
+        ...afternoonShiftInterns,
+        internToBeMoved,
+      ];
+  
+      // Update state with the new intern lists
+      setMorningShiftInterns(updatedMorningShiftInterns);
+      setAfternoonShiftInterns(updatedAfternoonShiftInterns);
+  
+      // Update the WeeklySchedule model in the database
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
-            Group: selectedDepartment,
+            Group: selectedDepartment, // Use the selected department
             shift: "afternoon",
             internId: internToBeMoved._id,
           },
         },
       });
-      console.log(response.data); // Log the response if needed
+  
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
-  }; 
+  };
+  
 
+  
 
   const handleExportToCsv = () => {
     let shiftAssignedInterns = [];
@@ -194,8 +197,7 @@ const WeeklySchedule = () => {
           },
         };
     
-        const { data } = await axios.get(`/api/intern`, config);
-        
+        const { data } = await axios.get(`/api/internTest`, config);
 
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
@@ -251,7 +253,6 @@ const WeeklySchedule = () => {
 
         setAvailableMorningShiftInterns(morningShiftInterns);
         setAvailableAfternoonShiftInterns(afternoonShiftInterns);
-        debugger;
       } catch (e) {
         console.error(e);
       }
@@ -287,31 +288,38 @@ const WeeklySchedule = () => {
   }, [morningShiftInterns, afternoonShiftInterns]); // Add these dependencies  
 
 
-  const swapShift = (internToBeSwapped, shiftTime) => {
-
-    if (shiftTime === "morning") {
-      handleMoveToAfternoon(internToBeSwapped)
-    }
-    else if (shiftTime === "afternoon") {
-      handleMoveToMorning(internToBeSwapped)
-    }
-    else {
-      console.log("there is something wrong i can feel it")
-    }
-  }
-
-  const countInternsInDepartments = (interns) => {
-    const departmentCounts = {};
-    interns.forEach((eachIntern) => {
-      const departmentName = eachIntern.department;
-      if (departmentCounts[departmentName]) {
-        departmentCounts[departmentName]++;
-      } else {
-        departmentCounts[departmentName] = 1;
+  const findInternByName = (name) => {
+    // Iterate through all departments to find the intern by name
+    for (const departmentName of departmentNames) {
+      const departmentInterns = weeklyScheduleByDepartment[departmentName];
+      const intern = departmentInterns.find((intern) => {
+        const fullName = intern.student.firstName + " " + intern.student.lastName;
+        return fullName === name;
+      });
+      if (intern) {
+        return intern;
       }
-    });
-    return departmentCounts;
+    }
+    return null; // Return null if the intern is not found
   };
+  
+  const swapShift = (internName, shiftTime) => {
+    const internToBeSwapped = findInternByName(internName);
+  
+    if (!internToBeSwapped) {
+      console.log("Intern not found");
+      return;
+    }
+  
+    if (shiftTime === "morning") {
+      handleMoveToAfternoon(internToBeSwapped);
+    } else if (shiftTime === "afternoon") {
+      handleMoveToMorning(internToBeSwapped);
+    } else {
+      console.log("Invalid shift time");
+    }
+  };
+
 
   const getAssignedInternInfo = (intern, shiftTime) => {
     const assignedIntern = {

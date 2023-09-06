@@ -1,14 +1,11 @@
 import { getMongoDb } from "../../../util/mongodb";
 import WeeklySchedule from "../../../models/weeklySchedule";
-import Intern from "../../../models/intern";
 import dbConnect from "../../../util/mongodb";
 import Student from "../../../models/student";
 const { tokenCheckFunction } = require("../auth/tokenCheck");
 
 export default async function handler(req, res) {
   const { method } = req;
-  const db = await getMongoDb();
-  await dbConnect();
   const { token } = req.query;
   // Token CHECK
   try {
@@ -32,7 +29,7 @@ export default async function handler(req, res) {
       await dbConnect();
       debugger;
       const interns = await db
-      .collection("interns")
+      .collection("interntests")
       .aggregate([
         { $match: {} },
         {
@@ -48,34 +45,6 @@ export default async function handler(req, res) {
         },
       ])
       .toArray();
-
-      
-    // Log the fetched interns data
-     // console.log("Fetched interns data:", interns);
-
-      // const interns = await db
-      //   .collection("interns")
-      //   .aggregate([
-      //     { $match: {} },
-      //     {
-      //       $lookup: {
-      //         from: Student.collection.name,
-      //         localField: "student",
-      //         foreignField: "_id",
-      //         as: "student",
-      //       },
-      //     },
-      //     {
-      //       $unwind: "$student",
-      //     },
-      //   ])
-      //   .toArray();
-      // const weeklySchedules = await WeeklySchedule.find()
-      // .populate({
-      //   path: "Schedule.monday.morning Schedule.monday.afternoon Schedule.tuesday.morning Schedule.tuesday.afternoon Schedule.wednesday.morning Schedule.wednesday.afternoon Schedule.thursday.morning Schedule.thursday.afternoon Schedule.friday.morning Schedule.friday.afternoon",
-      //   model: Intern,
-      // })
-      // .exec();
       const weeklySchedule = await db.collection("weeklyschedules").find({}).toArray();
       const populatedWeeklySchedule = weeklySchedule.map(schedule => {
         const populatedSchedule = { ...schedule };
@@ -92,9 +61,6 @@ export default async function handler(req, res) {
         }
         return populatedSchedule;
       });
-      
-
-  
       res.status(200).json({weeklySchedule,populatedWeeklySchedule});
     } catch (error) {
       res.status(500).json(error);
