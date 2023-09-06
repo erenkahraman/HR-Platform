@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   if (method === "GET") {
     try {
       const internTest = await db
-        .collection("internTests")
+        .collection("interntests")
         .aggregate([
           {
             $lookup: {

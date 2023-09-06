@@ -27,7 +27,7 @@ const handleAccept = async () => {
       },
     };
 
-    const deleteEndpoint = `/api/internTest/${internTest._id}`;
+      const deleteEndpoint = `/api/internTest/${internTest._id}`;
 
       await fetch(deleteEndpoint, deleteOptions);
     
@@ -36,7 +36,6 @@ const handleAccept = async () => {
       console.error("Error deleting intern:", error);
       setOpen(false);
     }
-    debugger;
     const departmentUpdateOptions = {
       method: "PUT",
       headers: {

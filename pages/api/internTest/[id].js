@@ -42,7 +42,7 @@ export default async function handler(req, res) {
         });
       }
     case "DELETE":
-      await Intern.findByIdAndDelete(id);
+      await InternTest.findByIdAndDelete(id);
     default:
       res.setHeaders("Allow", ["GET", "PUT", "DELETE"]);
       return res

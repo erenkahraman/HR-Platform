@@ -24,7 +24,6 @@ const Upcoming = () => {
         );
         const filteredData = data.filter(internTest => new Date(internTest.date) >= new Date());
         filteredData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        console.log(filteredData.slice(0, 5));
         setData(filteredData.slice(0, 5)); // Limit the data to 5 interns
         setLoading(false);
       } catch (e) {
@@ -59,7 +58,7 @@ const Upcoming = () => {
         data.map((internTest, i) => (
           <div key={i} className="flex w-full">
             <div className="flex-[1] flex flex-col">
-              <div className="text-sm font-semibold">{internTest.name}</div>
+              <div className="text-sm font-semibold">{internTest.firstName}</div>
               <div className="text-xs font-light ">{internTest.department}</div>
             </div>
             <div className={statusColor(internTest.action)}>{internTest.action}</div>
