@@ -332,6 +332,32 @@ const WeeklySchedule = () => {
   };
 
 
+  const resetShifts =async ()=>{
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      params: {
+        token: token,
+      },
+    };
+    const response = await axios.get(`/api/weeklySchedule`, config);
+    const data2 = response.data;
+
+      for (const document of data2.populatedWeeklySchedule) {
+        debugger;
+        try {
+          
+          const deleteResponse = await axios.delete(`/api/weeklySchedule/${document._id}`, config);
+          const interns=[];
+          setMorningShiftInterns(interns);
+          setAfternoonShiftInterns(interns);
+        } catch (error) {
+          console.error(`Error deleting document with Group: ${document.Group}`, error);
+        }
+      }
+    }
+
     return (
     <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
@@ -358,30 +384,34 @@ const WeeklySchedule = () => {
             </div>
           </div>
           <div
-  className="flex flex-col items-center justify-center gap-10 mt-4"
-  style={{
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "12px 24px",
-    gap: "10px",
-    background: "#DCEBFC",
-    borderRadius: "24px",
-  }}
->
+    className="flex flex-col items-center justify-center gap-10 mt-4"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "12px 24px",
+      gap: "10px",
+      background: "#DCEBFC",
+      borderRadius: "24px",
+    }}
+ >
   <table
     className="font-roboto"
     style={{
       width: "100%",
-    }}
+      border: 'solid',
+    }
+  }
   >
-    <tbody>
       <tr>
-        <td><strong>{dateRange}</strong></td>
+        <th scope="col"><strong>{dateRange}</strong> </th>
+        <th scope="col">
+<button onClick={() => resetShifts()}> <strong>{`RESET Week`}</strong></button>
+</th>
       </tr>
-    </tbody>
-  </table>
+  </table> 
+  
 </div>
 
           <div

@@ -125,16 +125,5 @@ export default async function handler(req, res) {
       res.status(500).json(err);
     }
   }
-  else if (method === "DELETE") {
-    try {
-      console.log(req.query.Group);
-      const weeklySchedule = await WeeklySchedule.deleteOne({
-        Group: req.query.Group,
-      });
 
-      res.status(201).json(weeklySchedule);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  }
 }
