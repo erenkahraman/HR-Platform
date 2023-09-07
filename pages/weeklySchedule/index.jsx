@@ -117,13 +117,11 @@ const WeeklySchedule = () => {
   
       console.log(response.data);
   
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
-  
-  };
+
   
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
     try {
@@ -137,23 +135,7 @@ const WeeklySchedule = () => {
         ...afternoonShiftInterns,
         internToBeMoved,
       ];
-  
-      // Update state with the new intern lists
-      setMorningShiftInterns(updatedMorningShiftInterns);
-      setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-  
-      // Update the WeeklySchedule model in the database
-    try {
-      // Remove the intern from the morning shift
-      const updatedMorningShiftInterns = morningShiftInterns.filter(
-        (intern) => intern._id !== internToBeMoved._id
-      );
-  
-      // Add the intern to the afternoon shift
-      const updatedAfternoonShiftInterns = [
-        ...afternoonShiftInterns,
-        internToBeMoved,
-      ];
+
   
       // Update state with the new intern lists
       setMorningShiftInterns(updatedMorningShiftInterns);
@@ -218,7 +200,6 @@ const WeeklySchedule = () => {
           },
         };
     
-        const { data } = await axios.get(`/api/internTest`, config);
         const { data } = await axios.get(`/api/internTest`, config);
 
         const weeklyScheduleGroupedByDepartment = data.reduce(
@@ -367,7 +348,6 @@ const WeeklySchedule = () => {
     const data2 = response.data;
 
       for (const document of data2.populatedWeeklySchedule) {
-        debugger;
         try {
           
           const deleteResponse = await axios.delete(`/api/weeklySchedule/${document._id}`, config);
@@ -429,7 +409,7 @@ const WeeklySchedule = () => {
       <tr>
         <th scope="col"><strong>{dateRange}</strong> </th>
         <th scope="col">
-<button onClick={() => resetShifts()}> <strong>{`RESET Week`}</strong></button>
+      <button onClick={() => resetShifts()}> <strong>{`RESET Week`}</strong></button>
 </th>
       </tr>
   </table> 
