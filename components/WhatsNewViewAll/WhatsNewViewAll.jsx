@@ -9,6 +9,7 @@ const WhatsNewViewAll = () => {
   const token = cookie.get("token");
 
   const handleDelete = async (id) => {
+    debugger;
     try {
       const config = {
         headers: {
@@ -52,7 +53,7 @@ const WhatsNewViewAll = () => {
   return (
     <div>
       {data.map((whatsNew) => (
-        <div key={whatsNew.id} className="items-center w-full border-collapse bg-white">
+        <div key={whatsNew._id} className="items-center w-full border-collapse bg-white">
           <div className="flex m-2 py-4">
             <div className="flex flex-[1] flex-col gap-2 p-2">
               <div className="text-sm font-semibold">{whatsNew.date}</div>
@@ -70,10 +71,10 @@ const WhatsNewViewAll = () => {
                 Read More
               </div>
               <div>
-              <button onClick={() => handleDelete(whatsNew.id)} className="ml-2 self-start">
+              <button onClick={() => handleDelete(whatsNew._id)} className="ml-2 self-start">
                 <DeleteIcon />
               </button>
-
+           
               </div>
             </div>
           </div>

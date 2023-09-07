@@ -69,10 +69,6 @@ const NewApplicants = () => {
   ];
 
 
-  
-
-  
-
   const docs = [
     "Curriculum Vitae",
     "Motivation Letter",

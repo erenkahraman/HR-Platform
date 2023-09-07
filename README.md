@@ -4,7 +4,8 @@ HRPlatform is a web application for managing HR tasks such as scheduling, applic
 Getting Started
 To get started with HRPlatform, follow these steps:
 
-Clone the repository: git clone https://github.com/hrplatform.git
+Clone the repository: git clone 
+
 Navigate to the project directory: cd hrplatform
 Install dependencies for the frontend: cd frontend && npm install
 Install dependencies for the backend: cd ../backend && npm install
