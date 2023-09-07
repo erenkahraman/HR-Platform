@@ -55,7 +55,7 @@ export default async function handler(req, res) {
       //     },
       //   ])
       //   .toArray();
-      const interns = await InternTest.find().populate(['student', 'attendance']); 
+      const interns = await InternTest.find().populate(['student']); 
       res.status(200).json(interns);
     } catch (error) {
       res.status(500).json(error);
@@ -84,22 +84,18 @@ export default async function handler(req, res) {
       await Promise.all(
         req.body.interns.map(async (eachIntern) => {
           
-
           const draftedIntern = req.body.drafted.filter(possibleIntern => {
             return possibleIntern.id === eachIntern._id
           })[0]
 
-
           eachIntern.attendance[draftedIntern.status].count = draftedIntern.count;
-          eachIntern.attendance[draftedIntern.status].dates.push(draftedIntern.date);
+          eachIntern.attendance.date=draftedIntern.date;
 
           const internPromise = await InternTest.findByIdAndUpdate(eachIntern._id, eachIntern);
           console.log("lets see the promise now")
           console.log(internPromise)
-         
         })
-        
-    )
+      )
     
       res.status(200).json(req.body.internTests);
     } catch (err) {

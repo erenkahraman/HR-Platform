@@ -111,12 +111,12 @@ function Attendence() {
       // internTest._id = internId;
       internTest.attendance=attendanceId;
 
-      attendanceData._id = attendanceId
+      attendance._id = attendanceId
       attendance.internTest=internTest._id;
 
-      attendanceData.token=token
+      attendance.token=token
       internTest.token=token
-      await axios.post(`/api/attendance?token=${token}`, attendanceData, {
+      await axios.post(`/api/attendance?token=${token}`, attendance, {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
@@ -206,6 +206,7 @@ function Attendence() {
         { params: { token: token } },
         config
       );
+      debugger;
       const filteredData = data.filter((attendance) => {
         const attendanceDate = new Date(attendance.date); 
         const attendanceMonth = attendanceDate.getMonth() + 1; 

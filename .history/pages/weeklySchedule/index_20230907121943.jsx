@@ -482,7 +482,7 @@ const WeeklySchedule = () => {
                             {intern.department}
                           </td>
                           <td className="border-t px-6 py-4 whitespace-nowrap font-roboto text-sm">
-                            {intern.Schedule.morning.length === 0 
+                            {intern.Schedule.morning.length === 0
                               ? "Available"
                               : intern.Schedule.morning.map(
                                   (morningShift, index) => (

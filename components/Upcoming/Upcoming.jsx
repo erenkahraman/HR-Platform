@@ -58,7 +58,7 @@ const Upcoming = () => {
         data.map((internTest, i) => (
           <div key={i} className="flex w-full">
             <div className="flex-[1] flex flex-col">
-              <div className="text-sm font-semibold">{internTest.name}</div>
+              <div className="text-sm font-semibold">{internTest.firstName}</div>
               <div className="text-xs font-light ">{internTest.department}</div>
             </div>
             <div className={statusColor(internTest.action)}>{internTest.action}</div>
