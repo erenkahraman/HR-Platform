@@ -55,7 +55,7 @@ const Upcoming = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        data.map((intern, i) => (
+        data.reverse().map((intern, i) => (
           <div key={i} className="flex w-full">
             <div className="flex-[1] flex flex-col">
               <div className="text-sm font-semibold">{intern.name}</div>

@@ -27,31 +27,37 @@ const Dashboard = () => {
   const token = cookie?.get("token");
 
   //For Whats's New to add post
-  const handleSubmitWhatsNew = async (event) => {
-    event.preventDefault();
+const handleSubmitWhatsNew = async (event) => {
+  event.preventDefault();
 
-    const whatsNew = {
-      title: event.target.title.value,
-      postedBy: event.target.postedBy.value,
-      date: event.target.date.value,
-      paragraph: event.target.paragraph.value,
-      token: token,
-    };
-    const JSONnew = JSON.stringify(whatsNew);
-    console.log(JSONnew);
-    const endpointNew = "/api/whatsNew";
-    const New = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSONnew,
-    };
-    await fetch(endpointNew, New);
-    router.reload();
+  const whatsNew = {
+    title: event.target.title.value,
+    postedBy: event.target.postedBy.value,
+    date: event.target.date.value,
+    paragraph: event.target.paragraph.value,
+    token: token,
   };
+  const JSONnew = JSON.stringify(whatsNew);
+  console.log(JSONnew);
 
+  if (event.target.classList.contains("delete-button")) {
+    const itemId = event.target.getAttribute("data-id");
+    await handleDeleteWhatsNew(itemId);
+    return; 
+  }
+
+  const endpointNew = "/api/whatsNew";
+  const New = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSONnew,
+  };
+  await fetch(endpointNew, New);
+  router.reload();
+};
   const [students, setStudents] = useState([]);
 
   //For Reminder to add post
@@ -352,7 +358,7 @@ const Dashboard = () => {
             </div>
           </div>
         </Popup>
-      </div>
+      </div> 
 
       {/* Bottom */}
       <div className="flex flex-1 shrink w-full flex-col lg:flex-row py-3 gap-3">
@@ -481,11 +487,6 @@ const Dashboard = () => {
                 href="./BirthdayViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
-                <div>View All</div>
-                <div>
-                  {" "}
-                  <ArrowForward className="text-md" />
-                </div>
               </a>
             </div>
             {/* {Birthday content} */}
