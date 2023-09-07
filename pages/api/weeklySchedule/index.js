@@ -75,7 +75,7 @@ export default async function handler(req, res) {
       console.log(err);
     }
   }
-  else  if (method === "PUT") {
+  else if (method === "PUT") {
     try {
       const { scheduleGroup } = req.body.params;
       const updatedWeeklySchedule = await WeeklySchedule.findOneAndUpdate(
@@ -87,22 +87,43 @@ export default async function handler(req, res) {
         },
         { new: true, upsert: true }
       );
-
+  
+      // Find the existing weekly schedule for the department
+      const existingWeeklySchedule = await WeeklySchedule.findOne({
+        Group: scheduleGroup.Group,
+      });
+  
+      // Remove the intern from the previous shift
+      let updatedMorningShift = existingWeeklySchedule.Schedule.morning.filter(
+        (internId) => internId.toString() !== scheduleGroup.internId
+      );
+      let updatedAfternoonShift = existingWeeklySchedule.Schedule.afternoon.filter(
+        (internId) => internId.toString() !== scheduleGroup.internId
+      );
+  
+      // Add the intern to the new shift
+      if (scheduleGroup.shift === "morning") {
+        updatedMorningShift.push(scheduleGroup.internId);
+      } else if (scheduleGroup.shift === "afternoon") {
+        updatedAfternoonShift.push(scheduleGroup.internId);
+      }
+  
+      // Update the weekly schedule with the new shifts
+       updatedWeeklySchedule = await WeeklySchedule.findOneAndUpdate(
+        { Group: scheduleGroup.Group },
+        {
+          $set: {
+            "Schedule.morning": updatedMorningShift,
+            "Schedule.afternoon": updatedAfternoonShift,
+          },
+        },
+        { new: true, upsert: true }
+      );
+  
       res.status(201).json(updatedWeeklySchedule);
     } catch (err) {
       res.status(500).json(err);
     }
   }
-  else if (method === "DELETE") {
-    try {
-      console.log(req.query.Group);
-      const weeklySchedule = await WeeklySchedule.deleteOne({
-        Group: req.query.Group,
-      });
 
-      res.status(201).json(weeklySchedule);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  }
 }
