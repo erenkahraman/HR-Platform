@@ -6,8 +6,6 @@ const { tokenCheckFunction } = require("../auth/tokenCheck");
 
 export default async function handler(req, res) {
   const { method } = req;
-  const db = await getMongoDb();
-  await dbConnect();
   const { token } = req.query;
   // Token CHECK
   try {
@@ -29,25 +27,41 @@ export default async function handler(req, res) {
       tokenCheckFunction(token);
       const db = await getMongoDb();
       await dbConnect();
-      
+      debugger;
       const interns = await db
-        .collection("interns")
-        .aggregate([
-          { $match: {} },
-          {
-            $lookup: {
-              from: Student.collection.name,
-              localField: "student",
-              foreignField: "_id",
-              as: "student",
-            },
+      .collection("interntests")
+      .aggregate([
+        { $match: {} },
+        {
+          $lookup: {
+            from: Student.collection.name,
+            localField: "student",
+            foreignField: "_id",
+            as: "student",
           },
-          {
-            $unwind: "$student",
-          },
-        ])
-        .toArray();
-      res.status(200).json(interns);
+        },
+        {
+          $unwind: "$student",
+        },
+      ])
+      .toArray();
+      const weeklySchedule = await db.collection("weeklyschedules").find({}).toArray();
+      const populatedWeeklySchedule = weeklySchedule.map(schedule => {
+        const populatedSchedule = { ...schedule };
+        for (const shift in populatedSchedule.Schedule) {
+          const internIds = populatedSchedule.Schedule[shift];
+          const internsNames = internIds.map(internId => {
+            const intern = interns.find(intern => intern._id.toString() === internId.toString());
+            if (intern && intern.student) {
+              return intern.student.firstName + " " + intern.student.lastName;
+            }
+            return "Unknown Intern";
+          });
+          populatedSchedule.Schedule[shift] = internsNames;
+        }
+        return populatedSchedule;
+      });
+      res.status(200).json({weeklySchedule,populatedWeeklySchedule});
     } catch (error) {
       res.status(500).json(error);
     }
@@ -68,7 +82,7 @@ export default async function handler(req, res) {
         { Group: scheduleGroup.Group },
         {
           $push: {
-            [`Schedule.${scheduleGroup.day}.${scheduleGroup.shift}`]: scheduleGroup.internId,
+            [`Schedule.${scheduleGroup.shift}`]: scheduleGroup.internId,
           },
         },
         { new: true, upsert: true }

@@ -1,7 +1,7 @@
 import { getMongoDb } from "../../../util/mongodb";
 import Student from "../../../models/student";
 import Applicant from "../../../models/applicant";
-import Intern from "../../../models/intern";
+import InternTest from "../../../models/internTest";
 import dbConnect from "../../../util/mongodb";
 import { tokenCheckFunction } from "../auth/tokenCheck";
 
@@ -25,6 +25,9 @@ export default async function handler(req, res) {
 
   if (method === "GET") {
     try {
+      const token= req.query.token;
+      console.log('student',token);
+      
       const students = await db
         .collection("students")
         .aggregate([
@@ -38,10 +41,10 @@ export default async function handler(req, res) {
           },
           {
             $lookup: {
-              from: Intern.collection.name,
-              localField: "intern",
+              from: InternTest.collection.name,
+              localField: "internTest",
               foreignField: "_id",
-              as: "intern",
+              as: "internTest",
             },
           },
           {

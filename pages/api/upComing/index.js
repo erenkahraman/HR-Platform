@@ -24,8 +24,8 @@ export default async function handler(req, res) {
 
   if (method === "GET") {
     try {
-      const intern = await db
-        .collection("interns")
+      const internTest = await db
+        .collection("interntests")
         .aggregate([
           {
             $lookup: {
@@ -53,22 +53,20 @@ export default async function handler(req, res) {
         .toArray();
 
       var data = [];
-      for (let i = 0; i < intern.length; i++) {
-        if (intern[i].status === "Waiting Start Date") {
+      for (let i = 0; i < internTest.length; i++) {
+        if (internTest[i].status === "Waiting Start Date") {
           data.push({
-            name:
-              intern[i].student.firstName + " " + intern[i].student.lastName,
-            department: intern[i].department,
+            name:internTest[i].student.firstName + " " + internTest[i].student.lastName,
+            department: internTest[i].department,
             action: "Arriving",
-            date: intern[i].endDate,
+            date: internTest[i].endDate,
           });
-        } else if (intern[i].status === "Ongoing") {
+        } else if (internTest[i].status === "Ongoing") {
           data.push({
-            name:
-              intern[i].student.firstName + " " + intern[i].student.lastName,
-            department: intern[i].department,
+            name: internTest[i].student.firstName + " " + internTest[i].student.lastName,
+            department: internTest[i].department,
             action: "Departing",
-            date: intern[i].endDate,
+            date: internTest[i].endDate,
           });
         }
       }

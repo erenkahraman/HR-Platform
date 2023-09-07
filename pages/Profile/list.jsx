@@ -7,6 +7,9 @@ import axios from "axios";
 import cookie from "js-cookie";
 import LoadingState from "../../components/Utils/LoadingState.jsx";
 import StudentCountModal from "../../components/Modal/StudentCountModal.jsx";
+//------
+import FinishedStudentCountModal from "../../components/Modal/FinishedStudentCountModal.jsx"; 
+// Import the StudentFinishedModal component
 import useTableSearch from "../../hooks/useTableSearch";
 import {
   Button,
@@ -26,7 +29,6 @@ const profileListTableHeaders = [
   "Department / Position",
   "Start Date",
   "End Date",
-  "Action",
 ];
 
 export default function ApplicantsList({ status }) {
@@ -34,6 +36,9 @@ export default function ApplicantsList({ status }) {
   const [open, setOpen] = useState(false);
   const token = cookie.get("token");
   const [scModal, setScModal] = useState(false);
+  //setScModal2 for second modal for finished interns
+  const [lvModal, setLvModal] = useState(false);
+  //-----
   const [type, setType] = useState("");
 
   const border = ((status) => {
@@ -204,7 +209,9 @@ export default function ApplicantsList({ status }) {
                     size="small"
                     variant="outlined"
                     onClick={(e) => {
-                      setScModal(true);
+                      // setScModal(true);
+                      setLvModal(true);
+                      //----------
                       setType("finishedInterns");
                     }}
                   >
@@ -254,6 +261,9 @@ export default function ApplicantsList({ status }) {
             </Grid>
           </Box>
           {scModal && <StudentCountModal setScModal={setScModal} type={type} />}
+          {/* ------ */}
+          {lvModal && <FinishedStudentCountModal setLvModal={setLvModal} type={type} />}
+          {/* ------- */}
           {/* Table */}
           <div className="block w-full overflow-x-auto ">
             {data.length === 0 ? (
@@ -307,25 +317,22 @@ export default function ApplicantsList({ status }) {
 
                       <TableCell>{student.applicant.endDate}</TableCell>
 
-                      <TableCell>
-                        <Tooltip
-                          className="bg-transparent text-black mt-2"
-                          content="Edit"
-                          animate={{
-                            mount: { scale: 1, y: 0 },
-                            unmount: { scale: 0, y: 25 },
-                          }}
-                        >
+                      {/* <TableCell>
                           <Button
                             variant="gradient"
                             className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
                           >
-                            <Link href="/applicants/edit">
-                              <AiOutlineEdit className="m-2 mb-0 mt-0" />
+                            <Link
+                              href={{
+                                pathname: "/applicants/new",
+                                query: { student: JSON.stringify(student) },
+                              }}
+                              as={`/interns/${student.firstName}_${student.lastName}`}
+                            >
+                              Edit
                             </Link>
                           </Button>
-                        </Tooltip>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>

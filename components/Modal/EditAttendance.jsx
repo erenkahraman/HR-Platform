@@ -7,7 +7,8 @@ import cookie from "js-cookie";
 import moment from "moment";
 
 
-const EditAttendance = ({ intern, setModel }) => {
+const EditAttendance = ({ attendance, setModel }) => {
+  debugger;
   const [dates, setDates] = useState([]);
   const [status, setStatus] = useState("present");
   const [open, setOpen] = useState(false);
@@ -24,34 +25,32 @@ const EditAttendance = ({ intern, setModel }) => {
 
   
 
-  const deleteDate = (date) => {
+  const updateAttendance = () => {
     confirmAlert({
       message:
-        'Are you sure you wanna delete the status: "' +
-        status +
-        '" from the date: ' +
-        date,
+        'Do you want to decrease one the status:' + status,
       buttons: [
         {
           label: "Yes",
           onClick: async () => {
             setOpen(true);
-            intern.attendance[status].dates.splice(dates.indexOf(date), 1);
-            intern.attendance[status].count--;
-            intern.token = token;
-            const JSONintern = JSON.stringify(intern);
-            const endpoint = `/api/intern/${intern._id}`;
+            attendance[status]--;
+            attendance.token = token;
+            const JSONattendance = JSON.stringify(attendance);
+            const endpoint = `/api/attendance/${attendance._id}`;
             const options = {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
               },
-              body: JSONintern,
+              body: JSONattendance,
             };
             await fetch(endpoint, options);
             setOpen(false);
+            setModel(undefined);
           },
+          
         },
         {
           label: "No",
@@ -74,8 +73,8 @@ const EditAttendance = ({ intern, setModel }) => {
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
               <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Edit Attendance for {intern.student.firstName}{" "}
-                  {intern.student.lastName}
+                  Edit Attendance for {attendance.internTest.student.firstName}{" "}
+                  {attendance.internTest.student.lastName}
                 </h3>
               </div>
 
@@ -93,7 +92,7 @@ const EditAttendance = ({ intern, setModel }) => {
                     onClick={(e) => {
                       if (e.target.value) {
                         setStatus(e.target.value);
-                        setDates(intern.attendance[e.target.value].dates);
+                        setDates(attendance.date);
                       } else {
                         setDates([]);
                       }
@@ -109,7 +108,7 @@ const EditAttendance = ({ intern, setModel }) => {
                     <option value="unexcusedleave">Unexecused leave</option>
                   </select>
                 </div>
-                <div className="flex flex-row">
+                {/* <div className="flex flex-row">
                   <label
                     htmlFor="startDate"
                     className="basis-1/2 flex  items-center text-left text-xl font-semibold text-black w-32 "
@@ -123,8 +122,7 @@ const EditAttendance = ({ intern, setModel }) => {
                         No dates for this status
                       </label>
                     ) : (
-                      dates.map((date) => (
-                        <li className="flex items-center space-x-3" key={index}>
+                        <li className="flex items-center space-x-3" key={attendance._id}>
                           <label>{moment(date).format("dd/MM/yyyy")}</label>
                           <ClearIcon
                             color="error"
@@ -134,10 +132,9 @@ const EditAttendance = ({ intern, setModel }) => {
                             }}
                           />
                         </li>
-                      ))
                     )}
                   </ul>
-                </div>
+                </div> */}
               </div>
               <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
                 <button
@@ -154,6 +151,20 @@ const EditAttendance = ({ intern, setModel }) => {
                 >
                   Close
                 </button>
+                <button
+                  type="button"
+                  className="ml-3 inline-flex items-center px-4 py-2 border border-transparent 
+                            text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 
+                            hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
+                            focus:ring-blue-500"
+                  onClick={(e) => {
+                    debugger;
+                    updateAttendance(attendance);
+                    
+                  }}
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>
@@ -161,6 +172,6 @@ const EditAttendance = ({ intern, setModel }) => {
       </form>
     </div>
   );
-};
+}; 
 
 export default EditAttendance;

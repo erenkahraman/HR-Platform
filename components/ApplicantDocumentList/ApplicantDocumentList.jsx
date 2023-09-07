@@ -49,7 +49,7 @@ const DocumentListContent = ({ type, status,student }) => {
   
 
   const downloadServer = async () => {
-    
+    //Turkce karakter sorunu var dosya isminde Turkce karakter varsa dosyayi indirmiyor
     const studentName = student.firstName.trim()+'_'+student.lastName;
     const body = new FormData();
 
@@ -164,7 +164,6 @@ const DocumentListContent = ({ type, status,student }) => {
       <a id="hiddenTag" style={{display:'none'}} href={fullpath} download> </a>
       
       </div>
-     
     </div>
   );
 };
@@ -190,7 +189,6 @@ const DocumentList = () => {
           config
         );
         setStudents(data);
-        console.log(data);
         setOpen(false);
       } catch (e) {
         console.error(e);
@@ -270,15 +268,16 @@ const DocumentList = () => {
             </div>
 
             {/* Middle */}
+            
             <div className="flex flex-col md:flex-row gap-[2px]">
-              {Object.keys(students[index].applicant.documents).map((name) => (
-                <DocumentListContent
-                  key={name}
-                  type={name}
-                  status={students[index].intern.documents[name]}
-                  student={student}
-                />
-              ))}
+            {students[index].applicant.documents && Object.keys(students[index].applicant.documents).map((name) => (
+              <DocumentListContent
+                key={name}
+                type={name}
+                status={student.applicant.documents[name]}
+                student={student}
+              />
+            ))}
 
             </div>
             {/* Bottom */}

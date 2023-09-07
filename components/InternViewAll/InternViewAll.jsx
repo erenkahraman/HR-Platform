@@ -80,7 +80,7 @@ const InternView = () => {
           },
         };
         const { data } = await axios.get(
-          `/api/intern`,
+          `/api/internTest`,
           { params: { token: token } },
           config
         );
@@ -145,9 +145,9 @@ const InternView = () => {
 
                       <tr key={index}>
                         <td>{std.firstName} {std.lastName}</td>
-                        <td>{std.intern.position}</td>
-                        <td>{std.intern.startDate}</td>
-                        <td>{std.intern.endDate}</td>
+                        <td>{std.internTest.position}</td>
+                        <td>{std.internTest.startDate}</td>
+                        <td>{std.internTest.endDate}</td>
                       </tr>
                     ))
                   }

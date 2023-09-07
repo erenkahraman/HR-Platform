@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { Spinner, Button } from "flowbite-react";
 import axios from "axios";
 import cookie from "js-cookie";
+import { format, startOfMonth, endOfMonth } from "date-fns";
+
 
 const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
   const router = useRouter();
@@ -12,6 +14,9 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
   const [departments, setDepartments] = useState([]);
   const [positions, setPositions] = useState([]);
   const token = cookie.get("token");
+  // const [date, setDate] = useState(today.toISOString().split("T")[0]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [dateRange, setDateRange] = useState("");
 
   // Get Departments
   useEffect(() => {
@@ -49,10 +54,11 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
   };
 
   const handleSubmit = async (event) => {
+    debugger;
     SetSpinnerState(true);
     event.preventDefault();
     const id = new mongoose.Types.ObjectId();
-    const intern = {
+    const internTest = {
       _id: id,
       startDate: event.target.startDate.value,
       endDate: event.target.endDate.value,
@@ -68,12 +74,24 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
       student: stdId,
       token: token,
     };
-    intern.durationInWeeks = await calculateWeeks(
-      intern.startDate,
-      intern.endDate
+    internTest.durationInWeeks = await calculateWeeks(
+      internTest.startDate,
+      internTest.endDate
     );
-    const JSONintern = JSON.stringify(intern);
-    const endpointIntern = "/api/intern";
+    const attendanceData = {
+      present: 0,
+      late: 0,
+      coveredDay: 0,
+      dayOff: 0,
+      excusedLeave: 0,
+      sick: 0,
+      unexcusedleave: 0,
+      date: currentDate,
+      internTest: internTest,
+    };
+    saveToAttendanceDatabase(attendanceData);
+    const JSONintern = JSON.stringify(internTest);
+    const endpointIntern = "/api/internTest";
     const endpointstudent = `/api/student/${stdId}`;
     const endpointDepartment = `/api/department/${departments[event.target.department.value]._id
       }`;
@@ -92,7 +110,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        intern: intern._id,
+        internTest: internTest._id,
         applicationStatus: "Accepted",
         token: token,
       }),
@@ -109,6 +127,55 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
     await fetch(endpointstudent, optionsStudent);
     await fetch(endpointIntern, optionsIntern);
     router.push("/interns/InternsList");
+  };
+
+  const handleCurrentMonthDateRange = (date) => {
+    const firstDayOfMonth = startOfMonth(date);
+    const lastDayOfMonth = endOfMonth(date);
+    const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
+    const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
+    const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
+    setDateRange(monthDateRange);
+  };
+
+  useEffect(() => {
+    handleCurrentMonthDateRange(currentDate);
+  }, [currentDate]);
+  
+  const saveToAttendanceDatabase = async (attendanceData) => {
+    try {
+      debugger;
+      
+      const internTest=attendanceData.internTest
+      const attendance=attendanceData
+
+      // const internId = new mongoose.Types.ObjectId();
+      const attendanceId = new mongoose.Types.ObjectId();
+
+      // internTest._id = internId;
+      internTest.attendance=attendanceId;
+
+      attendance._id = attendanceId
+      attendance.internTest=internTest._id;
+
+      attendance.token=token
+      attendance.internTest.token=token
+      await axios.post(`/api/attendance?token=${token}`, attendance, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+
+      const response = await fetch(endpoint, options);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      console.log("Veriler basariyla sunucuya gönderildi!");
+      }
+      catch (error) {
+      console.error("Hata: Veriler sunucuya gönderilemedi.", error);
+    }
   };
 
   return (
