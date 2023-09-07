@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { Circle } from "@mui/icons-material";
 import axios from "axios";
 import cookie from "js-cookie";
-
+//functıon to VıewAll
 const ReminderViewAll = () => {
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const token = cookie.get("token");
-
+//functıon to formatDate
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
