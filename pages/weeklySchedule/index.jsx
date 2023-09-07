@@ -108,7 +108,7 @@ const WeeklySchedule = () => {
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
-            Group: selectedDepartment, // Use the selected department
+            Group: internToBeMoved.department, // Use the selected department
             shift: "morning",
             internId: internToBeMoved._id,
           },
@@ -116,9 +116,13 @@ const WeeklySchedule = () => {
       });
   
       console.log(response.data);
+  
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
+  };
+  
   };
   
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
@@ -139,10 +143,27 @@ const WeeklySchedule = () => {
       setAfternoonShiftInterns(updatedAfternoonShiftInterns);
   
       // Update the WeeklySchedule model in the database
+    try {
+      // Remove the intern from the morning shift
+      const updatedMorningShiftInterns = morningShiftInterns.filter(
+        (intern) => intern._id !== internToBeMoved._id
+      );
+  
+      // Add the intern to the afternoon shift
+      const updatedAfternoonShiftInterns = [
+        ...afternoonShiftInterns,
+        internToBeMoved,
+      ];
+  
+      // Update state with the new intern lists
+      setMorningShiftInterns(updatedMorningShiftInterns);
+      setAfternoonShiftInterns(updatedAfternoonShiftInterns);
+  
+      // Update the WeeklySchedule model in the database
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
-            Group: selectedDepartment, // Use the selected department
+            Group: internToBeMoved.department, // Use the selected department
             shift: "afternoon",
             internId: internToBeMoved._id,
           },
@@ -197,6 +218,7 @@ const WeeklySchedule = () => {
           },
         };
     
+        const { data } = await axios.get(`/api/internTest`, config);
         const { data } = await axios.get(`/api/internTest`, config);
 
         const weeklyScheduleGroupedByDepartment = data.reduce(
@@ -332,6 +354,32 @@ const WeeklySchedule = () => {
   };
 
 
+  const resetShifts =async ()=>{
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      params: {
+        token: token,
+      },
+    };
+    const response = await axios.get(`/api/weeklySchedule`, config);
+    const data2 = response.data;
+
+      for (const document of data2.populatedWeeklySchedule) {
+        debugger;
+        try {
+          
+          const deleteResponse = await axios.delete(`/api/weeklySchedule/${document._id}`, config);
+          const interns=[];
+          setMorningShiftInterns(interns);
+          setAfternoonShiftInterns(interns);
+        } catch (error) {
+          console.error(`Error deleting document with Group: ${document.Group}`, error);
+        }
+      }
+    }
+
     return (
     <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
@@ -358,30 +406,34 @@ const WeeklySchedule = () => {
             </div>
           </div>
           <div
-  className="flex flex-col items-center justify-center gap-10 mt-4"
-  style={{
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "12px 24px",
-    gap: "10px",
-    background: "#DCEBFC",
-    borderRadius: "24px",
-  }}
->
+    className="flex flex-col items-center justify-center gap-10 mt-4"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "12px 24px",
+      gap: "10px",
+      background: "#DCEBFC",
+      borderRadius: "24px",
+    }}
+ >
   <table
     className="font-roboto"
     style={{
       width: "100%",
-    }}
+      border: 'solid',
+    }
+  }
   >
-    <tbody>
       <tr>
-        <td>{dateRange}</td>
+        <th scope="col"><strong>{dateRange}</strong> </th>
+        <th scope="col">
+<button onClick={() => resetShifts()}> <strong>{`RESET Week`}</strong></button>
+</th>
       </tr>
-    </tbody>
-  </table>
+  </table> 
+  
 </div>
 
           <div
@@ -610,9 +662,6 @@ const WeeklySchedule = () => {
           </div>
         </div>
         {/* End of Afternoon Shift People */}
-        <div className="flex flex-col items-center bg-primary justify-center gap-6 mt-4">
-          Click Export to CSV after Modifications
-        </div>
       </div>
     </div>
   );

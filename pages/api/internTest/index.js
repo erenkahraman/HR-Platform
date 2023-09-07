@@ -55,7 +55,7 @@ export default async function handler(req, res) {
       //     },
       //   ])
       //   .toArray();
-      const interns = await InternTest.find().populate(['student', 'attendance']); 
+      const interns = await InternTest.find().populate(['student']); 
       res.status(200).json(interns);
     } catch (error) {
       res.status(500).json(error);
