@@ -20,6 +20,7 @@ import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
 import Interviews from "./reports";
+import { UpcomingInterviewsViewAll } from "../../components/UpcomingInterviewsViewAll";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -454,7 +455,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">Upcoming Interviews</div>
               <a
-                href="../InterviewViewAll"
+                href="./UpcomingInterviewsViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
                 <div>View All</div>
@@ -498,7 +499,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      </div>
+    </div>
   );
 };
 export default Dashboard;
