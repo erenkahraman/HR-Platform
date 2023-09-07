@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { Circle } from "@mui/icons-material";
 import axios from "axios";
 import cookie from "js-cookie";
-
+//functıon to VıewAll
 const ReminderViewAll = () => {
   const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const token = cookie.get("token");
-
-
+//functıon to formatDate
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -40,9 +39,16 @@ const ReminderViewAll = () => {
     };
     asyncRequest();
   }, []);
+
+  const sortedData = data.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
+
   return (
     <div>
-      {data.map((reminder) => (
+      {sortedData.map((reminder) => (
         <div
           key={reminder.id}
           className="items-center w-full border-collapse bg-white"
@@ -61,4 +67,5 @@ const ReminderViewAll = () => {
     </div>
   );
 };
+
 export default ReminderViewAll;

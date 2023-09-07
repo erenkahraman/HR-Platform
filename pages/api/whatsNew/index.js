@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     try {
       const whatsNew = await WhatsNew.create(req.body);
       res.status(201).json(whatsNew);
-    } catch (err) {
+    } catch (err) {6
       res.status(500).json(err);
     }
   }

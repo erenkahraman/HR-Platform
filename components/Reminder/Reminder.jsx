@@ -44,24 +44,33 @@ const Reminder = ({ color }) => {
     };
     asyncRequest();
   }, []);
-
+  
   return (
     <div>
-      {data.slice(data.length - 3).map((reminder, i) => (
-        <div key={i} className="flex w-full">
-          <div className="flex-[1] flex items-center justify-center">
-            <Circle className={circleColor()} />
+      {data
+        .map((reminder) => ({
+          ...reminder,
+          date: new Date(reminder.date)
+        }))
+        .sort((a, b) => b.date - a.date) 
+        .slice(0, 3) 
+        .map((reminder, i) => (
+          <div key={i} className="flex w-full">
+            <div className="flex-[1] flex items-center justify-center">
+              <Circle className={circleColor()} />
+            </div>
+            <div className="flex-[5] flex flex-col">
+              <div className="text-sm font-semibold">{reminder.title}</div>
+              <div className="text-xs font-light ">{reminder.category}</div>
+            </div>
+            <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
+              {formatDate(reminder.date)}
+            </div>
           </div>
-          <div className="flex-[5] flex flex-col">
-            <div className="text-sm font-semibold">{reminder.title}</div>
-            <div className="text-xs font-light ">{reminder.category}</div>
-          </div>
-          <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
-            {formatDate(reminder.date)}
-          </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
+  
 };
 export default Reminder;
+
