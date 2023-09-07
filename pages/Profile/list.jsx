@@ -29,7 +29,6 @@ const profileListTableHeaders = [
   "Department / Position",
   "Start Date",
   "End Date",
-  "Action",
 ];
 
 export default function ApplicantsList({ status }) {
