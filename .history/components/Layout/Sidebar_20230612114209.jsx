@@ -59,12 +59,6 @@ export default function Sidebar() {
       icon: <FlightLandOutlined />,
       isOn: false,
     },
-    {
-      title: "Statistics",
-      href: "/applicants/Statistics",
-      icon: <InsertChartIcon />,
-      isOn: false,
-    },
     { title: "INTERNS", isSeperator: true },
     {
       title: "List",
@@ -114,11 +108,11 @@ export default function Sidebar() {
   const sideBarListItem = () => {
     let result =
       "flex  w-full sm:w-32 items-center px-1 sm:pl-0 py-2 gap-2 hover:text-[#2F80ED] hover:bg-sky-50";
-      
-  
+
+
     return result;
   };
-  
+
 
   const sideBarListSeperator = () => {
     let result = "flex  items-center px-1 py-2 mt-4 sm:pl-0 text-gray-700 hidden lg:block";

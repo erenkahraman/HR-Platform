@@ -1,14 +1,11 @@
 import { getMongoDb } from "../../../util/mongodb";
 import WeeklySchedule from "../../../models/weeklySchedule";
-import Intern from "../../../models/intern";
 import dbConnect from "../../../util/mongodb";
 import Student from "../../../models/student";
 const { tokenCheckFunction } = require("../auth/tokenCheck");
 
 export default async function handler(req, res) {
   const { method } = req;
-  const db = await getMongoDb();
-  await dbConnect();
   const { token } = req.query;
   // Token CHECK
   try {
@@ -32,7 +29,7 @@ export default async function handler(req, res) {
       await dbConnect();
       debugger;
       const interns = await db
-      .collection("interns")
+      .collection("interntests")
       .aggregate([
         { $match: {} },
         {
@@ -48,34 +45,6 @@ export default async function handler(req, res) {
         },
       ])
       .toArray();
-
-      
-    // Log the fetched interns data
-     // console.log("Fetched interns data:", interns);
-
-      // const interns = await db
-      //   .collection("interns")
-      //   .aggregate([
-      //     { $match: {} },
-      //     {
-      //       $lookup: {
-      //         from: Student.collection.name,
-      //         localField: "student",
-      //         foreignField: "_id",
-      //         as: "student",
-      //       },
-      //     },
-      //     {
-      //       $unwind: "$student",
-      //     },
-      //   ])
-      //   .toArray();
-      // const weeklySchedules = await WeeklySchedule.find()
-      // .populate({
-      //   path: "Schedule.monday.morning Schedule.monday.afternoon Schedule.tuesday.morning Schedule.tuesday.afternoon Schedule.wednesday.morning Schedule.wednesday.afternoon Schedule.thursday.morning Schedule.thursday.afternoon Schedule.friday.morning Schedule.friday.afternoon",
-      //   model: Intern,
-      // })
-      // .exec();
       const weeklySchedule = await db.collection("weeklyschedules").find({}).toArray();
       const populatedWeeklySchedule = weeklySchedule.map(schedule => {
         const populatedSchedule = { ...schedule };
@@ -92,9 +61,6 @@ export default async function handler(req, res) {
         }
         return populatedSchedule;
       });
-      
-
-  
       res.status(200).json({weeklySchedule,populatedWeeklySchedule});
     } catch (error) {
       res.status(500).json(error);
@@ -109,7 +75,7 @@ export default async function handler(req, res) {
       console.log(err);
     }
   }
-  else  if (method === "PUT") {
+  else if (method === "PUT") {
     try {
       const { scheduleGroup } = req.body.params;
       const updatedWeeklySchedule = await WeeklySchedule.findOneAndUpdate(
@@ -121,22 +87,43 @@ export default async function handler(req, res) {
         },
         { new: true, upsert: true }
       );
-
+  
+      // Find the existing weekly schedule for the department
+      const existingWeeklySchedule = await WeeklySchedule.findOne({
+        Group: scheduleGroup.Group,
+      });
+  
+      // Remove the intern from the previous shift
+      let updatedMorningShift = existingWeeklySchedule.Schedule.morning.filter(
+        (internId) => internId.toString() !== scheduleGroup.internId
+      );
+      let updatedAfternoonShift = existingWeeklySchedule.Schedule.afternoon.filter(
+        (internId) => internId.toString() !== scheduleGroup.internId
+      );
+  
+      // Add the intern to the new shift
+      if (scheduleGroup.shift === "morning") {
+        updatedMorningShift.push(scheduleGroup.internId);
+      } else if (scheduleGroup.shift === "afternoon") {
+        updatedAfternoonShift.push(scheduleGroup.internId);
+      }
+  
+      // Update the weekly schedule with the new shifts
+       updatedWeeklySchedule = await WeeklySchedule.findOneAndUpdate(
+        { Group: scheduleGroup.Group },
+        {
+          $set: {
+            "Schedule.morning": updatedMorningShift,
+            "Schedule.afternoon": updatedAfternoonShift,
+          },
+        },
+        { new: true, upsert: true }
+      );
+  
       res.status(201).json(updatedWeeklySchedule);
     } catch (err) {
       res.status(500).json(err);
     }
   }
-  else if (method === "DELETE") {
-    try {
-      console.log(req.query.Group);
-      const weeklySchedule = await WeeklySchedule.deleteOne({
-        Group: req.query.Group,
-      });
 
-      res.status(201).json(weeklySchedule);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  }
 }
