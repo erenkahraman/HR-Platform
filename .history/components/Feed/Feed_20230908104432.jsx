@@ -28,7 +28,8 @@ const Feed = () => {
           },
         };
         const { data } = await axios.get(`/api/whatsNew`, { params: { token: token } }, config);
-        setData(data);
+        const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setData(sortedData);
         setLoading(false);
       } catch (e) {
         console.error(e);
@@ -38,11 +39,27 @@ const Feed = () => {
     asyncRequest();
   }, []);
 
-  const read = () => { // Check the value of content
+  const read = (item) => {
     confirmAlert({
-      title: <strong>What's New</strong>,
-      message: <div className="h-96 overflow-y-scroll "><p></p>
-      </div>,
+      title: <strong>Whats New</strong>,
+      message:
+        <div className="h-96 overflow-y-scroll ">
+          <p>
+            <div>
+              <div className={"flex flex-col"}>
+                <div className={"flex flex-row justify-between mb-10"}>
+                  <div className="text-sm font-semibold">{formatDate(item.date)}</div>
+                  <div className="text-xs font-light flex flex-col">
+                    <div>posted by</div>
+                    <div className={"text-end"}>{item.postedBy}</div>
+                  </div>
+                </div>
+                <div className="text-sm font-semibold">{item.title}</div>
+                <div className="text-xs font-light">{item.paragraph}</div>
+              </div>
+            </div>
+          </p>
+        </div>,
       buttons: [
         {
           label: "Close",
@@ -51,24 +68,20 @@ const Feed = () => {
       ],
     });
   };
-  
-  
 
   const handleDelete = (id) => {
     const updatedData = data.map((item) => {
       if (item.id === id) {
-        return { ...item, content: '' }; // Clear the content of the item
+        return { ...item, content: '' }; 
       }
       return item;
     });
     setData(updatedData);
   };
-  
 
-  
   return (
     <div>
-      {data.slice(data.length - 3).map((whatsNew) => (
+      {data.map((whatsNew) => (
         <div className="flex m-2 py-4" key={whatsNew.id}>
           <div className="flex flex-[1] flex-col gap-2 p-2">
             <div className="text-sm font-semibold">{formatDate(whatsNew.date)}</div>
@@ -77,21 +90,17 @@ const Feed = () => {
               <div>{whatsNew.postedBy}</div>
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-2 p-2">
-            <div className="text-sm font-semibold">{whatsNew.title}</div>
-            <div className="text-xs font-light">{whatsNew.title}</div>
+          <div className="flex w-5 flex-1 flex-col gap-2 p-2  ">
+            <div className="text-sm font-semibold  truncate  text-ellipsis">{whatsNew.title}</div>
+            <div className="text-xs font-light  truncate  text-ellipsis">{whatsNew.paragraph}</div>
           </div>
           <div className="flex items-center justify-between p-2">
-            <button onClick={() => read(whatsNew.content)} className="flex items-center p-2">
-              <div className="text-sm font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300">
+            <button onClick={() => read(whatsNew)} className="flex items-center p-2">
+              <div className="text-sm truncate  font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300">
                 Read More
              </div>
             </button>
-            <button onClick={() => handleDelete(whatsNew.id)} className="ml-2">
-              <DeleteIcon />
-            </button>
           </div>
-
         </div>
       ))}
     </div>

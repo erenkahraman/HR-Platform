@@ -37,7 +37,7 @@ const Feed = () => {
       }
     };
     asyncRequest();
-  }, [token]);
+  }, []);
 
   const read = (item) => {
     confirmAlert({
@@ -70,20 +70,14 @@ const Feed = () => {
   };
 
   const handleDelete = (id) => {
-<<<<<<< HEAD
-    const updatedData = data.filter((item) => item.id !== id);
-=======
     const updatedData = data.map((item) => {
       if (item.id === id) {
         return { ...item, content: '' }; 
       }
       return item;
     });
->>>>>>> main
     setData(updatedData);
   };
-  
-
 
   return (
     <div>
@@ -114,4 +108,3 @@ const Feed = () => {
 };
 
 export default Feed;
-
