@@ -31,8 +31,6 @@ const profileListTableHeaders = [
   "Department / Position",
   "Start Date",
   "End Date",
-  "Document",
-  "Action",
 ];
 
 export default function ApplicantsList({ status }) {
@@ -321,50 +319,22 @@ export default function ApplicantsList({ status }) {
 
                       <TableCell>{student.applicant.endDate}</TableCell>
 
-                      <TableCell>            
-                           <Tooltip
-                          className="bg-transparent text-black mt-2"
-                          content="Document"
-                          animate={{
-                            mount: { scale: 1, y: 0 },
-                            unmount: { scale: 0, y: 25 },
-                          }}
-                        >
-                          <Button
-                            variant="gradient"
-                            className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
-                          >                          
-                            <Link href="/applicants/allDocuments">                    
-                                <FaRegFile/>
-                            </Link>
-                          </Button>
-                        </Tooltip></TableCell>
-
-                      <TableCell>
-                        <Tooltip
-                          className="bg-transparent text-black mt-2"
-                          content="Edit"
-                          animate={{
-                            mount: { scale: 1, y: 0 },
-                            unmount: { scale: 0, y: 25 },
-                          }}
-                        >
+                      {/* <TableCell>
                           <Button
                             variant="gradient"
                             className="text-black bg-transparent scale-100 hover:scale-125 p-0 cursor-pointer text-xl"
                           >
-                            {/* <Link href="/applicants/edit"> */}
                             <Link
                               href={{
                                 pathname: "/applicants/new",
                                 query: { student: JSON.stringify(student) },
                               }}
-                              as={`/interns/${student.firstName}_${student.lastName}`}>
-                              <AiOutlineEdit className="m-2 mb-0 mt-0" />
+                              as={`/interns/${student.firstName}_${student.lastName}`}
+                            >
+                              Edit
                             </Link>
                           </Button>
-                        </Tooltip>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>

@@ -91,72 +91,72 @@ const WeeklySchedule = () => {
   }
 
   const handleMoveToMorning = async (internToBeMoved, internIndex) => {
-    const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
-  
-    const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
-
-    setMorningShiftInterns(updatedMorningShiftInterns);
-    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-
-
-    const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
-    updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
-      (intern) => intern._id !== internToBeMoved._id);
-    setWeeklyScheduleByDepartment(updatedWeeklySchedule);
-  
     try {
+      // Remove the intern from the afternoon shift
+      const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
+        (intern) => intern._id !== internToBeMoved._id
+      );
+  
+      // Add the intern to the morning shift
+      const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
+  
+      // Update state with the new intern lists
+      setAfternoonShiftInterns(updatedAfternoonShiftInterns);
+      setMorningShiftInterns(updatedMorningShiftInterns);
+  
+      // Update the WeeklySchedule model in the database
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
-            Group: selectedDepartment,
+            Group: selectedDepartment, // Use the selected department
             shift: "morning",
             internId: internToBeMoved._id,
           },
         },
       });
-      console.log(response.data); // Log the response if needed
+  
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
-  };  
-
+  };
+  
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
-    const updatedAfternoonShiftInterns = [
-      ...afternoonShiftInterns,
-      internToBeMoved,
-    ];
-    setAfternoonShiftInterns(updatedAfternoonShiftInterns);
-
-    const updatedMorningShiftInterns = morningShiftInterns.filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
-
-    setMorningShiftInterns(updatedMorningShiftInterns);
-
-    const updatedWeeklySchedule = { ...weeklyScheduleByDepartment };
-    updatedWeeklySchedule[selectedDepartment] = updatedWeeklySchedule[selectedDepartment].filter(
-      (intern) => intern._id !== internToBeMoved._id
-    );
-    setWeeklyScheduleByDepartment(updatedWeeklySchedule);
     try {
+      // Remove the intern from the morning shift
+      const updatedMorningShiftInterns = morningShiftInterns.filter(
+        (intern) => intern._id !== internToBeMoved._id
+      );
+  
+      // Add the intern to the afternoon shift
+      const updatedAfternoonShiftInterns = [
+        ...afternoonShiftInterns,
+        internToBeMoved,
+      ];
+  
+      // Update state with the new intern lists
+      setMorningShiftInterns(updatedMorningShiftInterns);
+      setAfternoonShiftInterns(updatedAfternoonShiftInterns);
+  
+      // Update the WeeklySchedule model in the database
       const response = await axios.put(`/api/weeklySchedule?token=${token}`, {
         params: {
           scheduleGroup: {
-            Group: selectedDepartment,
+            Group: selectedDepartment, // Use the selected department
             shift: "afternoon",
             internId: internToBeMoved._id,
           },
         },
       });
-      console.log(response.data); // Log the response if needed
+  
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
-  }; 
+  };
+  
 
-
+  
 
   const handleExportToCsv = () => {
     let shiftAssignedInterns = [];
@@ -196,10 +196,9 @@ const WeeklySchedule = () => {
             token: token,
           },
         };
-
     
-        const { data } = await axios.get(`/api/intern`, config);
- 
+        const { data } = await axios.get(`/api/internTest`, config);
+
         const weeklyScheduleGroupedByDepartment = data.reduce(
           (departments, item) => {
             const department = departments[item.department] || [];
@@ -209,7 +208,7 @@ const WeeklySchedule = () => {
           },
           {}
         );
-
+    
         setWeeklyScheduleByDepartment(weeklyScheduleGroupedByDepartment);
         const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         setDepartmentNames(departmentNames);
@@ -254,7 +253,6 @@ const WeeklySchedule = () => {
 
         setAvailableMorningShiftInterns(morningShiftInterns);
         setAvailableAfternoonShiftInterns(afternoonShiftInterns);
-        debugger;
       } catch (e) {
         console.error(e);
       }
@@ -286,69 +284,42 @@ const WeeklySchedule = () => {
         console.error(e);
       }
     };
-
     fetchWeeklySchedule();
   }, [morningShiftInterns, afternoonShiftInterns]); // Add these dependencies  
 
 
-  useEffect(() => {
-    const fetchWeeklySchedule = async () => {
-      try {
-        handleCurrentWeekDateRange();
-        debugger;
-        const token = cookie.get("token");
-        if (!token) {
-          console.log("Token Expired! error function: fetchWeeklySchedule");
-          return;
-        }
-        else{
-          console.log("Token value from fetchWeeklySchedule",token)
-        }
-
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        debugger;
-        const response = await axios.get(`/api/weeklySchedule?token=${token}`);
-        const { weeklySchedule, populatedWeeklySchedule } = response.data;
-        // Update state with fetched data
-        setWeeklySchedule(weeklySchedule);
-        setPopulatedWeeklySchedule(populatedWeeklySchedule);
-
-      } catch (e) {
-        console.error(e);
+  const findInternByName = (name) => {
+    // Iterate through all departments to find the intern by name
+    for (const departmentName of departmentNames) {
+      const departmentInterns = weeklyScheduleByDepartment[departmentName];
+      const intern = departmentInterns.find((intern) => {
+        const fullName = intern.student.firstName + " " + intern.student.lastName;
+        return fullName === name;
+      });
+      if (intern) {
+        return intern;
       }
-    };
-    fetchWeeklySchedule();
-  }, []);
-  
-  const swapShift = (internToBeSwapped, shiftTime) => {
-
-    if (shiftTime === "morning") {
-      handleMoveToAfternoon(internToBeSwapped)
     }
-    else if (shiftTime === "afternoon") {
-      handleMoveToMorning(internToBeSwapped)
-    }
-    else {
-      console.log("there is something wrong i can feel it")
-    }
-  }
-
-  const countInternsInDepartments = (interns) => {
-    const departmentCounts = {};
-    interns.forEach((eachIntern) => {
-      const departmentName = eachIntern.department;
-      if (departmentCounts[departmentName]) {
-        departmentCounts[departmentName]++;
-      } else {
-        departmentCounts[departmentName] = 1;
-      }
-    });
-    return departmentCounts;
+    return null; // Return null if the intern is not found
   };
+  
+  const swapShift = (internName, shiftTime) => {
+    const internToBeSwapped = findInternByName(internName);
+  
+    if (!internToBeSwapped) {
+      console.log("Intern not found");
+      return;
+    }
+  
+    if (shiftTime === "morning") {
+      handleMoveToAfternoon(internToBeSwapped);
+    } else if (shiftTime === "afternoon") {
+      handleMoveToMorning(internToBeSwapped);
+    } else {
+      console.log("Invalid shift time");
+    }
+  };
+
 
   const getAssignedInternInfo = (intern, shiftTime) => {
     const assignedIntern = {
@@ -362,8 +333,7 @@ const WeeklySchedule = () => {
 
 
     return (
-    
-      div className="min-h-screen  ">
+    <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
         <div className=" flex w-full flex-col   items-center justify-center min-w-0 break-words w-full rounded">
           <div className="flex justify-between gap-4 rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
@@ -435,7 +405,6 @@ const WeeklySchedule = () => {
                 width: "100%",
               }}
             >
-
  <thead>
   <tr>
     <th>INTERNS</th>
