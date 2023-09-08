@@ -2,34 +2,13 @@ import { useEffect, useState } from "react";
 import { Circle } from "@mui/icons-material";
 import axios from "axios";
 import cookie from "js-cookie";
-import DeleteIcon from "@mui/icons-material/Delete";
-
+import DeleteIcon from "@mui/icons-material/Delete"; 
+//functıon to VıewAll
 const ReminderViewAll = () => {
   const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const token = cookie.get("token");
-
-  const handleDelete = async (id) => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        params: {
-          token: token,
-        },
-      };
-      await axios.delete(`/api/reminder/${id}`, config);
-      const response = await axios.get("/api/reminder", config);
-      setData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-
-
-
+//functıon to formatDate
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -61,9 +40,16 @@ const ReminderViewAll = () => {
     };
     asyncRequest();
   }, [token]);
+
+  const sortedData = data.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
+
   return (
     <div>
-      {data.map((reminder) => (
+      {sortedData.map((reminder) => (
         <div
           key={reminder.id}
           className="items-center w-full border-collapse bg-white"
@@ -92,4 +78,5 @@ const ReminderViewAll = () => {
     </div>
   );
 };
+
 export default ReminderViewAll;

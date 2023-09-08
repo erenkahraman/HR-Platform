@@ -8,8 +8,9 @@ const Reminder = ({ color }) => {
     let result = "text-sm " + color;
     return result;
   };
+
   const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const token = cookie.get("token");
 
   useEffect(() => {
@@ -26,7 +27,14 @@ const Reminder = ({ color }) => {
           { params: { token: token } },
           config
         );
-        setData(data);
+        
+        const sortedData = data.sort((a, b) => {
+          const aDate = new Date(new Date().getFullYear(), a.month - 1, a.day);
+          const bDate = new Date(new Date().getFullYear(), b.month - 1, b.day);
+          return aDate - bDate;
+        });
+
+        setData(sortedData);
         setLoading(false);
       } catch (e) {
         console.error(e);

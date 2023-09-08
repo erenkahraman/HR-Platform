@@ -96,7 +96,7 @@ const WeeklySchedule = () => {
       const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
         (intern) => intern._id !== internToBeMoved._id
       );
-      
+
       // Add the intern to the morning shift
       const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
 

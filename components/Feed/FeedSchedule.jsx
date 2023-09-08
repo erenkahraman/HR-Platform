@@ -83,11 +83,9 @@ const FeedSchedule = () => {
       buttons: [
         {
           label: 'OK',
-          onClick: () => alert('Click Yes')
         },
         {
           label: 'Cancel',
-          onClick: () => alert('Click No')
         }
       ]
     });

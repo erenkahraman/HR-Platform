@@ -96,7 +96,7 @@ const WeeklySchedule = () => {
       const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
         (intern) => intern._id !== internToBeMoved._id
       );
-      
+
       // Add the intern to the morning shift
       const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
 
@@ -115,7 +115,7 @@ const WeeklySchedule = () => {
         },
       });
 
-
+      
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
     try {
       // Remove the intern from the morning shift
@@ -189,7 +189,11 @@ const WeeklySchedule = () => {
             token: token,
           },
         };
+<<<<<<< HEAD
+
+=======
     
+>>>>>>> main
         const { data } = await axios.get(`/api/internTest`, config);
 
         const weeklyScheduleGroupedByDepartment = data.reduce(
@@ -539,7 +543,6 @@ const WeeklySchedule = () => {
       </div>
     </div>
   );
-}
-
+};
 
 export default WeeklySchedule;

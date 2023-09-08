@@ -92,11 +92,10 @@ const WeeklySchedule = () => {
 
   const handleMoveToMorning = async (internToBeMoved, internIndex) => {
     try {
-      // Remove the intern from the afternoon shift
       const updatedAfternoonShiftInterns = afternoonShiftInterns.filter(
         (intern) => intern._id !== internToBeMoved._id
       );
-      
+
       // Add the intern to the morning shift
       const updatedMorningShiftInterns = [...morningShiftInterns, internToBeMoved];
 

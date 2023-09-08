@@ -2,11 +2,21 @@ import { useEffect, useState } from "react";
 import { Circle } from "@mui/icons-material";
 import axios from "axios";
 import cookie from "js-cookie";
-
+import DeleteIcon from "@mui/icons-material/Delete"; 
+//functıon to VıewAll
 const ReminderViewAll = () => {
   const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const token = cookie.get("token");
+//functıon to formatDate
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  };
+
   useEffect(() => {
     setLoading(true);
     const asyncRequest = async () => {
@@ -30,9 +40,16 @@ const ReminderViewAll = () => {
     };
     asyncRequest();
   }, []);
+
+  const sortedData = data.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
+
   return (
     <div>
-      {/* {data.map((reminder) => (
+      {sortedData.map((reminder) => (
         <div
           key={reminder.id}
           className="items-center w-full border-collapse bg-white"
@@ -43,12 +60,23 @@ const ReminderViewAll = () => {
               <div className="text-xs font-light ">{reminder.category}</div>
             </div>
             <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
-              {reminder.date}
+              {formatDate(reminder.date)}
+            </div>
+            <div className="flex flex-[1] items-end p-2">
+              <div className="flex h-fit text-sm font-semibold underline cursor-pointer">
+                Read More
+              </div>
+              <div>
+              <button onClick={() => handleDelete(reminder.id)} className="ml-2 self-start">
+                <DeleteIcon />
+              </button>
+              </div>
             </div>
           </div>
         </div>
-      ))} */}
+      ))}
     </div>
   );
 };
+
 export default ReminderViewAll;
