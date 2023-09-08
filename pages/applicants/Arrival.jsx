@@ -57,6 +57,7 @@ export default function ApplicantsList() {
   };
 
   const handleDepartmentChange = (studentId, selectedDepartment) => {
+   
     const updatedData = data.map((student) => {
       if (student.applicant._id === studentId) {
         return {
@@ -274,8 +275,8 @@ const toggleDepartmentMenu = (studentId) => {
                 {/* Table Body */}
                 <tbody className="divide-y">
                   {data.filter(filterCities).map((student) => (
-                    <tr key={student.applicant._id}>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                    <tr key={student.applicant._id} style={{ height: '50px'}}>
+                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center" style={{ display: 'flex', alignItems: 'center' }}>
                         <span className="ml-3 font-bold">
                           {" "}
                           {student.firstName} {student.lastName}{" "}
@@ -297,10 +298,10 @@ const toggleDepartmentMenu = (studentId) => {
                         {student.applicant.pickUpBy || "Not Set"}
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {student.applicant.departments}
+                        {student.applicant.department}
                         <div className="relative inline-block text-left">
     <div>
-      <button
+      {/* <button
         type="button"
         className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
         id={`department-menu-${student.applicant._id}`}
@@ -322,11 +323,11 @@ const toggleDepartmentMenu = (studentId) => {
             clipRule="evenodd"
           />
         </svg>
-      </button>
+      </button> */}
     </div>
 
     {/* Dropdown menu */}
-    {openDepartmentMenus[student.applicant._id] && (
+    {/* {openDepartmentMenus[student.applicant._id] && (
     <div
     className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
         role="menu"
@@ -392,7 +393,7 @@ const toggleDepartmentMenu = (studentId) => {
         </button>
       </div>
     </div>
-    )}
+    )} */}
   </div>
                       </td>
                     </tr>
