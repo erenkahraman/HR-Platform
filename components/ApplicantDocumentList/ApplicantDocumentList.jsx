@@ -184,7 +184,7 @@ const DocumentList = () => {
           },
         };
         const { data } = await axios.get(
-          `/api/applicant`,
+          // `/api/applicant`,
           { params: { token: token } },
           config
         );

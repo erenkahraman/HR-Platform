@@ -5,8 +5,6 @@ import { useRouter } from "next/router";
 import Popup from "reactjs-popup";
 import mongoose from "mongoose";
 import { Button } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 // import { DatePicker } from "@mui/x-date-pickers";
 import { TextField } from "@mui/material";
 import axios from "axios";
@@ -19,6 +17,7 @@ import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; // Import the stylesheet for react-datepicker
+import { parse } from 'date-fns';
 
 
 const NewApplicants = () => {
@@ -121,6 +120,45 @@ const NewApplicants = () => {
     reset(student);
   }, [student, reset]);
 
+  function formatDate(date) {
+    if (date instanceof Date && !isNaN(date)) {
+
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+  
+      // Ensure leading zeros for day and month
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+  
+      // Format the date as 'dd/MM/yyyy'
+      return `${formattedDay}/${formattedMonth}/${year}`;
+    }
+    return '';
+  }
+
+  function parseDate(dateString) {
+    debugger;
+    if(!dateString.getDate())
+    {
+      const parts = dateString.split('/');
+      if (parts.length === 3) {
+        const day = parts[0];
+        const month = parts[1];
+        const year = parts[2];
+        // Dönüş yaparken "dd/mm/yyyy" formatında bir dize oluşturun
+        return `${day}/${month}/${year}`;
+      }
+    }
+
+    return dateString; // Geçersiz tarih formatını işleme alma
+  }
+  
+  
+  
+  
+  
+  
   // get countries list from react-select-country-list
   const countries = useMemo(() => countryList().getLabels(), []);
 
@@ -129,7 +167,7 @@ const NewApplicants = () => {
     setOpen(true);
     const idSave = document.querySelector("#Save");
     if(idSave){
-      
+      debugger;
       const student = data.student;
       const applicant = data.student.applicant;
 
@@ -167,6 +205,7 @@ const NewApplicants = () => {
       console.log(JSONapplicant);
       await fetch(endpointstudent, optionsStudent);
       await fetch(endpointapplicant, optionApplicant);
+      
     }
     router.push("/applicants/list");
   };
@@ -250,12 +289,12 @@ const NewApplicants = () => {
 
 
 
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today = yyyy + '-' + mm + '-' + dd;
-    console.log(today);
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  today = yyyy + '-' + mm + '-' + dd;
+  console.log(today);
 
   
 
@@ -421,18 +460,18 @@ const NewApplicants = () => {
                     {/* Date of Birth */}
                     <div className="flex flex-col gap-2">
                       <label className="block text-sm">Date of Birth</label>
-                      {/* <Controller
+                      <Controller
                           control={control}
                           name="student.dateOfBirth"
                           render={({ field }) => (
                             <DatePicker
-                              selected={field.value}
+                              selected={field.value ? new Date(parseDate(field.value)) : null}
                               onChange={field.onChange}
-                              dateFormat="dd/MM/yyyy" // Set the desired date format here
-                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
-                            />
+                              dateFormat="dd/MM/yyyy" // Set the desired output date format here
+                              placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                          />
                           )}
-                      /> */}
+                      />
                       {/* <Controller
                         control={control}
                         name="student.dateOfBirth"
@@ -445,7 +484,7 @@ const NewApplicants = () => {
                             <DatePicker
                               disableMaskedInput
                               value={value || null}
-                              inputFormat="DD/MM/YYYY"
+                              inputFormat="dd/MM/yyyy"
                               onChange={(date) => {
                                 onChange(date?.isValid ? date : null);
                                 console.log(date)
@@ -455,9 +494,9 @@ const NewApplicants = () => {
                           </LocalizationProvider>
                         )}
                       /> */}
-                      <p className="text-sm font-thin text-red-600">
+                      {/* <p className="text-sm font-thin text-red-600">
                         {errors.student?.dateOfBirth?.message}
-                      </p>
+                      </p> */}
                     </div>
 
                     {/* Nationality */}
@@ -524,6 +563,13 @@ const NewApplicants = () => {
                     <div className="flex flex-col gap-2">
                       <label className="block text-sm">Phone Number</label>
                       <input
+                        {...register("student.phoneNumber", {
+                          required: "Please enter the phone number",
+                          pattern: {
+                            value: /^[0-9]+$/,
+                            message: "Please enter a valid phone number",
+                          },
+                        })}
                         type="tel"
                         autoComplete="off"
                         onInput={(e) => {
@@ -531,7 +577,9 @@ const NewApplicants = () => {
                         }}
                         className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
-                      
+                      <p className="text-sm font-thin text-red-600">
+                        {errors.student?.phoneNumber?.message}
+                      </p>
                     </div>
 
 
@@ -600,13 +648,14 @@ const NewApplicants = () => {
                           name="student.applicant.applicationDate"
                           render={({ field }) => (
                             <DatePicker
-                              selected={field.value}
-                              onChange={field.onChange}
-                              dateFormat="dd/MM/yyyy" // Set the desired date format here
-                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
-                            />
+                            selected={field.value ? new Date(parseDate(field.value)) : null}
+                            onChange={field.onChange}
+                            dateFormat="dd/MM/yyyy" // Set the desired output date format here
+                            placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                          />
                           )}
                         />
+                        
                         {/* <Controller
                           control={control}
                           name="student.applicant.applicationDate"
@@ -618,7 +667,7 @@ const NewApplicants = () => {
                               <DatePicker
                               disableMaskedInput
                                 value={value || null}
-                                inputFormat="DD/MM/YYYY"
+                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -642,13 +691,14 @@ const NewApplicants = () => {
                           name="student.applicant.hrInterviewDate"
                           render={({ field }) => (
                             <DatePicker
-                              selected={field.value}
-                              onChange={field.onChange}
-                              dateFormat="dd/MM/yyyy" // Set the desired date format here
-                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
-                            />
+                            selected={field.value ? new Date(parseDate(field.value)) : null}
+                            onChange={field.onChange}
+                            dateFormat="dd/MM/yyyy" // Set the desired output date format here
+                            placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                          />
                           )}
                         />
+                        
                         {/* <Controller
                           control={control}
                           name="student.applicant.hrInterviewDate"
@@ -660,7 +710,7 @@ const NewApplicants = () => {
                               <DatePicker
                               disableMaskedInput
                                 value={value || null}
-                                inputFormat="DD/MM/YYYY"
+                                inputFormat="dd/MM/yyyy"
                                 onChange={(date) => {
                                   onChange(date?.isValid ? date : null);
                                 }}
@@ -688,13 +738,14 @@ const NewApplicants = () => {
                           name="student.applicant.ceoInterviewDate"
                           render={({ field }) => (
                             <DatePicker
-                              selected={field.value}
-                              onChange={field.onChange}
-                              dateFormat="dd/MM/yyyy" // Set the desired date format here
-                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
-                            />
+                            selected={field.value ? new Date(parseDate(field.value)) : null}
+                            onChange={field.onChange}
+                            dateFormat="dd/MM/yyyy" // Set the desired output date format here
+                            placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                          />
                           )}
                         />
+                        
                         {/* <Controller
                           control={control}
                           name="student.applicant.ceoInterviewDate"
@@ -706,7 +757,7 @@ const NewApplicants = () => {
                           //     <DatePicker
                           //     disableMaskedInput
                           //       value={value || null}
-                          //       inputFormat="DD/MM/YYYY"
+                          //       inputFormat="dd/MM/yyyy"
                           //       onChange={(date) => {
                           //         onChange(date?.isValid ? date : null);
                           //       }}
@@ -825,13 +876,14 @@ const NewApplicants = () => {
                           // rules={{ required: "Please, enter the application date" }}
                           render={({ field }) => (
                             <DatePicker
-                              selected={field.value}
-                              onChange={field.onChange}
-                              dateFormat="dd/MM/yyyy" // Set the desired date format here
-                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
-                            />
+                            selected={field.value ? new Date(parseDate(field.value)) : null}
+                            onChange={field.onChange}
+                            dateFormat="dd/MM/yyyy" // Set the desired output date format here
+                            placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                          />
                           )}
                         />
+                        
                         {/* <Controller
                           control={control}
                           name="student.applicant.startDate"
@@ -843,7 +895,7 @@ const NewApplicants = () => {
                           //     <DatePicker
                           //       disableMaskedInput
                           //       value={value || null}
-                          //       inputFormat="DD/MM/YYYY"
+                          //       inputFormat="dd/MM/yyyy"
                           //       onChange={(date) => {
                           //         onChange(date?.isValid ? date : null);
                           //       }}
@@ -871,11 +923,11 @@ const NewApplicants = () => {
                           // rules={{ required: "Please, enter the application date" }}
                           render={({ field }) => (
                             <DatePicker
-                              selected={field.value}
-                              onChange={field.onChange}
-                              dateFormat="dd/MM/yyyy" // Set the desired date format here
-                              placeholderText="DD/MM/YYYY" // Placeholder text for the input
-                            />
+                            selected={field.value ? new Date(parseDate(field.value)) : null}
+                            onChange={field.onChange}
+                            dateFormat="dd/MM/yyyy" // Set the desired output date format here
+                            placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                          />
                           )}
                         />
                         {/* <Controller
@@ -889,7 +941,7 @@ const NewApplicants = () => {
                           //     <DatePicker
                           //     disableMaskedInput
                           //       value={value || null}
-                          //       inputFormat="DD/MM/YYYY"
+                          //       inputFormat="dd/MM/yyyy"
                           //       onChange={(date) => {
                           //         onChange(date?.isValid ? date : null);
                           //       }}

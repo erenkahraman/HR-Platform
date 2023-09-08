@@ -1,7 +1,7 @@
 import { Circle } from "@mui/icons-material";
 import { ApplicantDocumentList } from "../../components/ApplicantDocumentList";
 import { IntersDocumentList } from "../../components/IntersDocumentList";
-import { StudentList } from "../../components/StudentList/StudentList";
+import { StudentList } from "../../components/StudentList";
 
 
 export default function Documents() {
@@ -35,9 +35,9 @@ export default function Documents() {
           </div>
         </div>
       </div>
-      {/* <StudentList />  */}
-      <IntersDocumentList />  
-      <ApplicantDocumentList />   
+      <StudentList /> 
+      {/* <IntersDocumentList />  
+      <ApplicantDocumentList />    */}
     </div>   
   );
 }
