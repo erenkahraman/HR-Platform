@@ -116,12 +116,10 @@ const WeeklySchedule = () => {
       });
   
       console.log(response.data);
-  
     } catch (error) {
       console.error(error);
     }
   };
-
   
   const handleMoveToAfternoon = async (internToBeMoved, internIndex) => {
     try {
@@ -135,7 +133,6 @@ const WeeklySchedule = () => {
         ...afternoonShiftInterns,
         internToBeMoved,
       ];
-
   
       // Update state with the new intern lists
       setMorningShiftInterns(updatedMorningShiftInterns);
@@ -360,6 +357,7 @@ const WeeklySchedule = () => {
       }
     }
 
+
     return (
     <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
@@ -386,34 +384,32 @@ const WeeklySchedule = () => {
             </div>
           </div>
           <div
-    className="flex flex-col items-center justify-center gap-10 mt-4"
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "12px 24px",
-      gap: "10px",
-      background: "#DCEBFC",
-      borderRadius: "24px",
-    }}
- >
+  className="flex flex-col items-center justify-center gap-10 mt-4"
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "12px 24px",
+    gap: "10px",
+    background: "#DCEBFC",
+    borderRadius: "24px",
+  }}
+>
   <table
     className="font-roboto"
     style={{
       width: "100%",
-      border: 'solid',
-    }
-  }
+    }}
   >
+    <tbody>
       <tr>
-        <th scope="col"><strong>{dateRange}</strong> </th>
-        <th scope="col">
-      <button onClick={() => resetShifts()}> <strong>{`RESET Week`}</strong></button>
-</th>
+        <td><strong>{dateRange}</strong></td>
       </tr>
-  </table> 
-  
+    </tbody>
+  </table>
+  <button onClick={() => resetShifts()} > RESET WEEK
+  </button>
 </div>
 
           <div
