@@ -79,13 +79,34 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
       internTest.endDate
     );
     const attendanceData = {
-      present: 0,
-      late: 0,
-      coveredDay: 0,
-      dayOff: 0,
-      excusedLeave: 0,
-      sick: 0,
-      unexcusedleave: 0,
+      coveredDay: {
+        count: 0,
+        dates: []
+      },
+      present: {
+          count: 0,
+          dates: []
+      },
+      dayOff: {
+          count: 0,
+          dates: []
+      },
+      late: {
+          count: 0,
+          dates: []
+      },
+      excusedLeave: {
+          count: 0,
+          dates: []
+      },
+      sick: {
+          count: 0,
+          dates: []
+      },
+      unexcusedLeave: {
+          count: 0,
+          dates: []
+      },
       date: currentDate,
       internTest: internTest,
     };

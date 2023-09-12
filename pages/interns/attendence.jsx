@@ -137,7 +137,6 @@ function Attendence() {
 
   const handleChangeStatus = (attendance, newStatus) => {
 
-    debugger;
     const isDateGiven = date !== ""
 
     if (!isDateGiven) {
@@ -206,7 +205,6 @@ function Attendence() {
         { params: { token: token } },
         config
       );
-      debugger;
       const filteredData = data.filter((attendance) => {
         const attendanceDate = new Date(attendance.date); 
         const attendanceMonth = attendanceDate.getMonth() + 1; 
@@ -278,7 +276,6 @@ function Attendence() {
 
     let internsAttendanceInfo = []
     data.forEach((attendance) => {
-      debugger;
       const attendanceInfo = getAttendanceInfoOfIntern(attendance)
       internsAttendanceInfo.push(attendanceInfo)
     })
@@ -292,7 +289,6 @@ function Attendence() {
 
 
   const getAttendanceInfoOfIntern = (attendance) => {
-    debugger;
     const attendanceInfo = {
       "First Name": attendance.internTest.student.firstName,
       "Last Name": attendance.internTest.student.lastName,
@@ -302,7 +298,7 @@ function Attendence() {
       "Late": attendance.late,
       "Present": attendance.present,
       "Sick": attendance.sick, 
-      "Unexcused Leave": attendance.unexcusedleave,
+      "Unexcused Leave": attendance.unexcusedLeave,
     }
     return attendanceInfo
   }
@@ -335,14 +331,13 @@ function Attendence() {
                     dayOff: 0,
                     excusedLeave: 0,
                     sick: 0,
-                    unexcusedleave: 0,
+                    unexcusedLeave: 0,
                     date: newDate,
                     internTest: attendance.internTest,
                   };
               
                   
                   await saveToAttendanceDatabase(attendanceData);
-                  debugger;
 
                 }
                 setData(data);
@@ -362,7 +357,6 @@ function Attendence() {
 
 
   const save = (attendance) => {
-    debugger;
     setInterns(attendance.internTest);
     if (!dateIncluded) {
       if (status && date) {
@@ -374,7 +368,8 @@ function Attendence() {
               onClick: async () => {
                 debugger;
                 setOpen(true);
-                attendance[status]++;
+                attendance[status].count++;
+                attendance[status].date.push(date);
                 attendance.date=date;
                 attendance.internTest.token = token;
                 const JSONattendance = JSON.stringify(attendance);
@@ -667,9 +662,7 @@ function Attendence() {
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     SITUATION
                   </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    PRESENT
-                  </th>
+
                   <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     LATE
                   </th>
@@ -719,60 +712,60 @@ function Attendence() {
                           // onClick={(e) => setStatus(e.target.value)}
                           onClick={(e) => handleChangeStatus(attendance, e.target.value)}
                         >
-                          <option value="present">Present</option>
+                          <option value="present">Choose an Option</option>
                           <option value="late">Late</option>
                           <option value="dayOff">Day off</option>
                           <option value="coveredDay">Covered Day</option>
                           <option value="excusedLeave">Excused leave</option>
                           <option value="sick">Sick</option>
-                          <option value="unexcusedleave">
+                          <option value="unexcusedLeave">
                             Unexecused leave
                           </option>
                         </select>
                       </td>
 
+                      {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+                        <div className="flex flex-col gap-1">
+                          <div>{attendance.present.count}</div>
+                        </div>
+                      </td> */}
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{attendance.present}</div>
+
+                          <div>{attendance.late.count}</div>
+
                         </div>
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-
-                          <div>{attendance.late}</div>
-
-                        </div>
-                      </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-                          <div>{attendance.coveredDay}</div>
+                          <div>{attendance.coveredDay.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{attendance.dayOff}</div>
+                          <div>{attendance.dayOff.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {attendance.excusedLeave}
+                            {attendance.excusedLeave.count}
                           </div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
-                          <div>{attendance.sick}</div>
+                          <div>{attendance.sick.count}</div>
                         </div>
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div>
-                            {attendance.unexcusedleave}
+                            {attendance.unexcusedLeave.count}
                           </div>
                         </div>
                       </td>
