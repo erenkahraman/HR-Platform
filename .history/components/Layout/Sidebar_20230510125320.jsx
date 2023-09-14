@@ -119,33 +119,50 @@ export default function Sidebar() {
     return result;
   };
 
+  const customTextSize = "text-lg";
+
   return (
     <div className=" h-screen sm:h-screen fixed text-gray-400">
       <>
-        <div className="ml-3 w-full sm:h-screen fixed mt-4">
+      <div className="ml-3 w-full sm:h-screen fixed mt-4 text-lg">
           <ul className="fixed sm:h-screen text-sm font-light">
             {Menus.map((menu, index) => (
               <li key={index}>
                 {menu.isSeperator === undefined ? (
                   <Link href={menu.href}>
+                     <div className="clickable-element">
                     <a
                       className={
                         menu.isOn === false
                           ? sideBarListItem()
-                          : sideBarListItem() + " text-[#2F80ED] bg-sky-50"
+                          : sideBarListItem() + " text-[#2F80ED] bg-sky-70"
                       }
+                     // style={{ cursor: 'pointer' }} 
+                     // style={{ fontSize: '16px' }}
                     >
                       {menu.icon}
-                      <p>{menu.title}</p>
+                     <p className={customTextSize}>{menu.title}</p>
+                     <p style={{ cursor: 'pointer' }}>{menu.title}</p> 
                     </a>
+                    </div>
                   </Link>
                 ) : (
-                  <a className={sideBarListSeperator()}>{menu.title}</a>
+                  <div className="clickable-element" > 
+                  <a className={sideBarListSeperator()} style={{ cursor: 'pointer' }}>
+                    {menu.title}
+                  </a>
+                  </div>
                 )}
               </li>
             ))}
           </ul>
         </div>
+        <style jsx>{`
+        /* Add hover:pointer style for clickable elements */
+        .clickable-element:hover {
+          cursor: pointer;
+        }
+      `}</style>
       </>
     </div>
   );
