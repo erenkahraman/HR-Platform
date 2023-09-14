@@ -34,7 +34,7 @@ const Reminder = ({ color }) => {
           return aDate - bDate;
         });
 
-        setData(sortedData.slice(0,5));
+        setData(sortedData);
         setLoading(false);
       } catch (e) {
         console.error(e);
@@ -42,7 +42,7 @@ const Reminder = ({ color }) => {
       }
     };
     asyncRequest();
-  }, [token]);
+  }, []);
 
   if (data.length !== 0) {
     return (

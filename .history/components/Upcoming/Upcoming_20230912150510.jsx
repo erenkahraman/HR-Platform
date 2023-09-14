@@ -57,10 +57,10 @@ const Upcoming = () => {
       ) : (
         data.reverse().map((intern, i) => (
           <div key={i} className="flex w-full">
-            <div className="flex-[1] flex flex-col">
-              <div className="text-sm font-semibold">{intern.name}</div>
+            {/* <div className="flex-[1] flex flex-col">
+              <div className="text-sm font-semibold">{intern.firstName}</div>
               <div className="text-xs font-light ">{intern.department}</div>
-            </div>
+            </div> */}
             <div className={statusColor(intern.action)}>{intern.action}</div>
             <div className="flex-[1] flex items-center justify-center text-xs text-gray-500">
               {formatDate(intern.date)}

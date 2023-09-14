@@ -42,7 +42,7 @@ const Reminder = ({ color }) => {
       }
     };
     asyncRequest();
-  }, [token]);
+  }, []);
 
   if (data.length !== 0) {
     return (

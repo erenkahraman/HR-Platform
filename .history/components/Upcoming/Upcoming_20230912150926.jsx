@@ -7,6 +7,7 @@ const Upcoming = () => {
   const token = cookie.get("token");
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [internTest, setInterns] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -58,7 +59,7 @@ const Upcoming = () => {
         data.reverse().map((intern, i) => (
           <div key={i} className="flex w-full">
             <div className="flex-[1] flex flex-col">
-              <div className="text-sm font-semibold">{intern.name}</div>
+              <div className="text-sm font-semibold">{internTest.student.firstName} {internTest.student.lastName}</div>
               <div className="text-xs font-light ">{intern.department}</div>
             </div>
             <div className={statusColor(intern.action)}>{intern.action}</div>
