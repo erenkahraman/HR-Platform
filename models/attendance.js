@@ -3,13 +3,34 @@ import mongoose from "mongoose";
 // Create a Mongoose schema for attendance
 const AttendanceSchema = new mongoose.Schema({
     _id: {type: mongoose.Schema.Types.ObjectId,required: true},
-    coveredDay: {type: Number,default: 0},
-    present: {type: Number,default: 0},
-    dayOff: {type: Number,default: 0},
-    late: {type: Number,default: 0},
-    excusedLeave: {type: Number,default: 0},
-    sick: {type: Number,default: 0},
-    unexcusedleave: {type: Number,default: 0},
+    coveredDay: {
+        count: { type: Number, default: 0 },
+        date: [{ type: Date, default: Date.now }]
+    },
+    present: {
+        count: { type: Number, default: 0 },
+        date: [{ type: Date, default: Date.now }]
+    },
+    dayOff: {
+        count: { type: Number, default: 0 },
+        date: [{ type: Date, default: Date.now }]
+    },
+    late: {
+        count: { type: Number, default: 0 },
+        date: [{ type: Date, default: Date.now }]
+    },
+    excusedLeave: {
+        count: { type: Number, default: 0 },
+        date: [{ type: Date, default: Date.now }]
+    },
+    sick: {
+        count: { type: Number, default: 0 },
+        date: [{ type: Date, default: Date.now }]
+    },
+    unexcusedLeave: {
+        count: { type: Number, default: 0 },
+        date: [{ type: Date, default: Date.now }]
+    },
     date: { type: Date, default: Date.now },
     internTest: { type: mongoose.Schema.Types.ObjectId, ref: "InternTest" },
 });

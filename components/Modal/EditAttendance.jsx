@@ -8,7 +8,6 @@ import moment from "moment";
 
 
 const EditAttendance = ({ attendance, setModel }) => {
-  debugger;
   const [dates, setDates] = useState([]);
   const [status, setStatus] = useState("present");
   const [open, setOpen] = useState(false);
@@ -34,7 +33,7 @@ const EditAttendance = ({ attendance, setModel }) => {
           label: "Yes",
           onClick: async () => {
             setOpen(true);
-            attendance[status]--;
+            attendance[status].count--;
             attendance.token = token;
             const JSONattendance = JSON.stringify(attendance);
             const endpoint = `/api/attendance/${attendance._id}`;
@@ -91,60 +90,47 @@ const EditAttendance = ({ attendance, setModel }) => {
                     className="basis-1/2 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     onClick={(e) => {
                       if (e.target.value) {
+                        debugger;
                         setStatus(e.target.value);
-                        setDates(attendance.date);
+                        setDates(attendance[e.target.value].date);
                       } else {
                         setDates([]);
                       }
                     }}
                   >
                     <option value="">Select...</option>
-                    <option value="present">Present</option>
                     <option value="late">Late</option>
                     <option value="dayOff">Day off</option>
                     <option value="coveredDay">Covered Day</option>
                     <option value="excusedLeave">Excused leave</option>
                     <option value="sick">Sick</option>
-                    <option value="unexcusedleave">Unexecused leave</option>
+                    <option value="unexcusedLeave">Unexecused leave</option>
                   </select>
                 </div>
-                {/* <div className="flex flex-row">
+                <div className="flex flex-row">
                   <label
                     htmlFor="startDate"
                     className="basis-1/2 flex  items-center text-left text-xl font-semibold text-black w-32 "
                   >
-                    Dates:
+                    Date
                   </label>
-
-                  <ul className="overflow-y-auto max-h-32 w-2/5 mb-8 space-y-4 text-left text-gray-500 dark:text-gray-400">
-                    {dates.length == 0 ? (
-                      <label className="flex items-center space-x-3">
-                        No dates for this status
-                      </label>
-                    ) : (
-                        <li className="flex items-center space-x-3" key={attendance._id}>
-                          <label>{moment(date).format("dd/MM/yyyy")}</label>
-                          <ClearIcon
-                            color="error"
-                            fontSize="small"
-                            onClick={(e) => {
-                              deleteDate(date);
-                            }}
-                          />
-                        </li>
-                    )}
-                  </ul>
-                </div> */}
+                  <th className="overflow-y-auto max-h-32 w-2/5 mb-8 space-y-4 text-left text-gray-500 dark:text-gray-400">
+                    {dates.map((date, index) => (
+                      <React.Fragment key={attendance._id}>
+                        <tr className="flex items-center space-x-3">
+                          <label>{date}</label>
+                        </tr>
+                        {(index + 1) % 2 === 0 && <br />} 
+                      </React.Fragment>
+                    ))}
+                  </th>
+                </div>
               </div>
               <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
                 <button
                   data-modal-toggle="defaultModal"
                   type="button"
-                  className="inset-y-0 right-0 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 
-                                focus:outline-none focus:ring-blue-300 rounded-lg border 
-                                border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 
-                                focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 
-                                dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                  className="inline-flex items-center px-4 py-2 border border-transparent"
                   onClick={(e) => {
                     setModel(undefined);
                   }}
@@ -158,7 +144,6 @@ const EditAttendance = ({ attendance, setModel }) => {
                             hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
                             focus:ring-blue-500"
                   onClick={(e) => {
-                    debugger;
                     updateAttendance(attendance);
                     
                   }}
