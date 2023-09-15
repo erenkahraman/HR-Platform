@@ -34,7 +34,6 @@ import {
 import DialogContentText from "@mui/material/DialogContentText";
 import mongoose from "mongoose";
 import { de } from "date-fns/locale";
-import tokenCheck from "../api/auth/tokenCheck";
 
 
 
@@ -221,10 +220,11 @@ function Attendence() {
   
   useEffect(() => {
     asyncRequest(currentDate);
-  }, [token, currentDate]);
+  }, [token]);
 
 
 
+  
 
   const handleCurrentMonthDateRange = (date) => {
     const firstDayOfMonth = startOfMonth(date);
