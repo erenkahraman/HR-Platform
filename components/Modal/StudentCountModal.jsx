@@ -60,7 +60,7 @@ const StudentCountModal = ({ setScModal, type }) => {
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
 
   // useEffect(() => {
   //   fetch("/api/department")

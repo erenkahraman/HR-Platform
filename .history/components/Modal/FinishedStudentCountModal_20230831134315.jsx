@@ -25,7 +25,7 @@ const departmanColor = (department) => {
   }
 };
 
-const StudentCountModal = ({ setScModal, type }) => {
+const FinishedStudentCountModal = ({ setLvModal, type }) => {
   const [departments, setDepartment] = useState([]);
   const [open, setOpen] = useState(false);
   const token = cookie.get("token");
@@ -68,7 +68,7 @@ const StudentCountModal = ({ setScModal, type }) => {
       <div className="flex h-screen justify-center items-center  ">
         <div className="flex-col bg-white border-4 m-4 rounded-xl px-10 p-0 ">
           <button
-            onClick={(e) => setScModal(false)}
+            onClick={(e) => setLvModal(false)}
             className=" rounded px-4 py-2  text-black text-2xl"
           >
             <MdOutlineCancel />
@@ -85,7 +85,7 @@ const StudentCountModal = ({ setScModal, type }) => {
                 </div>
                 <div className="flex flex-col text-sm font-bold ">
                   <div>{department.department}</div>
-                  <div className="text-xl ml-3 ">{department[type].length}</div>
+                  <div className="text-xl ml-3 ">{department.finishedInterns.length}</div>
                 </div>
               </div>
             ))}
@@ -96,4 +96,6 @@ const StudentCountModal = ({ setScModal, type }) => {
   );
 };
 
-export default StudentCountModal;
+
+export default FinishedStudentCountModal;
+
