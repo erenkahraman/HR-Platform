@@ -1,0 +1,9 @@
+.sidebar-link {
+    cursor: pointer;
+  }
+  
+  .sidebar-link:hover {
+    background-color: #2F80ED; /* Change to your desired hover background color */
+    color: white; /* Change to your desired hover text color */
+  }
+  
