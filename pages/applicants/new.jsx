@@ -139,7 +139,7 @@ const NewApplicants = () => {
 
   function parseDate(dateString) {
     debugger;
-    if(!dateString.getDate())
+    if(typeof dateString === "string")
     {
       const parts = dateString.split('/');
       if (parts.length === 3) {
