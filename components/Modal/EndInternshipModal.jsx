@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import LoadingState from "../Utils/LoadingState";
+import cookie from "js-cookie";
 // import LoadingState from "../LoadingState";
 
 
@@ -10,6 +11,7 @@ const EndInternshipModal = ({ internTest, setEiModal }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const token = cookie.get("token");
 
 const handleAccept = async () => {
   setEiModal(false);
@@ -18,12 +20,16 @@ const handleAccept = async () => {
 
 
   try {
+    debugger;
     const deleteOptions = {
       method: "DELETE",
 
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+      },
+      params: {
+        token: token,
       },
     };
 
@@ -32,24 +38,26 @@ const handleAccept = async () => {
       await fetch(deleteEndpoint, deleteOptions);
     
       router.push("/Profile/list");
+
+      const departmentUpdateOptions = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          // "Access-Control-Allow-Origin": "*" - You might not need this header here
+        },
+        body: JSON.stringify({
+          type: "FINISHED", // Assuming this is the value for finished interns
+          finishedInterns: internTest._id, // Assuming this is the intern ID
+        }),
+      };
+      await fetch(`/api/department/${internTest.department}`, departmentUpdateOptions);
     } catch (error) {
       console.error("Error deleting intern:", error);
       setOpen(false);
     }
-    const departmentUpdateOptions = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        // "Access-Control-Allow-Origin": "*" - You might not need this header here
-      },
-      body: JSON.stringify({
-        type: "FINISHED", // Assuming this is the value for finished interns
-        finishedInterns: internTest._id, // Assuming this is the intern ID
-      }),
-    };
+
   
-    // Update the department's finishedInterns array
-    await fetch(`/api/department/${internTest.department}`, departmentUpdateOptions);
+
   }; 
 
   
