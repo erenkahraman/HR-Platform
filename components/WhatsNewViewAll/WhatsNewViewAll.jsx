@@ -61,7 +61,7 @@ const WhatsNewViewAll = () => {
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   return (
     <div>
