@@ -36,7 +36,9 @@ const handleAccept = async () => {
       const deleteEndpoint = `/api/internTest/${internTest._id}`;
 
       await fetch(deleteEndpoint, deleteOptions);
-    
+
+      const deleteAttendanceForIntern=`/api/attendance/${internTest.attendance}`;
+      await fetch(deleteAttendanceForIntern, deleteOptions);
       router.push("/Profile/list");
 
       const departmentUpdateOptions = {
