@@ -38,7 +38,7 @@ const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
 
   // useEffect(() => {
   //   fetch("/api/department")

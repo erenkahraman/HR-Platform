@@ -52,7 +52,7 @@ const FinishedStudentCountModal = ({ setLvModal, type }) => {
       }
     };
     asyncRequest();
-  }, [token]);
+  }, []);
 
   // useEffect(() => {
   //   fetch("/api/department")
