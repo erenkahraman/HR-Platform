@@ -1,5 +1,4 @@
 import AttendanceModel from "../../../models/attendance";
-import Student from "../../../models/attendance";
 import dbConnect from "../../../util/mongodb";
 import { tokenCheckFunction } from "../auth/tokenCheck";
 
@@ -58,11 +57,7 @@ export default async function handler(req, res) {
       }
     case "DELETE":
       try {
-        const student = await AttendanceModel.deleteOne({ _id: id });
-        return res.status(200).json({
-          success: true,
-          data: student,
-        });
+        await AttendanceModel.findByIdAndDelete(id);
       } catch (error) {
         return res.status(500).json({
           success: false,
