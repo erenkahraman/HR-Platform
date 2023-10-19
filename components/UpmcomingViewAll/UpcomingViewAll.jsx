@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Circle } from "@mui/icons-material";
 import axios from "axios";
 import cookie from "js-cookie";
+import moment, { Moment } from "moment/moment.js";
 
 const UpcomingViewAll = () => {
   const [data, setData] = useState([]);
@@ -54,7 +55,7 @@ const UpcomingViewAll = () => {
                 {upcoming.action}
               </div>
               <div className="flex-[3] flex items-center justify-start text-xs text-gray-500">
-                {upcoming.date}
+                {moment(upcoming.date).format("DD/MM/YYYY")}
               </div>
             </div>
           </div>
