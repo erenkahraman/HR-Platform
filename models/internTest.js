@@ -4,11 +4,11 @@ const statusEnum = ["Not Submitted", "Needs Review", "Incorrect", "Correct"];
 
 const InternTestSchema = new mongoose.Schema({
     _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
     },
-    startDate: { type: String },
-    endDate: { type: String },
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: true },
     durationInWeeks: { type: Number },
     department: { type: String, maxlength: 30 },
     position: { type: String, maxlength: 30 },
