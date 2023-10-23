@@ -16,6 +16,8 @@ const FeedSchedule = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [weeklyScheduleByDepartment, setWeeklyScheduleByDepartment] = useState({});
   const [populatedWeeklySchedule, setPopulatedWeeklySchedule] = useState([]);
+  const [sumOfMorningShift, setSumOfMorningShift] = useState([]);
+  const [sumOfAftenoonShift, setSumOfAftenoonShift] = useState([]);
   const token = cookie.get("token");
   // console.log("received cookies from FeedSchedule");
 
@@ -39,7 +41,21 @@ const FeedSchedule = () => {
         // Update state with the new data
         setWeeklySchedule(weeklySchedule);
         setPopulatedWeeklySchedule(populatedWeeklySchedule);
-
+        console.log(populatedWeeklySchedule);
+        
+        //Simple function to get the number of people in morning and aftenoon shifts from all departments
+        const sumShiftGroups = () =>{
+          var tempMorning = 0;
+          var tempAftenoon = 0;
+          populatedWeeklySchedule.map((group) =>{
+            tempMorning += group.Schedule.morning.length;
+            tempAftenoon += group.Schedule.afternoon.length;
+          });
+          setSumOfMorningShift(tempMorning);
+          setSumOfAftenoonShift(tempAftenoon);
+          tempAftenoon, tempMorning = null;
+        }
+        sumShiftGroups();
 
         // const weeklyScheduleGroupedByDepartment = data.reduce(
         //   (departments, item) => {
@@ -52,7 +68,7 @@ const FeedSchedule = () => {
         // );
         // setWeeklySchedule(weeklyScheduleGroupedByDepartment);
 
-        setPopulatedWeeklySchedule(populatedWeeklySchedule);
+        //setPopulatedWeeklySchedule(populatedWeeklySchedule);
         // const departmentNames = Object.keys(weeklyScheduleGroupedByDepartment);
         // setDepartmentNames(departmentNames);
 
@@ -178,25 +194,23 @@ const FeedSchedule = () => {
       ]
     });
   };
-
   return (
     <div className="flex flex-wrap m-2 py-4">
       <div className="flex flex-[1] flex-col gap-2 p-2">
         <div className="text-sm font-semibold">  {dateRange}</div>
         <div className="text-xs font-light">
-
         </div>
       </div>
       <div className="flex flex-[3]  flex-col  ">
         <div className="text-sm text-center font-semibold">Schedule for this week</div>
         <div className="text-xs font-light h-74">
-          <div className="flex flex-wrap justify-center flex gap-8 my-1">
+          <div className="flex flex-wrap justify-center gap-8 my-1">
             <div>
-              <h3>Morning Shift:</h3>
+              <h3>Morning Shift[{sumOfMorningShift}]:</h3>
               <div>
                 {populatedWeeklySchedule.map((schedule) => (
                   <table
-                    key={schedule._id}            >
+                    key={schedule._id}>
                     <thead>
                       <tr>
                         <h3><strong>{schedule.Group} <span>[{schedule.Schedule.morning.length}]</span> </strong></h3>
@@ -208,8 +222,7 @@ const FeedSchedule = () => {
               </div>
             </div>
             <div>
-              <h3>Afternoon Shift:</h3>
-
+              <h3>Afternoon Shift[{sumOfAftenoonShift}]:</h3>
               {populatedWeeklySchedule.map((schedule) => (
                 <table
                   key={schedule._id}
