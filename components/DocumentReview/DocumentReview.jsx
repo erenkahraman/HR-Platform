@@ -27,7 +27,6 @@ const DocumentReview = ({ title, register, type }) => {
       >
         <option value="Not Submitted">Not Submitted</option>
         <option value="Needs Review">Needs Review</option>
-        <option value="Incorrect">Incorrect</option>
         <option value="Correct">Correct</option>
       </select>
     </div>

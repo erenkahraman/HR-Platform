@@ -19,14 +19,11 @@ export default function Documents() {
             </div>
             <div className="flex gap-2 items-center">
               <Circle className="text-xs text-red-500" />
-              The documents has been reviewed but it is incorrect
+              The documents need to be reviewed
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="flex gap-2 items-center">
-              <Circle className="text-xs text-blue-500" />
-              The documents need to be reviewed
-            </div>
+            
             <div className="flex gap-2 items-center">
               <Circle className="text-xs text-gray-400" />
               The documents has not submitted yet
