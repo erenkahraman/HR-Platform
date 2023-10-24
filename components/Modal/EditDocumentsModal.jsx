@@ -21,14 +21,15 @@ const EditDocumentsModal = ({
   index,
   type,
 }) => {
-  const docs = [
-    "Curriculum Vitae",
-    "Motivation Letter",
-    "Arrival Tickets",
-    "Learning Agreement",
-    "Acceptance Letter",
-    "Interview Record",
-  ];
+  //Not called or used, takes away focus at initial overview of the code (If it is accessed somewhere else, and is neccessary, then it should be specified here)
+  // const docs = [
+  //   "Curriculum Vitae",
+  //   "Motivation Letter",
+  //   "Arrival Tickets",
+  //   "Learning Agreement",
+  //   "Acceptance Letter",
+  //   "Interview Record",
+  // ];
   const [loading, setLoading] = useState();
   const {
     control,
@@ -64,9 +65,10 @@ const EditDocumentsModal = ({
           console.error(error);
         }
         break;
-      case "internTest":
-        try {
-          await fetch(`/api/internTest/${data.internTest._id}`, {
+        case "internTest":
+          try {
+          console.log(data.internTest);
+          await fetch(`/api/internTest`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -76,7 +78,7 @@ const EditDocumentsModal = ({
           });
           // students[index] = data;
         } catch (error) {
-          console.error(error);
+          console.error(error+"-----------ERROR calling from internTest fetch");
         }
         break;
     }

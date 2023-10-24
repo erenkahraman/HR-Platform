@@ -86,7 +86,6 @@ const handleSubmitWhatsNew = async (event) => {
     await fetch(endpointReminder, Reminder);
     router.reload();
   };
-
   return (
 
     <div className="flex flex-col w-full px-8">
@@ -369,7 +368,7 @@ const handleSubmitWhatsNew = async (event) => {
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">What&apos;s New</div>
               <a
-                href="../WhatsNewViewAll"
+                href="/WhatsNewViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
                 <div>View All </div>
@@ -390,7 +389,7 @@ const handleSubmitWhatsNew = async (event) => {
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">Weekly Schedule</div>
               <a
-                href="./weeklySchedule"
+                href="/weeklySchedule"
                 className="viewAll flex items-center justify-center text-[#2F80ED]"
               >
                 <div>View All</div>
@@ -414,7 +413,7 @@ const handleSubmitWhatsNew = async (event) => {
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">Daily Reminder</div>
               <a
-                href="../reminderViewAll"
+                href="/reminderViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
                 <div>View All</div>
@@ -461,7 +460,7 @@ const handleSubmitWhatsNew = async (event) => {
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">Upcoming Interviews</div>
               <a
-                href="./UpcomingInterviewsViewAll"
+                href="/UpcomingInterviewsViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
                 <div>View All</div>

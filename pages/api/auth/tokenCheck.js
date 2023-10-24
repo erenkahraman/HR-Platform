@@ -17,8 +17,10 @@ export default async (req, res) => {
 function tokenCheckFunction(token) {
   try {
     var decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("LOGFORTEST - Inside token check function.");
     return true;
   } catch (error) {
+    console.log("LOGFORTEST - Function failed for some reason.");
     throw new Error("Invalid token");
   }
 }

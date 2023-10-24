@@ -15,8 +15,10 @@ export default async function handler(req, res) {
     ? req.body.token
     : "";
   try {
+    console.log("LOGFORTEST - Calling for token check function");
     tokenCheckFunction(token);
   } catch (e) {
+    console.log("LOGFORTEST - Token check function failed for some reason.")
     console.error(e);
     res.status(401).json("Unauthorized User");
   }
@@ -78,9 +80,9 @@ export default async function handler(req, res) {
           status: "Ongoing",
         }
       );  */
-
+        console.log("LOGFORTEST - Look! I reached the api backend!");
       
-      
+        console.log(req.body);
       await Promise.all(
         req.body.interns.map(async (eachIntern) => {
           

@@ -170,7 +170,6 @@ const DocumentListContent = ({ type, status,interns }) => {
   );
 };
 
-
 const DocumentList = () => {
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -192,6 +191,7 @@ const DocumentList = () => {
           config
         );
         setInterns(data);
+        console.log(data);
         setOpen(false);
       } catch (e) {
         console.error(e);
@@ -200,7 +200,6 @@ const DocumentList = () => {
     };
     asyncRequest();
   }, [token]);
-
   return (
     <div className="flex flex-col w-full gap-2">
       <LoadingState open={open} />
