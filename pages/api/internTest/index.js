@@ -7,14 +7,16 @@ import { tokenCheckFunction } from "../auth/tokenCheck";
 
 export default async function handler(req, res) {
   const { method } = req;
-
   // Token CHECK
   let token = req.query.token
-    ? req.query.token
-    : req.body.token
-    ? req.body.token
-    : "";
+  ? req.query.token
+  : req.body.token
+  ? req.body.token
+  : "";
   try {
+    console.log("LOGFORTEST ------- HERE's the request body from the edit intern documents");
+    console.log(req);
+    console.log(token);
     console.log("LOGFORTEST - Calling for token check function");
     tokenCheckFunction(token);
   } catch (e) {
@@ -82,7 +84,6 @@ export default async function handler(req, res) {
       );  */
         console.log("LOGFORTEST - Look! I reached the api backend!");
       
-        console.log(req.body);
       await Promise.all(
         req.body.interns.map(async (eachIntern) => {
           

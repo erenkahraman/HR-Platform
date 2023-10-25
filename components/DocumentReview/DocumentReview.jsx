@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-const DocumentReview = ({ title, register, type }) => {
-  const [selectedValue, setSelectedValue] = useState("Not Submitted");
+const DocumentReview = ({ value, title, register, type }) => {
+  const [selectedValue, setSelectedValue] = useState(value);
 
   useEffect(() => {
     // Set the default value when the component mounts
-    setSelectedValue("Not Submitted");
+    console.log(value);
+    setSelectedValue(value);
+    console.log(selectedValue);
   }, []);
-
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };

@@ -101,10 +101,14 @@ export default async function handler(req, res) {
   }
 
   if (method === "PUT") {
+    console.log("LOGFORTEST - applicant update");
+    console.log(req.body);
+
     try {
       const { id } = req.body;
       
       if (!id) {
+        console.log("LOGFORTEST ------- The error is here.");
         return res.status(400).json({ error: "Missing 'id' in request body" });
       }
   

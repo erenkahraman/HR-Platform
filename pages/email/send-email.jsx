@@ -59,14 +59,13 @@ export default function NewEmail() {
 
 	const onSubmitForm = async (e) => {
 		e.preventDefault()
-
+		console.log(e);
 		if (inputs.emailTo && inputs.subject && inputs.message) {
 			setForm({ state: 'loading' })
 			console.log("test")
 			try {
 				inputs.emailFrom = user.email;
-
-				const res = await fetch(`../api/contact`, {
+				const res = await fetch(`/api/contact`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',

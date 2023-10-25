@@ -43,7 +43,6 @@ export default function InternList() {
           { params: { token: token } },
           config
         ); 
-        debugger;
         setData(response.data);
       } catch (error) {
         console.error('Error fetching interns:', error);

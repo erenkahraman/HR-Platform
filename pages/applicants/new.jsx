@@ -49,6 +49,7 @@ const NewApplicants = () => {
     formState: { errors },
   } = useForm({
     defaultValues: useMemo(() => {
+      console.log(student);
       return student;
     }, [student]),
   });
@@ -57,15 +58,15 @@ const NewApplicants = () => {
 
   const token = cookie.get("token");
 
-  const defaultDoc = [
-    { title: "Curriculum Vitae", status: "Needs Review" },
-    { title: "Motivation Letter", status: "Needs Review" },
-    { title: "Arrival Tickets", status: "Needs Review" },
-    { title: "Learning Agreement", status: "Needs Review" },
-    { title: "Acceptance Letter", status: "Needs Review" },
-    { title: "Interview Record", status: "Needs Review" },
-    {title: "Passport ", status: "Needs Review"}
-  ];
+  // const defaultDoc = [
+  //   { title: "Curriculum Vitae", status: "Needs Review" },
+  //   { title: "Motivation Letter", status: "Needs Review" },
+  //   { title: "Arrival Tickets", status: "Needs Review" },
+  //   { title: "Learning Agreement", status: "Needs Review" },
+  //   { title: "Acceptance Letter", status: "Needs Review" },
+  //   { title: "Interview Record", status: "Needs Review" },
+  //   {title: "Passport ", status: "Needs Review"}
+  // ];
 
 
   const docs = [
@@ -120,25 +121,25 @@ const NewApplicants = () => {
     reset(student);
   }, [student, reset]);
 
-  function formatDate(date) {
-    if (date instanceof Date && !isNaN(date)) {
+  // function formatDate(date) {
+  //   if (date instanceof Date && !isNaN(date)) {
 
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
+  //     const day = date.getDate();
+  //     const month = date.getMonth() + 1;
+  //     const year = date.getFullYear();
   
-      // Ensure leading zeros for day and month
-      const formattedDay = day < 10 ? `0${day}` : day;
-      const formattedMonth = month < 10 ? `0${month}` : month;
+  //     // Ensure leading zeros for day and month
+  //     const formattedDay = day < 10 ? `0${day}` : day;
+  //     const formattedMonth = month < 10 ? `0${month}` : month;
   
-      // Format the date as 'dd/MM/yyyy'
-      return `${formattedDay}/${formattedMonth}/${year}`;
-    }
-    return '';
-  }
+  //     // Format the date as 'dd/MM/yyyy'
+  //     return `${formattedDay}/${formattedMonth}/${year}`;
+  //   }
+  //   return '';
+  // }
 
   function parseDate(dateString) {
-    debugger;
+    
     if(typeof dateString === "string")
     {
       const parts = dateString.split('/');
@@ -167,7 +168,7 @@ const NewApplicants = () => {
     setOpen(true);
     const idSave = document.querySelector("#Save");
     if(idSave){
-      debugger;
+      
       const student = data.student;
       const applicant = data.student.applicant;
 
@@ -299,12 +300,12 @@ const NewApplicants = () => {
   
 
   const updateStudent = async (data) => {
-    debugger;
     setOpen(true);
     const student = data.student;
     const applicant = data.student.applicant;
 
-
+    console.log(student);
+    console.log(applicant);
     student.token = token;
     applicant.token = token;
     try {
