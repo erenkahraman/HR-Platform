@@ -17,6 +17,7 @@ import { Button } from "@mui/material";
 const EditDocumentsModal = ({
   openDialog,
   setOpenDialog,
+  setWasDialogOpened,
   intern,
   index,
   type,
@@ -48,6 +49,7 @@ const EditDocumentsModal = ({
   }, [intern]);
 
   const updateDocuments = async (data) => {
+    console.log(data);
     setLoading(true);
     switch (type) {
       case "applicant":
@@ -67,8 +69,9 @@ const EditDocumentsModal = ({
         break;
         case "internTest":
           try {
+            console.log("LOGFORTEST ------- This is the documents change")
           console.log(data.internTest);
-          await fetch(`/api/internTest`, {
+          await fetch(`/api/internTest/${data._id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -82,6 +85,7 @@ const EditDocumentsModal = ({
         }
         break;
     }
+    setWasDialogOpened(true);
     setOpenDialog(false);
   };
 
@@ -99,7 +103,7 @@ const EditDocumentsModal = ({
             <div className="flex flex-col w-full gap-4">
               <div className="flex gap-6 justify-start">
                 {Object.keys(intern.documents).map((doc) => (
-                  <DocumentReview key={doc} register={register} title={doc} type={type} />
+                  <DocumentReview key={doc} value={intern.documents[doc]} register={register} title={doc} type={type} />
                 ))}
               </div>
             </div>
