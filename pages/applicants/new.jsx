@@ -31,10 +31,20 @@ const NewApplicants = () => {
 
   // get positions from DB when choosing positions
   const [positions, setPositions] = useState();
+
+const pageType = useRef();
+
+
+
+
+
+
   //get the current keys of the student documents
-  const docKeys = useRef([]);
+  const docKeys = useRef();
   //get the current state of the student documents
-  const docValues = useRef([]);
+  const docValues = useRef();
+  //if the student is an intern, they won't receive documents
+  const isIntern = useRef();
 
 
   //Modals state
@@ -58,14 +68,47 @@ const NewApplicants = () => {
     formState: { errors },
   } = useForm({
     defaultValues: useMemo(() => {
-      // console.log(student);
+      console.log(student);
+      student.student == null ? (
+        pageType.current="new"
+      ):("");
+      if(pageType.current === "new")
+      {
+        console.log("got new")
+        console.log(pageType);
+        return student;
+      }
+      student.student.applicant['documents'] ? (
+        docKeys.current = Object.keys(student.student.applicant['documents']),
+        docValues.current = Object.values(student.student.applicant['documents']),
+        console.log(docKeys.current),
+        pageType.current="applicant"
+      ):("");
+      if(pageType.current === "applicant")
+      {
+        console.log(" gotapplicant")
+        console.log(pageType);
+        return student;
+      }      
+      pageType.current="intern";
+      console.log("gotIntern")
+      console.log(pageType);
+      return student;
+
       // console.log(Object.keys(student.student.applicant['documents']));
       // console.log(Object.values(student.student.applicant['documents']));
-      docKeys.current = Object.keys(student.student.applicant['documents']);
-      docValues.current = Object.values(student.student.applicant['documents']);
+      student.documents ? (
+        docKeys.current = Object.keys(student.student.applicant['documents']),
+        docValues.current = Object.values(student.student.applicant['documents']),
+        console.log(docKeys.current)
+      ):("");
+      student.student === null ? (
+        ""
+        ):(
+        isIntern.current = false
+        )
       // console.log(docKeys);
       // console.log(docValues);
-      return student;
     }, [student]),
   });
 
@@ -977,47 +1020,68 @@ const NewApplicants = () => {
                   {/* Application documents */}  
                   <div>
                     <h3 className="font-semibold">Application Documents</h3>
-                    <div className="flex flex-col px-4 py-4">
-                      <div className="flex flex-col w-[75%] mx-auto">
-                        <div className="grid">
-                        <div className="grid grid-cols-4 border-slate-400 border-solid border-[1px] w-[100%] h-[3rem]">
-                              <div className="flex items-center justify-center"></div>
-                              <div className="flex items-center justify-center">Not Submitted</div>
-                              <div className="flex items-center justify-center">Needs Review</div>
-                              <div className="flex items-center justify-center">Correct</div>
+                      {pageType.current === "intern" ? (
+                        <div className="w-[100%] text-xl text-center">Student is already an Intern, application documents cannot be edited!</div>  
+                      ):(
+                        <div className="flex flex-col px-4 py-4">
+                          <div className="flex flex-col w-[75%] mx-auto">
+                            <div className="grid">
+                            <div className="grid grid-cols-4 border-slate-400 border-solid border-[1px] w-[100%] h-[3rem]">
+                                  <div className="flex items-center justify-center"></div>
+                                  <div className="flex items-center justify-center">Not Submitted</div>
+                                  <div className="flex items-center justify-center">Needs Review</div>
+                                  <div className="flex items-center justify-center">Correct</div>
+                              </div>
+                                {/* new, applicant, intern */}
+                                {pageType.current === "new" &&
+                                  docs.map((docs, index) => (
+                                    <DocumentReviewRadioRow 
+                                    register={register}
+                                    title={docs}
+                                    type="student.applicant"
+                                    value="Not Submitted"
+                                    />
+                                  ))
+                                }
+                                {pageType.current === "applicant" && 
+                                  docKeys.current.map((docs, index) => (
+                                    <DocumentReviewRadioRow 
+                                    register={register}
+                                    title={docs}
+                                    type="student.applicant"
+                                    value={docValues.current[index]}
+                                    />
+                                  ))
+                                }
+                                
+
+
+                                {/* {docKeys == Object.keys(docs) ? (
+                                  docKeys.current.map((docs, index) => (
+                                    <DocumentReviewRadioRow 
+                                    register={register}
+                                    title={docs}
+                                    type="student.applicant"
+                                    value={docValues.current[index]}
+                                    />
+                                  ))
+                                ):(
+                                  docs.map((docs, index) => (
+                                    <DocumentReviewRadioRow 
+                                    register={register}
+                                    title={docs}
+                                    type="student.applicant"
+                                    value="Not Submitted"
+                                    />
+                                  ))
+                                )
+                                } */}
+                            </div>
                           </div>
-
-                            {student ? (
-                              docKeys.current.map((docs, index) => (
-                                <DocumentReviewRadioRow 
-                                register={register}
-                                title={docs}
-                                type="student.applicant"
-                                value={docValues.current[index]}
-                                />
-                              ))
-                            ):(
-                              docs.map((docs, index) => (
-                                <DocumentReviewRadioRow 
-                                register={register}
-                                title={docs}
-                                type="student.applicant"
-                                />
-                              ))
-                            )
-                            }
                         </div>
-                      </div>
-                    </div>
+                      )}
                   </div>
-
-
-
-
-
-
                 </div>
-
                 <Collapse in={alertOpen}>
                   <Alert
                     action={
