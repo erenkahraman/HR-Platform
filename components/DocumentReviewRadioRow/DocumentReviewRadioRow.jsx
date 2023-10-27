@@ -17,27 +17,27 @@ const DocumentReviewRadioRow = ({ value, title, register, type }) => {
         <div className="flex items-center pl-[1rem]">{title}</div>
         <div className="flex items-center justify-center">
             <input className="ring-0 focus:ring-0 focus:outline-none"
-            onChange={handleChange}
             value="Not Submitted" type="radio" name={title} id={title} 
             {...register(`${type}.documents.${title}`, {
-            required: `Please, submit the ${title}`,
-            })} checked={selectedValue ==="Not Submitted"} />
+              required: `Please, submit the ${title}`,
+            })} checked={selectedValue ==="Not Submitted"} 
+            onChange={handleChange}/>
         </div>
         <div className="flex items-center justify-center">
             <input className="ring-0 focus:ring-0 focus:outline-none"
-            onChange={handleChange}
             value="Needs Review" type="radio" name={title} id={title}
             {...register(`${type}.documents.${title}`, {
-            required: `Please, submit the ${title}`,
-            })}  checked={selectedValue ==="Needs Review"} />
+              required: `Please, submit the ${title}`,
+            })}  checked={selectedValue ==="Needs Review"} 
+            onChange={handleChange}/>
         </div>
         <div className="flex items-center justify-center">
             <input className="ring-0 focus:ring-0 focus:outline-none"
-            onChange={handleChange}
             value="Correct" type="radio" name={title} id={title}
             {...register(`${type}.documents.${title}`, {
-            required: `Please, submit the ${title}`,
-            })}  checked={selectedValue ==="Correct"} />
+              required: `Please, submit the ${title}`,
+            })}  checked={selectedValue ==="Correct"} 
+            onChange={handleChange}/>
         </div>
     </div>
   );
