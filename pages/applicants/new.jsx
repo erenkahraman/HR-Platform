@@ -1005,51 +1005,7 @@ const NewApplicants = () => {
                                 />
                               ))
                             )
-                            
-                            
                             }
-
-
-
-
-                          
-                          
-                          {/* <div className="grid grid-cols-4 border-slate-400 border-solid border-[1px] w-[100%] h-[3rem]">
-                              <div className="flex items-center pl-[1rem]">Motivation Letter</div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                          </div>
-                          <div className="grid grid-cols-4 border-slate-400 border-solid border-[1px] w-[100%] h-[3rem]">
-                              <div className="flex items-center pl-[1rem]">Arrival Tickets</div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                          </div>
-                          <div className="grid grid-cols-4 border-slate-400 border-solid border-[1px] w-[100%] h-[3rem]">
-                              <div className="flex items-center pl-[1rem]">Learning Agreement</div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                          </div>
-                          <div className="grid grid-cols-4 border-slate-400 border-solid border-[1px] w-[100%] h-[3rem]">
-                              <div className="flex items-center pl-[1rem]">Acceptance Letter</div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                          </div>
-                          <div className="grid grid-cols-4 border-slate-400 border-solid border-[1px] w-[100%] h-[3rem]">
-                              <div className="flex items-center pl-[1rem]">Interview Record</div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                          </div>
-                          <div className="grid grid-cols-4 border-slate-400 border-solid border-[1px] w-[100%] h-[3rem]">
-                              <div className="flex items-center pl-[1rem]">Passport</div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                              <div className="flex items-center justify-center"><input type="radio" name="" id="" /></div>
-                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -1061,26 +1017,6 @@ const NewApplicants = () => {
 
 
                 </div>
-                {/* <div className="flex p-4">
-                  <div className="flex flex-col  w-full gap-4">
-                    <div className="block text-sm font-semibold">
-                      Application Documents
-                    </div>
-                    <div className="grid grid-cols-4 gap-2">
-                      {docs.map((docs, i) => (
-                        <div className="grid-row-start-1 grid-row-end-3" key={i}>
-                          <DocumentReview
-                            register={register}
-                            title={docs}
-                            
-                            type="student.applicant"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                    
-                  </div>
-                </div> */}
 
                 <Collapse in={alertOpen}>
                   <Alert

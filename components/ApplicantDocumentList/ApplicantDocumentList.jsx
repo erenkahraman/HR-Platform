@@ -258,9 +258,8 @@ const DocumentList = () => {
                   <EditDocumentsModal
                     openDialog={openDialog}
                     setOpenDialog={setOpenDialog}
-                    student={student}
+                    intern={student}
                     index={index}
-                    students={students}
                     type="applicant"
                   />
                 )}
