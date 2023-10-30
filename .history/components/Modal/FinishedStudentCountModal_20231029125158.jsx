@@ -52,7 +52,7 @@ const FinishedStudentCountModal = ({ setLvModal, type }) => {
       }
     };
     asyncRequest();
-  }, []);
+  }, [token]);
 
   // useEffect(() => {
   //   fetch("/api/department")
@@ -75,7 +75,7 @@ const FinishedStudentCountModal = ({ setLvModal, type }) => {
           </button>
           <div className="flex flex-row gap-16 text-5xl  bg-white  mb-8 ml-4 mr-4">
             {departments.map((department) => (
-              <div className="flex flex-row ml-5">
+              <div className="flex flex-row ml-5" key={department.id}>
                 <div className="text-red-400 ">
                   <BsPeopleFill
                     className={`text-2xl ${departmanColor(

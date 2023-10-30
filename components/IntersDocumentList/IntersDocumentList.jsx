@@ -24,10 +24,8 @@ const DocumentListContent = ({ type, status,interns }) => {
 
     status === "Correct"
       ? (statusColor = " bg-green-400 ")
-      : status === "Incorrect"
-      ? (statusColor = " bg-red-400 ")
       : status === "Needs Review"
-      ? (statusColor = " bg-blue-400 ")
+      ? (statusColor = " bg-red-400 ")
       : (statusColor = " bg-gray-400 ");
 
     let result =
@@ -170,13 +168,40 @@ const DocumentListContent = ({ type, status,interns }) => {
   );
 };
 
-
 const DocumentList = () => {
   const [open, setOpen] = useState(false);
+  //wasDialogOpened is used to see if the page was just loaded in, with the openDialog on the default value of false. ű
+  //If wasDialogOpened is true, thena fter the dialog closes, it qwill refetch everything, and refreshed the document statuses
+  const [wasDialogOpened, setWasDialogOpened] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [interns, setInterns] = useState([]);
   const token = cookie.get("token");
-
+  useEffect(() =>{
+    setOpen(true);
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const { data } = await axios.get(
+          `/api/internTest`,
+          { params: { token: token } },
+          config
+        );
+        setInterns(data);
+        console.log(data);
+        setWasDialogOpened(false);
+        setOpen(false);
+      } catch (e) {
+        console.error(e);
+        setWasDialogOpened(false);
+        setOpen(false);
+      }
+    };
+    asyncRequest();
+  }, [wasDialogOpened === true && openDialog===false])
   useEffect(() => {
     setOpen(true);
     const asyncRequest = async () => {
@@ -192,6 +217,7 @@ const DocumentList = () => {
           config
         );
         setInterns(data);
+        console.log(data);
         setOpen(false);
       } catch (e) {
         console.error(e);
@@ -200,11 +226,9 @@ const DocumentList = () => {
     };
     asyncRequest();
   }, [token]);
-
   return (
     <div className="flex flex-col w-full gap-2">
       <LoadingState open={open} />
-     
       {interns.length == 0 ? (
         <div
           className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap 
@@ -261,6 +285,7 @@ const DocumentList = () => {
                   <EditDocumentsModal
                     openDialog={openDialog}
                     setOpenDialog={setOpenDialog}
+                    setWasDialogOpened={setWasDialogOpened}
                     intern={intern}
                     index={index}
                     type="internTest"

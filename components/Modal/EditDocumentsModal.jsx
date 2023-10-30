@@ -17,18 +17,20 @@ import { Button } from "@mui/material";
 const EditDocumentsModal = ({
   openDialog,
   setOpenDialog,
+  setWasDialogOpened,
   intern,
   index,
   type,
 }) => {
-  const docs = [
-    "Curriculum Vitae",
-    "Motivation Letter",
-    "Arrival Tickets",
-    "Learning Agreement",
-    "Acceptance Letter",
-    "Interview Record",
-  ];
+  //Not called or used, takes away focus at initial overview of the code (If it is accessed somewhere else, and is neccessary, then it should be specified here)
+  // const docs = [
+  //   "Curriculum Vitae",
+  //   "Motivation Letter",
+  //   "Arrival Tickets",
+  //   "Learning Agreement",
+  //   "Acceptance Letter",
+  //   "Interview Record",
+  // ];
   const [loading, setLoading] = useState();
   const {
     control,
@@ -38,6 +40,7 @@ const EditDocumentsModal = ({
     formState: { errors },
   } = useForm({
     defaultValues: useMemo(() => {
+      console.log(intern)
       return intern;
     }, [intern]),
   });
@@ -47,6 +50,7 @@ const EditDocumentsModal = ({
   }, [intern]);
 
   const updateDocuments = async (data) => {
+    console.log(data);
     setLoading(true);
     switch (type) {
       case "applicant":
@@ -64,9 +68,11 @@ const EditDocumentsModal = ({
           console.error(error);
         }
         break;
-      case "internTest":
-        try {
-          await fetch(`/api/internTest/${data.internTest._id}`, {
+        case "internTest":
+          try {
+            console.log("LOGFORTEST ------- This is the documents change")
+          console.log(data.internTest);
+          await fetch(`/api/internTest/${data._id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -76,10 +82,11 @@ const EditDocumentsModal = ({
           });
           // students[index] = data;
         } catch (error) {
-          console.error(error);
+          console.error(error+"-----------ERROR calling from internTest fetch");
         }
         break;
     }
+    setWasDialogOpened(true);
     setOpenDialog(false);
   };
 
@@ -90,15 +97,26 @@ const EditDocumentsModal = ({
         className="fixed  w-3/4 h-50 ml-64 px-80 p-0 pl-8 mt-32 border-2 border-[#0B3768] rounded-xl shadow-lg shadow-[#0B3768]"
       >
         <DialogHeader>
-          Edit Documents for {intern.student.firstName} {intern.student.lastName}
+          Edit Documents for {intern.student ? (intern.student.firstName, intern.student.lastName
+            ):(
+              intern.firstName, intern.lastName
+            )}
+          
         </DialogHeader>
         <DialogBody className="" divider>
           <div className="flex p-4">
             <div className="flex flex-col w-full gap-4">
               <div className="flex gap-6 justify-start">
-                {Object.keys(intern.documents).map((doc) => (
-                  <DocumentReview key={doc} register={register} title={doc} type={type} />
-                ))}
+              {intern.student ? (
+                Object.keys(intern.documents).map((doc) => (
+                  <DocumentReview key={doc} value={intern.documents[doc]} register={register} title={doc} type={type} />
+                ))
+              ):(
+                Object.keys(intern.applicant.documents).map((doc) => (
+                  <DocumentReview key={doc} value={intern.applicant.documents[doc]} register={register} title={doc} type={type} />
+                ))
+              )}
+                
               </div>
             </div>
           </div>

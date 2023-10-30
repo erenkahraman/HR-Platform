@@ -16,7 +16,9 @@ const DocumentListContent = ({ type, status,student }) => {
   const [fullpath,setFullPath] = useState();
   const [file, setFile] = useState();
   const [mess, setMess] = useState("");
-
+//wasDialogOpened is used to see if the page was just loaded in, with the openDialog on the default value of false. ű
+  //If wasDialogOpened is true, thena fter the dialog closes, it qwill refetch everything, and refreshed the document statuses
+  const [wasDialogOpened, setWasDialogOpened] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const Border = () => {
     let isRounded;
@@ -184,7 +186,7 @@ const DocumentList = () => {
           },
         };
         const { data } = await axios.get(
-          // `/api/applicant`,
+          `/api/applicant`,
           { params: { token: token } },
           config
         );
@@ -258,9 +260,8 @@ const DocumentList = () => {
                   <EditDocumentsModal
                     openDialog={openDialog}
                     setOpenDialog={setOpenDialog}
-                    student={student}
+                    intern={student}
                     index={index}
-                    students={students}
                     type="applicant"
                   />
                 )}
