@@ -176,6 +176,8 @@ const DocumentList = () => {
   const [students, setStudents] = useState([]);
   const token = cookie.get("token");
 
+  const [wasDialogOpened, setWasDialogOpened] = useState(false);
+
   useEffect(() => {
     setOpen(true);
     const asyncRequest = async () => {
@@ -191,14 +193,16 @@ const DocumentList = () => {
           config
         );
         setStudents(data);
+        setWasDialogOpened(false);
         setOpen(false);
       } catch (e) {
         console.error(e);
+        setWasDialogOpened(false);
         setOpen(false);
       }
     };
     asyncRequest();
-}, [token]);
+}, [token, wasDialogOpened === true && openDialog===false]);
 
   return (
     <div className="flex flex-col w-full gap-2">
@@ -260,6 +264,7 @@ const DocumentList = () => {
                   <EditDocumentsModal
                     openDialog={openDialog}
                     setOpenDialog={setOpenDialog}
+                    setWasDialogOpened={setWasDialogOpened}
                     intern={student}
                     index={index}
                     type="applicant"
