@@ -12,8 +12,8 @@ export default async function handler(req, res) {
   let token = req.query.token
     ? req.query.token
     : req.body.token
-    ? req.body.token
-    : "";
+      ? req.body.token
+      : "";
   try {
     tokenCheckFunction(token);
   } catch (e) {
@@ -53,20 +53,27 @@ export default async function handler(req, res) {
         .toArray();
 
       var data = [];
+      let today = new Date().toISOString().slice(0, 10);
+      const d = new Date();
+      let currentMonth = d.getMonth() + 1;
       for (let i = 0; i < internTest.length; i++) {
-        if (internTest[i].status === "Waiting Start Date") {
-          data.push({
-            name:internTest[i].student.firstName + " " + internTest[i].student.lastName,
-            department: internTest[i].department,
-            action: "Arriving",
-            date: internTest[i].endDate,
-          });
-        } else if (internTest[i].status === "Ongoing") {
+        const endDateISO = ((internTest[i].endDate).toISOString().split('T')[0]).toString();
+        const splitMonthEndDate = endDateISO.split("-");
+        const monthEndDateISO = splitMonthEndDate[1];
+        if ((internTest[i].startDate).toISOString().split('T')[0] > today) {
           data.push({
             name: internTest[i].student.firstName + " " + internTest[i].student.lastName,
             department: internTest[i].department,
-            action: "Departing",
-            date: internTest[i].endDate,
+            action: "Arriving",
+            date: ((internTest[i].startDate).toISOString().split('T')[0]).toLocaleString(),
+          });
+        }
+        else if (monthEndDateISO == currentMonth) {
+          data.push({
+            name: internTest[i].student.firstName + " " + internTest[i].student.lastName,
+            department: internTest[i].department,
+            action: "Departure",
+            date: (internTest[i].endDate).toISOString().split('T')[0],
           });
         }
       }

@@ -23,7 +23,7 @@ const Upcoming = () => {
           config
         );
         const filteredData = data.filter(internTest => new Date(internTest.date) >= new Date());
-        filteredData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        filteredData.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setData(filteredData.slice(0, 5)); // Limit the data to 5 interns
         setLoading(false);
       } catch (e) {
@@ -38,7 +38,9 @@ const Upcoming = () => {
     let colorText;
     status === "Arriving"
       ? (colorText = "text-green-500")
-      : (colorText = "text-red-500");
+      : status === "Departure"
+        ? (colorText = "text-blue-500")
+        : (colorText = "text-red-500");
     return "flex-[1] flex items-center justify-center text-xs " + colorText;
   };
 
