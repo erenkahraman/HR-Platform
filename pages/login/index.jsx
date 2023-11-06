@@ -2,13 +2,12 @@ import Image from "next/image";
 import React, { useState } from "react";
 import loginImage from "../../public/loginImage.png";
 import extramusLogo from "../../public/extramusLogo.png";
-import Link from "next/link";
 import Modal from "../../components/LiaModal/model4";
 import axios from "axios";
 import cookie from "js-cookie";
 import { useSession, signIn, signOut, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import MailIcon from "@mui/icons-material/Mail";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,7 +15,7 @@ export default function Login() {
 
   const router = useRouter();
 
-  const { data: session } = useSession();
+
 
   const [modalOn, setModalOn] = useState(false);
   const [choice, setChoice] = useState(false);
@@ -120,22 +119,7 @@ export default function Login() {
             </div>
           </div>
 
-          {/* <div className="flex flex-row items-center sm:ml-6">
-            <input
-              id="link-checkbox"
-              type="checkbox"
-              value=""
-              className="w-4 h-4 text-blue-600 rounded border-gray-300 "
-            />
-            <label
-              htmlFor="link-checkbox"
-              className="ml-2 text-sm font-medium text-black"
-            >
-              I agree with the{" "}
-              <a className="text-blue-600 hover:underline"> terms and conditions</a>
-              .
-            </label>
-          </div> */}
+          {/* Unused code 1 */}
 
           {/* Submit Button */}
           <div className="w-full flex flex-col items-center gap-1 sm:w-screen sm:ml-44">
@@ -172,3 +156,38 @@ export async function getServerSideProps(context) {
 	  },
 	};
   }
+
+
+
+  /*
+  Unused imports, variables and code
+  import Link from "next/link";
+import MailIcon from "@mui/icons-material/Mail";
+  
+
+
+
+
+  const { data: session } = useSession();
+
+
+
+  1:
+  <div className="flex flex-row items-center sm:ml-6">
+    <input
+      id="link-checkbox"
+      type="checkbox"
+      value=""
+      className="w-4 h-4 text-blue-600 rounded border-gray-300 "
+    />
+    <label
+      htmlFor="link-checkbox"
+      className="ml-2 text-sm font-medium text-black"
+    >
+      I agree with the{" "}
+      <a className="text-blue-600 hover:underline"> terms and conditions</a>
+      .
+    </label>
+  </div>
+  
+  */

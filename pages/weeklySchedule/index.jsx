@@ -3,9 +3,24 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import React from "react";
 import cookie from "js-cookie";
+
+
+
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Sidebar } from "flowbite-react";
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import BusinessIcon from '@mui/icons-material/Business';
+import ComputerIcon from '@mui/icons-material/Computer';
+import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
+import CodeIcon from '@mui/icons-material/Code';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import GavelIcon from '@mui/icons-material/Gavel';
+import WorkIcon from '@mui/icons-material/Work';
+import PersonIcon from '@mui/icons-material/Person';
+
+
+
 import { SystemUpdateAlt } from "@mui/icons-material";
 import { CSVLink } from "react-csv";
 
@@ -25,6 +40,30 @@ const WeeklySchedule = () => {
   const csvLinkElement = useRef();
   const [availableMorningShiftInterns, setAvailableMorningShiftInterns] = useState([]);
   const [availableAfternoonShiftInterns, setAvailableAfternoonShiftInterns] = useState([]);
+
+  const departmentKeys = Object.keys(weeklyScheduleByDepartment);
+const iconsForDepartments = {
+  "Project Management": {
+    1:<ManageAccountsIcon></ManageAccountsIcon>,
+    2: <ChecklistRtlIcon></ChecklistRtlIcon>
+  },
+  "Information Technologies": {
+    1: <GitHubIcon></GitHubIcon>,
+    2: <CodeIcon></CodeIcon>
+  },
+  "Business & Data Analysis": {
+    1: <BusinessIcon></BusinessIcon>,
+    2: <BarChartIcon></BarChartIcon>
+  },
+  "Digital Marketing": {
+    1: <ComputerIcon></ComputerIcon>,
+    2: <LocalGroceryStoreIcon></LocalGroceryStoreIcon>
+  },
+  "Human Resources": {
+    1: <PersonIcon></PersonIcon>,
+    2: <WorkIcon></WorkIcon>
+  }
+}
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -357,290 +396,165 @@ const WeeklySchedule = () => {
       }
     }
 
-
     return (
-    <div className="min-h-screen  ">
-      <div className="container w-full flex-grow  mx-auto">
-        <div className=" flex w-full flex-col   items-center justify-center min-w-0 break-words w-full rounded">
-          <div className="flex justify-between gap-4 rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
-            <div className="flex items-center">
-              <h1 className="font-roboto font-bold text-4xl text-black text-center w-full">
+      <div className="h-[100%] flex flex-col items-center">
+        <div className="flex flex-col mt-10 border-b-2 border-blueGray-300 pb-5 px-[10rem]">
+          <div className="flex justify-center gap-x-4 ">
+            <h1 className="font-roboto font-bold text-4xl text-black text-center w-full">
                 Weekly Schedule
-              </h1>
-            </div>
-            <div>
-              <CSVLink ref={csvLinkElement} data={assignedShifts} filename={"assigned-shifts.csv"}></CSVLink>
-              <Button
-                size="medium"
-                color="primary"
-                startIcon={<SystemUpdateAlt className="text-sm" />}
-                variant="contained"
-                sx={{ borderRadius: 2 }}
-                href="#"
-                onClick={handleExportToCsv}
-              >
-                Export to CSV
-              </Button>
-            </div>
+            </h1>
           </div>
-          <div
-  className="flex flex-col items-center justify-center gap-10 mt-4"
-  style={{
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "12px 24px",
-    gap: "10px",
-    background: "#DCEBFC",
-    borderRadius: "24px",
-  }}
->
-  <table
-    className="font-roboto"
-    style={{
-      width: "100%",
-    }}
-  >
-    <tbody>
-      <tr>
-        <td><strong>{dateRange}</strong></td>
-      </tr>
-    </tbody>
-  </table>
-  <button onClick={() => resetShifts()} > RESET WEEK
-  </button>
-</div>
-
-          <div
-            className="flex flex-col items-center justify-center gap-10 mt-4"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "12px 24px",
-              margin: "12px 24px",
-              gap: "10px",
-              background: "#DCEBFC",
-              borderRadius: "24px",
-
-            }}
-          >
-            <table
-              className="font-roboto"
-              style={{
-                width: "100%",
-              }}
-            >
- <thead>
-  <tr>
-    <th>INTERNS</th>
-  </tr>
-</thead>
-<tbody>
-  {departmentNames.map((eachDepartmentName) => (
-    <React.Fragment key={eachDepartmentName}>
-      <tr>
-        <td colSpan="3">
-          <div>
-            <Button
-              aria-controls={`department-menu-${eachDepartmentName}`}
-              aria-haspopup="true"
-              onClick={() => {
-                handleDepartmentClick(eachDepartmentName);
-              }}
-              endIcon={<ArrowDropDownIcon />}
-              style={{
-                backgroundColor:
-                  eachDepartmentName === selectedDepartment ? "#DCEBFC" : "",
-              }}
-            >
-              {eachDepartmentName}
-            </Button>
-          </div>
-        </td>
-      </tr>
-      {eachDepartmentName === selectedDepartment && (
-        <tr>
-          <td colSpan="3">
-            <Menu
-              id={`department-menu-${eachDepartmentName}`}
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              {weeklyScheduleByDepartment[eachDepartmentName].map(
-                (eachIntern, i) => (
-                  <MenuItem key={i}>
-                    {eachIntern.student.firstName +
-                      " " +
-                      eachIntern.student.lastName}
-                  </MenuItem>
-                )
-              )}
-            </Menu>
-          </td>
-        </tr>
-      )}
-      {eachDepartmentName === selectedDepartment && (
-        <>
-          {weeklyScheduleByDepartment[eachDepartmentName]
-            .filter(
-              (eachIntern) => (
-                !availableMorningShiftInterns.some(
-                  (shiftIntern) =>
-                  shiftIntern === (eachIntern.student.firstName+ ' ' +eachIntern.student.lastName))&&
-                !availableAfternoonShiftInterns.some(
-                  (shiftIntern) =>
-                  shiftIntern === (eachIntern.student.firstName+ ' ' +eachIntern.student.lastName)
-                )
-            ))
-            .map((eachIntern, i) => (
-              <tr key={i}>
-                <td>
-                  {eachIntern.student.firstName +
-                    " " +
-                    eachIntern.student.lastName}
-                </td>
-                <td></td>
-                <td>
-                  <div className="button-container">
-                    <Button
-                      className="move-button"
-                      style={{
-                        backgroundColor: "white",
-                        color: "black",
-                        borderRadius: "10px",
-                        marginRight: "10px",
-                        padding: "10px 20px",
-                        margin: "2px 40px",
-                      }}
-                      onClick={() => handleMoveToMorning(eachIntern, i)}
-                    >
-                      Move to Morning
-                    </Button>
-                    <Button
-                      className="move-button"
-                      style={{
-                        backgroundColor: "white",
-                        color: "black",
-                        borderRadius: "10px",
-                        padding: "8px 20px",
-                        margin: "0px 5px",
-                      }}
-                      onClick={() => handleMoveToAfternoon(eachIntern, i)}
-                    >
-                      Move to Afternoon
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-        </>
-      )}
-    </React.Fragment>
-  ))}
-</tbody>
-           </table>
+          <div className="flex flex-col items-center mt-5">
+            <strong>{dateRange}</strong>
+            <button onClick={() => resetShifts()} > RESET WEEK </button>
           </div>
         </div>
-        {/* End of Table */}
-        {/* Morning Shift People */}
-        <div
-          className="flex flex-col items-center justify-center gap-6 mt-4"
-          style={{
-            margin: "12px 26px",
-            padding: "12px 26px",
-            background: "#DCEBFC",
-            borderRadius: "24px",
-          }}
-        >
-          <h2 className="text-center mb-4"><b>Morning Shift</b></h2>
-          <div className="flex justify-center">
+        <div className="mt-5 flex flex-col">
+          <span className="text-2xl font-bold uppercase text-center mb-5"> Available Interns </span>
+          <div className="grid grid-cols-3 gap-10">
+            {departmentKeys.map((department) => (
+              <div className="min-w-[10rem] max-w-[25rem] border-black border-2 border-solid">
+                <div className=" flex justify-evenly border-b-2 border-black border-solid h-10 items-center">
+                  {iconsForDepartments[department][1]}
+                  <span>
+                    {department}
+                  </span>
+                  {iconsForDepartments[department][2]}
+                </div>
+                <div className="p-5 flex flex-col gap-y-2">
+                {weeklyScheduleByDepartment[department]
+                  .filter(
+                    (eachIntern) => (
+                      !availableMorningShiftInterns.some(
+                        (shiftIntern) =>
+                        shiftIntern === (eachIntern.student.firstName+ ' ' +eachIntern.student.lastName))&&
+                      !availableAfternoonShiftInterns.some(
+                        (shiftIntern) =>
+                        shiftIntern === (eachIntern.student.firstName+ ' ' +eachIntern.student.lastName)
+                      )
+                  ))
+                  .map((eachIntern, i) => (
+                    <>
+                    {console.log(eachIntern)}
+                    <div className="flex gap-x-5">
+                      <Button
+                        className="move-button bg-white text-black text-xs rounded-[10px]  py-[10px] px-[10px]"
+                        onClick={() => handleMoveToMorning(eachIntern, i)}
+                      >
+                        Morning
+                      </Button>
+                      <div className="flex flex-grow items-center">
+                        {eachIntern.student.firstName + " " + eachIntern.student.lastName}
+                      </div>
+                      <Button
+                        className="move-button bg-white text-black text-xs rounded-[10px]  py-[10px] px-[10px]"
+                        onClick={() => handleMoveToAfternoon(eachIntern, i)}
+                      >
+                        Afternoon
+                      </Button>
+                    </div>
+                    </>
+                  ))}
+                  
+                </div>
+              </div>
+              ))}
+            
+            <div className="min-w-[10rem] max-w-[25rem] border-black border-2 border-solid">
+              <div className=" flex justify-evenly border-b-2 border-black border-solid h-10 items-center">
+              <BusinessIcon></BusinessIcon>
+                <span>
+                  Business Lawyer
+                </span>
+                <GavelIcon></GavelIcon>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div className="mt-5 flex flex-col w-[100%]">
+          <span className="text-2xl font-bold uppercase text-center mb-5">Shifts</span>
+          <div className="grid grid-cols-2 gap-10">
+              <div className="w-[100%]">
+                <div className="w-[100%] text-center">
+                  MORNING
+                </div>
             {populatedWeeklySchedule.map((schedule) => (
-              <table
-                key={schedule._id}
-                className="font-roboto w-full max-w-screen mx-auto"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  padding: "12px 24px",
-                  gap: "10px",
-                  background: "#DCEBFC",
-                  borderRadius: "24px",
-                }}
-              >
-                <thead>
-                  <tr>
-                  <h3><strong>{schedule.Group} <span>[{schedule.Schedule.morning.length}]</span> </strong></h3>
-                  </tr>
-                </thead>
-                <tbody>
-                {schedule.Schedule.morning.map((internName, index) => (
-                  <li key={index}>
-                    {internName}
-                    <Button onClick={() => swapShift(internName, "morning")}>
-                      Swap Shift
-                    </Button>
-                  </li>
-                ))}
-                </tbody>
-              </table>
+              <div className="w-[75%] mx-auto" key={schedule._id}>
+                <div className="w-[100%] mx-auto mt-5">
+                  <div className="text-xl border-b-2 border-sky-200 border-solid">{schedule.Group} <span>[{schedule.Schedule.morning.length}]</span></div>
+                  <div className="grid grid-cols-3 gap-5 pt-5">
+                  {schedule.Schedule.morning.map((internName, index) => (
+                    <li key={index}>
+                      {internName}
+                      <Button onClick={() => swapShift(internName, "morning")}>
+                        Swap Shift
+                      </Button>
+                    </li>
+                  ))}
+                  </div>
+                </div>
+              </div>
             ))}
+            </div>
+
+            <div className="w-[100%]">
+              <div className="w-[100%] text-center">
+                AFTENOON
+              </div>
+              {populatedWeeklySchedule.map((schedule) => (
+                <div className="w-[75%] mx-auto" key={schedule._id}>
+                  <div className="w-[100%] mx-auto mt-5">
+                    <div className="text-xl border-b-2 border-sky-200 border-solid">{schedule.Group} <span>[{schedule.Schedule.afternoon.length}]</span></div>
+                    <div className="grid grid-cols-3 gap-5 pt-5">
+                    {schedule.Schedule.afternoon.map((internName, index) => (
+                      <li key={index}>
+                        {internName}
+                        <Button onClick={() => swapShift(internName, "afternoon")}>
+                          Swap Shift
+                        </Button>
+                      </li>
+                    ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
+        </div> 
+        <div className="flex items-center my-20">
+          <CSVLink ref={csvLinkElement} data={assignedShifts} filename={"assigned-shifts.csv"}></CSVLink>
+          <Button
+            className="w-[13rem]"
+            size="medium"
+            color="primary"
+            startIcon={<SystemUpdateAlt className="text-sm" />}
+            variant="contained"
+            sx={{ borderRadius: 2 }}
+            href="#"
+            onClick={handleExportToCsv}
+          >
+            Export to CSV
+          </Button>
         </div>
-        {/* End of Morning Shift People */}
-        {/* Afternoon Shift People*/}
-        <div
-          className="flex flex-col items-center justify-center gap-6 mt-4"
-          style={{
-            margin: "12px 26px",
-            padding: "12px 26px",
-            background: "#DCEBFC",
-            borderRadius: "24px",
-          }}
-        >
-          <h2 className="text-center mb-4"><b>Afternoon Shift</b></h2>
-          <div className="flex justify-center">
-          {populatedWeeklySchedule.map((schedule) => (
-              <table
-                key={schedule._id}
-                className="font-roboto w-full max-w-screen mx-auto"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  padding: "12px 24px",
-                  gap: "10px",
-                  background: "#DCEBFC",
-                  borderRadius: "24px",
-                }}
-              >
-                <thead>
-                  <tr>
-                  <h3><strong>{schedule.Group} <span>[{schedule.Schedule.afternoon.length}]</span> </strong></h3>
-                  </tr>
-                </thead>
-                <tbody>
-                {schedule.Schedule.afternoon.map((internName, index) => (
-                  <li key={index}>
-                    {internName}
-                    <Button onClick={() => swapShift(internName, "afternoon")}>
-                      Swap Shift
-                    </Button>
-                  </li>
-                ))}
-                  </tbody>
-              </table>
-            ))}
-          </div>
-        </div>
-        {/* End of Afternoon Shift People */}
       </div>
-    </div>
   );
 };
 
 export default WeeklySchedule;
+
+
+
+
+
+/*
+Unused imports, variables and code
+
+import { Sidebar } from "flowbite-react";
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+
+
+
+
+
+*/
