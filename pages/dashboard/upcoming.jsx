@@ -14,56 +14,6 @@ function news() {
                             </div>
                         </div>
                     </div>
-
-                    <div className="block w-full overflow-x-auto my-2">
-                        <div className="items-center w-full bg-white px-4">
-                            {/* Arrival Departure Content*/}
-                            <div className="py-2">
-                                <Upcoming
-                                    name="Marcus Botosh"
-                                    department="ICT"
-                                    status="Arriving"
-                                    time="02 September 2022"
-                                />
-                            </div>
-
-                            <div className="py-2">
-                                <Upcoming
-                                    name="Talan Carder"
-                                    department="Human Resources"
-                                    status="Departing"
-                                    time="03 September 2022"
-                                /></div>
-
-                            <div className="py-2">
-                                <Upcoming
-                                    name="Jordyn Dias"
-                                    department="Project Management"
-                                    status="Departing"
-                                    time="05 September 2022"
-                                /></div>
-
-                            <div className="py-2">
-                                <Upcoming
-                                    name="Cooper Gouse"
-                                    department="Business Analyst"
-                                    status="Arriving"
-                                    time="07 September 2022"
-                                />
-                            </div>
-                            
-                            <div className="py-2">
-                                <Upcoming
-                                    name="Desirae Stanton"
-                                    department="ICT"
-                                    status="Arriving"
-                                    time="10 September 2022"
-                                />
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </section >

@@ -8,8 +8,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const Feed = () => {
   const token = cookie.get("token");
   const [data, setData] = useState([]);
-  const [, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
+  var currentDate = new Date().toISOString().split('T')[0];
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -28,7 +29,7 @@ const Feed = () => {
           },
         };
         const { data } = await axios.get(`/api/whatsNew`, { params: { token: token } }, config);
-        const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const sortedData = data.sort((b, a) => new Date(b.date) - new Date(a.date));
         setData(sortedData);
         setLoading(false);
       } catch (e) {
@@ -63,7 +64,7 @@ const Feed = () => {
       buttons: [
         {
           label: "Close",
-          onClick: () => {},
+          onClick: () => { },
         },
       ],
     });
@@ -72,7 +73,7 @@ const Feed = () => {
   const handleDelete = (id) => {
     const updatedData = data.map((item) => {
       if (item.id === id) {
-        return { ...item, content: '' }; 
+        return { ...item, content: '' };
       }
       return item;
     });
@@ -81,28 +82,30 @@ const Feed = () => {
 
   return (
     <div>
-      {data.map((whatsNew) => (
-        <div className="flex m-2 py-4" key={whatsNew.id}>
-          <div className="flex flex-[1] flex-col gap-2 p-2">
-            <div className="text-sm font-semibold">{formatDate(whatsNew.date)}</div>
-            <div className="text-xs font-light">
-              <div>posted by</div>
-              <div>{whatsNew.postedBy}</div>
+      {data.map((whatsNew) => (Date.parse(whatsNew.date.split('T')[0]) < Date.parse(currentDate)) ? (console.log(whatsNew))
+        :
+        (
+          <div className="flex m-2 py-4" key={whatsNew.id}>
+            <div className="flex flex-[1] flex-col gap-2 p-2">
+              <div className="text-sm font-semibold">{formatDate(whatsNew.date)}</div>
+              <div className="text-xs font-light">
+                <div>posted by</div>
+                <div>{whatsNew.postedBy}</div>
+              </div>
+            </div>
+            <div className="flex w-5 flex-1 flex-col gap-2 p-2  ">
+              <div className="text-sm font-semibold  truncate  text-ellipsis">{whatsNew.title}</div>
+              <div className="text-xs font-light  truncate  text-ellipsis">{whatsNew.paragraph}</div>
+            </div>
+            <div className="flex items-center justify-between p-2">
+              <button onClick={() => read(whatsNew)} className="flex items-center p-2">
+                <div className="text-sm truncate  font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300">
+                  Read More
+                </div>
+              </button>
             </div>
           </div>
-          <div className="flex w-5 flex-1 flex-col gap-2 p-2  ">
-            <div className="text-sm font-semibold  truncate  text-ellipsis">{whatsNew.title}</div>
-            <div className="text-xs font-light  truncate  text-ellipsis">{whatsNew.paragraph}</div>
-          </div>
-          <div className="flex items-center justify-between p-2">
-            <button onClick={() => read(whatsNew)} className="flex items-center p-2">
-              <div className="text-sm truncate  font-semibold underline cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover: duration-300">
-                Read More
-             </div>
-            </button>
-          </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 };
