@@ -6,13 +6,9 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import Link from "next/link";
-import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import { confirmAlert } from "react-confirm-alert";
-import SaveIcon from "@mui/icons-material/Save";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { useState, useEffect } from "react";
-import reactSelect from "react-select";
 import { CheckCircle } from "@mui/icons-material";
 import EditAttendance from "../../components/Modal/EditAttendance";
 import axios from "axios";
@@ -24,7 +20,6 @@ import React, { useRef } from "react";
 import { Button, Grid } from "@mui/material";
 import { Add, SystemUpdateAlt } from "@mui/icons-material";
 import { format, startOfMonth, endOfMonth,addMonths, subMonths } from "date-fns";
-import RefreshIcon from "@mui/icons-material/Refresh";
 import {
   Dialog,
   DialogTitle,
@@ -33,8 +28,6 @@ import {
 } from "@mui/material";
 import DialogContentText from "@mui/material/DialogContentText";
 import mongoose from "mongoose";
-import { de } from "date-fns/locale";
-import tokenCheck from "../api/auth/tokenCheck";
 
 
 
@@ -54,8 +47,7 @@ function Attendence() {
   const token = cookie.get("token");
   const [dateRange, setDateRange] = useState("");
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [openDialog, setOpenDialog] = useState(false);
-
+  
   const csvLinkElement = useRef();
   const csvLinkSingleIntern = useRef();
 
@@ -63,20 +55,18 @@ function Attendence() {
   const { filteredData } = useTableSearch({ data, searchedVal });
   console.log(data);
   console.log(filteredData);
-
+  
   const [draftedInternUpdates, setDraftedInternUpdates] = useState([]);
   const [updatedInterns, setUpdatedInterns] = useState([]);
-
+  
   const [singleInternAttendanceInfo, setsingleInternAttendanceInfo] =
-    useState([]);
+  useState([]);
   const [allInternsAttendanceInfo, setAllInternsAttendanceInfo] =
-    useState([]);
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [cancelRefresh, setCancelRefresh] = useState(false);
-
+  useState([]);
+  
+  
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isRefreshing, setRefreshing] = useState(false);
+
 
   const listHeaders = [
     "Full Name",
@@ -252,18 +242,8 @@ function Attendence() {
     await asyncRequest(newDate);
   };
 
-  // useEffect(() => {
-  //   const handleCurrentMonthDateRange = () => {
-  //     const firstDayOfMonth = startOfMonth(currentDate);
-  //     const lastDayOfMonth = endOfMonth(currentDate);
-  //     const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
-  //     const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
-  //     const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
-  //     setDateRange(monthDateRange);
-  //   };
 
-  //   handleCurrentMonthDateRange();
-  // }, [currentDate]);
+  //Unused code 1
 
   const csvReport = {
     separator: "  ",
@@ -460,15 +440,23 @@ function Attendence() {
   today = yyyy + '-' + mm + '-' + dd;
   console.log(today);
 
-  // function setDefaultStatus() {
-  //   const selectElement = document.getElementById("country");
-  //   selectElement.value = "present";
-  // }
+  //Unused code 2
 
   function setDefaultSituation() {
     const selectElement = document.getElementById("situation");
     selectElement.value = "Present";
   }
+
+   const tableTitles = ["INTERN", "SITUATION", "COVERED DAY","PRESENT", "DAY OFF","LATE","EXUSED LEAVE","SICK","UNEXCUSED LEAVE","ACTION"];
+   const situationOptions = {
+    present : "Choose and Option",
+    late : "Late",
+    dayOff : "Day off",
+    coveredDay : "Covered Day",
+    excusedLeave : "Excused leave",
+    sick : "Sick",
+    unexcusedLeave : "Unexcused leave"
+};
 
   return (
     <section className="relative w-full">
@@ -532,14 +520,7 @@ function Attendence() {
                   Are you sure you want to refresh the table? This action cannot be undone.
                 </DialogContentText>
               </DialogContent>
-              {/* <DialogActions>
-                <Button onClick={handleCancelRefresh} color="primary">
-                  No
-                </Button>
-                <Button onClick={handleConfirmRefresh} color="primary" autoFocus>
-                  Yes
-                </Button>
-              </DialogActions> */}
+              {/* Unused code 3 */}
             </Dialog>
 
               
@@ -595,17 +576,7 @@ function Attendence() {
               </form>
               <div className="relative"  >
                 
-                {/* <Button
-                size="medium"
-                color="primary"
-                startIcon= {<CheckCircle className="text-sm" />}
-                variant="contained"
-                sx={{ borderRadius: 2 }}
-                href="#"
-                onClick={saveAll}
-              >
-                Save All
-              </Button> */}
+                {/* unused code 4 */}
                 
               </div>
             </div>
@@ -656,34 +627,11 @@ function Attendence() {
               {/* Table Head */}
               <thead>
                 <tr>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    INTERN
-                  </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    SITUATION
-                  </th>
-
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    LATE
-                  </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    Covered Day
-                  </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    DAY OFF
-                  </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    EXCUSED LEAVE
-                  </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    SICK
-                  </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    UNEXCUSED LEAVE
-                  </th>
-                  <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                    ACTION
-                  </th>
+                  {tableTitles.map((title) =>(
+                    <th className="px-5 align-middle border border-solid py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                      {title}
+                    </th>
+                  ))}
                 </tr>
               </thead>
 
@@ -712,64 +660,25 @@ function Attendence() {
                           // onClick={(e) => setStatus(e.target.value)}
                           onClick={(e) => handleChangeStatus(attendance, e.target.value)}
                         >
-                          <option value="present">Choose an Option</option>
-                          <option value="late">Late</option>
-                          <option value="dayOff">Day off</option>
-                          <option value="coveredDay">Covered Day</option>
-                          <option value="excusedLeave">Excused leave</option>
-                          <option value="sick">Sick</option>
-                          <option value="unexcusedLeave">
-                            Unexecused leave
-                          </option>
+                          {Object.keys(situationOptions).map((key) => (
+                            <option value={key}>{situationOptions[key]}</option>
+                          ))}
+                         
                         </select>
                       </td>
-
-                      {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-                          <div>{attendance.present.count}</div>
-                        </div>
-                      </td> */}
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-
-                          <div>{attendance.late.count}</div>
-
-                        </div>
-                      </td>
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-                          <div>{attendance.coveredDay.count}</div>
-                        </div>
-                      </td>
-
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-                          <div>{attendance.dayOff.count}</div>
-                        </div>
-                      </td>
-
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-                          <div>
-                            {attendance.excusedLeave.count}
-                          </div>
-                        </div>
-                      </td>
-
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-                          <div>{attendance.sick.count}</div>
-                        </div>
-                      </td>
-
-                      <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        <div className="flex flex-col gap-1">
-                          <div>
-                            {attendance.unexcusedLeave.count}
-                          </div>
-                        </div>
-                      </td>
-
+                            {console.log(attendance)}
+                      {/* unused code 5 */}
+                      {Object.keys(attendance).map((att) =>(
+                        <>
+                        
+                        {attendance[att].hasOwnProperty("count") ? (
+                          <td className="px-6">
+                              <div>{attendance[att].count}</div>
+                          </td>
+                        ):("")
+                        }
+                        </>
+                      ))}
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <div className="flex flex-col gap-1">
                           <div className="flex flex-r">
@@ -815,3 +724,83 @@ function Attendence() {
   );
 }
 export default Attendence;
+
+
+/* 
+Unused imports, variables and code
+import Link from "next/link";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import SaveIcon from "@mui/icons-material/Save";
+import reactSelect from "react-select";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { de } from "date-fns/locale";
+import tokenCheck from "../api/auth/tokenCheck";
+
+
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [cancelRefresh, setCancelRefresh] = useState(false);
+  const [isRefreshing, setRefreshing] = useState(false);
+
+
+
+
+
+  1:
+
+  // useEffect(() => {
+  //   const handleCurrentMonthDateRange = () => {
+  //     const firstDayOfMonth = startOfMonth(currentDate);
+  //     const lastDayOfMonth = endOfMonth(currentDate);
+  //     const formattedFirstDay = format(firstDayOfMonth, "dd/MM/yyyy");
+  //     const formattedLastDay = format(lastDayOfMonth, "dd/MM/yyyy");
+  //     const monthDateRange = `${formattedFirstDay} - ${formattedLastDay}`;
+  //     setDateRange(monthDateRange);
+  //   };
+
+  //   handleCurrentMonthDateRange();
+  // }, [currentDate]);
+
+
+  2:
+  // function setDefaultStatus() {
+  //   const selectElement = document.getElementById("country");
+  //   selectElement.value = "present";
+  // }
+
+3:
+ <DialogActions>
+  <Button onClick={handleCancelRefresh} color="primary">
+    No
+  </Button>
+  <Button onClick={handleConfirmRefresh} color="primary" autoFocus>
+    Yes
+  </Button>
+</DialogActions> 
+
+
+4:
+<Button
+  size="medium"
+  color="primary"
+  startIcon= {<CheckCircle className="text-sm" />}
+  variant="contained"
+  sx={{ borderRadius: 2 }}
+  href="#"
+  onClick={saveAll}
+>
+  Save All
+</Button>
+
+
+
+
+5:
+<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
+  <div className="flex flex-col gap-1">
+    <div>{attendance.present.count}</div>
+  </div>
+</td>
+
+*/

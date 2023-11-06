@@ -1,8 +1,5 @@
-import { Add, Circle, MoreHoriz, SystemUpdateAlt } from "@mui/icons-material";
-import Image from "next/image";
+import {MoreHoriz, SystemUpdateAlt } from "@mui/icons-material";
 import Link from "next/link";
-import { BsPeopleFill } from "react-icons/bs";
-import EditIcon from "@mui/icons-material/Edit";
 import Popup from "reactjs-popup";
 import * as React from "react";
 import { useState, useEffect } from "react";
@@ -11,7 +8,6 @@ import EndInternshipModal from "../../components/Modal/EndInternshipModal.jsx";
 import { Tooltip, Button } from "@material-tailwind/react";
 import axios from "axios";
 import cookie from "js-cookie";
-import LoadingState from "../../components/Utils/LoadingState.jsx";
 import useTableSearch from "../../hooks/useTableSearch.js";
 import { useRouter } from "next/router";
 import moment, { Moment } from "moment/moment.js";
@@ -22,10 +18,9 @@ export default function InternList() {
   // End Internship modal
   const [eiModal, setEiModal] = useState(false);
   const [data, setData] = useState([]);
-  const [isloading, setLoading] = useState(true);
   const token = cookie.get("token");
   const [searchedVal, setSearchedVal] = useState("");
-  const router = useRouter();
+
   const { filteredData } = useTableSearch({ data, searchedVal });
 
   useEffect(() => {
@@ -43,7 +38,10 @@ export default function InternList() {
           { params: { token: token } },
           config
         ); 
-        setData(response.data);
+        console.log(response.data);
+        formatDates(response.data);
+        // {moment(internTest.startDate).format("DD/MM/YYYY")}
+        
       } catch (error) {
         console.error('Error fetching interns:', error);
       }
@@ -51,7 +49,13 @@ export default function InternList() {
     fetchInterns();
   }, [token]);
 
-
+  function formatDates(interns){
+    interns.forEach((intern) =>{
+      intern.startDate = moment(intern.startDate).format("DD/MM/YYYY");
+      intern.endDate = moment(intern.endDate).format("DD/MM/YYYY");
+    })
+    setData(interns);
+  }
   
   const asyncRequest = async () => {
     try {
@@ -67,15 +71,18 @@ export default function InternList() {
         { params: { token: token } },
         config
       );
-      setLoading(false);
     } catch (error) {
       console.error(error);
-      setLoading(false);
     }
   };
   useEffect(() => {
     asyncRequest();
   }, [token]);
+
+
+const tableTitles = ["Full Name", "Start Date", "End Date", "Duration In Weeks", "Department", "Position", "Status", "Action"];
+
+
   return (
     <section className="relative w-full sm:static">
       {/* <LoadingState open={isloading} /> */}
@@ -89,9 +96,7 @@ export default function InternList() {
                   <h3 className="font-semibold text-2xl">Interns List</h3>
                 </div>
               </div>
-              {/* <button className="mr-16 text-sm text-blue-300 hover:text-blue-500  ">
-                View All
-              </button> */}
+              {/*Unused code 1 */}
             </div>
             <div className="flex gap-2">
               <Link href="/import-list">
@@ -174,30 +179,11 @@ export default function InternList() {
                 {/* Table Head */}
                 <thead>
                   <tr>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Full Name
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Start Date
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      End Date
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Duration In Weeks
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Department
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Position
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Status
-                    </th>
-                    <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                      Action
-                    </th>
+                    {tableTitles.map((title) =>(
+                      <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        {title}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
 
@@ -212,11 +198,11 @@ export default function InternList() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(internTest.student.startDate).format("DD/MM/YYYY")}
+                        {internTest.startDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(internTest.student.endDate).format("DD/MM/YYYY")}
+                        {internTest.endDate}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -271,7 +257,7 @@ export default function InternList() {
                                 <Link
                                   href={{
                                     pathname: "/applicants/new",
-                                    query: { student: JSON.stringify(internTest.student) },
+                                    query: { student: JSON.stringify(internTest) },
                                   }}
                                   as={`/intern/${internTest.student.firstName}_${internTest.student.lastName}`}
                                 >
@@ -279,14 +265,7 @@ export default function InternList() {
                                 </Link>
                               </button>
                             </div>
-                            {/* <div>
-                              <button
-                                onClick={(e) => startInternship(student)}
-                                className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
-                              >
-                                Start Internship
-                              </button>
-                            </div> */}
+                            {/* Unused code 2 */}
 
                             <div>
                               <button
@@ -320,3 +299,35 @@ export default function InternList() {
     </section>
   );
 }
+
+
+
+/*
+UNUSED imports, variables and code
+import Image from "next/image";
+import { BsPeopleFill } from "react-icons/bs";
+import EditIcon from "@mui/icons-material/Edit";
+import LoadingState from "../../components/Utils/LoadingState.jsx";
+
+
+  const [isloading, setLoading] = useState(true);
+  const router = useRouter();
+
+
+
+  1:
+   <button className="mr-16 text-sm text-blue-300 hover:text-blue-500  ">
+    View All
+  </button>
+
+  2:
+  <div>
+    <button
+      onClick={(e) => startInternship(student)}
+      className="w-28 inline-flex justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white  text-white bg-[#0B3768]  hover:bg-white hover:text-[#0B3768]"
+    >
+      Start Internship
+    </button>
+  </div>
+
+*/
