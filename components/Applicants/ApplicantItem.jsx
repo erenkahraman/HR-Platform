@@ -26,7 +26,7 @@ export const ApplicantItem = ({ student }) => {
   const [acceptAplcntModal, setAcceptAplcntModal] = useState(false);
   const [rejectModal, setRejectModal] = useState(false);
   const [isEditIconActive, setIsEditIconActive] = useState(false);
-  const token=cookie.get("token");
+  const token = cookie.get("token");
 
 
   // set progress bar
@@ -70,7 +70,7 @@ export const ApplicantItem = ({ student }) => {
 
     setIsEditIconActive(false)
   }
-  
+
   const handleClickEdit = () => {
     setIsEditIconActive(!isEditIconActive);
   };
@@ -99,6 +99,8 @@ export const ApplicantItem = ({ student }) => {
       </TableCell>
 
       <TableCell>{student.applicant.applicationDate}</TableCell>
+
+      <TableCell>{student.applicant.startDate}</TableCell>
 
       <TableCell>{student.applicant.department}</TableCell>
 
@@ -219,20 +221,20 @@ export const ApplicantItem = ({ student }) => {
                 </div>
                 <div className="cursor-pointer py-1">
                   <Button
-                      size="small"
-                      className="text-sm font-medium border-solid border-white text-white bg-[#0B3768] hover:bg-[#0b37682b] hover:text-[#0B3768]"
-                      type="submit"
-                      // onClick={handleEditRedirect}
+                    size="small"
+                    className="text-sm font-medium border-solid border-white text-white bg-[#0B3768] hover:bg-[#0b37682b] hover:text-[#0B3768]"
+                    type="submit"
+                  // onClick={handleEditRedirect}
                   >
-                      <Link
-                        href={{
-                          pathname: "/applicants/new",
-                          query: { student: JSON.stringify(student) },
-                        }}
-                        as={`/interns/${student.firstName}_${student.lastName}`}
-                      >
-                        Edit
-                      </Link>
+                    <Link
+                      href={{
+                        pathname: "/applicants/new",
+                        query: { student: JSON.stringify(student) },
+                      }}
+                      as={`/interns/${student.firstName}_${student.lastName}`}
+                    >
+                      Edit
+                    </Link>
                   </Button>
                 </div>
               </div>

@@ -52,7 +52,7 @@ export default function InternList() {
   }, [token]);
 
 
-  
+
   const asyncRequest = async () => {
     try {
       const token = cookie.get("token");
@@ -212,11 +212,11 @@ export default function InternList() {
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(internTest.student.startDate).format("DD/MM/YYYY")}
+                        {moment(internTest.startDate).format("DD/MM/YYYY")}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                        {moment(internTest.student.endDate).format("DD/MM/YYYY")}
+                        {moment(internTest.endDate).format("DD/MM/YYYY")}
                       </td>
 
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -266,7 +266,7 @@ export default function InternList() {
                               <button
                                 type="submit"
                                 className="w-28 inline-flex rounded-t-lg justify-center py-2 px-4  shadow-sm text-sm font-medium border-solid border-2 border-white text-white bg-[#0B3768] hover:bg-white hover:text-[#0B3768] "
-                                // onClick={clicked}
+                              // onClick={clicked}
                               >
                                 <Link
                                   href={{
