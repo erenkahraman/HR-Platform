@@ -6,7 +6,7 @@ import { Spinner, Button } from "flowbite-react";
 import axios from "axios";
 import cookie from "js-cookie";
 import { format, startOfMonth, endOfMonth } from "date-fns";
-
+import { Accordion } from "flowbite";
 
 
 const AcceptAplcntModal = ({ setAcceptAplcntModal, stdId }) => {
