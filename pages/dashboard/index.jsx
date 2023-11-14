@@ -368,9 +368,10 @@ const handleSubmitWhatsNew = async (event) => {
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">What&apos;s New</div>
               <a
-                href="/WhatsNewViewAll"
-                className="flex items-center justify-center text-[#2F80ED]"
+                href="/whatsNew"
+                className="viewAll flex items-center justify-center text-[#2F80ED]"
               >
+                
                 <div>View All </div>
                 <div>
                   {" "}

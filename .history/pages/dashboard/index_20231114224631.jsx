@@ -20,6 +20,9 @@ import { useState } from "react";
 import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
 import Interviews from "./reports";
+import { UpcomingInterviewsViewAll } from "../../components/UpcomingInterviewsViewAll";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -27,31 +30,37 @@ const Dashboard = () => {
   const token = cookie?.get("token");
 
   //For Whats's New to add post
-  const handleSubmitWhatsNew = async (event) => {
-    event.preventDefault();
+const handleSubmitWhatsNew = async (event) => {
+  event.preventDefault();
 
-    const whatsNew = {
-      title: event.target.title.value,
-      postedBy: event.target.postedBy.value,
-      date: event.target.date.value,
-      paragraph: event.target.paragraph.value,
-      token: token,
-    };
-    const JSONnew = JSON.stringify(whatsNew);
-    console.log(JSONnew);
-    const endpointNew = "/api/whatsNew";
-    const New = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSONnew,
-    };
-    await fetch(endpointNew, New);
-    router.reload();
+  const whatsNew = {
+    title: event.target.title.value,
+    postedBy: event.target.postedBy.value,
+    date: event.target.date.value,
+    paragraph: event.target.paragraph.value,
+    token: token,
   };
+  const JSONnew = JSON.stringify(whatsNew);
+  console.log(JSONnew);
 
+  if (event.target.classList.contains("delete-button")) {
+    const itemId = event.target.getAttribute("data-id");
+    await handleDeleteWhatsNew(itemId);
+    return; 
+  }
+
+  const endpointNew = "/api/whatsNew";
+  const New = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSONnew,
+  };
+  await fetch(endpointNew, New);
+  router.reload();
+};
   const [students, setStudents] = useState([]);
 
   //For Reminder to add post
@@ -79,10 +88,9 @@ const Dashboard = () => {
     await fetch(endpointReminder, Reminder);
     router.reload();
   };
-
   return (
 
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full px-8">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
@@ -352,7 +360,7 @@ const Dashboard = () => {
             </div>
           </div>
         </Popup>
-      </div>
+      </div> 
 
       {/* Bottom */}
       <div className="flex flex-1 shrink w-full flex-col lg:flex-row py-3 gap-3">
@@ -362,7 +370,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">What&apos;s New</div>
               <a
-                href="../WhatsNewViewAll"
+                href="/WhatsNewViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
                 <div>View All </div>
@@ -379,11 +387,11 @@ const Dashboard = () => {
           </div>
 
           {/* Weekly Schedule */}
-          <div className="flex flex-[1.5] flex-col gap-6">
+          <div className="flex flex-[1.5] flex-col gap-2 ">
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">Weekly Schedule</div>
               <a
-                href="./weeklySchedule"
+                href="/weeklySchedule"
                 className="viewAll flex items-center justify-center text-[#2F80ED]"
               >
                 <div>View All</div>
@@ -407,7 +415,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">Daily Reminder</div>
               <a
-                href="../reminderViewAll"
+                href="/reminderViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
                 <div>View All</div>
@@ -454,7 +462,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">Upcoming Interviews</div>
               <a
-                href="../InterviewViewAll"
+                href="/UpcomingInterviewsViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
                 <div>View All</div>
@@ -474,18 +482,13 @@ const Dashboard = () => {
             {/* Daily Reminder Title*/}
             <div className="flex items-center justify-between">
               <div className="text-md font-semibold">
-                This Month's Birthdays 🥳🍰🎉
+                This Months Birthdays 🥳🍰🎉
               </div>
 
               <a
                 href="./BirthdayViewAll"
                 className="flex items-center justify-center text-[#2F80ED]"
               >
-                <div>View All</div>
-                <div>
-                  {" "}
-                  <ArrowForward className="text-md" />
-                </div>
               </a>
             </div>
             {/* {Birthday content} */}
@@ -498,7 +501,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      </div>
+    </div>
   );
 };
 export default Dashboard;
