@@ -55,6 +55,7 @@ function Attendence() {
   const { filteredData } = useTableSearch({ data, searchedVal });
   console.log(data);
   console.log(filteredData);
+  console.log(searchedVal);
   
   const [draftedInternUpdates, setDraftedInternUpdates] = useState([]);
   const [updatedInterns, setUpdatedInterns] = useState([]);
@@ -173,13 +174,14 @@ function Attendence() {
           { params: { token: token } },
           config
         ); 
+        console.log(response.data);
         setInterns(response.data);
       } catch (error) {
         console.error('Error fetching interns:', error);
       }
     };
     fetchInterns();
-  }, [token]);
+  }, [token, currentDate]);
 
 
   const asyncRequest = async (newDate) => {
@@ -196,11 +198,19 @@ function Attendence() {
         { params: { token: token } },
         config
       );
+      console.log("DATA BEFORE GETTING FILTERED");
+      console.log(data);
+      var temp = [];
       const filteredData = data.filter((attendance) => {
+        console.log("INSIDE FILTERING");
+        console.log(attendance);
         const attendanceDate = new Date(attendance.date); 
         const attendanceMonth = attendanceDate.getMonth() + 1; 
+        // return attendance;
         return attendanceMonth === newDate.getMonth() + 1; 
       });
+      console.log("FILTERED DATA");
+      console.log(filteredData);
       setData(filteredData);
       setLoading(false);
     } catch (error) {
@@ -315,7 +325,6 @@ function Attendence() {
                     date: newDate,
                     internTest: attendance.internTest,
                   };
-              
                   
                   await saveToAttendanceDatabase(attendanceData);
 
@@ -346,7 +355,7 @@ function Attendence() {
             {
               label: "Yes",
               onClick: async () => {
-                debugger;
+                // debugger;
                 setOpen(true);
                 attendance[status].count++;
                 attendance[status].date.push(date);
@@ -438,7 +447,7 @@ function Attendence() {
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   var yyyy = today.getFullYear();
   today = yyyy + '-' + mm + '-' + dd;
-  console.log(today);
+  // console.log(today);
 
   //Unused code 2
 
@@ -457,7 +466,7 @@ function Attendence() {
     sick : "Sick",
     unexcusedLeave : "Unexcused leave"
 };
-
+console.log(internTest);
   return (
     <section className="relative w-full">
 

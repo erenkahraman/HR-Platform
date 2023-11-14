@@ -361,7 +361,7 @@ const WeeklySchedule = () => {
     return (
     <div className="min-h-screen  ">
       <div className="container w-full flex-grow  mx-auto">
-        <div className=" flex w-full flex-col   items-center justify-center min-w-0 break-words w-full rounded">
+        <div className=" flex w-full flex-col items-center justify-center min-w-0 break-words rounded">
           <div className="flex justify-between gap-4 rounded-t mb-0 px-4 py-6 border-b-2 border-blueGray-300">
             <div className="flex items-center">
               <h1 className="font-roboto font-bold text-4xl text-black text-center w-full">
@@ -384,23 +384,13 @@ const WeeklySchedule = () => {
             </div>
           </div>
           <div
-  className="flex flex-col items-center justify-center gap-10 mt-4"
+  className="flex flex-col items-center justify-center gap-[10px] mt-4 py-[12px] px-[24px] rounded-[24px]"
   style={{
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "12px 24px",
-    gap: "10px",
-    background: "#DCEBFC",
-    borderRadius: "24px",
+    background: "#DCEBFC"
   }}
 >
   <table
-    className="font-roboto"
-    style={{
-      width: "100%",
-    }}
+    className="font-roboto w-100"
   >
     <tbody>
       <tr>
