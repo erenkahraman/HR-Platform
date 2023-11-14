@@ -34,7 +34,7 @@ const NewApplicants = () => {
 
 const pageType = useRef();
 
-
+const temp = useRef([]);
 
 
 
@@ -52,13 +52,13 @@ const pageType = useRef();
   // const [addPositionModal, setAddPositionModal] = useState(false);
 
   const router = useRouter();
-  const [student, setStudent] = useState(
-    { student: JSON.parse(router.query.student || null) } || null
-  );
+  const [student, setStudent] = useState({student: JSON.parse(router.query.student || null)  || null});
 
-  useEffect(()=>{
 
-  },[docValues]);
+
+
+
+  
 
   const {
     control,
@@ -68,14 +68,26 @@ const pageType = useRef();
     formState: { errors },
   } = useForm({
     defaultValues: useMemo(() => {
-      console.log(student);
-      student.student == null ? (
-        pageType.current="new"
-      ):("");
+
+      if(pageType.current === "intern")
+      {
+        console.log("Here we are.");
+          console.log(student);
+          return student;
+      } 
+      student.student == null ? (pageType.current="new"):("");
       if(pageType.current === "new")
       {
-        console.log("got new")
+        console.log("got new");
         console.log(pageType);
+        return student;
+      }
+      student.student.documents ? (pageType.current="intern"):("")
+      if(pageType.current === "intern"){
+        console.log("gotIntern"),
+        console.log(pageType)
+        // alterStructure(student);
+        console.log(student);
         return student;
       }
       student.student.applicant['documents'] ? (
@@ -84,33 +96,51 @@ const pageType = useRef();
         console.log(docKeys.current),
         pageType.current="applicant"
       ):("");
-      if(pageType.current === "applicant")
-      {
+
+      if(pageType.current === "applicant"){
         console.log(" gotapplicant")
         console.log(pageType);
         return student;
-      }      
-      pageType.current="intern";
-      console.log("gotIntern")
-      console.log(pageType);
-      return student;
+      }
+      
 
-      // console.log(Object.keys(student.student.applicant['documents']));
-      // console.log(Object.values(student.student.applicant['documents']));
-      student.documents ? (
-        docKeys.current = Object.keys(student.student.applicant['documents']),
-        docValues.current = Object.values(student.student.applicant['documents']),
-        console.log(docKeys.current)
-      ):("");
-      student.student === null ? (
-        ""
-        ):(
-        isIntern.current = false
-        )
-      // console.log(docKeys);
-      // console.log(docValues);
     }, [student]),
   });
+
+
+  // function alterStructure(student){
+  //   if(pageType.current !== "intern"){return;}
+  //   //inputs to be disabled
+  //   //application date, arrival city, arrival time, all three interviews, interview question and rejection reasons, picked up by, progress,  
+    
+    
+  //       temp.current = student;
+  //       console.log("Letme see");
+  //       console.log(temp.current);
+  //       console.log(temp.current.student.student.firstName);
+  //       var newStructure = ({
+  //           firstName:temp.current.student.student.firstName,
+  //           lastName: temp.current.student.student.lastName,
+  //           sex:temp.current.student.student.sex,
+  //           dateOfBirth:temp.current.student.student.dateOfBirth,
+  //           nationality:temp.current.student.student.nationality,
+  //           email:temp.current.student.student.email,
+  //           phoneNumber:temp.current.student.student.phoneNumber,
+  //           university:temp.current.student.student.university,
+  //           departingCountry:temp.current.student.student.departingCountry,
+
+  //         applicant:{
+  //         department : temp.current.student.department,
+  //         position : temp.current.student.position,
+  //         startDate : temp.current.student.startDate,
+  //         endDate : temp.current.student.endDate
+  //         }
+  //     });
+  //     setStudent({student:newStructure});
+  //     console.log("LOGFORTEST------------------------------");
+  //   console.log(newStructure);
+  //   return newStructure;
+  // };
 
   const { query } = router;
 
@@ -136,9 +166,7 @@ const pageType = useRef();
     "Interview Record",
     "Passport"
   ];
-
   
-
   // Get departments from DB
   useEffect(() => {
     setOpen(true);
@@ -358,6 +386,9 @@ const pageType = useRef();
   
 
   const updateStudent = async (data) => {
+    // if(pageType.current === "intern"){
+
+    // }else{
     setOpen(true);
     const student = data.student;
     const applicant = data.student.applicant;
@@ -389,6 +420,7 @@ const pageType = useRef();
     setAlertOpen(true);
     setOpen(false);
     router.push("/interns/InternsList");
+  // }
   };
   
   
@@ -707,74 +739,78 @@ const pageType = useRef();
                   <div>
                     <h3 className="font-semibold">Application Details</h3>
                     <div className="flex px-4 py-2">
-                      <div className="flex justify-around grow">
-                        {/* Applied on */}
-                        <div className="flex flex-[1] items-center flex-col gap-2">
-                            <label htmlFor="applied-on" className="block text-sm">
-                              Applied on
-                            </label>
-                            <Controller
-                              control={control}
-                              name="student.applicant.applicationDate"
-                              render={({ field }) => (
-                                <DatePicker
-                                selected={field.value ? new Date(parseDate(field.value)) : null}
-                                onChange={field.onChange}
-                                dateFormat="dd/MM/yyyy" // Set the desired output date format here
-                                placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                        <div className="flex justify-around grow">
+                          {/* Applied on */}
+                          <div className="flex flex-[1] items-center flex-col gap-2">
+                              <label htmlFor="applied-on" className="block text-sm">
+                                Applied on
+                              </label>
+                              <Controller
+                                control={control}
+                                name="student.applicant.applicationDate"
+                                render={({ field }) => (
+                                  <DatePicker
+                                  selected={field.value ? new Date(parseDate(field.value)) : null}
+                                  onChange={field.onChange}
+                                  dateFormat="dd/MM/yyyy" // Set the desired output date format here
+                                  placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                                />
+                                )}
                               />
-                              )}
-                            />
-                            <p className="text-sm font-thin text-red-600">
-                              {errors.student?.applicant?.applicationDate?.message}
-                            </p>
-                        </div>
-                        {/* Interview Date */}
-                        <div className="flex flex-[1] items-center flex-col gap-2">
-                            <label htmlFor="applied-on" className="block text-sm">
-                              HR Interview Date
-                            </label>
-                            <Controller
-                              control={control}
-                              name="student.applicant.hrInterviewDate"
-                              render={({ field }) => (
-                                <DatePicker
-                                selected={field.value ? new Date(parseDate(field.value)) : null}
-                                onChange={field.onChange}
-                                dateFormat="dd/MM/yyyy" // Set the desired output date format here
-                                placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                              <p className="text-sm font-thin text-red-600">
+                                {errors.student?.applicant?.applicationDate?.message}
+                              </p>
+                          </div>
+                          {/* Interview Date */}
+                          <div className="flex flex-[1] items-center flex-col gap-2">
+                              <label htmlFor="applied-on" className="block text-sm">
+                                HR Interview Date
+                              </label>
+                              <Controller
+                                control={control}
+                                name="student.applicant.hrInterviewDate"
+                                render={({ field }) => (
+                                  <DatePicker
+                                  selected={field.value ? new Date(parseDate(field.value)) : null}
+                                  onChange={field.onChange}
+                                  dateFormat="dd/MM/yyyy" // Set the desired output date format here
+                                  placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                                />
+                                )}
                               />
-                              )}
-                            />
-                            <p className="text-sm font-thin text-red-600">
-                              {errors.student?.applicant?.hrInterviewDate?.message}
-                            </p>
-                        </div>
-                        {/* CEO Interview Date */}
-                        <div className="flex flex-[1] items-center flex-col gap-2">
-                            <label
-                              htmlFor="ceo-interview"
-                              className="block text-sm"
-                            >
-                              CEO Interview Date
-                            </label>
-                            <Controller
-                              control={control}
-                              name="student.applicant.ceoInterviewDate"
-                              render={({ field }) => (
-                                <DatePicker
-                                selected={field.value ? new Date(parseDate(field.value)) : null}
-                                onChange={field.onChange}
-                                dateFormat="dd/MM/yyyy" // Set the desired output date format here
-                                placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                              <p className="text-sm font-thin text-red-600">
+                                {errors.student?.applicant?.hrInterviewDate?.message}
+                              </p>
+                          </div>
+                          {/* CEO Interview Date */}
+                          <div className="flex flex-[1] items-center flex-col gap-2">
+                              <label
+                                htmlFor="ceo-interview"
+                                className="block text-sm"
+                              >
+                                CEO Interview Date
+                              </label>
+                              <Controller
+                                control={control}
+                                name="student.applicant.ceoInterviewDate"
+                                render={({ field }) => (
+                                  <DatePicker
+                                  selected={field.value ? new Date(parseDate(field.value)) : null}
+                                  onChange={field.onChange}
+                                  dateFormat="dd/MM/yyyy" // Set the desired output date format here
+                                  placeholderText="dd/MM/yyyy" // Placeholder text for the input
+                                />
+                                )}
                               />
-                              )}
-                            />
-                            <p className="text-sm font-thin text-red-600">
-                              {errors.student?.applicant?.ceoInterviewDate?.message}  
-                            </p>
+                              <p className="text-sm font-thin text-red-600">
+                                {errors.student?.applicant?.ceoInterviewDate?.message}  
+                              </p>
+                          </div>
                         </div>
-                      </div>
+                      {/* {pageType.current !== 'intern' ? (
+                      ):(
+                        <div className="w-[100%] text-xl text-center">Student is already an Intern, application details cannot be edited!</div>  
+                      )} */}
                     </div>
                   </div>
                   {/* Section */}
@@ -909,76 +945,83 @@ const pageType = useRef();
                       </div>
                     </div>
                     <div className="flex flex-col px-4 py-2">
-                      <div className="flex justify-evently flex-[1] gap-x-[4rem]">
-                        {/* Departure city */}
-                        <div className="flex flex-[1] flex-col gap-2">
-                            <label htmlFor="arrival-date" className="block text-sm">
-                              Arrival City
-                            </label>
-                            <select
-                              {...register("student.applicant.arrivalCity")}
-                              autoComplete="arrivalCity"
-                              className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                            >
-                              <option>Terranova da Sibari</option>
-                              <option>Bivo Cantinella</option>
-                              <option>Sibari</option>
-                              <option>Spezzano Albanese Terme</option>
-                            </select>
-                        </div>
-                        {/* Who Pıcked By */}
-                        <div className="flex flex-[1] flex-col gap-2">
-                          <label
-                            htmlFor="departure-date"
-                            className="block text-sm"
-                          >
-                            Picked up By
-                          </label>
-                          <input
-                            {...register("student.applicant.pickUpBy")}
-                            type="text"
-                            autoComplete="given-name"
-                            placeholder="Francesco di Marco"
-                            className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                          />
-                        </div>
-                      </div>
-                      <div className="flex justify-evently flex-[1] gap-x-[4rem]">
-                        {/* Arrival time */}
-                        <div className="flex flex-[1] flex-col gap-2">
-                            <label htmlFor="departure-date" className="block text-sm">
-                              Arrival Time
-                            </label>
-                            <input
-                              {...register("student.applicant.arrivalTime")}
-                              type="time"
-                              autoComplete="given-name"
-                              className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                            />
-                        </div>
-                        {/* Progress */}
-                        <div className="flex flex-[1] flex-col gap-2">
-                          <label htmlFor="Progress" className="block text-sm">
-                            Progress
-                          </label>
-                          <select
-                            {...register("student.applicant.progress", {
-                              required: "Please, enter the currrent progress",
-                            })}
-                            className="block w-[100%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          <div className="flex justify-evently flex-[1] gap-x-[4rem]">
                             
-                          >
-                            <option>New Candidate</option>
-                            <option>HR Interview</option>
-                            <option>CEO Interview</option>
-                            <option>Completing Documents</option>
-                            <option>Completed</option>
-                          </select>
-                          <p className="text-sm font-thin text-red-600">
-                            {errors.student?.applicant?.progress?.message}
-                          </p>
-                        </div>
-                      </div>
+                            {/* Departure city */}
+                            <div className="flex flex-[1] flex-col gap-2">
+                                <label htmlFor="arrival-date" className="block text-sm">
+                                  Arrival City
+                                </label>
+                                <select
+                                  {...register("student.applicant.arrivalCity")}
+                                  autoComplete="arrivalCity"
+                                  className="flex flex-[1] flex-col border block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                >
+                                  <option>Terranova da Sibari</option>
+                                  <option>Bivo Cantinella</option>
+                                  <option>Sibari</option>
+                                  <option>Spezzano Albanese Terme</option>
+                                </select>
+                            </div>
+                            {/* Who Pıcked By */}
+                            <div className="flex flex-[1] flex-col gap-2">
+                              <label
+                                htmlFor="departure-date"
+                                className="block text-sm"
+                              >
+                                Picked up By
+                              </label>
+                              <input
+                                {...register("student.applicant.pickUpBy")}
+                                type="text"
+                                autoComplete="given-name"
+                                placeholder="Francesco di Marco"
+                                className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-evently flex-[1] gap-x-[4rem]">
+                            {/* Arrival time */}
+                            <div className="flex flex-[1] flex-col gap-2">
+                                <label htmlFor="departure-date" className="block text-sm">
+                                  Arrival Time
+                                </label>
+                                <input
+                                  {...register("student.applicant.arrivalTime")}
+                                  type="time"
+                                  autoComplete="given-name"
+                                  className="focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                />
+                            </div>
+                            {/* Progress */}
+                            <div className="flex flex-[1] flex-col gap-2">
+                              <label htmlFor="Progress" className="block text-sm">
+                                Progress
+                              </label>
+                              <select
+                                {...register("student.applicant.progress", {
+                                  required: "Please, enter the currrent progress",
+                                })}
+                                className="block w-[100%] py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                
+                              >
+                                <option>New Candidate</option>
+                                <option>HR Interview</option>
+                                <option>CEO Interview</option>
+                                <option>Completing Documents</option>
+                                <option>Completed</option>
+                              </select>
+                              <p className="text-sm font-thin text-red-600">
+                                {errors.student?.applicant?.progress?.message}
+                              </p>
+                            </div>
+                          </div>
+                      {/* {pageType.current !== "intern" ? (
+                        <>
+                        </>
+                      ):(
+                        <div className="w-[100%] text-xl text-center">Student is already an Intern, arrival and progress cannot be edited!</div>  
+                      )} */}
                     </div>
                   </div>
                   {/* Section */}
@@ -986,43 +1029,48 @@ const pageType = useRef();
                   <div>
                     <h3 className="font-semibold">Interview </h3>
                     <div className="flex flex-col px-4 py-2">
-                      <div className="flex justify-evently grow gap-x-[4rem]">
-                        <div className="flex flex-[1] flex-col">
-                          <label htmlFor="about" className="block text-sm font-medium text-gray-700">Interview Notes</label>
-                          <textarea
-                            {...register("student.applicant.interviewNotes")}
-                            rows={7}
-                            className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-[100%] sm:text-sm border border-gray-300 rounded-md"
-                            value={interviewNotes}
-                            onChange={(e) => setInterviewNotes(e.target.value)}
-                          />
-
-                          <p className="mt-2 text-sm text-gray-500">
-                            Notes for or during the interview.
-                          </p>
-                        </div>
-                        <div className="flex flex-[1] flex-col">
-                          <label htmlFor="about" className="block text-sm font-medium text-gray-700">Rejection Reasons</label>
-                          <textarea
-                              {...register("student.applicant.rejectionReasons")}
+                        <div className="flex justify-evently grow gap-x-[4rem]">
+                          <div className="flex flex-[1] flex-col">
+                            <label htmlFor="about" className="block text-sm font-medium text-gray-700">Interview Notes</label>
+                            <textarea
+                              {...register("student.applicant.interviewNotes")}
                               rows={7}
                               className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-[100%] sm:text-sm border border-gray-300 rounded-md"
-                              defaultValue={""}
-                          />
-                          <p className="mt-2 text-sm text-gray-500">
-                            Brief description of why the candidate is rejected.
-                          </p>
+                              value={interviewNotes}
+                              onChange={(e) => setInterviewNotes(e.target.value)}
+                            />
+
+                            <p className="mt-2 text-sm text-gray-500">
+                              Notes for or during the interview.
+                            </p>
+                          </div>
+                          <div className="flex flex-[1] flex-col">
+                            <label htmlFor="about" className="block text-sm font-medium text-gray-700">Rejection Reasons</label>
+                            <textarea
+                                {...register("student.applicant.rejectionReasons")}
+                                rows={7}
+                                className="shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-[100%] sm:text-sm border border-gray-300 rounded-md"
+                                defaultValue={""}
+                            />
+                            <p className="mt-2 text-sm text-gray-500">
+                              Brief description of why the candidate is rejected.
+                            </p>
+                          </div>
                         </div>
-                      </div>
+                      {/* {pageType.current !== "intern" ? (
+                      ):(
+                        <div className="w-[100%] text-xl text-center">Student is already an Intern, interview notes cannot be edited!</div>  
+                      )} */}
                     </div>
                   </div>
                   {/* Section */}
                   {/* Application documents */}  
                   <div>
                     <h3 className="font-semibold">Application Documents</h3>
-                      {pageType.current === "intern" ? (
+                      {/* {pageType.current === "intern" ? (
                         <div className="w-[100%] text-xl text-center">Student is already an Intern, application documents cannot be edited!</div>  
                       ):(
+                      )} */}
                         <div className="flex flex-col px-4 py-4">
                           <div className="flex flex-col w-[75%] mx-auto">
                             <div className="grid">
@@ -1079,7 +1127,6 @@ const pageType = useRef();
                             </div>
                           </div>
                         </div>
-                      )}
                   </div>
                 </div>
                 <Collapse in={alertOpen}>
