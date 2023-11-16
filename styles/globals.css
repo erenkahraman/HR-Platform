@@ -16,4 +16,10 @@
     min-width: 0;
   }
 }
+.swap-icon:hover {
+  opacity: 0.7;
+  cursor: pointer;
+  color: azure;
+}
+
 
