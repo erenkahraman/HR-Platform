@@ -21,4 +21,6 @@
     padding: 10px 0px;
   }
 
-  
+  .form {
+    position: relative;
+  }
