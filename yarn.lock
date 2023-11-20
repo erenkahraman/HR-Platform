@@ -5583,10 +5583,10 @@
     "react-fast-compare" "^3.1.1"
     "react-side-effect" "^2.1.0"
 
-"react-hook-form@^7.45.2":
-  "integrity" "sha512-9s45OdTaKN+4NSTbXVqeDITd/nwIg++nxJGL8+OD5uf1DxvhsXQ641kaYHk5K28cpIOTYm71O/fYk7rFaygb3A=="
-  "resolved" "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.45.2.tgz"
-  "version" "7.45.2"
+"react-hook-form@^7.48.2":
+  "integrity" "sha512-H0T2InFQb1hX7qKtDIZmvpU1Xfn/bdahWBN1fH19gSe4bBEqTfmlr7H3XWTaVtiK4/tpPaI1F3355GPMZYge+A=="
+  "resolved" "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.48.2.tgz"
+  "version" "7.48.2"
 
 "react-hooks-helper@^1.6.0":
   "integrity" "sha512-DlyWQ99tgwyDdJfTihCXT6AftYymxhA2LS60vBCTOpclmjPxqDwDTLjVK0kbIc3XsgJvxkanW8TwHE0jrIB8hA=="
