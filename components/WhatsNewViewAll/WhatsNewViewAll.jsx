@@ -73,7 +73,7 @@ const WhatsNewViewAll = () => {
 
   return (
     <div>
-      {data.map((whatsNew) => (Date.parse(whatsNew.date.split('T')[0]) < Date.parse(currentDate)) ? (console.log(whatsNew))
+      {data.map((whatsNew) => (Date.parse(whatsNew.date.split('T')[0]) < Date.parse(currentDate)) ? (" ")
         :
         (
           <div
@@ -95,14 +95,14 @@ const WhatsNewViewAll = () => {
                 <div className="text-xs font-light">{whatsNew.paragraph}</div>
               </div>
               <div className="flex flex-[1] items-end p-2">
-                <div>
-                  <button
-                    onClick={() => handleDelete(whatsNew._id)}
-                    className="ml-2 self-start"
-                  >
-                    <DeleteIcon />
-                  </button>
-                </div>
+
+                <button
+                  onClick={() => handleDelete(whatsNew._id)}
+                  className="ml-2 self-start"
+                >
+                  <DeleteIcon />
+                </button>
+
               </div>
             </div>
           </div>

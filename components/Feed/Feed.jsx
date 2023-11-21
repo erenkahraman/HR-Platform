@@ -40,35 +40,35 @@ const Feed = () => {
     asyncRequest();
   }, []);
 
-  const read = (item) => {
-    confirmAlert({
-      title: <strong>Whats New</strong>,
-      message:
-        <div className="h-96 overflow-y-scroll ">
-          <p>
-            <div>
-              <div className={"flex flex-col"}>
-                <div className={"flex flex-row justify-between mb-10"}>
-                  <div className="text-sm font-semibold">{formatDate(item.date)}</div>
-                  <div className="text-xs font-light flex flex-col">
-                    <div>posted by</div>
-                    <div className={"text-end"}>{item.postedBy}</div>
-                  </div>
-                </div>
-                <div className="text-sm font-semibold">{item.title}</div>
-                <div className="text-xs font-light">{item.paragraph}</div>
-              </div>
-            </div>
-          </p>
-        </div>,
-      buttons: [
-        {
-          label: "Close",
-          onClick: () => { },
-        },
-      ],
-    });
-  };
+  // const read = (item) => {
+  //   confirmAlert({
+  //     title: <strong>Whats New</strong>,
+  //     message:
+  //       <div className="h-96 overflow-y-scroll ">
+  //         <p>
+  //           <div>
+  //             <div className={"flex flex-col"}>
+  //               <div className={"flex flex-row justify-between mb-10"}>
+  //                 <div className="text-sm font-semibold">{formatDate(item.date)}</div>
+  //                 <div className="text-xs font-light flex flex-col">
+  //                   <div>posted by</div>
+  //                   <div className={"text-end"}>{item.postedBy}</div>
+  //                 </div>
+  //               </div>
+  //               <div className="text-sm font-semibold">{item.title}</div>
+  //               <div className="text-xs font-light">{item.paragraph}</div>
+  //             </div>
+  //           </div>
+  //         </p>
+  //       </div>,
+  //     buttons: [
+  //       {
+  //         label: "Close",
+  //         onClick: () => { },
+  //       },
+  //     ],
+  //   });
+  // };
 
   const handleDelete = (id) => {
     const updatedData = data.map((item) => {
@@ -82,7 +82,7 @@ const Feed = () => {
 
   return (
     <div>
-      {data.map((whatsNew) => (Date.parse(whatsNew.date.split('T')[0]) < Date.parse(currentDate)) ? (console.log(whatsNew))
+      {data.map((whatsNew) => (Date.parse(whatsNew.date.split('T')[0]) < Date.parse(currentDate)) ? (" ")
         :
         (
           <div className="flex m-2 py-4" key={whatsNew.id}>

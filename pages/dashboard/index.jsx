@@ -7,7 +7,9 @@ import {
   Verified,
 } from "@mui/icons-material";
 import Image from "next/image";
-import React from "react";
+import { parseCookies } from "nookies";
+
+import React, { useEffect } from "react";
 import dashboardImage from "../../public/dashboardImage.png";
 import { Reminder } from "../../components/Reminder";
 import Feed from "../../components/Feed/Feed";
@@ -21,45 +23,69 @@ import { CircularProgress, Backdrop } from "@mui/material";
 import cookie from "js-cookie";
 import Interviews from "./reports";
 import { UpcomingInterviewsViewAll } from "../../components/UpcomingInterviewsViewAll";
+import { useSession, signOut } from "next-auth/react";
 
 const Dashboard = () => {
+
+  const cookies = parseCookies();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const token = cookie?.get("token");
+  const { data: session } = useSession();
+  const [dataUsers, setData] = useState([]);
+  const [userState, setUserState] = useState();
+  const user = cookies?.user
+    ? JSON.parse(cookies.user)
+    : session?.user
+      ? session?.user
+      : "";
+  useEffect(() => {
+    session ? setUserState(session.user) : setUserState(user);
 
+    const asyncRequest = async () => {
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    asyncRequest();
+  }, [router, token]);
   //For Whats's New to add post
-const handleSubmitWhatsNew = async (event) => {
-  event.preventDefault();
+  const handleSubmitWhatsNew = async (event) => {
+    event.preventDefault();
 
-  const whatsNew = {
-    title: event.target.title.value,
-    postedBy: event.target.postedBy.value,
-    date: event.target.date.value,
-    paragraph: event.target.paragraph.value,
-    token: token,
+    const whatsNew = {
+      title: event.target.title.value,
+      postedBy: user.name,
+      date: event.target.date.value,
+      paragraph: event.target.paragraph.value,
+      token: token,
+    };
+    const JSONnew = JSON.stringify(whatsNew);
+    console.log(JSONnew);
+
+    if (event.target.classList.contains("delete-button")) {
+      const itemId = event.target.getAttribute("data-id");
+      await handleDeleteWhatsNew(itemId);
+      return;
+    }
+    const endpointNew = "/api/whatsNew";
+    const New = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSONnew,
+    };
+    await fetch(endpointNew, New);
+    router.reload();
   };
-  const JSONnew = JSON.stringify(whatsNew);
-  console.log(JSONnew);
-
-  if (event.target.classList.contains("delete-button")) {
-    const itemId = event.target.getAttribute("data-id");
-    await handleDeleteWhatsNew(itemId);
-    return; 
-  }
-
-  const endpointNew = "/api/whatsNew";
-  const New = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-    body: JSONnew,
-  };
-  await fetch(endpointNew, New);
-  router.reload();
-};
-  const [students, setStudents] = useState([]);
 
   //For Reminder to add post
   const handleSubmitReminder = async (event) => {
@@ -69,7 +95,7 @@ const handleSubmitWhatsNew = async (event) => {
       title: event.target.title.value,
       category: event.target.category.value,
       date: event.target.date.value,
-      whoPosted: event.target.whoPosted.value,
+      whoPosted: user.name,
       token: token,
     };
     const JSONReminder = JSON.stringify(reminder);
@@ -87,7 +113,6 @@ const handleSubmitWhatsNew = async (event) => {
     router.reload();
   };
   return (
-
     <div className="flex flex-col w-full px-8">
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -102,16 +127,18 @@ const handleSubmitWhatsNew = async (event) => {
           <Image src={dashboardImage} alt="test" width="180" height="180" />
         </div>
         {/* Right */}
+
         <div className="dashboardTopRight flex flex-[4] flex-col justify-center gap-4">
           {/* Title */}
+
           <div className="flex flex-col gap-2">
-            <p className="text-4xl font-semibold">Ciao {students.firstNamew}</p>
-            <p className="text-sm">
+            <div className="text-4xl font-semibold">Ciao</div>
+            <div className="text-sm">
               Welcome Back! You have 5{" "}
               <a className="underline" href="./">
                 notifications.
               </a>
-            </p>
+            </div>
           </div>
         </div>
       </div>
@@ -142,20 +169,8 @@ const handleSubmitWhatsNew = async (event) => {
                 <h6 className="font-semibold text-md text-white pt-2 pb-4">
                   New Post
                 </h6>
-                <div className="flex flex-row mx-2 mt-2 mb-4">
-                  <h2 className="font-semibold text-l text-white ">By: </h2>
-                  <input
-                    id="postedBy"
-                    type="text"
-                    className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                    placeholder="Type your name..."
-                    required
-                  />
-                </div>
               </div>
-
               {/* INFORMATION BOX */}
-
               <div className="flex flex-col">
                 <div className="pb-2 pt-6">
                   <input
@@ -175,7 +190,6 @@ const handleSubmitWhatsNew = async (event) => {
                   />
                 </div>
               </div>
-
               {/* BUTTOM PART */}
               <div className="flex flex-row pt-20">
                 <input
@@ -184,10 +198,6 @@ const handleSubmitWhatsNew = async (event) => {
                   className="rounded border-none bg-[#e0f2fe] text-#0B3768 h-7 ml-2 "
                 />
                 <div className="pl-20">
-                  {/* <button className="pr-2 ">
-                    {" "}
-                    <Cancel className=" fill-[#e0f2fe] hover:fill-[#991b1b]" />{" "}
-                  </button> */}
                   <button type="submit">
                     {" "}
                     <Verified className="fill-[#e0f2fe] hover:fill-[#15803d]" />{" "}
@@ -223,16 +233,6 @@ const handleSubmitWhatsNew = async (event) => {
                 <h6 className="font-semibold text-md text-white pt-2 pb-4">
                   New Remainder
                 </h6>
-                <div className="flex flex-row mx-2 mt-2 mb-4">
-                  <h2 className="font-semibold text-l text-white ">By: </h2>
-                  <input
-                    id="whoPosted"
-                    type="text"
-                    className="rounded border-none bg-[#e0f2fe] text-black h-7 w-72 ml-2 placeholder:italic placeholder:text-#0B3768 placeholder:text-sm"
-                    placeholder="Type your name..."
-                    required
-                  />
-                </div>
               </div>
 
               {/* INFORMATION BOX */}
@@ -358,7 +358,7 @@ const handleSubmitWhatsNew = async (event) => {
             </div>
           </div>
         </Popup>
-      </div> 
+      </div>
 
       {/* Bottom */}
       <div className="flex flex-1 shrink w-full flex-col lg:flex-row py-3 gap-3">
