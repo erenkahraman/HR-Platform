@@ -100,7 +100,12 @@ const StudentCountModal = ({ setScModal, type }) => {
 
           </div>
           
-          
+          <button
+            onClick={() => setShowFinishedModal(true)}
+            className="rounded px-4 py-2 ml-4 text-black text-xl"
+          >
+            Show Finished Students
+          </button>
         </div>
       </div>
       {/* Show the FinishedStudentCountModal when showFinishedModal is true */}

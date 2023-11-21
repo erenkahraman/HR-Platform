@@ -5,6 +5,8 @@ import { confirmAlert } from "react-confirm-alert";
 import { Backdrop, CircularProgress } from "@mui/material";
 import cookie from "js-cookie";
 import moment from "moment";
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const EditAttendance = ({ attendance, setModel }) => {
@@ -66,16 +68,29 @@ const EditAttendance = ({ attendance, setModel }) => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      <form className="flex flex-col gap-4">
+      <form className=" flex flex-col gap-4 ">
         <div className=" bg-zinc-200 opacity-90 fixed inset-0 z-50  ">
           <div className="flex h-screen justify-center items-center">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Edit Attendance for {attendance.internTest.student.firstName}{" "}
-                  {attendance.internTest.student.lastName}
-                </h3>
-              </div>
+            <div className=" bg-white rounded-lg shadow dark:bg-gray-700">
+            <div className="justify-between ms-4 p-4 rounded-t border-b dark:border-gray-600 flex items-center gap-8">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex-grow">
+            Edit Attendance for {attendance.internTest.student.firstName}{" "}
+            {attendance.internTest.student.lastName}
+          </h3>
+          <IconButton
+            className="text-black"
+            sx={{
+              '&:hover': {
+                color: 'blue',
+              },
+            }}
+            onClick={(e) => { setModel(undefined); }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+
+
 
               <div className="p-6 space-y-6 flex-nowrap ">
                 <div className="flex  flex-row">
@@ -114,43 +129,39 @@ const EditAttendance = ({ attendance, setModel }) => {
                   >
                     Date
                   </label>
-                  <th className="overflow-y-auto max-h-32 w-2/5 mb-8 space-y-4 text-left text-gray-500 dark:text-gray-400">
-                    {dates.map((date, index) => (
-                      <React.Fragment key={attendance._id}>
-                        <tr className="flex items-center space-x-3">
-                          <label>{date}</label>
-                        </tr>
-                        {(index + 1) % 2 === 0 && <br />} 
-                      </React.Fragment>
-                    ))}
-                  </th>
+
+
+                <th className="overflow-y-auto max-h-32 w-2/5 mb-8 space-y-4 text-left text-gray-500 dark:text-gray-400">
+                  {dates.map((date, index) => (
+                    <React.Fragment key={index}>
+                      <tr className="flex items-center space-x-3">
+                        <label>{new Date(date).toLocaleDateString('en-GB')}</label>
+                      </tr>
+                      {(index + 1) % 2 === 0 && <br />} 
+                    </React.Fragment>
+                  ))}
+                </th>
+
+
+
+
                 </div>
               </div>
-              <div className="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-                <button
-                  data-modal-toggle="defaultModal"
-                  type="button"
-                  className="inline-flex items-center px-4 py-2 border border-transparent"
-                  onClick={(e) => {
-                    setModel(undefined);
-                  }}
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="ml-3 inline-flex items-center px-4 py-2 border border-transparent 
-                            text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 
-                            hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
-                            focus:ring-blue-500"
-                  onClick={(e) => {
-                    updateAttendance(attendance);
-                    
-                  }}
-                >
-                  Save
-                </button>
-              </div>
+
+              <div className="flex justify-end p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+              <button
+                type="button"
+                className="inline-flex items-center px-4 py-2 border border-transparent 
+                          text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 
+                          hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 
+                          focus:ring-blue-500"
+                onClick={(e) => { updateAttendance(attendance); }}
+              >
+                Save
+              </button>
+            </div>
+
+
             </div>
           </div>
         </div>

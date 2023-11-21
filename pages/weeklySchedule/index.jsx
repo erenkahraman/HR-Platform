@@ -18,6 +18,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import GavelIcon from '@mui/icons-material/Gavel';
 import WorkIcon from '@mui/icons-material/Work';
 import PersonIcon from '@mui/icons-material/Person';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 
 
@@ -472,56 +473,63 @@ const iconsForDepartments = {
             </div>
           </div>
         </div>
-        <div className="mt-5 flex flex-col w-[100%]">
-          <span className="text-2xl font-bold uppercase text-center mb-5">Shifts</span>
-          <div className="grid grid-cols-2 gap-10">
-              <div className="w-[100%]">
-                <div className="w-[100%] text-center">
-                  MORNING
-                </div>
-            {populatedWeeklySchedule.map((schedule) => (
-              <div className="w-[75%] mx-auto" key={schedule._id}>
-                <div className="w-[100%] mx-auto mt-5">
-                  <div className="text-xl border-b-2 border-sky-200 border-solid">{schedule.Group} <span>[{schedule.Schedule.morning.length}]</span></div>
-                  <div className="grid grid-cols-3 gap-5 pt-5">
-                  {schedule.Schedule.morning.map((internName, index) => (
-                    <li key={index}>
-                      {internName}
-                      <Button onClick={() => swapShift(internName, "morning")}>
-                        Swap Shift
-                      </Button>
-                    </li>
-                  ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-            </div>
 
-            <div className="w-[100%]">
-              <div className="w-[100%] text-center">
-                AFTENOON
-              </div>
-              {populatedWeeklySchedule.map((schedule) => (
-                <div className="w-[75%] mx-auto" key={schedule._id}>
-                  <div className="w-[100%] mx-auto mt-5">
-                    <div className="text-xl border-b-2 border-sky-200 border-solid">{schedule.Group} <span>[{schedule.Schedule.afternoon.length}]</span></div>
-                    <div className="grid grid-cols-3 gap-5 pt-5">
-                    {schedule.Schedule.afternoon.map((internName, index) => (
-                      <li key={index}>
-                        {internName}
-                        <Button onClick={() => swapShift(internName, "afternoon")}>
-                          Swap Shift
-                        </Button>
-                      </li>
-                    ))}
-                    </div>
-                  </div>
-                </div>
+
+        
+
+
+     <div className="mt-5 flex flex-col w-[100%]">
+  <span className="text-2xl font-bold uppercase text-center mb-5">Shifts</span>
+  <div className="grid grid-cols-2 gap-10">
+    <div className="w-[100%] rounded-lg overflow-hidden" style={{ backgroundColor: 'lightblue' , padding: '4px',paddingTop: '10px', paddingBottom: '20px'}}>
+      <div className="w-[100%] text-center">
+        MORNING
+      </div>
+      {populatedWeeklySchedule.map((schedule) => (
+        <div className="w-[75%] mx-auto" key={schedule._id}>
+          <div className="w-[100%] mx-auto mt-5">
+            <div className="text-xl border-b-2 border-sky-200 border-solid">{schedule.Group} <span>[{schedule.Schedule.morning.length}]</span></div>
+            <div className="grid grid-cols-3 gap-5 pt-5">
+              {schedule.Schedule.morning.map((internName, index) => (
+                <li className="flex items-center justify-between" key={index}>
+                  {internName}
+                  <SwapHorizIcon className="swap-icon" onClick={() => swapShift(internName, "morning")} />
+                </li>
               ))}
             </div>
           </div>
-        </div> 
+        </div>
+      ))}
+    </div>
+
+    <div className="w-[100%] rounded-lg overflow-hidden" style={{ backgroundColor: 'lightblue', padding: '4px',paddingTop: '10px' }}>
+      <div className="w-[100%] text-center">
+        AFTERNOON
+      </div>
+      {populatedWeeklySchedule.map((schedule) => (
+        <div className="w-[75%] mx-auto" key={schedule._id}>
+          <div className="w-[100%] mx-auto mt-5">
+            <div className="text-xl border-b-2 border-sky-200 border-solid">{schedule.Group} <span>[{schedule.Schedule.afternoon.length}]</span></div>
+            <div className="grid grid-cols-3 gap-5 pt-5">
+              {schedule.Schedule.afternoon.map((internName, index) => (
+                <li className="flex items-center justify-between" key={index}>
+                  {internName}
+                  <SwapHorizIcon className="swap-icon" onClick={() => swapShift(internName, "afternoon")} />
+                </li>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
         <div className="flex items-center my-20">
           <CSVLink ref={csvLinkElement} data={assignedShifts} filename={"assigned-shifts.csv"}></CSVLink>
           <Button
