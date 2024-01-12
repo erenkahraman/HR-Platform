@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 export default async (req, res) => {
   await dbConnect();
   try {
-    console.log("request body -->",req.body)
+    console.log("request body -->", req.body)
     if (req.method === "POST") {
       console.log("post method")
       const { email, password } = req.body;
@@ -39,10 +39,10 @@ export default async (req, res) => {
                   expiresIn: "7d",
                 }
               );
-              const { email, _id } = user;
+              const { email, _id, name } = user;
               res.status(200).json({
                 message: "Login Successful",
-                user: { email, _id },
+                user: { email, _id, name },
                 token,
               });
               console.log("User Login Successful");

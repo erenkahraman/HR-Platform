@@ -7,9 +7,10 @@ const Upcoming = () => {
   const token = cookie.get("token");
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
-
+  const [isEmpty, setEmpty] = useState(true);
   useEffect(() => {
     setLoading(true);
+    setEmpty(true);
     const asyncRequest = async () => {
       try {
         const config = {
@@ -26,6 +27,7 @@ const Upcoming = () => {
         filteredData.sort((b, a) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setData(filteredData.slice(0, 5)); // Limit the data to 5 interns
         setLoading(false);
+        setEmpty(false);
       } catch (e) {
         console.error(e);
         setLoading(false);
@@ -54,18 +56,21 @@ const Upcoming = () => {
 
   return (
     <div>
-      {isLoading ? (
-        <div>Loading...</div>
+      {isEmpty ? (
+        <div>
+          <p>No upcoming arrivals or departures for this month.</p>
+          <p> To view previous upcomings press view all</p>
+        </div>
       ) : (
-        data.reverse().map((intern, i) => (
+        data.reverse().map((internTest, i) => (
           <div key={i} className="flex w-full">
             <div className="flex-[1] flex flex-col">
-              <div className="text-sm font-semibold">{intern.name}</div>
-              <div className="text-xs font-light ">{intern.department}</div>
+              <div className="text-sm font-semibold">{internTest.name}</div>
+              <div className="text-xs font-light ">{internTest.department}</div>
             </div>
-            <div className={statusColor(intern.action)}>{intern.action}</div>
+            <div className={statusColor(internTest.action)}>{internTest.action}</div>
             <div className="flex-[1] flex items-center justify-center text-xs text-gray-500">
-              {formatDate(intern.date)}
+              {formatDate(internTest.date)}
             </div>
           </div>
         ))

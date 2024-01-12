@@ -30,7 +30,7 @@ const Interviews = () => {
         };
         asyncRequest();
     }
-    , [token]);
+        , [token]);
 
     return (
         <div>
@@ -40,7 +40,7 @@ const Interviews = () => {
                 <div>
                     {data.map((item) => (
                         <div key={item.id}>
-                            <div>{item.title}</div>
+                            <div>{item.title}HI</div>
                             <div>{item.category}</div>
                             <div>{item.time}</div>
                         </div>
@@ -49,7 +49,7 @@ const Interviews = () => {
             )}
         </div>
     );
-    
+
 };
 
 export default Interviews;
